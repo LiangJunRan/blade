@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas画圆</title>
+    <link href="../_commons/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>
+    <link href="../_commons/bootstrap-slider/css/bootstrap-slider.min.css" rel="stylesheet"></link>
+    <link href="../_commons/font-awesome/css/font-awesome.min.css" rel="stylesheet"></link>
+    <link href="assets/css/styles.css" rel="stylesheet"></link>
+    <script src='../_commons/jquery/jquery.min.js'></script>
+    <script src='../_commons/bootstrap/js/bootstrap.min.js'></script>
+    <script src='../_commons/bootstrap-slider/js/bootstrap-slider.min.js'></script>
+    <script src='assets/js/scripts.js'></script>
+</head>
+
+<body>
+    <div class="row" style="margin: 10px; padding: 0px;">
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Setting</h3>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label align-right">X</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="x" class="form-control slider" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Y</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="y" class="form-control slider" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">R</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="r" class="form-control slider" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Start_Angle</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="st_a" class="form-control slider" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">End_Angle</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="ed_a" class="form-control slider" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label align-right">Red</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="red" class="form-control slider" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Green</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="green" class="form-control slider" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Blue</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="blue" class="form-control slider" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Alpha</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="alpha" class="form-control slider" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Info</h3>
+                </div>
+                <div class="panel-body">
+                    <pre class='info'></pre>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <canvas id="canvas" width="800" height="600"></canvas>
+        </div>
+    </div>
+    <script>
+    function draw(id) {
+        var canvas = document.getElementById(id) || 'canvas';
+        if (canvas == null) {
+            return false;
+        }
+        var context = canvas.getContext('2d');
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        context.beginPath();
+
+        // center_x, center_y, r, start_angle, end_angle, 顺时针
+        context.arc(
+            $('body').data()['x'],
+            $('body').data()['y'],
+            $('body').data()['r'],
+            $('body').data()['st_a'],
+            $('body').data()['ed_a'],
+            true);
+        //不关闭路径路径会一直保留下去，当然也可以利用这个特点做出意想不到的效果
+        context.closePath();
+        context.fillStyle = 'rgba(' +
+            $('body').data()['red'] +
+            ',' +
+            $('body').data()['green'] +
+            ',' +
+            $('body').data()['blue'] +
+            ',' +
+            $('body').data()['alpha'] +
+            ')';
+        context.fill();
+    }
+
+    $("input.slider[name=x]").slider({
+        min: 0,
+        max: 800,
+        step: 1,
+        tooltip: 'hide',
+        value: 400,
+        formatter: function(value) {
+            return value / this.max * 100 + '%';
+        }
+    });
+
+    $("input.slider[name=y]").slider({
+        min: 0,
+        max: 600,
+        step: 1,
+        tooltip: 'hide',
+        value: 300,
+        formatter: function(value) {
+            return value / this.max * 100 + '%';
+        }
+    });
+
+    $("input.slider[name=r]").slider({
+        min: 0,
+        max: 600,
+        step: 1,
+        tooltip: 'hide',
+        value: 100,
+        formatter: function(value) {
+            return value / this.max * 100 + '%';
+        }
+    });
+
+    $("input.slider[name=st_a]").slider({
+        min: -2 * Math.PI,
+        max: 2 * Math.PI,
+        step: Math.PI / 180,
+        tooltip: 'hide',
+        value: 3.14,
+        precision: 3,
+        formatter: function(value) {
+            return ('' + (value / Math.PI)).substring(0, 5) + ' PI';
+        }
+    });
+
+    $("input.slider[name=ed_a]").slider({
+        min: -2 * Math.PI,
+        max: 2 * Math.PI,
+        step: Math.PI / 180,
+        tooltip: 'hide',
+        value: -3.14,
+        precision: 3,
+        formatter: function(value) {
+            return ('' + (value / Math.PI)).substring(0, 5) + ' PI';
+        }
+    });
+
+    $("input.slider[name=red]").slider({
+        min: 0,
+        max: 255,
+        step: 1,
+        tooltip: 'hide',
+        value: 0
+    });
+
+    $("input.slider[name=green]").slider({
+        min: 0,
+        max: 255,
+        step: 1,
+        tooltip: 'hide',
+        value: 255
+    });
+
+    $("input.slider[name=blue]").slider({
+        min: 0,
+        max: 255,
+        step: 1,
+        tooltip: 'hide',
+        value: 180
+    });
+
+    $("input.slider[name=alpha]").slider({
+        min: 0,
+        max: 1,
+        step: 0.01,
+        tooltip: 'hide',
+        value: 1
+    });
+
+    $(function() {
+        event_bind();
+        set_init_value();
+        show_info();
+        draw('canvas');
+    })
+    </script>
+</body>
+
+</html>

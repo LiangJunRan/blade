@@ -1,0 +1,68 @@
+/* anime-alert */
+
+.anime-alert {
+    width: 276px;
+    padding: 15px;
+    position: relative;
+    float: left;
+    background-color: transparent;
+}
+
+.anime-alert img {
+    display: block;
+    position: relative;
+    cursor: pointer;
+}
+
+.anime-alert:hover .anime-alert-hover,
+.anime-alert:active .anime-alert-hover {
+    opacity: 1;
+}
+
+/* 原始颜色为: rgba(234, 176, 176, 1) */
+.anime-alert-hover {
+    background-color: #000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    -webkit-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+    background-size: 30px 30px;
+    background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 0, 1) 25%, transparent 25%, transparent 50%, rgba(255, 255, 0, 1) 50%, rgba(255, 255, 0, 1) 75%, transparent 75%, transparent);
+    background-image: -moz-linear-gradient(45deg, rgba(255, 255, 0, 1) 25%, transparent 25%, transparent 50%, rgba(255, 255, 0, 1) 50%, rgba(255, 255, 0, 1) 75%, transparent 75%, transparent);
+    background-image: linear-gradient(45deg, rgba(255, 255, 0, 1) 25%, transparent 25%, transparent 50%, rgba(255, 255, 0, 1) 50%, rgba(255, 255, 0, 1) 75%, transparent 75%, transparent);
+    -webkit-animation: barberpole 0.5s linear infinite;
+    -moz-animation: barberpole 0.5s linear infinite;
+    animation: barberpole 0.5s linear infinite;
+}
+
+@-webkit-keyframes barberpole {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 60px 30px;
+    }
+}
+
+@-moz-keyframes barberpole {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 60px 30px;
+    }
+}
+
+@keyframes barberpole {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 60px 30px;
+    }
+}

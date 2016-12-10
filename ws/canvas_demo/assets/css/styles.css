@@ -1,0 +1,36 @@
+html {
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    background-color: #fff;
+}
+
+div {
+    border: solid 0px #eee;
+}
+
+canvas {
+    width: 800px;
+    height: 600px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border: solid 3px yellow;
+    margin-right: 20px;
+    /*position: absolute;
+	left: calc(50% - 250px);
+	top: calc(50% - 200px);*/
+}
+
+.control-label {
+    text-align: right;
+}
+
+.slider.slider-horizontal {
+    width: 100%;
+}

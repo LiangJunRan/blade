@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>index</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.5, maximum-scale=1.5, user-scalable=no">
+    <link href="../_commons/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../_commons/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <script src="../_commons/jquery/jquery.min.js"></script>
+    <script src="../_commons/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../_commons/jQuery-Knob-1.2.13/dist/jquery.knob.min.js"></script>
+	<style>
+		.background {
+			width: 100%;
+			height: 100%;
+			position:absolute;
+			top:0;
+			left:0;
+			background-color: #000;
+			z-index: -1;
+		}
+		.my-container {
+			width: 750px;
+			height: 750px;
+			position: absolute;
+			left: calc(65% - 375px);
+			top: calc(50% - 375px);
+		}
+		.r1 {
+			width: 600px;
+			height: 1050px;
+			position: absolute;
+			left: calc(72% - 375px);
+			top: calc(50% - 375px);
+		}
+		.perspective-back {
+			perspective-origin: 50% 50%;
+			/*perspective: 500;*/
+			-webkit-perspective: 750; /* Safari and Chrome */
+		}
+		.perspective-front {
+			position: absolute;
+			transform: rotateY(-60deg);
+			-webkit-transform: rotateY(-60deg); /* Safari and Chrome */
+		}
+		.my-container1 {
+			width: 750px;
+			height: 750px;
+			position: absolute;
+			left: calc(70% - 375px);
+			top: calc(70% - 375px);
+		}
+		.my-container2 {
+			width: 750px;
+			height: 750px;
+			position: absolute;
+			left: calc(70% - 375px);
+			top: calc(69% - 375px);
+		}
+		.my-container3 {
+			width: 750px;
+			height: 750px;
+			position: absolute;
+			left: calc(70% - 375px);
+			top: calc(68% - 375px);
+		}
+		.my-container4 {
+			width: 750px;
+			height: 750px;
+			position: absolute;
+			left: calc(70% - 375px);
+			top: calc(67% - 375px);
+		}
+		
+		.perspective-back2 {
+			perspective-origin: 25% 62%;
+			/*perspective: 500;*/
+			-webkit-perspective: 750; /* Safari and Chrome */
+		}
+		.perspective-front1 {
+			position: absolute;
+			transform: rotateX(80deg);
+			-webkit-transform: rotateX(80deg); /* Safari and Chrome */
+		}
+		.grid {
+				background: -webkit-linear-gradient(transparent 18px, rgba(255, 0, 0, 0.5) 20px),
+					-webkit-linear-gradient(left, transparent 18px, rgba(255, 0, 0, 0.5) 20px);
+				background: -o-linear-gradient(transparent 18px, rgba(255, 0, 0, 0.5) 20px),
+					-o-linear-gradient(left, transparent 18px, rgba(255, 0, 0, 0.5) 20px);
+				background: linear-gradient(transparent 18px, rgba(255, 0, 0, 0.5) 20px),
+					linear-gradient(to right, transparent 18px, rgba(255, 0, 0, 0.5) 20px);
+					;
+				background-size: 20px 20px;
+				border: 1px solid rgba(255, 0, 0, 0.2);
+		}
+		.grid2{
+				background: -webkit-linear-gradient(transparent 9px, rgba(0, 255, 0, 0.5) 10px),
+					-webkit-linear-gradient(left, transparent 9px, rgba(0, 255, 0, 0.5) 10px);
+				background: -o-linear-gradient(transparent 9px, rgba(0, 255, 0, 0.5) 10px),
+					-o-linear-gradient(left, transparent 9px, rgba(0, 255, 0, 0.5) 10px);
+				background: linear-gradient(transparent 9px, rgba(0, 255, 0, 0.5) 10px),
+					linear-gradient(to right, transparent 9px, rgba(0, 255, 0, 0.5) 10px);
+					;
+				background-size: 10px 10px;
+				border: 1px solid rgba(255, 0, 0, 0.2);
+		}
+		.grid3{
+				background: rgba(255,255,255, 0.2);
+		}
+		.my-ring {
+			position: relative;
+			width: 750px;
+			height: 750px;
+			border: 1px solid rgba(255, 0, 0, 0.5);
+			border-radius: 999px;
+			/*background-color: #F00;*/
+		}
+
+		body {
+			overflow: hidden;
+		}
+		/* ---- 托盘 ---- */
+		.mid {
+			position: absolute;
+			width: 750px;
+			height: 750px;
+			top: calc(50% - 375px);
+			left: calc(50% - 375px);
+			background-color: rgba(255,0,0,0);
+			border-radius: 375px;
+		}
+		/* ---- 齿  ----*/
+		.piece {
+			width: 5px;
+			height: 30px;
+			background-color: #fff;
+			border-radius: 2.5px;
+			border-top: solid 2px #5f7;
+			border-bottom: solid 2px #5f7;
+			border-left: solid 1px #5f7;
+			border-right: solid 1px #5f7;
+			box-shadow: 0px 0px 0px 2px #5f7;
+			position: absolute;
+		}
+
+
+		/* 齿轮绿色背景光 ================================= */
+		.light {
+			box-shadow:  0px 0px 10px 2px #5f7;
+		}
+
+		.fa-spin {
+			animation: fa-spin 5.3s infinite linear;
+		}
+		.fa-spin2 {
+			animation: fa-spin 4.9s infinite linear;
+		}
+		.fa-spin3 {
+			animation: fa-spin 3s infinite linear;
+		}
+		.fa-spin4 {
+			animation: fa-spin 1.5s infinite linear;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="background"></div>
+	<div class="my-container1 grid3 perspective-back2">
+		<div class="my-container1 grid perspective-front1">
+			<div class="my-ring fa-spin">
+				<input class="knob" id="k1" style="position: relative;" data-width="750" data-height="750" data-displayInput=false value="1000">
+			</div>
+		</div>
+	</div>
+	<div class="my-container2 grid3 perspective-back2">
+		<div class="my-container2 grid2 perspective-front1">
+			<div class="my-ring fa-spin2">
+				<input class="knob" id="k2" style="position: relative;" data-width="750" data-height="750" data-displayInput=false value="1000">
+			</div>
+		</div>
+	</div>
+	<div class="my-container3 grid3 perspective-back2">
+		<div class="my-container3 grid2 perspective-front1">
+			<div class="my-ring fa-spin3">
+				<input class="knob" id="k3" style="position: relative;" data-width="750" data-height="750" data-displayInput=false value="1000">
+			</div>
+		</div>
+	</div>
+	<div class="my-container4 grid3 perspective-back2">
+		<div class="my-container4 grid2 perspective-front1">
+			<div class="my-ring fa-spin4">
+				<input class="knob" id="k4" style="position: relative;" data-width="750" data-height="750" data-displayInput=false value="1000">
+			</div>
+		</div>
+	</div>
+
+	<div class="r1 perspective-back" style="background-color: rgba(0, 255, 0, 0.5); border: solid 1px rgba(0, 255, 0, 1);">
+		<div class="r1 perspective-front" style="background-color: rgba(0, 0, 255, 0.5); border: solid 1px rgba(0, 0, 255, 1);">
+		</div>
+	</div>
+
+	<script>
+		$(function($) {
+			var options = {
+                // end: $.now() + 600 + 2, 
+                // labels: true,
+                theme: "white-wide"
+            };
+
+			var circleMax = 100;
+	        var element = $(this);
+	        var settings = {
+	            // end: undefined,
+	            // now: $.now(),
+	            // labels: true
+	        };
+	        var gset;
+
+	        if (options.theme) {
+	            settings = $.extend(true, settings, getPreset(options.theme));
+	        }
+	        settings = $.extend(true, settings, options);
+
+	        var set = $.extend(
+                {
+                    width: '100%',
+                    displayInput: false,
+                    // readOnly: true,
+                    max: circleMax
+                }, 
+                settings.style.all.gauge
+            );
+            gset = set;
+
+            set.draw = function () {
+                this.cursorExt = 0.3;
+
+                var a = this.arc(this.cv)  // Arc
+                    , pa                   // Previous arc
+                    , r = 1;
+
+                this.g.lineWidth = this.lineWidth;
+
+                if (this.o.displayPrevious) {
+                    pa = this.arc(this.v);
+                    this.g.beginPath();
+                    this.g.strokeStyle = this.pColor;
+                    this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, pa.s, pa.e, pa.d);
+                    this.g.stroke();
+                }
+
+                var per = ( Math.abs(a.s - a.e) / Math.PI / 2 );
+                //console.log('draw', per);
+                var r = parseInt(255 * (per > 0.5 ? 2 * (1 - per) : 1 ) );
+                var g = parseInt(255 * (per > 0.5 ? 1 : 2 * per ));
+                var b = parseInt(255 * 0 * per);
+                var color = "rgba(" + r + "," + g + "," + b + ", 0.7)";
+                //console.log('color=', color);
+
+                this.g.beginPath();
+                // this.g.strokeStyle = r ? this.o.fgColor : this.fgColor ;
+                this.g.strokeStyle = r ? color : this.fgColor ;
+                this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, a.s, a.e, a.d);
+                this.g.stroke();
+
+                this.g.lineWidth = 1;//5;       // 外环线宽
+                this.g.betweenWidth = 1000;//10;    // 内外环间隔宽度
+
+                this.g.beginPath();
+                this.g.strokeStyle = this.o.outColor;
+                this.g.arc( this.xy, this.xy, this.radius - this.lineWidth + this.g.betweenWidth + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false);
+                this.g.stroke();
+
+
+                return false;
+            };
+
+			var k = $(".knob").knob(set);
+			console.log('k', k);
+
+			$('.knob').val(53).trigger('change');
+
+			$('#k2').val(63).trigger('change');
+			$('#k3').val(73).trigger('change');
+			$('#k4').val(50).trigger('change');
+
+			// var left = 0;
+        	// var timerTick = setInterval(function(){
+        	// 	left = (left + 1)<=100?(left+1):0;
+        	// 	$('.knob').val(left).trigger('change');
+        	// 	console.log('tick');
+        	// }, 100);
+		});
+		function getPreset(theme) {
+            switch (theme) {
+                case 'white-wide':
+                    return {
+                        labels: true,
+                        style: {
+                            element: '',
+                            textResponsive: 0.5,
+                            all: {
+                                gauge: {
+                                    thickness: 0.1,    // 进度条环宽
+                                    bgColor: "rgba(255,255,255,0)",
+                                    fgColor: "rgba(0, 255, 0, 1)",
+                                    outColor: "rgba(255, 255, 255, 1)"
+                                },
+                                textCSS: 'font-family:\'Open Sans\';font-weight:300;color:#fff;'
+                            }
+                        }
+                    };
+            }
+        }
+	</script>
+</body>
+
+</html>
