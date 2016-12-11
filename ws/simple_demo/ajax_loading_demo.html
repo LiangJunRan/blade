@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>自制loading</title>
+	<style>
+		/* 半透明遮罩层 */
+		.loading-mask-layer {
+			background-color: rgba(0, 0, 0, 0.5);
+			position: fixed;
+			left: 0px;
+			top: 0px;
+			height: 100%;
+			width: 100%;
+		}
+		/* 遮罩层上loading标志的区域 */
+		.loading-mark-layer {
+			height: 100px;
+			width: 100px;
+			position: fixed;
+			left: calc(50% - 50px);
+			top: calc(50% - 50px);
+			background-color: rgba(255, 255, 255, 1);
+			border-radius: 10px;
+			box-shadow: 0px 0px 13px 5px rgba(0, 0, 0, 0.2);
+			text-align: center;
+		}
+		/* 区域内loading图片 */
+		.loading-mark-layer>img {
+			height: 48px;
+			width: 48px;
+			margin: 15px auto 5px;
+		}
+		/* 区域内loading描述 */
+		.loading-mark-layer>p {
+			margin: 0px auto 0px;
+		}
+
+		/* ====== 以下非必须 ======*/
+
+		/* 渐入动画 */
+		.easy-in-anime {
+			animation: easy-in 0.2s linear 1;
+		}
+		/* 动画关键帧定义 */
+		@keyframes easy-in {
+			from {
+				opacity: 0;
+			}
+			to {
+				opacity: 1;
+			}
+		}
+		/* 按钮样式 */
+		button {
+			height: 50px;
+			padding-left: 20px;
+			padding-right: 20px;
+			color: #fff;
+			background-color: #fa0;
+			border: solid 3px #f90;
+			border-radius: 10px;
+			font-size: 16px;
+			font-weight: 700;
+		}
+		button:hover {
+			background-color: #fd0;
+		}
+		button:focus {
+			background-color: #fa0;
+			outline: none;
+		}
+		button:active {
+			background-color: #f90;
+			border-color: #d70;
+		}
+	</style>
+</head>
+<body>
+	<button type="button" onclick="func()" onfocus="this.blur();">CLICK ME</button>
+	<script src="../_commons/jquery/jquery.min.js"></script>
+	<script>
+		function loading_mask_show() {
+			if ($('.loading-mask-layer').length == 0) {
+				var loading_mask_layer = $(
+					'<div class="loading-mask-layer easy-in-anime">' +
+						'<div class="loading-mark-layer">' +
+							'<img src="assets/loading.gif" alt="ICON">' +
+							'<p>loading</p>' +
+						'</div>' +
+					'</div>'
+				);
+				$('body').append(loading_mask_layer);
+			} else {
+				$('.loading-mask-layer').show().addClass('easy-in-anime');
+			}
+		}
+
+		function loading_mask_hide() {
+			$('.loading-mask-layer').removeClass('easy-in-anime').hide();
+		}
+
+		function func() {
+			$.ajax({
+				url: "assets/data.json",
+				// 发送请求前运行回调函数
+				beforeSend: function() {
+					loading_mask_show();
+				},
+				// 收到回复时，运行回调函数
+				success: function() {
+					// 模拟获得数据所花费的时间， 1.2秒
+					setTimeout(loading_mask_hide, 1200);
+					// 正常情况下，使用以下代码
+					// loading_mask_hide();
+				},
+				// 报错时，运行回调函数
+				error: function() {
+					// 模拟获得数据所花费的时间， 1.2秒
+					setTimeout(loading_mask_hide, 1200);
+					// 正常情况下，使用以下代码
+					// loading_mask_hide();
+				}
+			})
+		}
+	</script>
+</body>
+</html>
