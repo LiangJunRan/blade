@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CSS3动画Demo Product</title>
+	<script src="../_commons/jquery/jquery.min.js"></script>
+	<style>
+		.container {
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height: 200px;
+			border: solid 5px #0f0;
+			background-color: #efe;
+		}
+		.item {
+			display: inline-block;
+			margin: 25px;
+			width: 30%;
+			height: 150px;
+			border: solid 2px #f00;
+			background-color: #edd;
+		}
+		.dummy {
+			border: solid 2px #00f;
+			background-color: #dde;
+		}
+
+		.pop {
+			animation: pop 0.15s 1 ease-in-out;
+			animation-fill-mode: both;
+		}
+		@keyframes pop {
+			100% {
+				width: 800px;
+				height: 600px;
+				position: fixed;
+				left: calc(50% - 400px);
+				top: calc(50% - 300px);
+			}
+		}
+
+		.recover {
+			animation: recover 0.15s 1 ease-in-out;
+			animation-fill-mode: both;
+		}
+	</style>
+	<style id="anime_recover"></style>
+</head>
+<body>
+	<div class="container">
+		<div class="item original">CLICK ME</div>
+		<div class="item original">CLICK ME</div>
+		<div class="item original">CLICK ME</div>
+	</div>
+	<script>
+		function bindPopup(selector, event) {
+			$(selector).on(event, function(){
+				var i = $(this);
+				if (i.hasClass('pop')) {
+					i.css({
+						"width": i.width() + "px",
+						"height": i.height() + "px",
+						"position": "fixed",
+						"left": i.offset().left + "px",
+						"top": i.offset().top + "px"
+					});
+					i.removeClass('pop');
+
+					var dm = i.data().dummy;
+
+					$('#anime_recover').html(
+						'@keyframes recover {\n' +
+						'	100% {\n' +
+						'		width: ' + dm.width() + 'px;\n' +
+						'		height: ' + dm.height() + 'px;\n' +
+						'		position: fixed;\n' +
+						'		left: ' + (dm.offset().left - parseInt(dm.css('margin-left').replace(/px/g, ''))) + 'px;\n' +
+						'		top: ' + (dm.offset().top - parseInt(dm.css('margin-top').replace(/px/g, ''))) + 'px;\n' +
+						'	}\n' +
+						'}\n'
+					);
+					i.addClass('recover');
+
+					setTimeout(function(){
+						dm.replaceWith(i);
+						i.removeClass('recover');
+						i.data().dummy = '';
+						i.removeAttr('style');
+					}, 500);
+				} else {
+					var dummy_html = i.prop('outerHTML');
+					i.css({
+						"width": i.width() + "px",
+						"height": i.height() + "px",
+						"position": "fixed",
+						"left": i.offset().left + "px",
+						"top": i.offset().top + "px"
+					});
+					i.data().dummy = $(dummy_html).addClass('dummy').removeClass('original');
+					i.before(i.data().dummy);
+					i.addClass('pop');
+				}
+			});
+		}
+
+		bindPopup('.item', 'click');
+
+		// 初版代码
+		/*$('.item').click(function(){
+			var i = $(this);
+			if (i.hasClass('pop')) {
+				i.css({
+					"width": i.width() + "px",
+					"height": i.height() + "px",
+					"position": "fixed",
+					"left": i.offset().left + "px",
+					"top": i.offset().top + "px"
+				});
+				i.removeClass('pop');
+
+				var dm = i.data().dummy;
+
+				$('#anime_recover').html(
+					'@keyframes recover {\n' +
+					'	100% {\n' +
+					'		width: ' + dm.width() + 'px;\n' +
+					'		height: ' + dm.height() + 'px;\n' +
+					'		position: fixed;\n' +
+					'		left: ' + (dm.offset().left - parseInt(dm.css('margin-left').replace(/px/g, ''))) + 'px;\n' +
+					'		top: ' + (dm.offset().top - parseInt(dm.css('margin-top').replace(/px/g, ''))) + 'px;\n' +
+					'	}\n' +
+					'}\n'
+				);
+				i.addClass('recover');
+
+				setTimeout(function(){
+					dm.replaceWith(i);
+					i.removeClass('recover');
+					i.data().dummy = '';
+					i.removeAttr('style');
+				}, 500);
+			} else {
+				var dummy_html = i.prop('outerHTML');
+				i.css({
+					"width": i.width() + "px",
+					"height": i.height() + "px",
+					"position": "fixed",
+					"left": i.offset().left + "px",
+					"top": i.offset().top + "px"
+				});
+				i.data().dummy = $(dummy_html).addClass('dummy').removeClass('original');
+				i.before(i.data().dummy);
+				i.addClass('pop');
+			}
+		});*/
+
+		var x = 0;
+		setInterval(function(){
+			$($('.original')[parseInt(x / 2)]).trigger('click');
+			x += 1;
+			if (x == 7) {
+				x = 0;
+			}
+		}, 500);
+	</script>
+</body>
+</html>
