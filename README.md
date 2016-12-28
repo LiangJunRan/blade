@@ -15,12 +15,14 @@ Structure
 -------------------------------------------------------------------------------
 ws
     _common                     Common front-end plugins.
-    _project_collection         Projects from other authors, for study.
     bs_demo                     Some demos for practice bootstrap.
     canvas_demo                 Some demos for practice HTML5 canvas.
     css3_demo                   Some demos for practice CSS3.
+    dashboard					Some dashboard or monitor demos.
     naive_anime                 Some STRANGE stuffs.
+    oa							Other Auther's demo, for personal learning :)
     python_demo                 Some demos for practice python2.
-
+	simple_demo					Some demos for practice jquery or something
+								simple.
 
 Y.O.L.O.

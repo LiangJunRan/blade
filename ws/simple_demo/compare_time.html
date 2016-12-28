@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+ 	<link rel="stylesheet" href="../_commons/bootstrap/css/bootstrap.min.css">
+ 	<link rel="stylesheet" href="../_commons/font-awesome/css/font-awesome.min.css">
+	<script src="../_commons/jquery/jquery.min.js"></script>
+	<script src="../_commons//bootstrap/js/bootstrap.min.js"></script>
+
+	<script src='../oa/date_compare.js'></script>
+</head>
+<body>
+	<div style="margin: 20px;"></div>
+    <div class="container">
+		<h1 style="font-family: '微软雅黑';">比较年月日大小</h1>
+		<form class="form-horizontal">
+			<div class="row input-area">
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">年份1：</label>
+						<div class="col-sm-8">
+							<input class="form-control" type="text" name="data1" value="1991-01-16">
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">年份2：</label>
+						<div class="col-sm-8">
+							<input class="form-control" type="text" name="data2" value="1996-02-16">
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">年份3：</label>
+						<div class="col-sm-8">
+							<input class="form-control" type="text" name="data3" value="1994-03-16">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4 col-sm-offset-4" style="text-align: center;">
+					<button class="btn btn-primary" style="width: 40px; height: 40px; border-radius: 25px; box-shadow: 0px 0px 0px 10px #fff; outline: none;" type="button" id="doit" onclick="compare()">
+						<i class="fa fa-arrow-down"></i>
+					</button>
+				</div>
+				<div style="border-bottom: solid 1px lightgray; height: 20px; margin-bottom: 38px;"></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">最大：</label>
+						<div class="col-sm-8">
+							<input class="form-control" type="text" id="dataMax" value="" readonly>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">最小：</label>
+						<div class="col-sm-8">
+							<input class="form-control" type="text" id="dataMin" value="" readonly>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script>
+		function compare() {
+			var dateList = new Array();
+			$.each($('.input-area :input'), function(){
+				dateList.push(new Date($(this).val()));
+			});
+			$('#dataMax').val(getMaxDate(dateList));
+			$('#dataMin').val(getMinDate(dateList));
+		}
+		compare();
+	</script>
+</body>
+</html>
