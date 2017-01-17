@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>测试Calendar</title>
+	<link rel="stylesheet" href="../_commons/font-awesome/css/font-awesome.min.css">
+	<!-- <link rel="stylesheet" href="../_commons/fullcalendar/fullcalendar.min.css">
+	<link rel="stylesheet" href="../_commons/fullcalendar/fullcalendar.print.css"> -->
+
+	<style>
+		.timelist {
+			width: 10%;
+			/* height: 1000px; */
+			float: left;
+			background-color: rgba(48,48,48,0.3);
+			font-size: 9px;
+		}
+		.scheduler {
+			width: 90%;
+			/*height: 1000px;*/
+			float: left;
+			background-color: rgba(160,160,160,0.3);
+			font-size: 9px;
+		}
+		table {
+			border-collapse: collapse;
+		}
+		table * {
+			box-sizing: border-box;
+		}
+		.timelist table .head th{
+			height: 40px;
+			/*border-bottom: solid 1px gray;*/
+		}
+		.scheduler table .head th{
+			height: 40px;
+			background-color: darkgray;
+			font-size: 14px;
+			border-left: solid 1px lightgray;
+			border-right: solid 1px lightgray;
+		}
+		table .block td{
+			height: 30px;
+			border: solid 1px lightgray;
+		}
+		.timelist td{
+			text-align: center;
+		}
+
+		td:hover {
+			box-shadow: 0 0 15px 5px lightgray;
+		}
+
+		td.selected {
+			background-color: rgba(0, 0, 0, 0.1);
+		}
+
+		.books {
+			font-size: 9px;
+		}
+		.book-tag {
+			box-sizing: border-box;
+			border: solid 0px #f00;
+			border-radius: 5px;
+			background-color: #fdc;
+			box-shadow: 0 0 15px 2px rgba(0,0,0, 0.3);
+		}
+		.book-head {
+			border-bottom: solid 1px #f00;
+			/*height: 30px;*/
+			line-height: 20px;
+			margin: 5px;
+		}
+		.close-btn {
+			width: 20px;
+			height: 20px;
+			border-radius: 16px;
+			line-height: 18px;
+			text-align: center;
+			color: #f00;
+			display: inline-block;
+			float: right;
+			font-size: 14px;
+		}
+		/* .close-btn:after {
+			content: "×";
+		} */
+		.close-btn:hover {
+			color: #fff;
+			background-color: #f00;
+		}
+	</style>
+</head>
+<body>
+	<div id="calender"></div>
+
+	<script src="../_commons/jquery/jquery.min.js"></script>
+
+	<script>
+		var opt = {
+			layout: {
+				allWidth: '100%',	//	[pixel, %]
+				timeWidth: '10%',	//	[pixel, %, auto]
+				bookWidth: '90%',	//	[pixel, %, auto]
+			},
+			timeStart: [8, 0],
+			timeEnd: [18, 0],
+			timeStep: [0, 30],
+			rooms: ['room1', 'room2', 'room3', 'room4', 'room5'],
+			room_width: 'auto'
+		}
+
+		function timeUnitAdd(timeUnitBeforeAdd, timeUnitToAdd) {
+			var minute = timeUnitBeforeAdd[1] + timeUnitToAdd[1];
+			var hour = timeUnitBeforeAdd[0] + timeUnitToAdd[0];
+			if (minute >= 60) {
+				hour += parseInt(minute / 60);
+				minute = minute % 60;
+			}
+			return [hour, minute];
+		}
+
+		function makeTimeList(timeStart, timeEnd, timeStep) {
+			var timeList = [];
+			var timeNow = timeStart;
+			while ((timeNow[0] < timeEnd[0]) || ((timeNow[0] == timeEnd[0]) && (timeNow[1] == timeEnd[1]))) {
+				timeList.push(timeNow);
+				timeNow = timeUnitAdd(timeNow, timeStep);
+			}
+			return timeList;
+		}
+
+		function pad(num, n) {
+			return Array(n>num?(n-(''+num).length+1):0).join(0)+num;
+		}
+
+		function renderRB(opt) {
+			var root = $('#calender');
+			root.css('width', opt.layout.allWidth);
+			root.append(
+				'<div class="timelist" style="width: ' + opt.layout.timeWidth + ';">' +
+					'<table style="height: 100%; width: 100%;" cellpadding="0px" cellspacing="0px"></table>' +
+				'</div>'
+			);
+			root.append(
+				'<div class="scheduler" style="width: ' + opt.layout.bookWidth + ';">' +
+					'<table style="height: 100%; width: 100%;" cellpadding="0px" cellspacing="0px"></table>' +
+				'</div>'
+			);
+			root.append(
+				'<div class="books"></div>'
+			);
+
+			// 生成时间List
+			var timeList = makeTimeList(opt.timeStart, opt.timeEnd, opt.timeStep);
+
+			var timeTable = root.find('.timelist table');
+			var roomTable = root.find('.scheduler table');
+
+			var tds = '';
+			for (var i = 0; i < opt.rooms.length; i++) {
+				tds += '<td></td>';
+			}
+
+			// 时间表头
+			timeTable.append(
+				'<tr class="head">' +
+					'<th></th>' +
+				'</tr>'
+			);
+			// 房间表头
+			roomTable.append(
+				'<tr class="head">' +
+				'</tr>'
+			);
+			$.each(opt.rooms, function() {
+				roomTable.find('.head').append(
+					'<th>' + this + '</th>'
+				);
+			});
+
+			$.each(timeList, function(){
+				// 生成时间列表
+				timeTable.append(
+					'<tr class="block">' +
+						'<td>' + pad(this[0], 2) + ':' + pad(this[1], 2) + '</td>' +
+					'</tr>'
+				);
+				// 生成房间列表
+				roomTable.append(
+					'<tr class="block">' +
+						tds +
+					'</tr>'
+				);
+			});
+		}
+
+		renderRB(opt);
+	</script>
+
+	<script>
+		var root = $('#calender');
+		var scheduler = root.find('.scheduler');
+		var sch_td = scheduler.find('td');
+		var mouseDown = false;
+		var mouseDrag = false;
+		var rowN = -1,
+			rowB = -1,
+			colN = -1,
+			rowS = -1,
+			rowE = -1;
+
+		function reset() {
+			rowN = -1;
+			rowB = -1;
+			colN = -1;
+			rowS = -1;
+			rowE = -1;
+		}
+
+		function resetSelection() {
+			$('td').removeClass('selected');
+		}
+
+		sch_td.on('mousedown', function(){
+			reset();
+			mouseDown = true;
+			rowN = $(this).parent().prevAll().length;
+			rowB = rowN;
+			colN = $(this).prevAll().length;
+			rowS = rowN;
+			rowE = rowN;
+			setSelect(this);
+		});
+		sch_td.on('mouseup', function(){
+			mouseDown = false;
+			var length = $('td.selected').length;
+			var std = $($('td.selected')[0]);
+			var etd = $($('td.selected')[length - 1]);
+			var sx = std.offset().left;
+			var sy = std.offset().top;
+			var ex = etd.offset().left + etd.width();
+			var ey = etd.offset().top + etd.height();
+
+			var rowTakeS = std.parent().prevAll().length;
+			var rowTakeE = etd.parent().prevAll().length;
+
+			bookRoom(colN, rowTakeS, rowTakeE);
+			makeDiv(sx, sy, ex, ey, colN, rowTakeS, rowTakeE);
+			resetSelection();
+			reset();
+		});
+		sch_td.on('mouseover', function(){
+			if (mouseDown) {
+				resetSelection();
+				setSelect(this);
+			}
+		});
+
+		function bookRoom(colN, rowTakeS, rowTakeE) {
+			var roomHead = $(scheduler.find('.head').children()[colN]);
+			if (roomHead.data('booking') === undefined){
+				roomHead.data().booking = [];
+			}
+			roomHead.data().booking.push([rowTakeS, rowTakeE]);
+		}
+
+		function unbookRoom(colN, rowTakeS, rowTakeE) {
+			var roomHead = $(scheduler.find('.head').children()[colN]);
+			$.each(roomHead.data().booking, function(_idx){
+				if ((this[0] == rowTakeS) && (this[1] == rowTakeE)) {
+					roomHead.data().booking.splice(_idx, 1);
+					return;
+				}
+			});
+		}
+
+		function isNotBook(colN, rowS, rowE) {
+			var roomHead = $(scheduler.find('.head').children()[colN]);
+			var checkResult = true;
+			var rowSelect = [];
+			for (var i = rowS; i <= rowE; i++) {
+				rowSelect.push(i);
+			}
+			var rowSelectLength = rowSelect.length;
+			$.each(rowSelect, function(_idx){
+				var that = this;
+				$.each(roomHead.data().booking, function(){
+					if ((this[0] <= that) && (that <= this[1])) {
+						rowSelect.splice(_idx, 1);
+					}
+				});
+			});
+			return (rowSelectLength == rowSelect.length);
+		}
+
+		function setSelect(that) {
+			rowN = $(that).parent().prevAll().length;
+
+			if (rowN < rowS) {
+				rowS = rowN;
+			} else if (rowN > rowE) {
+				rowE = rowN;
+			} else if (rowN < rowB) {
+				rowS = rowN;
+			} else if (rowN > rowB) {
+				rowE = rowN;
+			} else {
+				rowS = rowN;
+				rowE = rowN;
+			}
+
+			var parent = $(that).closest('table');
+			var trList = parent.find('tr');
+			$.each(trList, function(idx){
+				if ((idx >= rowS) && (idx <= rowE) && isNotBook(colN, rowS, rowE)){
+					$($(trList[idx]).find('td')[colN]).addClass('selected');
+				}
+			});
+		}
+
+		function makeDiv(_sx, _sy, _ex, _ey, colN, rowTakeS, rowTakeE) {
+			var space = 4;
+			var sx = (_sx + space + 4).toFixed(2);
+			var sy = (_sy + space).toFixed(2);
+			var ex = (_ex - space).toFixed(2);
+			var ey = (_ey - space).toFixed(2);
+
+			var newBook =
+				$('<div class="book-tag" style="position: absolute; left: ' + sx + 'px; top: ' + sy + 'px; width: ' + (ex - sx) + 'px; height: ' + (ey - sy) + 'px;">' +
+					'<div class="close-btn"><i class="fa fa-times"></i></div>' +
+					'<div style="padding: 0 5px;">xxx</div>' +
+				'</div>');
+			root.find('.books').append(
+				newBook
+			);
+
+			newBook.data().colN = colN;
+			newBook.data().rowTakeS = rowTakeS;
+			newBook.data().rowTakeE = rowTakeE;
+		}
+		$('.books').on('click', '.close-btn', function(){
+			var data = $(this).closest('.book-tag').data();
+			unbookRoom(data.colN, data.rowTakeS, data.rowTakeE);
+			$(this).closest('.book-tag').remove();
+			resetSelection();
+		});
+	</script>
+</body>
+</html>
