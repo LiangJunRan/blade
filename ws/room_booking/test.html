@@ -11,16 +11,20 @@
 		.timelist {
 			width: 10%;
 			/* height: 1000px; */
-			float: left;
-			background-color: rgba(48,48,48,0.3);
+			/*float: left;*/
+			background-color: #ccc; /* rgba(48,48,48,0.3); */
 			font-size: 9px;
+			position: absolute;
+			z-index: 10;
 		}
 		.scheduler {
 			width: 90%;
 			/*height: 1000px;*/
-			float: left;
-			background-color: rgba(160,160,160,0.3);
+			/*float: left;*/
+			margin-left: calc(10% + 1px);
+			background-color: #ddd;/*rgba(160,160,160,0.3);*/
 			font-size: 9px;
+			overflow-x: auto;
 		}
 		table {
 			border-collapse: collapse;
@@ -64,6 +68,8 @@
 			border-radius: 5px;
 			background-color: #fdc;
 			box-shadow: 0 0 15px 2px rgba(0,0,0, 0.3);
+			position: absolute;
+			z-index: 1;
 		}
 		.book-head {
 			border-bottom: solid 1px #f00;
@@ -99,15 +105,16 @@
 	<script>
 		var opt = {
 			layout: {
-				allWidth: '100%',	//	[pixel, %]
-				timeWidth: '10%',	//	[pixel, %, auto]
-				bookWidth: '90%',	//	[pixel, %, auto]
+				allWidth: '100%',		//	[pixel, %]
+				timeWidth: '10%',		//	[pixel, %]
+				timeMinWidth: '40px',	//	[pixel, %]
+				schedulerWidth: '90%',	//	[pixel, %]
+				roomWidth: '150px',		//	[pixel, %, undefined]
 			},
 			timeStart: [8, 0],
 			timeEnd: [18, 0],
 			timeStep: [0, 30],
-			rooms: ['room1', 'room2', 'room3', 'room4', 'room5'],
-			room_width: 'auto'
+			rooms: ['room1', 'room2', 'room3', 'room4', 'room5', 'room6', 'room7', 'room8', 'room9', 'room10']
 		}
 
 		function timeUnitAdd(timeUnitBeforeAdd, timeUnitToAdd) {
@@ -138,17 +145,15 @@
 			var root = $('#calender');
 			root.css('width', opt.layout.allWidth);
 			root.append(
-				'<div class="timelist" style="width: ' + opt.layout.timeWidth + ';">' +
+				'<div class="timelist" style="width: ' + opt.layout.timeWidth + '; min-width: ' + opt.layout.timeMinWidth + ';">' +
 					'<table style="height: 100%; width: 100%;" cellpadding="0px" cellspacing="0px"></table>' +
 				'</div>'
 			);
 			root.append(
-				'<div class="scheduler" style="width: ' + opt.layout.bookWidth + ';">' +
-					'<table style="height: 100%; width: 100%;" cellpadding="0px" cellspacing="0px"></table>' +
+				'<div class="scheduler" style="width: ' + opt.layout.schedulerWidth + ';">' +
+					'<div class="books"></div>' +
+					'<table style="height: 100%;' + ((!opt.layout.roomWidth) ? ' width: 100%;' : ('width: ' + (parseInt(opt.layout.roomWidth.replace('px', '')) * opt.rooms.length) + 'px;')) + '" cellpadding="0px" cellspacing="0px"></table>' +
 				'</div>'
-			);
-			root.append(
-				'<div class="books"></div>'
 			);
 
 			// 生成时间List
@@ -175,7 +180,9 @@
 			);
 			$.each(opt.rooms, function() {
 				roomTable.find('.head').append(
-					'<th>' + this + '</th>'
+					'<th ' +
+							((!!opt.layout.roomWidth) ? ('style="width: ' + opt.layout.roomWidth + ';"') : '') +
+							'>' + this + '</th>'
 				);
 			});
 
@@ -196,9 +203,7 @@
 		}
 
 		renderRB(opt);
-	</script>
 
-	<script>
 		var root = $('#calender');
 		var scheduler = root.find('.scheduler');
 		var sch_td = scheduler.find('td');
@@ -235,18 +240,23 @@
 		sch_td.on('mouseup', function(){
 			mouseDown = false;
 			var length = $('td.selected').length;
+
 			var std = $($('td.selected')[0]);
 			var etd = $($('td.selected')[length - 1]);
-			var sx = std.offset().left;
+
+			/*var sx = std.offset().left;
 			var sy = std.offset().top;
 			var ex = etd.offset().left + etd.width();
-			var ey = etd.offset().top + etd.height();
+			var ey = etd.offset().top + etd.height();*/
 
 			var rowTakeS = std.parent().prevAll().length;
 			var rowTakeE = etd.parent().prevAll().length;
 
 			bookRoom(colN, rowTakeS, rowTakeE);
-			makeDiv(sx, sy, ex, ey, colN, rowTakeS, rowTakeE);
+
+			// makeBookTag(sx, sy, ex, ey, colN, rowTakeS, rowTakeE);
+			makeBookTag(std, etd);
+
 			resetSelection();
 			reset();
 		});
@@ -319,31 +329,104 @@
 			});
 		}
 
-		function makeDiv(_sx, _sy, _ex, _ey, colN, rowTakeS, rowTakeE) {
+		// function makeBookTag(_sx, _sy, _ex, _ey, colN, rowTakeS, rowTakeE) {
+		function makeBookTag(std, etd) {
+			var _sx = std.offset().left;
+			var _sy = std.offset().top;
+			var _ex = etd.offset().left + etd.width();
+			var _ey = etd.offset().top + etd.height();
+
 			var space = 4;
 			var sx = (_sx + space + 4).toFixed(2);
 			var sy = (_sy + space).toFixed(2);
 			var ex = (_ex - space).toFixed(2);
 			var ey = (_ey - space).toFixed(2);
 
+			var xLimit = $('.timelist').offset().left;
+			var xLimit2 = ($('.scheduler').offset().left + $('.scheduler').width() - (ex - sx));
+			console.log(sx, xLimit, xLimit2);
 			var newBook =
-				$('<div class="book-tag" style="position: absolute; left: ' + sx + 'px; top: ' + sy + 'px; width: ' + (ex - sx) + 'px; height: ' + (ey - sy) + 'px;">' +
+				$('<div class="book-tag" style="left: ' + sx + 'px; top: ' + sy + 'px; width: ' + (ex - sx) + 'px; height: ' + (ey - sy) + 'px; display: ' +
+						(((sx < xLimit) || (sx > xLimit2)) ? 'none' : 'block') +
+						';">' +
 					'<div class="close-btn"><i class="fa fa-times"></i></div>' +
 					'<div style="padding: 0 5px;">xxx</div>' +
 				'</div>');
+
 			root.find('.books').append(
 				newBook
 			);
+
+			newBook.data().std = std;
+			newBook.data().etd = etd;
+
+			var colN = std.prevAll().length;
+			var rowTakeS = std.parent().prevAll().length;
+			var rowTakeE = etd.parent().prevAll().length;
 
 			newBook.data().colN = colN;
 			newBook.data().rowTakeS = rowTakeS;
 			newBook.data().rowTakeE = rowTakeE;
 		}
+
+		function resizeBookTag(bookTag) {
+			var std = bookTag.data().std;
+			var etd = bookTag.data().etd;
+
+			var _sx = std.offset().left;
+			var _sy = std.offset().top;
+			var _ex = etd.offset().left + etd.width();
+			var _ey = etd.offset().top + etd.height();
+
+			var colN = std.prevAll().length;
+			var rowTakeS = std.parent().prevAll().length;
+			var rowTakeE = etd.parent().prevAll().length;
+
+			var space = 4;
+			var sx = (_sx + space + 4).toFixed(2);
+			var sy = (_sy + space).toFixed(2);
+			var ex = (_ex - space).toFixed(2);
+			var ey = (_ey - space).toFixed(2);
+
+			var xLimit = $('.timelist').offset().left;
+			var xLimit2 = ($('.scheduler').offset().left + $('.scheduler').width() - (ex - sx));
+			console.log(sx, xLimit, xLimit2);
+
+			bookTag.css({
+				left: sx + 'px',
+				top: sy + 'px',
+				width: (ex - sx) + 'px',
+				height: (ey - sy) + 'px',
+				display: ((sx < xLimit) || (sx > xLimit2)) ? 'none' : 'block'
+			})
+		}
+
+		function resizeAllBookTag() {
+			$.each($('.book-tag'), function(){
+				resizeBookTag($(this));
+			});
+		}
+
+		/*function resizeBooksContainer() {
+			$('.books').css('width', $('.books').next().width() + 'px');
+			$('.books').css('height', $('.books').next().height() + 'px');
+		}*/
+
 		$('.books').on('click', '.close-btn', function(){
 			var data = $(this).closest('.book-tag').data();
 			unbookRoom(data.colN, data.rowTakeS, data.rowTakeE);
 			$(this).closest('.book-tag').remove();
 			resetSelection();
+		});
+
+		$(window).resize(function(){
+			console.log('resize');
+			// resizeBooksContainer();
+			resizeAllBookTag();
+		});
+		scheduler.scroll(function(){
+			// resizeBooksContainer();
+			resizeAllBookTag();
 		});
 	</script>
 </body>
