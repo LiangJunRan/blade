@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>异形面板(div)</title>
+	<!-- 依赖 -->
+	<script src="../_commons/jquery/jquery.min.js"></script>
+	<script src="../_commons/echarts/echarts.min.js"></script>
+
+	<!-- 异形面板样式 -->
+	<style>
+		.watch-panel {
+			width: 100%;
+			position: static;
+			overflow: hidden;
+		}
+		.watch-panel-body {
+			position: relative;
+		}
+		.watch-panel-border {
+			position: absolute;
+			width: 400px;
+			/*width: 26.6%;*/
+			/* height: 100%; */
+			margin: 0;
+			padding: 0;
+		}
+		.watch-panel-border>.bg1 {
+			/* height: calc(200px - 11px); */
+			width: calc(100% - 28px);
+			margin-left: 28px;
+			margin-top: 10px;
+			background-color: #103e6f;
+		}
+		.watch-panel-border>.bg2 {
+			/* height: calc(200px - 11px - 46px); */
+			width: 28px;
+			top: 56px;
+			background-color: #103e6f;
+			position: absolute;
+		}
+		.watch-panel-border>.bg3 {
+			height: 28px;
+			width: 53.8px;
+			top: 56px;
+			left: 1px;
+			background-color: #103e6f;
+			position: absolute;
+			transform: rotate(-60deg);
+			transform-origin:0% 0%;
+		}
+		.watch-panel-border>.title {
+			left: 34px;
+			top: 2px;
+			position: absolute;
+			display: block;
+			color: #7bcaff;
+			width: 78px;
+			text-align: center;
+			font-size: 9px;
+		}
+		.watch-panel-border>.line-top {
+			height: 1px;
+			width: calc(100% - 115px);
+			background-color: #2876b4;
+			background-image: -webkit-linear-gradient(to right,
+				#2876b4 0%,
+				#2876b4 25%,
+				#99c5f5 40%,
+				#2876b4 65%,
+				#2876b4 100%);
+			background-image: linear-gradient(to right,
+				#2876b4 0%,
+				#2876b4 25%,
+				#99c5f5 40%,
+				#2876b4 65%,
+				#2876b4 100%);
+			position: absolute;
+			left: 115px;
+			top: 9px;
+			display: inline-block;
+		}
+		.watch-panel-border>.line-left-top {
+			height: 1px;
+			width: 56px;
+			background-color: #2876b4;
+			position: absolute;
+			left: 29px;
+			top: 9px;
+			display: inline-block;
+			transform: rotate(120deg);
+			transform-origin:0% 0%;
+		}
+		.watch-panel-border>.line-right{
+			/* height: 191px; */
+			width: 1px;
+			background-color: #2876b4;
+			position: absolute;
+			left: calc(100% - 1px);
+			top: 9px;
+			display: inline-block;
+		}
+		.watch-panel-border>.line-bottom{
+			height: 1px;
+			width: calc(100% - 1px);
+			background-color: #2876b4;
+			position: absolute;
+			left: 0px;
+			/* top: 199px; */
+			display: inline-block;
+		}
+		.watch-panel-border>.line-left{
+			/* height: 143px; */
+			width: 1px;
+			background-color: #2876b4;
+			position: absolute;
+			left: 0px;
+			top: 57px;
+			display: inline-block;
+		}
+		.watch-panel-border>.point-left {
+			height: 6px;
+			width: 6px;
+			border-radius: 3px;
+			background-color: #7bcaff;
+			position: absolute;
+			left: 25px;
+			top: 6px;
+			display: inline-block;
+		}
+		.watch-panel-border>.point-right {
+			height: 6px;
+			width: 6px;
+			border-radius: 3px;
+			background-color: #7bcaff;
+			position: absolute;
+			left: 115px;
+			top: 6px;
+			display: inline-block;
+		}
+	</style>
+
+	<!-- 额外样式 -->
+	<style>
+		.charts-group {
+			height: 270px;
+			margin-top: 10px;
+		}
+		.realtime-charts {
+			height: 82%;
+			text-align: center;
+		}
+
+		.select-text {
+			color: #6cc5e7;
+		    margin-left: 10px;
+		    font-size: 18px;
+		}
+		.select-text:hover {
+			color: #ffffff;
+		}
+		.select-text-onclick {
+			color: #ffffff;
+		}
+
+		.charts-group-topbar {
+			height:40px;
+			width:100%;
+		}
+
+		.charts-group-topbar button {
+			/* width: 23%; */
+			float: right;
+			margin-top: 14px;
+			background: #133b76;
+			margin-right: 14px;
+			border-color: #3f88e4;
+		}
+
+		.history-select {
+			display: none;
+			height: 30px;
+			width: 60%;
+			float: left;
+			padding-top: 12px;
+			text-align: center;
+			margin-left: 50px;
+		}
+
+		.history-charts {
+			display: none;
+			height:80%;
+			width:100%;
+		}
+
+		.realtime-charts.three-children>div {
+			width: 32%;
+			height: 100%;
+			display: inline-block;
+			margin-top: 10px;
+		}
+
+		.realtime-charts.two-children>div {
+			width: 48%;
+			height: 100%;/*200px;*/
+			display: inline-block;
+			margin-top: 10px;
+		}
+		.realtime-charts.one-child>div {
+			width: 100%;
+			height: 100%;/*200px;*/
+			display: inline-block;
+			margin-top: 10px;
+		}
+
+	</style>
+</head>
+<body style="background-color: #000;">
+	<!-- TEST -->
+	<div class="charts-group watch-panel">
+		<div class="watch-panel-border">
+			测试异形面板
+		</div>
+		<div class="watch-panel-body">
+			<!-- 面板的一些内容 -->
+			<div class="realtime-charts one-child" style="width: 400px; height: 240px; padding-top: 20px;">
+				<div id="cooler"></div>
+			</div>
+			<div class="history-charts" iotype="输出" uitype="电压"></div>
+		</div>
+	</div>
+
+	<!-- 异形窗体脚本 -->
+	<script>
+		function init_watchPanel() {
+			$.each($('.watch-panel-border'), function(){
+				// 增加背景
+				if (!$(this).hasClass('done')) {
+					var label = $(this).html();
+					$(this).html(
+						'<!-- 背景色 -->' +
+						'<div class="bg1"></div>' +
+						'<div class="bg2"></div>' +
+						'<div class="bg3"></div>' +
+						'<!-- 标题 -->' +
+						'<div class="title">' + label + '</div>' +
+						'<!-- 线 -->' +
+						'<div class="line-top"></div>' +
+						'<div class="line-left-top"></div>' +
+						'<div class="line-right"></div>' +
+						'<div class="line-bottom"></div>' +
+						'<div class="line-left"></div>' +
+						'<!-- 点儿 -->' +
+						'<div class="point-left"></div>' +
+						'<div class="point-right"></div>'
+					);
+					$(this).addClass('done');
+				};
+				// 修正高度
+				var ctn_h = $(this).parent().height();
+				$(this).css('height', ctn_h + 'px');
+				$(this).find('.bg1').css('height', (ctn_h - 11) + 'px');
+				$(this).find('.bg2').css('height', (ctn_h - 11 - 46) + 'px');
+				$(this).find('.line-right').css('height', (ctn_h - 9) + 'px');
+				$(this).find('.line-bottom').css('top', (ctn_h - 1) + 'px');
+				$(this).find('.line-left').css('height', (ctn_h - 57) + 'px');
+			});
+		}
+
+
+		// =========================
+		// 额外
+		// -------------------------
+
+		function getColor(percent) {
+			var r;
+			if (percent <= 0.5) {
+				r = parseInt(percent * 2 * 255);
+			} else {
+				r = 255;
+			}
+			var g;
+			if (percent >= 0.5) {
+				g = parseInt((0.5 - percent) * 2 * 255 + 255);
+			} else {
+				g = 255;
+			}
+			console.log('rgb(' + r +',' +g + ', 0)');
+			return 'rgb(' + r +',' +g + ', 0)';
+		}
+
+		function getData(percent) {
+		    return [{
+		    	name: '已使用',
+		        value: percent,
+		        itemStyle: {
+		            normal: {
+		                color: getColor(percent),
+		                shadowBlur: 10,
+		                shadowColor: getColor(percent)
+		            }
+		        }
+		    }, {
+		    	name: '未使用',
+		        value: 1 - percent,
+		        itemStyle: {
+		            normal: {
+		                color: 'rgb(00, 56, 97)'
+		            }
+		        }
+		    }];
+		}
+
+		function renderChart_pie(opt) {
+			if (!opt) {
+				opt = {};
+			}
+
+			var option = {
+				/*title: {
+					text: opt.titleText,
+					x: 'center',
+					y: '0%',
+					textStyle: {
+						color: '#6cc5e7',
+						fontSize: 18,
+						fontWeight: 100
+					}
+				},*/
+				legend: {
+					orient: 'vertical',
+					show: false,
+					align: 'left',
+					top: '10%',
+					right: '1%',
+					textStyle: {
+						color: '#6cc5e7',
+					},
+					data:['使用中', '未使用']
+				},
+				series: [
+					{
+						name: 'main',
+						type: 'pie',
+						radius: ['57%', '66%'],
+						label: {
+							normal: {
+								show: false,
+							}
+						},
+						data: getData(0.3),
+
+						animationDuration: 360,
+						// animationEasingUpdate: 'cubicInOut',
+						// animationEasingUpdate: 'exponentialOut',
+						animationEasingUpdate: 'linear',
+						// animationDurationUpdate: 500
+					}
+				]
+			};
+
+			chart = echarts.init(document.getElementById(opt.id));// 寻找echarts容器
+			chart.setOption(option, true);// 赋值并启用echarts
+		}
+
+		// echars表盘大小自适应
+		window.onresize = function() {
+			$.each($('[_echarts_instance_]'), function(){
+				echarts.getInstanceById(this.getAttribute('_echarts_instance_')).resize();
+			});
+		}
+
+		$(document).ready(function() {
+			init_watchPanel();
+			renderChart_pie({
+				id: 'cooler',
+				titleText: '制冷机百分比',
+				name: '百分值',
+				chartType: 'pie',
+				dataFormatter: '{value}%',
+				dataMin: 0,
+				dataMax: 100,
+				dataValue: 50,
+				dataName: '%'
+			});
+
+			var p = 0.7;
+
+			setInterval(function(){
+				p += parseFloat(((Math.random() - 0.5) * 0.2).toFixed(2))
+				if (p >= 1) {
+					p = 0.7;
+				} else if (p <= 0) {
+					p = 0.3;
+				}
+				$.each($('[_echarts_instance_]'), function(){
+					echarts.getInstanceById(this.getAttribute('_echarts_instance_')).setOption({
+						series: [{
+							data: getData(p)
+						}]
+					});
+				});
+			}, 360, 2000);
+		});
+	</script>
+</body>
+</html>
