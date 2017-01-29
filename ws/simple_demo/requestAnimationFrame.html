@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>测试 requestAnimationFrame</title>
+	<script src="../_commons/jquery/jquery.min.js"></script>
+	<style>
+		body {
+			background-color: #010;
+		}
+		div {
+			position: absolute;
+		}
+		.container {
+			top: 40px;
+			height: 0px;
+			width: 200px;
+			background-color: #eee;
+		}
+		.actor {
+			left: 0px;
+			top: 5px;
+			width: 5px;
+			box-shadow: 0 0 10px 5px #0f0;
+			height: 5px;
+			border-radius: 10px;
+			background-color: #fff;
+			opacity: 1;
+		}
+	</style>
+</head>
+<body>
+	<!-- <div class="container">
+	</div> -->
+	<div class="actor" id="a"></div>
+	<script>
+		var a = 12;
+		var f = true;
+
+		// function render() {
+		// 	var limit = document.body.clientWidth;
+		// 	var _x = parseFloat(($('#a').css('left')).replace(/px/g, ''));
+		// 	if (f) {
+		// 		if (_x < limit) {
+		// 			$('#a').css('left', (_x + a) + 'px');
+		// 		} else {
+		// 			f = false;
+		// 		}
+		// 	} else {
+		// 		if (_x > 0) {
+		// 			$('#a').css('left', (_x - a) + 'px');
+		// 		} else {
+		// 			f = true;
+		// 		}
+		// 	}
+		// 	requestAnimationFrame(render);
+		// };
+
+		var theta = 0;
+
+		function render2() {
+			var limit = document.body.clientWidth;
+			var t, c = "#f00", a = 5, b = 4, d = 2.2;
+			var dx = 200, dy = 200;
+
+			theta = theta + 0.01;
+
+			if (theta < 2000) {
+				// x = 40 * ((a - b) * Math.cos(theta) + d * Math.cos((a / b - 0.5) * theta)) + dx;
+				// y = 40 * ((a - b) * Math.sin(theta) - d * Math.sin((a / b - 1) * theta)) + dy;
+
+				x = 40 * (d * Math.cos((a - b) * theta)) + dx;
+				y = 40 * (d * Math.sin((a - b) * theta)) + dy;
+
+				$('#a').css('left', x + 'px').css('top', y + 'px');
+				var neo = $($('#a')[0].outerHTML);
+				neo.css('box-shadow', '0 0 10px 2px rgba(0,255,0, 0.1)');
+				neo.css('background-color', '#fff');
+				neo.addClass('b');
+				neo.removeAttr('id');
+				$('body').append(neo);
+			}
+			if ($('.b').length > 1000) {
+				$($('.b')[0]).remove();
+			}
+			requestAnimationFrame(render2);
+		};
+
+		render2();
+	</script>
+</body>
+</html>
