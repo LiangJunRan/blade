@@ -129,7 +129,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+		 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 			<div class="bim-chart-panel">
 				<div class="bim-chart-panel-head">
 					<i class="fa fa-area-chart"></i>
@@ -140,6 +140,7 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 			<div class="bim-chart-panel">
 				<div class="bim-chart-panel-head">
@@ -147,11 +148,6 @@
 					容量
 				</div>
 				<div class="bim-chart-panel-body">
-					<!-- <div class="echart-btns">
-						<button class="btn btn-sm btn-my" type="button">
-							<i class="fa fa-2x fa-arrow-circle-o-left" title="返回"></i>
-						</button>
-					</div> -->
 					<div id="capacityThisMonth" style="width: 537px; height: 300px;"></div>
 				</div>
 			</div>
@@ -177,30 +173,150 @@
 					<div id="deviceDownRateThisMonth" style="width: 537px; height: 300px;"></div>
 				</div>
 			</div>
-		</div>
+		</div> 
 	</div>
 
+	<!-- 根据配置生成chart -->
 	<script>
-		// 初始化
- 		$(document).ready(function() {
- 			main_init();
-		});
-		// 响应宽度
-		$(window).resize(function(){
-			resizeAllCharts();
-		})
-		// 主初始化方法
-		function main_init() {
-			eventBind_init();
-			warningThisMonth_init();
-			eventThisMonth_init();
-			problemThisMonth_init();
-			pueThisMonth_init();
-			powerStructureThisMonth_init();
-			healthThisMonth_init();
-			capacityThisMonth_init();
-			assetsThisMonth_init();
-			deviceDownRateThisMonth_init();
+		var global_setting = {
+			debug: true,
+			theme: {
+				panel: {
+					backgroundColor: '#10396d',
+					borderColor: '#2876b4',
+					fontColor: '#6cc5e7'
+				},
+				chart: {
+					textStyleColor: '#6cc5e7',
+					textStyleColorEmphasis: '#8ce5f7',
+					lineStyleColor: '#6cc5e7',
+				}
+			}
+		}
+
+		function addColorSample() {
+			$('body').append('<div id="colorSample" style="width: 150px; margin: 10px 20px;"></div>');
+			$('#colorSample').append(
+				'<div style="' +
+						'background-color: ' + global_setting.theme.panel.backgroundColor + '; ' +
+						'border: solid 1px ' + global_setting.theme.panel.borderColor + '; ' +
+						'color: ' + global_setting.theme.panel.fontColor + '; ' +
+						'padding: 15px; ' +
+						'border-radius: 10px;;' +
+				'"><div style="border-bottom: solid 1px ' + global_setting.theme.panel.borderColor + '">' +
+					'<i class="fa fa-star"></i>&nbsp;' +
+					'主题颜色示例' +
+				'</div></div>');
+		}
+
+		var chartsSetting = [
+			{
+				id: 'warning',
+				label: '本月警告记录',
+				icon: '<i class="fa fa-bar-chart"></i>',
+				chart: {
+					textStyle: {
+						color: global_setting.theme.chart.textStyleColor
+					},
+					tooltip: {},
+					legend: {
+						show: false,
+						textStyle: {
+							color: global_setting.theme.chart.textStyleColor
+						}
+					},
+					xAxis: {
+						data: ["2016-11-w1", "2016-11-w2", "2016-11-w3", "2016-11-w4", "2016-11-w5"],
+						axisTick: {
+							show: false
+						},
+						axisLine: {
+							show: true,
+							lineStyle: {
+								color: global_setting.theme.chart.lineStyleColor
+							}
+						}
+					},
+					yAxis: {
+						axisTick: {
+							show: false
+						},
+						axisLine: {
+							show: true,
+							lineStyle: {
+								color: global_setting.theme.chart.lineStyleColor
+							}
+						},
+						splitLine: {
+							lineStyle: {
+								color: global_setting.theme.chart.lineStyleColor,
+								opacity: 0.5
+							}
+						}
+					},
+					visualMap: {
+						show: false,
+						min: 0,
+						max: 50,
+						color: ["#f00", "#ff0", "#0f0"]
+					},
+					series: [{
+						name: "次数",
+						type: "bar",
+						barWidth: '30%',
+						data: [45, 23, 2, 21, 43],
+						itemStyle: {
+							normal: {
+								color: '#d00'
+							},
+							emphasis: {
+								color: "#f00"
+							}
+						},
+						label: {
+							normal: {
+								show: true,
+								position: 'top',
+								textStyle: {
+									color: global_setting.theme.chart.textStyleColor
+								}
+							},
+							emphasis: {
+								show: true,
+								position: 'top',
+								textStyle: {
+									color: global_setting.theme.chart.textStyleColorEmphasis
+								}
+							}
+						}
+					}]
+				}
+			}
+		];
+		function makeChartDiv() {
+			$.each(chartsSetting, function() {
+				addChart(this);
+			});
+		};
+		function addChart(opt) {
+			var template =
+				'<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">' +
+					'<div class="bim-chart-panel">' +
+						'<div class="bim-chart-panel-head">' +
+							opt.icon +
+							opt.label +
+						'</div>' +
+						'<div class="bim-chart-panel-body">' +
+							'<div id="' + opt.id + '" style="width: 537px; height: 300px;"></div>' +
+						'</div>' +
+					'</div>' +
+				'</div>'
+			;
+			$('#charts_container').append(template);
+
+			var el = $('#' + opt.id)[0];
+			var chart = echarts.init(el);
+			chart.setOption(opt.chart);
 		}
 
 		// 事件绑定的方法
@@ -216,11 +332,11 @@
 				height: '600px',
 				beforePop: function(node, opts) {
 					// 弹出框内的chart直接定义到弹出后的样式，并执行resize，相当于弹出框的弹出和resize()同时执行
-					node.find('[id$=ThisMonth]').css({
+					node.find('.bim-chart-panel-body div').css({
 						'width': (parseInt(opts.width.replace(/px/g, '')) - 30) + 'px',
 						'height': (parseInt(opts.height.replace(/px/g, '')) - 52) + 'px'
 					});
-					var eInst = echarts.getInstanceByDom(node.find('[id$=ThisMonth]')[0]);
+					var eInst = echarts.getInstanceByDom(node.find('.bim-chart-panel-body div')[0]);
 					if (eInst) {
 						eInst.resize();
 					}
@@ -228,8 +344,8 @@
 				beforeRecover: function(node, opts){
 					// 同时执行recover和resize
 					var dm = node.data().dummy;
-					node.find('[id$=ThisMonth]').css({'width': dm.width() + 'px', 'height': (dm.height() - 23) + 'px'});
-					var eInst = echarts.getInstanceByDom(node.find('[id$=ThisMonth]')[0]);
+					node.find('.bim-chart-panel-body div').css({'width': dm.width() + 'px', 'height': (dm.height() - 23) + 'px'});
+					var eInst = echarts.getInstanceByDom(node.find('.bim-chart-panel-body div')[0]);
 					if (eInst) {
 						eInst.resize();
 					}
@@ -239,13 +355,55 @@
 
 		// resize所有图表
 		function resizeAllCharts() {
-			$.each($('[id$=ThisMonth]'), function(){
+			$.each($('.bim-chart-panel-body div'), function(){
 				setWHByContainer(this);
 				var eInst = echarts.getInstanceByDom(this);
 				if (eInst) {
 					eInst.resize();
 				}
 			});
+		}
+
+		if (global_setting.debug) {
+			addColorSample();
+		}
+
+		makeChartDiv();
+	</script>
+	<script>
+		// 初始化
+ 		$(document).ready(function() {
+ 			main_init();
+		});
+		// 响应宽度
+		$(window).resize(function(){
+			resizeAllCharts();
+		})
+		// 主初始化方法
+		function main_init() {
+			eventBind_init();
+			warningThisMonth_init({
+				xData: ['w1', 'w2', 'w3', 'w4', 'w5'],
+				min: 0,
+				max: 100,
+				yName: '次数',
+				yData: [99, 28, 34, 11, 13]
+			});
+			eventThisMonth_init({
+				xData: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
+				min: 0,
+				max: 1000,
+				yName: '次数',
+				yData: [880, 881, 860, 880, 839, 864, 846, 895, 828, 879, 887, 857, 858, 835, 753, 851, 833, 826, 849, 892, 381, 851, 614, 882, 448, 842, 954, 813, 864, 818, 804]
+
+			});
+			problemThisMonth_init();
+			pueThisMonth_init();
+			powerStructureThisMonth_init();
+			healthThisMonth_init();
+			capacityThisMonth_init();
+			assetsThisMonth_init();
+			deviceDownRateThisMonth_init();
 		}
 
 		// 根据图表的容器改变width和height
@@ -259,30 +417,33 @@
 			}
 		}
 
-		function warningThisMonth_init() {
+		function warningThisMonth_init(opt) {
+			if (opt === undefined) {
+				opt = {};
+			}
 			var el = $('#warningThisMonth')[0];
 			var chart = echarts.init(el);
 
 			var option = {
 				textStyle: {
-					color: '#6cc5e7'
+					color: global_setting.theme.chart.textStyleColor
 				},
 				tooltip: {},
 				legend: {
 					show: false,
 					textStyle: {
-						color: "#6cc5e7"
+						color: global_setting.theme.chart.textStyleColor
 					}
 				},
 				xAxis: {
-					data: ["2016-11-w1", "2016-11-w2", "2016-11-w3", "2016-11-w4", "2016-11-w5"],
+					data: opt.xData || ["w1", "w2", "w3", "w4", "w5"],
 					axisTick: {
 						show: false
 					},
 					axisLine: {
 						show: true,
 						lineStyle: {
-							color: "#6cc5e7"
+							color: global_setting.theme.chart.lineStyleColor
 						}
 					}
 				},
@@ -293,50 +454,64 @@
 					axisLine: {
 						show: true,
 						lineStyle: {
-							color: "#6cc5e7"
+							color: global_setting.theme.chart.lineStyleColor
 						}
 					},
 					splitLine: {
 						lineStyle: {
-							color: "#6cc5e7",
+							color: global_setting.theme.chart.lineStyleColor,
 							opacity: 0.5
 						}
 					}
 				},
-				visualMap: {
+				/*visualMap: {
 					show: false,
-					min: 0,
-					max: 50,
-					color: ["#f00", "#ff0", "#0f0"]
-				},
+					min: opt.min || 0,
+					max: opt.max || 50,
+					color: opt.mmColorList || ["#f00", "#ff0", "#0f0"]
+				},*/
+				/*color: ["#f00", "#ff0", "#0f0", "#f00", "#ff0", "#0f0"],*/
 				series: [{
-					name: "次数",
+					name: opt.yName || "次数",
 					type: "bar",
 					barWidth: '30%',
-					data: [45, 23, 2, 21, 43],
-					itemStyle: {
+					data: opt.yData || [45, 23, 2, 21, 43],
+					/*itemStyle: {
 						normal: {
 							color: '#d00'/* ,
-							borderColor: '#09f' */
+							borderColor: '#09f' * /
 						},
 						emphasis: {
 							color: "#f00"/* ,
-							borderColor: '#0ff' */
+							borderColor: '#0ff' * /
 						}
-					},
+					},*/
+					itemStyle: {
+		                normal: {
+		                    color: function(params) {
+		                        // build a color map as your need.
+		                        var colorList = [
+		                          '#C1232B','#B5C334','#FCCE10','#E87C25','#27727B',
+		                           '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD',
+		                           '#D7504B','#C6E579','#F4E001','#F0805A','#26C0C0'
+		                        ];
+		                        return colorList[params.dataIndex]
+		                    }
+		                }
+		            },
 					label: {
 						normal: {
 							show: true,
 							position: 'top',
 							textStyle: {
-								color: "#6cc5e7"
+								color: global_setting.theme.chart.textStyleColor
 							}
 						},
 						emphasis: {
 							show: true,
 							position: 'top',
 							textStyle: {
-								color: "#8ce5f7"
+								color: global_setting.theme.chart.textStyleColorEmphasis
 							}
 						}
 					}
@@ -346,7 +521,10 @@
 			chart.setOption(option);
 		}
 
-		function eventThisMonth_init() {
+		function eventThisMonth_init(opt) {
+			if (opt === undefined) {
+				opt = {};
+			}
 			var el = $('#eventThisMonth')[0];
 			var chart = echarts.init(el);
 
@@ -355,14 +533,14 @@
 					text: "本月告警记录"
 				}, */
 				textStyle: {
-					color: '#6cc5e7'
+					color: global_setting.theme.chart.textStyleColor
 				},
 				tooltip: {},
 				legend: {
 					show: false,
 					/* data: ["次数"], */
 					textStyle: {
-						color: "#6cc5e7"
+						color: global_setting.theme.chart.textStyleColor
 					}
 				},
 				/* grid: {
@@ -370,14 +548,14 @@
 					borderColor: "#6cc5e7"
 				}, */
 				xAxis: {
-					data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
+					data: opt.xData || ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
 					axisTick: {
 						show: false
 					},
 					axisLine: {
 						show: true,
 						lineStyle: {
-							color: "#6cc5e7"
+							color: global_setting.theme.chart.lineStyleColor
 						}
 					}
 				},
@@ -388,38 +566,38 @@
 					axisLine: {
 						show: true,
 						lineStyle: {
-							color: "#6cc5e7"
+							color: global_setting.theme.chart.lineStyleColor
 						}
 					},
 					splitLine: {
 						lineStyle: {
-							color: "#6cc5e7",
+							color: global_setting.theme.chart.lineStyleColor,
 							opacity: 0.5
 						}
 					}
 				},
 				visualMap: {
 					show: false,
-					min: 0,
-					max: 1000,
+					min: opt.min || 0,
+					max: opt.max || 1000,
 					inRange: {
 						/* colorLightness: [0.1, 0.5] */
-						color: ["#0f0", "#ff0", "#f00"]
+						color: opt.mmColorList || ["#0f0", "#ff0", "#f00"]
 					}
 				},
 				series: [{
-					/* name: "次数", */
+					 name: opt.yName || '次数',
 					type: "line",
 					borderColor: "#f00",
 					/* barWidth: '30%', */
-					data: [580, 781, 60, 580, 239, 64, 746, 195, 128, 279, 7, 57, 58, 835, 753, 851, 533, 26, 249, 92, 381, 351, 614, 182, 448, 842, 954, 113, 364, 618, 404],
+					data: opt.yData || [580, 781, 60, 580, 239, 64, 746, 195, 128, 279, 7, 57, 58, 835, 753, 851, 533, 26, 249, 92, 381, 351, 614, 182, 448, 842, 954, 113, 364, 618, 404],
 					itemStyle: {
 						normal: {
-							color: '#d00'/* ,
+							color: '#fff'/* ,
 							borderColor: '#09f' */
 						},
 						emphasis: {
-							color: "#f00"/* ,
+							color: "#fff"/* ,
 							borderColor: '#0ff' */
 						}
 					},
@@ -428,14 +606,14 @@
 							show: false,
 							position: 'top',
 							textStyle: {
-								color: "#6cc5e7"
+								color: global_setting.theme.chart.textStyleColor
 							}
 						},
 						emphasis: {
 							show: true,
 							position: 'top',
 							textStyle: {
-								color: "#8ce5f7"
+								color: global_setting.theme.chart.textStyleColorEmphasis
 							}
 						}
 					}
@@ -451,7 +629,7 @@
 
 			var option = {
 				textStyle: {
-					color: '#6cc5e7'
+					color: global_setting.theme.chart.textStyleColor
 				},
 				tooltip: {},
 				legend: {
@@ -460,7 +638,7 @@
 					top: '3%',
 					right: '1%',
 					textStyle: {
-						color: "#6cc5e7"
+						color: global_setting.theme.chart.textStyleColor
 					},
 					data: ['已解决', '待确认', '未解决']
 				},
@@ -472,7 +650,7 @@
 					axisLine: {
 						show: true,
 						lineStyle: {
-							color: "#6cc5e7"
+							color: global_setting.theme.chart.lineStyleColor
 						}
 					}
 				},
@@ -483,12 +661,12 @@
 					axisLine: {
 						show: true,
 						lineStyle: {
-							color: "#6cc5e7"
+							color: global_setting.theme.chart.lineStyleColor
 						}
 					},
 					splitLine: {
 						lineStyle: {
-							color: "#6cc5e7",
+							color: global_setting.theme.chart.lineStyleColor,
 							opacity: 0.5
 						}
 					}
@@ -513,14 +691,14 @@
 							show: false,
 							position: 'top',
 							textStyle: {
-								color: "#6cc5e7"
+								color: global_setting.theme.chart.textStyleColor
 							}
 						},
 						emphasis: {
 							show: false,
 							position: 'top',
 							textStyle: {
-								color: "#8ce5f7"
+								color: global_setting.theme.chart.textStyleColorEmphasis
 							}
 						}
 					}
@@ -544,14 +722,14 @@
 							show: false,
 							position: 'top',
 							textStyle: {
-								color: "#6cc5e7"
+								color: global_setting.theme.chart.textStyleColor
 							}
 						},
 						emphasis: {
 							show: false,
 							position: 'top',
 							textStyle: {
-								color: "#8ce5f7"
+								color: global_setting.theme.chart.textStyleColorEmphasis
 							}
 						}
 					}
@@ -575,14 +753,14 @@
 							show: false,
 							position: 'top',
 							textStyle: {
-								color: "#6cc5e7"
+								color: global_setting.theme.chart.textStyleColor
 							}
 						},
 						emphasis: {
 							show: false,
 							position: 'top',
 							textStyle: {
-								color: "#8ce5f7"
+								color: global_setting.theme.chart.textStyleColorEmphasis
 							}
 						}
 					}
@@ -603,13 +781,13 @@
 
 			var option = {
 				textStyle: {
-					color: '#6cc5e7'
+					color: global_setting.theme.chart.textStyleColor
 				},
 				tooltip: {},
 				legend: {
 					show: false,
 					textStyle: {
-						color: "#6cc5e7"
+						color: global_setting.theme.chart.textStyleColor
 					}
 				},
 				xAxis: [{
@@ -622,7 +800,7 @@
 					axisLine: {
 						show: true,
 						lineStyle: {
-							color: "#6cc5e7"
+							color: global_setting.theme.chart.lineStyleColor
 						}
 					}
 				}],
@@ -636,12 +814,12 @@
 					axisLine: {
 						show: true,
 						lineStyle: {
-							color: "#6cc5e7"
+							color: global_setting.theme.chart.lineStyleColor
 						}
 					},
 					splitLine: {
 						lineStyle: {
-							color: "#6cc5e7",
+							color: global_setting.theme.chart.lineStyleColor,
 							opacity: 0.5
 						}
 					}
@@ -668,15 +846,15 @@
 						fillerColor: 'rgba(0, 120, 255, 0.3)',
 						dataBackground: {
 							lineStyle: {
+								color: global_setting.theme.chart.lineStyleColor,
 								width: 1,
-								color: "#8ce5f7",
 								opacity: 1
 							}
 						},
 						borderColor: 'rgba(0, 0 ,0, 0)',
 						handleSize: '100%',
 						handleStyle: {
-							color: "#6cc5e7",
+							color: global_setting.theme.chart.lineStyleColor,
 							borderColor: '#f00',
 							borderWidth: 0,
 							borderType: 'solid',
@@ -714,7 +892,7 @@
 								},
 								yAxis: 1,
 								lineStyle: {
-									normal: {
+									normal:{
 										color: '#0f0',
 										type: 'dashed',
 										opacity: 1
@@ -731,7 +909,7 @@
 									}
 								},
 								lineStyle: {
-									normal: {
+									normal:{
 										color: '#ff0',
 										type: 'dashed',
 										opacity: 1
@@ -748,7 +926,7 @@
 									}
 								},
 								lineStyle: {
-									normal: {
+									normal:{
 										width: 1,
 										color: '#f55',
 										type: 'dotted',
@@ -766,7 +944,7 @@
 									}
 								},
 								lineStyle: {
-									normal: {
+									normal:{
 										width: 1,
 										color: '#5f5',
 										type: 'dotted',
@@ -781,14 +959,14 @@
 							show: false,
 							position: 'top',
 							textStyle: {
-								color: "#6cc5e7"
+								color: global_setting.theme.chart.textStyleColor
 							}
 						},
 						emphasis: {
 							show: true,
 							position: 'top',
 							textStyle: {
-								color: "#8ce5f7"
+								color: global_setting.theme.chart.textStyleColorEmphasis
 							}
 						}
 					}
@@ -813,7 +991,7 @@
 					top: '10%',
 					right: '1%',
 					textStyle: {
-						color: "#6cc5e7"
+						color: global_setting.theme.chart.textStyleColor
 					},
 					data:['服务器','路由设备','辅助设备','路由','HUB','负载均衡','安全监控','防火系统','门禁系统','其他']
 				},
@@ -873,16 +1051,16 @@
 					trigger: 'axis',
 					axisPointer:{
 						lineStyle: {
-							color: "#6cc5e7"
+							color: global_setting.theme.chart.lineStyleColor
 						}
 					}
 				},
 				textStyle: {
-					color: '#6cc5e7'
+					color: global_setting.theme.chart.textStyleColor
 				},
 				legend: {
 					textStyle: {
-						color: "#6cc5e7"
+						color: global_setting.theme.chart.textStyleColor
 					},
 					top: '4%',
 					data:['服务器','路由设备','空调系统','备用系统','其他']
@@ -908,7 +1086,7 @@
 						axisLine: {
 							show: true,
 							lineStyle: {
-								color: "#6cc5e7"
+								color: global_setting.theme.chart.lineStyleColor
 							}
 						},
 						data: ['周一','周二','周三','周四','周五','周六','周日']
@@ -921,12 +1099,12 @@
 					axisLine: {
 						show: true,
 						lineStyle: {
-							color: "#6cc5e7"
+							color: global_setting.theme.chart.lineStyleColor
 						}
 					},
 					splitLine: {
 						lineStyle: {
-							color: "#6cc5e7",
+							color: global_setting.theme.chart.lineStyleColor,
 							opacity: 0.5
 						}
 					},
@@ -1016,15 +1194,15 @@
 					        	reChart(option2);
 					        }
 					    }
-					},
-					iconStyle: {
+					}//,
+					/*iconStyle: {
 						normal: {
 							color: '#6cc5e7'
 						},
 						emphasis: {
 							color: '#6cc5e7'
 						}
-					}
+					}*/
 				},
 				// 横向根据数据渐变
 				visualMap: {
@@ -1068,7 +1246,7 @@
 					axisLine: {
 						show: false,
 						lineStyle: {
-							color: "#6cc5e7"
+							color: global_setting.theme.chart.lineStyleColor
 						}
 					},
 					splitLine: {
@@ -1130,7 +1308,6 @@
 							}
 						],
 						color: ['#f63', '#9f3', '#3bf']
-						// color: ['#fff']
 					}, {
 						type:'bar',
 						barWidth: '40%',
@@ -1139,11 +1316,14 @@
 								show: true,
 								position: 'right',
 								textStyle: {
-									color: "#6cc5e7"
+									color: global_setting.theme.chart.textStyleColor
 								}
 							},
 							emphasis: {
-								show: true
+								show: true,
+								textStyle: {
+									color: global_setting.theme.chart.textStyleColorEmphasis
+								}
 							}
 						},
 						data: [98, 44, 79, 27, 10]
@@ -1198,7 +1378,7 @@
 					x: 'center',
 					y: 'center',
 					textStyle: {
-						color: '#6cc5e7',
+						color: global_setting.theme.chart.textStyleColor,
 						fontWeight: 'bolder',
 						fontSize: 64,
 					}
@@ -1209,31 +1389,11 @@
 					top: '10%',
 					right: '1%',
 					textStyle: {
-						color: "#6cc5e7"
+						color: global_setting.theme.chart.textStyleColor
 					},
 					data:['已使用', '未使用']
 				},
 				series: [
-					/*{
-						type: 'pie',
-						radius: ['55%', '75%'],
-						silent: true,
-						label: {
-							normal: {
-								show: false,
-							}
-						},
-
-						data: [{
-							itemStyle: {
-								normal: {
-									color: 'rgb(32, 97, 140)'
-								}
-							}
-						}],
-
-						animation: true
-					},*/
 					{
 						name: 'main',
 						type: 'pie',
@@ -1273,7 +1433,7 @@
 			bindClick();
 		}
 
-		// TODO
+
 		function assetsThisMonth_init() {
 			var el = $('#assetsThisMonth')[0];
 			var chart = echarts.init(el);
@@ -1289,7 +1449,7 @@
 					top: '10%',
 					right: '1%',
 					textStyle: {
-						color: "#6cc5e7"
+						color: global_setting.theme.chart.textStyleColor
 					},
 					data:['可用部分','不可用部分', '使用中', '备用中', '出库中', '入库中', '其他']
 				},
@@ -1336,14 +1496,14 @@
 			chart.setOption(option);
 		}
 
-		// TODO
+
 		function deviceDownRateThisMonth_init() {
 			var el = $('#deviceDownRateThisMonth')[0];
 			var chart = echarts.init(el);
 
 			var option = {
 				textStyle: {
-					color: '#6cc5e7'
+					color: global_setting.theme.chart.textStyleColor
 				},
 				tooltip: {},
 				legend: {
@@ -1352,7 +1512,7 @@
 					top: '3%',
 					right: '1%',
 					textStyle: {
-						color: "#6cc5e7"
+						color: global_setting.theme.chart.textStyleColor
 					},
 					data: ['可选设备', '辅助设备', '重要设备']
 				},
@@ -1364,7 +1524,7 @@
 					axisLine: {
 						show: true,
 						lineStyle: {
-							color: "#6cc5e7"
+							color: global_setting.theme.chart.lineStyleColor
 						}
 					}
 				},
@@ -1375,12 +1535,12 @@
 					axisLine: {
 						show: true,
 						lineStyle: {
-							color: "#6cc5e7"
+							color: global_setting.theme.chart.lineStyleColor
 						}
 					},
 					splitLine: {
 						lineStyle: {
-							color: "#6cc5e7",
+							color: global_setting.theme.chart.lineStyleColor,
 							opacity: 0.5
 						}
 					}
@@ -1404,14 +1564,14 @@
 							show: false,
 							position: 'top',
 							textStyle: {
-								color: "#6cc5e7"
+								color: global_setting.theme.chart.textStyleColor
 							}
 						},
 						emphasis: {
 							show: false,
 							position: 'top',
 							textStyle: {
-								color: "#8ce5f7"
+								color: global_setting.theme.chart.textStyleColorEmphasis
 							}
 						}
 					}
@@ -1434,14 +1594,14 @@
 							show: false,
 							position: 'top',
 							textStyle: {
-								color: "#6cc5e7"
+								color: global_setting.theme.chart.textStyleColor
 							}
 						},
 						emphasis: {
 							show: false,
 							position: 'top',
 							textStyle: {
-								color: "#8ce5f7"
+								color: global_setting.theme.chart.textStyleColorEmphasis
 							}
 						}
 					}
@@ -1464,14 +1624,14 @@
 							show: false,
 							position: 'top',
 							textStyle: {
-								color: "#6cc5e7"
+								color: global_setting.theme.chart.textStyleColor
 							}
 						},
 						emphasis: {
 							show: false,
 							position: 'top',
 							textStyle: {
-								color: "#8ce5f7"
+								color: global_setting.theme.chart.textStyleColorEmphasis
 							}
 						}
 					}
