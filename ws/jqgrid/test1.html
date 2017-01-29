@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test jqGrid</title>
+	<!-- <link rel="stylesheet" href="../_commons/bootstrap/css/bootstrap.min.css"> -->
+	<link rel="stylesheet" href="../_commons/jquery.jqGrid/css/ui.jqgrid.css">
+	<link rel="stylesheet" href="../_commons/jquery.jqGrid/themes/ui-darkness/jquery-ui.min.css">
+	<!-- <link rel="stylesheet" href="../_commons/jquery.jqGrid/themes/ui-darkness/jquery.ui.theme.css"> -->
+	<!-- <link rel="stylesheet" href="../_commons/jquery.jqGrid/css/ui.jqgrid-bootstrap.css">
+	<link rel="stylesheet" href="../_commons/jquery.jqGrid/css/ui.jqgrid-bootstrap-ui.css"> -->
+
+	<script src="../_commons/jquery/jquery.min.js"></script>
+	<script src="../_commons/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../_commons/jquery.jqgrid/js/jquery.jqgrid.min.js"></script>
+</head>
+<body>
+	<table id="jqGrid"></table>
+	<!-- <div id="jqGridPager"></div> -->
+	<script>
+		$(document).ready(function () {
+			$("#jqGrid").jqGrid({
+                url: 'http://trirand.com/blog/phpjqgrid/examples/jsonp/getjsonp.php?callback=?&qwery=longorders',
+                mtype: "GET",
+                datatype: "jsonp",
+                colModel: [
+                    { label: 'OrderID', name: 'OrderID', key: true, width: 75 },
+                    { label: 'Customer ID', name: 'CustomerID', width: 150},
+                    { label: 'Order Date', name: 'OrderDate', width: 150 },
+                    { label: 'Freight', name: 'Freight', width: 150 },
+                    { label:'Ship Name', name: 'ShipName', width: 150 }
+                ],
+				viewrecords: true,
+                width: 780,
+                height: 250,
+                rowNum: 20,
+                // pager: "#jqGridPager"
+            });
+            $("#jqGrid").jqGrid('setGroupHeaders', {
+			    // useColSpanStyle: true,
+			    groupHeaders:[
+			        {startColumnName:'OrderID', numberOfColumns:2, titleText: '商品介绍'},
+			        {startColumnName:'OrderDate', numberOfColumns: 2, titleText: '商品属性'}
+			    ]
+			})
+		});
+	</script>
+</body>
+</html>
