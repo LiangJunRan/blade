@@ -88,6 +88,14 @@
 		<div class="l l2 m2 perspective-front"></div>
 		<div class="l l2 m3 perspective-front"></div> -->
 	</div>
+
+	<div style="position: absolute; left: 10px; top: 10px; background-color: rgba(0,0,0,0.5); color: #fff; font-size: 9px; padding: 15px 20px 5px 20px;">
+		<p id="x"></p>
+		<p id="y"></p>
+		<p id="browserWidth"></p>
+		<p id="browserHeight"></p>
+	</div>
+
 	<script>
 		var layers = 20;
 		var mx_w = 800;
@@ -129,6 +137,42 @@
 			}
 			l++;
 		}, 50);
+
+		function getMousePos(event) {
+			var e = event || window.event;
+			return {'x': e.screenX, 'y': e.screenY}
+		}
+
+		document.onmousemove = mouseMoveFrame;
+
+		function mouseMoveFrame(ev) {
+			var mouseInfo = {};
+			if (!ev) {
+				mouseInfo = {x: $(window).width()/2, y: $(window).height()/2};
+			} else {
+				mouseInfo = getMousePos(ev);
+			}
+			$('#x').html('x: ' + mouseInfo.x);
+			$('#y').html('y: ' + mouseInfo.y);
+			$('body:eq(0)').data().m = {x: mouseInfo.x, y: mouseInfo.y};
+
+			$('.perspective-back').css('perspective-origin',
+					($('body:eq(0)').data().m.x / $('body:eq(0)').data().b.w * 100) + '% ' +
+					($('body:eq(0)').data().m.y / $('body:eq(0)').data().b.h * 100) + '%');
+			console.log($('.perspective-back').css('perspective-origin'));
+		}
+
+		function getBrowserSize() {
+			$('#browserWidth').html('bw: ' + $(window).width());
+			$('#browserHeight').html('bh: ' + $(window).height());
+			$('body:eq(0)').data().b = {w: $(window).width(), h: $(window).height()};
+		}
+
+		$(window).resize(getBrowserSize);
+
+		getBrowserSize();
+		mouseMoveFrame();
+
 	</script>
 </body>
 </html>
