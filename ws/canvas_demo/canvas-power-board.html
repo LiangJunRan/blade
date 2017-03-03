@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../_commons/jquery/jquery.min.js"></script>
+</head>
+<body style="background-color: gray; text-align: center; margin: 0; padding: 0;">
+	<canvas id="base_canvas" style="position: absolute; top: 0px; left: 0px; "></canvas>
+
+	<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; text-align: left; font-size: 14px; font-family: '微软雅黑'; color: white; background-color: rgba(0, 255, 0, 0.07); border: solid 10px rgba(0, 255, 0, 0.2); box-sizing: border-box; padding: 10px 20px;" id="info" onclick="/*$(event.target).hide();*/"></div>
+
+	<canvas id="c"></canvas>
+
+	<!-- base -->
+	<script>
+		(function() {
+			var c, cw, ch, ctx, r, sign, cross_long = 60;
+			c = document.getElementById('base_canvas');
+			ctx = c.getContext('2d');
+			cw = c.width = document.body.clientWidth;
+			ch = c.height = $(window).height() - 5;
+
+			window.requestAnimationFrame || (window.requestAnimationFrame = window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback, element) {
+				return window.setTimeout(function() {
+					return callback(+new Date());
+				}, 1000 / 60);
+			});
+
+			// 缩放监听
+			$(window).on('resize', function(){
+				cw = c.width = document.body.clientWidth;
+				ch = c.height = $(window).height() - 5;
+			})
+
+			function draw_base(m){
+				ctx.fillStyle = 'rgba(' +
+		            255 +
+		            ',' +
+		            255 +
+		            ',' +
+		            0 +
+		            ',' +
+		            0.1 +
+		            ')';
+				// 中心点
+				ctx.save();
+				ctx.beginPath();
+				ctx.arc(
+		            cw / 2,
+		            ch / 2,
+		            3,
+		            Math.PI,
+		            -Math.PI,
+		            true);
+	        	ctx.closePath();
+	        	// 中心点十字线
+		        ctx.moveTo(cw / 2 - cross_long / 2, ch / 2);
+				ctx.lineTo(cw / 2 + cross_long / 2, ch / 2);
+		        ctx.moveTo(cw / 2, ch / 2 - cross_long / 2);
+				ctx.lineTo(cw / 2, ch / 2 + cross_long / 2);
+				// ctx.stroke();
+				ctx.restore();
+
+		        if (m) {
+		        	// 鼠标连线
+		        	ctx.save();
+			        ctx.moveTo(cw / 2, ch / 2);
+					ctx.lineTo(m.x, m.y - 90);
+					ctx.stroke();
+					ctx.restore();
+
+					// 鼠标位置
+		        	ctx.save();
+					ctx.beginPath();
+					ctx.arc(
+			            m.x,
+			            m.y - 90,
+			            10,
+			            Math.PI,
+			            -Math.PI,
+			            true);
+			        ctx.closePath();
+					ctx.stroke();
+					ctx.restore();
+			        // ctx.fill();
+
+			        // 鼠标半径圆
+		        	ctx.save();
+			        var cr = Math.sqrt(Math.pow(m.obj.cx, 2) + Math.pow(m.obj.cy, 2));
+					ctx.beginPath();
+					ctx.arc(
+			            cw / 2,
+		            	ch / 2,
+			            cr,
+			            Math.PI,
+			            -Math.PI,
+			            true);
+			        ctx.closePath();
+			        ctx.fill();
+					// ctx.stroke();
+					ctx.restore();
+
+					// 鼠标十字线
+		        	ctx.save();
+					ctx.beginPath();
+			        ctx.moveTo(m.x - cross_long / 2, m.y - 90);
+					ctx.lineTo(m.x + cross_long / 2, m.y - 90);
+			        ctx.moveTo(m.x, m.y - 90 - cross_long / 2);
+					ctx.lineTo(m.x, m.y - 90 + cross_long / 2);
+			        ctx.closePath();
+					ctx.stroke();
+					ctx.restore();
+
+					// 测试对象线框
+					ctx.save();
+					// base
+					ctx.beginPath();
+					ctx.arc(
+			            cw / 2,
+		            	ch / 2,
+			            100,
+			            Math.PI,
+			            -Math.PI,
+			            true);
+			        ctx.closePath();
+			        ctx.fill();
+					ctx.stroke();
+					// 1/2 小
+					ctx.beginPath();
+					ctx.arc(
+			            (cw / 2) + (m.obj.cx / 2),
+		            	(ch / 2) + (m.obj.cy / 2),
+			            100 - Math.sqrt(cr) * 0.75,
+			            Math.PI,
+			            -Math.PI,
+			            true);
+			        ctx.closePath();
+			        ctx.fill();
+					ctx.stroke();
+					// 1 小
+					ctx.beginPath();
+					ctx.arc(
+			            m.x,
+		            	m.y - 90,
+			            100 - Math.sqrt(cr) * 1.5,
+			            Math.PI,
+			            -Math.PI,
+			            true);
+			        ctx.closePath();
+			        ctx.fill();
+					ctx.stroke();
+					// 1/2 大
+					ctx.beginPath();
+					ctx.arc(
+			            (cw / 2) - (m.obj.cx / 2),
+		            	(ch / 2) - (m.obj.cy / 2),
+			            100 + Math.sqrt(cr) * 0.75,
+			            Math.PI,
+			            -Math.PI,
+			            true);
+			        ctx.closePath();
+			        ctx.fill();
+					ctx.stroke();
+					// 1 大
+					ctx.beginPath();
+					ctx.arc(
+			            m.x - m.obj.cx * 2,
+		            	m.y - 90 - m.obj.cy * 2,
+			            100 + Math.sqrt(cr) * 1.5,
+			            Math.PI,
+			            -Math.PI,
+			            true);
+			        ctx.closePath();
+			        ctx.fill();
+					ctx.stroke();
+
+					ctx.restore();
+		        }
+			}
+
+			function render() {
+				var m = $('body').data()['mouseInfo'];
+				ctx.clearRect(0, 0, c.width, c.height);
+				draw_base(m);
+				requestAnimationFrame(render);
+			}
+			render();
+		}).call();
+	</script>
+
+	<script>
+		var c, cw, ch, ctx, r, sign;
+		c = document.getElementById('c');
+		ctx = c.getContext('2d');
+		cw = c.width = document.body.clientWidth;
+		ch = c.height = $(window).height() - 5;
+
+		window.requestAnimationFrame || (window.requestAnimationFrame = window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback, element) {
+			return window.setTimeout(function() {
+				return callback(+new Date());
+			}, 1000 / 60);
+		});
+
+		// 缩放监听
+		$(window).on('resize', function(){
+			cw = c.width = document.body.clientWidth;
+			ch = c.height = $(window).height() - 200;
+		})
+
+		r = 15;
+		sign = 1;
+
+		function EllipseTwo(context, x, y, a, b) {
+		    context.save();
+		    var r = (a > b) ? a : b;
+		    var ratioX = a / r;
+		    var ratioY = b / r;
+		    context.scale(ratioX, ratioY);
+		    context.beginPath();
+		    context.arc(x / ratioX, y / ratioY, r, 0, 2 * Math.PI, false);
+		    context.closePath();
+		    context.restore();
+		    context.fill();
+		}
+
+		var arc = 0;
+		var arc_delta = 0;
+
+		var trans = 0;
+		var trans_delta = 0;
+
+		function autoFrame(){
+	        var m = $('body').data()['mouseInfo'];
+
+			ctx.clearRect(0, 0, c.width, c.height);
+
+	        ctx.beginPath();
+	        if (m != undefined) {
+	        	if ((r <= 10) || (r >= 50)) {
+	        		sign = sign * -1;
+	        	}
+	        	r += (17 * sign);
+	        	if (r <= 0) {
+	        		sign = sign * -1;
+	        		r += (17 * sign);
+	        	}
+
+	        	EllipseTwo(ctx, m.x, m.y - 90, 100, 100);
+
+	        	ctx.translate(cw / 2, ch / 2);			// 将绘图原点移到画布中点
+	        	arc_delta = Math.atan(m.cy / m.cx) - arc;	// 取差值
+	        	arc = Math.atan(m.cy / m.cx);				// 更新角度值
+
+	        	trans_delta = 1 - Math.atan(Math.abs(m.obj.cy) / Math.abs(m.obj.cx)) - trans;	// 取差值
+	        	trans = 1 - Math.atan(Math.abs(m.obj.cy) / Math.abs(m.obj.cx));				// 更新角度值
+
+				// ctx.rotate(arc_delta);					// 旋转
+				console.log(trans.toFixed(2), trans_delta.toFixed(2));
+				ctx.transform(1, /*Math.tan(Math.PI/180*30)*/trans_delta, 0 , 1, 0, 0);	// 形变
+	            ctx.translate(-cw / 2, -ch / 2);		// 将画布原点还原
+
+		        /*ctx.arc(
+		            m.x,
+		            m.y - 90,
+		            100,
+		            Math.PI,
+		            -Math.PI,
+		            true);*/
+		        //不关闭路径路径会一直保留下去，当然也可以利用这个特点做出意想不到的效果
+		        ctx.closePath();
+		        ctx.fillStyle = 'rgba(' +
+		            parseInt(Math.random() * 10 + 0) +
+		            ',' +
+		            parseInt(Math.random() * 5 + 250) +
+		            ',' +
+		            parseInt(Math.random() * 10 + 0) +
+		            ',' +
+		            Math.random() * 0.5 +
+		            ')';
+		        ctx.fill();
+	        }
+		    requestAnimationFrame(autoFrame);
+		}
+		// autoFrame();
+
+
+		ctx.fillStyle = 'rgba(' +
+            0 +
+            ',' +
+            0 +
+            ',' +
+            255 +
+            ',' +
+            0.3 +
+            ')';
+
+		ctx.save();
+		ctx.beginPath();
+		ctx.arc(
+            cw/2,
+        	ch/2,
+            70,
+            Math.PI,
+            -Math.PI,
+            true);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+
+
+        ctx.save();
+		ctx.beginPath();
+        ctx.fillStyle = 'rgba(' +
+            255 +
+            ',' +
+            0 +
+            ',' +
+            0 +
+            ',' +
+            0.7 +
+            ')';
+		deg = Math.PI * 180;
+		ctx.transform(
+			Math.cos(30*deg),
+			Math.sin(30*deg),
+			-Math.sin(30*deg),
+			Math.cos(30*deg),
+			0,
+			0);
+		ctx.arc(
+            cw/2,
+        	ch/2,
+            70,
+            Math.PI,
+            -Math.PI,
+            true);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+	</script>
+
+	<!-- 共通 -->
+	<script>
+		(function(){
+			// 显示信息
+			function show_info() {
+				var info_str = '';
+				var m = $('body').data()['mouseInfo'];
+				info_str += 'document.body.clientWidth = ' + document.body.clientWidth + '<br/>';
+				info_str += 'document.body.clientHeight = ' + document.body.clientHeight + '<br/>';
+				info_str += 'document.body.offsetWidth= ' + document.body.offsetWidth + '<br/>';
+				info_str += 'document.body.offsetHeight= ' + document.body.offsetHeight + '<br/>';
+				info_str += 'document.body.scrollWidth = ' + document.body.scrollWidth + '<br/>';
+				info_str += 'document.body.scrollHeight = ' + document.body.scrollHeight + '<br/>';
+				info_str += 'document.body.scrollTop = ' + document.body.scrollTop + '<br/>';
+				info_str += 'document.body.scrollLeft = ' + document.body.scrollLeft + '<br/>';
+				info_str += 'window.screenTop = ' + window.screenTop + '<br/>';
+				info_str += 'window.screenLeft = ' + window.screenLeft + '<br/>';
+				info_str += 'window.screen.height = ' + window.screen.height + '<br/>';
+				info_str += 'window.screen.width = ' + window.screen.width + '<br/>';
+				info_str += 'window.screen.availHeight = ' + window.screen.availHeight + '<br/>';
+				info_str += 'window.screen.availWidth = ' + window.screen.availWidth + '<br/>';
+				info_str += '# mouse ===================<br/>';
+				if (m) {
+					info_str += '&nbsp;|&nbsp;&nbsp;&nbsp; x, y = ['+ m.x +', ' + m.y + ']<br/>';
+					info_str += '&nbsp;|&nbsp;&nbsp;&nbsp; cx, cy = ['+ m.cx +', ' + m.cy + ']<br/>';
+					info_str += '&nbsp;|&nbsp;&nbsp;&nbsp; obj.cx, obj.cy = ['+ m.obj.cx +', ' + m.obj.cy + ']<br/>';
+				}
+				info_str += '* <br/>';
+				$('#info').html(info_str);
+				requestAnimationFrame(show_info);
+			}
+
+			// 获取鼠标信息
+			// TODO: 解决鼠标定位在浏览器左上角不顶着屏幕的时候, x、y偏移的问题
+			function getMousePos(event, el) {
+				var e = event || window.event;
+				// 获取鼠标绝对坐标
+				var m = {'x': e.screenX - window.screenLeft, 'y': e.screenY - window.screenTop};
+				// 相对于屏幕中心坐标
+				m['cx'] = m['x'] - $(window).width()/2;
+				m['cy'] = m['y'] - $(window).height()/2;
+				// 相对于对象中心的坐标
+				var c_center = getCenterPos(el);
+				m['obj'] = {
+					'cx': m['x'] - c_center['x'],
+					'cy': m['y'] - c_center['y'],
+				}
+				return m;
+			}
+
+			// 获取el对象的绝对位置的中心点的x和y值
+			function getCenterPos(el) {
+				var info = {x: el.offsetLeft + el.width / 2, y: el.offsetTop + el.height / 2 + 90};
+				return info;
+			}
+
+			// 鼠标监听
+			document.onmousemove = function (ev) {
+				var mouseInfo = {};
+				if (!ev) {
+					mouseInfo = {x: $(window).width()/2, y: $(window).height()/2, cx: 0, cy: 0};
+				} else {
+					mouseInfo = getMousePos(ev, document.getElementById('base_canvas'));
+				}
+				$('body').data()['mouseInfo'] = mouseInfo;
+			}
+
+			// 自动运行部分
+			show_info();
+
+		}).call();
+	</script>
+</body>
+</html>

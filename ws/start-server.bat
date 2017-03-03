@@ -1,0 +1,1 @@
+http-server -p 9293 -o -a 0.0.0.0

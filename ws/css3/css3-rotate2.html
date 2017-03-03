@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>变形</title>
+	<!-- Common START -->
+ 	<link rel="stylesheet" href="../_commons/bootstrap/css/bootstrap.min.css">
+ 	<link rel="stylesheet" href="../_commons/font-awesome/css/font-awesome.min.css">
+	<script src="../_commons/jquery/jquery.min.js"></script>
+	<script src="../_commons//bootstrap/js/bootstrap.min.js"></script>
+	<script src="../_commons/echarts/echarts.min.js"></script>
+	<!-- Common =END= -->
+	<style>
+		body, .bg {
+			background-color: #000;
+		}
+
+		div {
+			border: solid 1px rgba(0,255,0,0.3);
+			background-color: rgba(0,255,0,0.1);
+		}
+
+		.perspective-back {
+			perspective-origin: 50% 50%;
+			perspective: 500;
+			-webkit-perspective: 700; /* Safari and Chrome */
+        }
+		.perspective-front {
+			position: absolute;
+			/*transform: rotateX(80deg);*/
+			/*-webkit-transform: rotateX(80deg);*/
+        }
+
+		.bg {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		.l {
+			position: absolute;
+		}
+
+		.l1 {
+			transform: rotateX(50deg);
+			-webkit-transform: rotateX(50deg);
+		}
+
+		.l2 {
+			/*background-color: #f00;*/
+			transform: rotateY(-30deg);
+			-webkit-transform: rotateY(-30deg);
+		}
+		.m1 {
+			left: 80%;
+			width: 100px;
+			height: 100px;
+			top: calc(50% - 50px);
+		}
+		.m2 {
+			left: 50%;
+			width: 300px;
+			height: 300px;
+			top: calc(50% - 150px);
+		}
+		.m3 {
+			left: 20%;
+			width: 600px;
+			height: 600px;
+			top: calc(50% - 300px);
+		}
+		/*.l3 {
+			transform: rotateZ(80deg);
+			-webkit-transform: rotateZ(80deg);
+		}*/
+
+		img {
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div class="perspective-back bg" style="overflow-y: hidden; border: none;">
+		<!-- <div class="l l2 m1 perspective-front"></div>
+		<div class="l l2 m2 perspective-front"></div>
+		<div class="l l2 m3 perspective-front"></div> -->
+	</div>
+
+	<div style="position: absolute; left: 10px; top: 10px; background-color: rgba(0,0,0,0.5); color: #fff; font-size: 9px; padding: 15px 20px 5px 20px;">
+		<p id="x"></p>
+		<p id="y"></p>
+		<p id="browserWidth"></p>
+		<p id="browserHeight"></p>
+	</div>
+
+	<script>
+		var layers = 20;
+		var mx_w = 800;
+		var mx_h = 800;
+		var mn_w = 100;
+		var mn_h = 100;
+		var left_last = 110;
+		var mn_l = -20;
+		/*for (var l = 1; l <= layers; l++) {
+			var w = l / layers * (mx_w - mn_w);
+			var h = l / layers * (mx_h - mn_h);
+			var lft = (layers - l + 1) / layers * left_last + mn_l;
+			$('.bg').append(
+				'<div class="l l2 perspective-front" style="' +
+					'width: ' + w + 'px; ' +
+					'height: ' + h + 'px; ' +
+					'left: ' + lft + '%; ' +
+					'top: calc(50% - ' + (h / 2) + 'px);' +
+				'">'
+			);
+		}*/
+
+		var l = 1;
+		var timer = setInterval(function(){
+			if (l <= layers) {
+				var w = l / layers * (mx_w - mn_w);
+				var h = l / layers * (mx_h - mn_h);
+				var lft = (layers - l + 1) / layers * left_last + mn_l;
+				$('.bg').append(
+					'<div class="l l2 perspective-front" style="' +
+						'width: ' + w + 'px; ' +
+						'height: ' + h + 'px; ' +
+						// 'left: ' + lft + '%; ' +
+						'left: calc(50% - ' + (w / 2) + 'px); ' +
+						'top: calc(50% - ' + (h / 2) + 'px);' +
+					'">'
+				);
+			} else {
+				clearInterval(timer);
+			}
+			l++;
+		}, 50);
+
+		function getMousePos(event) {
+			var e = event || window.event;
+			return {'x': e.screenX, 'y': e.screenY}
+		}
+
+		document.onmousemove = mouseMoveFrame;
+
+		function mouseMoveFrame(ev) {
+			var mouseInfo = {};
+			if (!ev) {
+				mouseInfo = {x: $(window).width()/2, y: $(window).height()/2};
+			} else {
+				mouseInfo = getMousePos(ev);
+			}
+			$('#x').html('x: ' + mouseInfo.x);
+			$('#y').html('y: ' + mouseInfo.y);
+			$('body:eq(0)').data().m = {x: mouseInfo.x, y: mouseInfo.y};
+
+			$('.perspective-back').css('perspective-origin',
+					($('body:eq(0)').data().m.x / $('body:eq(0)').data().b.w * 100) + '% ' +
+					($('body:eq(0)').data().m.y / $('body:eq(0)').data().b.h * 100) + '%');
+			console.log($('.perspective-back').css('perspective-origin'));
+		}
+
+		function getBrowserSize() {
+			$('#browserWidth').html('bw: ' + $(window).width());
+			$('#browserHeight').html('bh: ' + $(window).height());
+			$('body:eq(0)').data().b = {w: $(window).width(), h: $(window).height()};
+		}
+
+		$(window).resize(getBrowserSize);
+
+		getBrowserSize();
+		mouseMoveFrame();
+
+	</script>
+</body>
+</html>

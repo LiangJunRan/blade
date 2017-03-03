@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<canvas id="c" width="800" height="800" style="height: 800px; width: 800px;"></canvas>
+	<script>
+	var c = document.getElementById('c');
+    var context = canvas.getContext('2d');
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    context.beginPath();
+
+    // center_x, center_y, r, start_angle, end_angle, 顺时针
+    context.arc(
+        $('body').data()['x'],
+        $('body').data()['y'],
+        $('body').data()['r'],
+        $('body').data()['st_a'],
+        $('body').data()['ed_a'],
+        true);
+    //不关闭路径路径会一直保留下去，当然也可以利用这个特点做出意想不到的效果
+    context.closePath();
+	</script>
+</body>
+</html>
