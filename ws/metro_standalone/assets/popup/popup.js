@@ -4,18 +4,19 @@ function bindPopup(selector, event, copts) {
 		height: '600px',
 		recoverTrigger: '',
 		beforePop: function(node) {
-
+			// do nothing
 		},
 		beforeRecover: function(node){
-
+			// do nothing
 		},
 		popCallback: function(node) {
-			console.log(node);
 			// do nothing
 		},
 		recoverCallback: function(node) {
 			// do nothing
-			console.log(node);
+		},
+		mousewheelCallback: function(node, event, direction) {
+			// do nothing
 		}
 	}
 	var opts = $.extend({}, _opts, copts);
@@ -65,6 +66,7 @@ function bindPopup(selector, event, copts) {
 				i.data().dummy = '';
 				i.removeAttr('style');
 				$('.easy-hide-anime').remove();
+				// TODO: 去掉绑定事件
 				opts.recoverCallback(i);
 			}, 250);
 		}
@@ -93,13 +95,8 @@ function bindPopup(selector, event, copts) {
 				"z-index": "99999"
 			});
 			i.data().dummy = $(dummy_html).addClass('dummy');
+			//i.before(i.data().dummy);
 			i.before(i.data().dummy);
-
-			/*var recover_btn = $('<button type="button" class="close-btn">&times;</button>');
-			recover_btn.on('click', function() {
-				recover();
-			});
-			i.append(recover_btn);*/
 
 			var left_offset = (($(window).width() - parseInt(opts.width.replace(/px/g, ''))) / 2).toFixed(2) + 'px';
 			var top_offset = (($(window).height() - parseInt(opts.height.replace(/px/g, ''))) / 2).toFixed(2) + 'px';
@@ -112,17 +109,29 @@ function bindPopup(selector, event, copts) {
 				'		position: fixed;\n' +
 				'		left: ' + left_offset + ';\n' +
 				'		top:  ' + top_offset + ';\n' +
-				'		z-index: 99999;\n' +
+				'		z-index: 1112;\n' +
 				'	}\n' +
 				'}\n'
 			);
 
 			i.addClass('pop');
-			// $('body').append('<div class="mask-layer easy-show-anime" onclick="$(this).hide();"></div>');
+			i.on('mousewheel', function(ev, dir){
+				console.log(ev, dir > 0);
+				opts.mousewheelCallback(i, ev, dir);
+				return false;
+			});
+
 			var mask_layer = $('<div class="mask-layer easy-show-anime"></div>');
-			i.data().dummy.before(mask_layer);
+			i.before(mask_layer);
 			mask_layer.on('click', function() {
 				recover();
+			});
+			// 遮罩层防止鼠标事件穿透
+			mask_layer.on('mousedown', function() {
+				return false;
+			});
+			mask_layer.on('mousewheel', function() {
+				return false;
 			});
 			opts.beforePop(i, opts);
 

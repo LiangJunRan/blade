@@ -7,7 +7,7 @@
 	<!-- Mobile viewport optimized: h5bp.com/viewport -->
 	<meta name="viewport" content="width=device-width">
 
-	<title>BootMetro Demo - Hub</title>
+	<title>教学培训系统</title>
 
 	<meta name="robots" content="noindex, nofollow">
 	<meta name="description" content="BootMetro : Simple and complete web UI framework to create web apps with Windows 8 Metro user interface.">
@@ -68,6 +68,53 @@
 			z-index:1002;
 			overflow: auto;
 		}
+		body, button, input, select, textarea, h1, h2, h3, h4, h5, h6
+		{
+			font-family: Microsoft YaHei,'宋体' , Tahoma, Helvetica, Arial, '\5b8b\4f53', sans-serif;
+		}
+	</style>
+
+	<style>
+		.my_list {
+			display: block;
+			clear: both;
+			margin: 100px -20px 0px;
+			background-color: rgba(0, 0, 0, 0.1);
+			display: block;
+			height: calc(100% - 115px);
+			position: relative;
+		}
+		ul li:nth-child(odd) {
+			background-color: rgba(0, 0, 0, 0.1);
+		}
+		li.media {
+			margin-top: 0px;
+		}
+		ul.media-list li.media a {
+			margin-right: 0px;
+		}
+		ul.media-list li.media a img {
+			margin: 20px;
+		}
+		ul.media-list li.media div.media-body {
+			margin: 20px;
+			height: 80px;
+		}
+		.close-btn {
+			/* background-color: transparent;
+			border: none; */
+			float: right;
+			margin: -20px -18px;
+			color: rgba(50, 50, 100, 0.3);
+		    font-size: 24px;
+		}
+		.metro .tile.wide.imagetext .column-text {
+		    width: 170px;
+		    padding-left: 10px;
+		}
+		/* .metro .tile.app .image-wrapper {
+		    margin-top: 10px;
+		} */
 	</style>
 	<!-- Le fav and touch icons 
 	<link rel="shortcut icon" href="http://www.marcellop.com/bootmetro/assets/ico/favicon.ico">
@@ -80,36 +127,7 @@
 		Modernizr enables HTML5 elements & feature detects; Respond is a polyfill for min/max-width CSS3 Media Queries
 		For optimal performance, use a custom Modernizr build: www.modernizr.com/download/ 
 	<script type="text/javascript" async src="http://www.google-analytics.com/ga.js"></script>-->
-	<script src="./assets/js/modernizr-2.6.2.min.js"></script>
-	<script type="text/javascript">
-	// 弹出隐藏层
-	function ShowDiv(show_div, bg_div) {
-		document.getElementById(show_div).style.display = 'block';
-		document.getElementById(bg_div).style.display = 'block' ;
-		$('#' + show_div + ' video')[0].currentTime = 0;
-	};
-	// 关闭弹出层
-	function CloseDiv(show_div,bg_div) {
-		document.getElementById(show_div).style.display = 'none';
-		document.getElementById(bg_div).style.display = 'none';
-		$.each($('video'), function(){
-			this.pause();
-		})
-	};
-	</script>
-	<!-- Grab Google CDN's jQuery. fall back to local if necessary -->
-	<script src="assets/js/jquery-1.10.0.min.js"></script>
-	<script>window.jQuery || document.write("<script src='assets/js/jquery-1.10.0.min.js'>\x3C/script>")</script>
-	<script type="text/javascript">
-		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', 'UA-3182578-6']);
-		_gaq.push(['_trackPageview']);
-		(function() {
-			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();
-	</script>
+	
 <style id="holderjs-style" type="text/css">.holderjs-fluid {font-size:16px;font-weight:bold;text-align:center;font-family:sans-serif;margin:0}</style>
 <style type="text/css">#lb_infobar_8936321763{color:#000000 !important;font-weight:normal !important;text-decoration:none !important;margin-top:0 !important;margin-bottom:0 !important;margin-left:0 !important;margin-right:0 !important;padding-top:0 !important;padding-bottom:0 !important;padding-left:0 !important;padding-right:0 !important;float:none !important;text-align:left !important;height:37px !important;width:100% !important;background-color:#F5F5F5 !important;background-image:-webkit-linear-gradient(top,#F5F5F5,#EEEDED) !important;border-bottom:1px solid #C0C0C0 !important;box-shadow:inset 0 1px 1px 1px #FFFFFF !important;line-height:36px !important;font-family:'微软雅黑','宋体' !important;z-index:9999999999 !important;margin:0 !important;padding:0 !important;position:fixed !important;top:0px !important;left:0px !important;}
 #lb_infobar_8936321763,#lb_infobar_8936321763 *{border-radius:0 !important;padding:0 !important;margin:0 !important;}
@@ -155,11 +173,11 @@
 		<div id="nav-bar" class="">
 			<div class="pull-left">
 				<div id="header-container">
-					<h5>BootMetro Demo</h5>
+					<h5>中国兵器人才学院教学培训系统</h5>
 						<!--菜单列表-->
 						<div class="dropdown">
 							<a class="header-dropdown dropdown-toggle accent-color" data-toggle="dropdown" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
-								Wikipedia Featured
+								菜单列表
 								<b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu">
@@ -194,8 +212,8 @@
 						<span class="win-commandicon win-commandring icon-user"></span>
 					</a>
 					<div class="pull-left">
-						<h3>FirstName</h3>
-						<h4>LastName</h4>
+						<h3>欢迎使用，</h3>
+						<h4>管理员</h4>
 					</div>
 				</div>
 			</div>
@@ -218,65 +236,217 @@
 			<div class="panorama-sections" style="width: 2390px; height: 952px; margin-left: -561px;">
 				<div class="panorama-section tile-span-4">
 
-					<h2>Featured apps</h2>
+					<h2>热门浏览</h2>
 
-					<a class="tile app bg-color-orange" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
-						<div class="image-wrapper">
-							<span class="icon icon-mail"></span>
-						</div>
-						<div class="app-label">Mail</div>
-						<div class="app-count">12</div>
-					</a>
+					<div class="tile-column-span-2">
+                        <a class="tile wide imagetext wideimage bg-color-blue" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+                            <img src="./assets/img/640px-Darvasa_gas_crater_panorama.jpg" alt="">
+                            <div class="textover-wrapper bg-color-blueDark">
+                                <div class="text2">The Door to Hell, a burning natural gas field in Derweze, Turkmenistan</div>
+                            </div>
+                        </a>
 
-					<a class="tile app bg-color-blue" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
-						<div class="image-wrapper">
-							<span class="icon icon-map"></span>
-						</div>
-						<div class="app-label">Map</div>
-					</a>
+                        <a class="tile wide imagetext wideimage bg-color-green" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+                            <img src="./assets/img/320px-Lady_Elliot_Island_SVII.jpg" alt="">
+                            <div class="textover-wrapper transparent">
+                                <div class="text2">An image of the coral reef near Lady Elliot Island</div>
+                            </div>
+                        </a>
 
-					<a class="tile wide imagetext bg-color-greenDark" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
-						<div class="image-wrapper">
-							<span class="icon icon-chat-2"></span>
-						</div>
-						<div class="column-text">
-							<div class="text4">Chat with your friends</div>
-						</div>
-						<div class="app-label">145 friends online</div>
-					</a>
+                        <a class="tile square image bg-color-red" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+                            <img src="./assets/img/611px-Wulfenite_mexique.jpg" alt="">
+                            <div class="textover-wrapper transparent">
+                                <div class="text2">Wulfenite </div>
+                            </div>
+                        </a>
 
-					<a class="tile app bg-color-purple" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
-						<div class="image-wrapper">
-							<span class="icon icon-weather"></span>
-						</div>
-						<div class="app-label">Weather</div>
-					</a>
+                        <a class="tile square image" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+                            <img src="./assets/img/640px-Hagia_Sophia_Mars_2013.jpg" alt="">
+                            <div class="textover-wrapper transparent">
+                                <div class="text2">Hagia Sophia</div>
+                            </div>
+                        </a>
 
-					<a class="tile app bg-color-green" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
-						<div class="image-wrapper">
-							<span class="icon icon-linkedin"></span>
-						</div>
-						<div class="app-label">LinkedIn</div>
-					</a>
+                    </div>
+
+                    <div class="tile-column-span-1">
+						<a class="tile squarepeek bg-color-orange" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+							<img src="./assets/img/384px-Anastomus_oscitans_-_Bueng_Boraphet.jpg" alt="">
+							<div class="text-inner">
+							<div class="text4">The Asian Openbill or Asian Openbill Stork (Anastomus oscitans) is a large wading bird in the stork family Ciconiidae.</div>
+							</div>
+						</a>
+
+                    </div>
 				</div>
 
 
 				<div class="panorama-section tile-span-4">
-					<h2>Group two</h2>
+					<h2>热门视频</h2>
 					<!-- onclick="/*ShowDiv('MyDiv','fade')*/" -->
-					<a class="tile wide imagetext bg-color-blue music_pop" >
+					<a class="tile wide imagetext wideimage bg-color-green" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+					  <img src="./assets/img/320px-Lady_Elliot_Island_SVII.jpg" alt="">
+					  <div class="textover-wrapper transparent">
+						 <div class="text2">An image of the coral reef near Lady Elliot Island</div>
+					  </div>
+				    </a>
+
+				    <a class="tile square image bg-color-red" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+					    <img src="./assets/img/611px-Wulfenite_mexique.jpg" alt="">
+					    <div class="textover-wrapper transparent">
+						    <div class="text2">Wulfenite </div>
+					    </div>
+				    </a>
+
+				    <a class="tile square image" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+					    <img src="./assets/img/640px-Hagia_Sophia_Mars_2013.jpg" alt="">
+					    <div class="textover-wrapper transparent">
+						    <div class="text2">Hagia Sophia</div>
+					    </div>
+				    </a>
+				    <a class="tile wide imagetext bg-color-blue music_pop">
 						<div class="image-wrapper">
-							<span class="icon icon-music-3"></span>
+							<span class="icon icon-video"></span>
 						</div>
 						<div class="column-text">
-							<div class="text">Top 10</div>
-							<div class="text">Favorites</div>
-							<div class="text">Best choices</div>
+							<div class="text">视频</div>
+							<div class="text">Video</div>
+							<form class="navbar-search pull-left" style="display: none;">
+								<input type="text" class="search-query" placeholder="Search" style="width: 305px; background-color: #2a7db8; color: #eee;">
+							</form>
+							<span class="app-label">10个文件</span>
 						</div>
-						<span class="app-label">MUSIC</span>
 					</a>
-				  </div>
-			 </div>
+				</div>
+
+				<div class="panorama-section tile-span-4">
+					<h2>热门WORD</h2>
+					<!-- onclick="/*ShowDiv('MyDiv','fade')*/" -->
+					<a class="tile wide app wideimage bg-color-blue" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+						<div class="image-wrapper">
+							<span class="icon  icon-file-word"></span>
+						</div>
+						<div class="column-text">
+							<div class="app-label">会议纪要.doc</div>
+						</div>
+					</a>
+					<a class="tile square app bg-color-blue" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+						<div class="image-wrapper">
+							<span class="icon icon-file-word"></span>
+						</div>
+						<div class="column-text">
+							<div class="app-label">数据分析.doc</div>
+						</div>
+					</a>
+
+					<!-- <a class="tile app bg-color-blue" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+					                       <div class="image-wrapper">
+					                          <span class="icon icon-map"></span>
+					                       </div>
+					                       <div class="app-label">Map</div>
+					                    </a> -->
+
+					<a class="tile app bg-color-blue" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+				   		<div class="image-wrapper">
+							<span class="icon icon-file-word"></span>
+						</div>
+						<div class="app-label">数据分析.doc</div>
+						<!-- <div class="column-text">
+							<div class="app-label">数据分析.doc</div>
+						</div> -->
+					</a>
+					<a class="tile wide imagetext bg-color-blue music_pop">
+						<div class="image-wrapper">
+							<span class="icon  icon-file-word"></span>
+						</div>
+						<!-- <div class="column-text">
+							<span class="app-label">更多DOC...</span>
+						</div>
+						<div class="image-wrapper">
+							<span class="icon icon-video"></span>
+						</div> -->
+						<div class="column-text">
+							<div class="text">更多Doc文档</div>
+							<div class="text">Office Word File</div>
+							<form class="navbar-search pull-left" style="display: none;">
+								<input type="text" class="search-query" placeholder="Search" style="width: 305px; background-color: #2a7db8; color: #eee;">
+							</form>
+							<span class="app-label">10个文件</span>
+						</div>
+					</a>
+				</div>
+
+				<div class="panorama-section tile-span-4">
+					<h2>热门EXCEL</h2>
+					<!-- onclick="/*ShowDiv('MyDiv','fade')*/" -->
+					<a class="tile wide app wideimage bg-color-green" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+						<div class="image-wrapper">
+							<span class="icon  icon-file-excel"></span>
+						</div>
+						<div class="column-text">
+							<div class="app-label">数据表格.xls</div>
+						</div>
+				   </a>
+
+					<a class="tile square app bg-color-green" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+				   		<div class="image-wrapper">
+							<span class="icon  icon-file-excel"></span>
+						</div>
+						<div class="column-text">
+							<div class="app-label">数据分析.xls</div>
+						</div>
+					</a>
+				    <a class="tile square app bg-color-green" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+						<div class="image-wrapper">
+							<span class="icon  icon-file-excel"></span>
+						</div>
+						<div class="column-text">
+							<div class="app-label">数据分析.xls</div>
+						</div>
+					</a>
+					<a class="tile wide app bg-color-green music_pop" >
+						<div class="image-wrapper">
+							<span class="icon  icon-file-excel"></span>
+						</div>
+						<div class="column-text">
+							<span class="app-label">更多EXCEl...</span>
+						</div>
+					</a>
+				</div>
+
+				<div class="panorama-section tile-span-4">
+					<h2>热门PDF</h2>
+					<!-- onclick="/*ShowDiv('MyDiv','fade')*/" -->
+					<a class="tile wide app bg-color-red" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+						<div class="image-wrapper">
+							<span class="icon icon-file-pdf"></span>
+						</div>
+						<div class="app-label">两会重要指示.pdf</div>
+					</a>
+
+					<a class="tile square app bg-color-red" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+
+						<div class="image-wrapper">
+							<span class="icon icon-file-pdf"></span>
+						</div>
+						<div class="app-label">2017放假通知.pdf</div>
+					</a>
+					<a class="tile square app wideimage bg-color-red" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html">
+						<div class="image-wrapper">
+							<span class="icon  icon-file-pdf"></span>
+						</div>
+						<div class="app-label">两会重要指示.pdf</div>
+					</a>
+					<a class="tile wide app bg-color-red music_pop" >
+						<div class="image-wrapper">
+							<span class="icon  icon-file-pdf"></span>
+						</div>
+						<div class="column-text">
+							<span class="app-label">更多PDF...</span>
+						</div>
+					</a>
+				</div>
+			</div>
 		</div>
 		<a id="panorama-scroll-prev" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html" style="display: block;"></a>
 		<a id="panorama-scroll-next" href="file:///C|/Users/Administrator/Downloads/BootMetro Demo - Hub_files/BootMetro Demo - Hub.html"></a>
@@ -313,9 +483,13 @@
 		</div>
 		<video src="assets/media/test.mp4"  width="100%" controls="controls" preload="meta"></video>
 	</div>
-	<!-- Grab Google CDN's jQuery. fall back to local if necessary -->
+
+	<!-- SCRIPT ====================================== -->
+
 	<script src="assets/js/jquery-1.10.0.min.js"></script>
 	<script>window.jQuery || document.write("<script src='assets/js/jquery-1.10.0.min.js'>\x3C/script>")</script>
+
+	<script src="./assets/js/modernizr-2.6.2.min.js"></script>
 
 	<!--[if IE 7]>
 	<script type="text/javascript" src="scripts/bootmetro-icons-ie7.js">
@@ -334,16 +508,31 @@
 	<!-- <script type="text/javascript" src="../assets/js/perfect-scrollbar.with-mousewheel.min.js"></script> -->
 	<!-- <script type="text/javascript" src="./assets/js/demo.js"></script> -->
 
+	<script type="text/javascript">
+		// 弹出隐藏层
+		function ShowDiv(show_div, bg_div) {
+			document.getElementById(show_div).style.display = 'block';
+			document.getElementById(bg_div).style.display = 'block' ;
+			$('#' + show_div + ' video')[0].currentTime = 0;
+		};
+		// 关闭弹出层
+		function CloseDiv(show_div,bg_div) {
+			document.getElementById(show_div).style.display = 'none';
+			document.getElementById(bg_div).style.display = 'none';
+			$.each($('video'), function(){
+				this.pause();
+			})
+		};
+	</script>
 
 	<script type="text/javascript">
 
 		$('.panorama').panorama({
-		//nicescroll: false,
-		showscrollbuttons: true,
-		keyboard: true,
-		parallax: true
-		}
-		);
+			nicescroll: false,
+			showscrollbuttons: true,
+			keyboard: true,
+			parallax: true
+		});
 
 		// $(".panorama").perfectScrollbar();
 		$('#pivot').pivot();
@@ -352,120 +541,133 @@
 
 	<link rel="stylesheet" href="assets/popup/popup.css">
 	<script src="assets/popup/popup.js"></script>
+
+	<link rel="stylesheet" href="assets/perfect-scrollbar/css/perfect-scrollbar.min.css">
+	<script src="assets/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js"></script>
+
 	<script>
 		// 绑定点击弹出
 		bindPopup('.music_pop', 'click', {
 			width: '400px',
 			height: '500px',
 			recoverTrigger: '.close-btn',
-			beforePop: function(node, opts) {
-				// 弹出框内的chart直接定义到弹出后的样式，并执行resize，相当于弹出框的弹出和resize()同时执行
-				// node.find('.bim-chart-panel-body div').css({
-				// 	'width': (parseInt(opts.width.replace(/px/g, '')) - 30) + 'px',
-				// 	'height': (parseInt(opts.height.replace(/px/g, '')) - 52) + 'px'
-				// });
-				// var eInst = echarts.getInstanceByDom(node.find('.bim-chart-panel-body div')[0]);
-				// if (eInst) {
-				// 	eInst.resize();
-				// }
-			},
-			beforeRecover: function(node, opts){
-				// 同时执行recover和resize
-				// var dm = node.data().dummy;
-				// node.find('.bim-chart-panel-body div').css({'width': dm.width() + 'px', 'height': (dm.height() - 23) + 'px'});
-				// var eInst = echarts.getInstanceByDom(node.find('.bim-chart-panel-body div')[0]);
-				// if (eInst) {
-				// 	eInst.resize();
-				// }
-			},
 			popCallback: function(node) {
-				console.log(node);
 				node.append(
-					'<div class="my_list" style="display: block; height: 360px;">' +
-						'<ul class="media-list">' +
-							'<li class="media" onclick="ShowDiv(\'MyDiv\',\'fade\')">' +
-								'<a class="pull-left" href="#">' +
-									'<img class="media-object" data-src="holder.js/64x64" style="width: 80px; height: 80px;" src="assets/img/384px-Anastomus_oscitans_-_Bueng_Boraphet.jpg"/>' +
-								'</a>' +
-								'<div class="media-body">' +
-									'<h4 class="media-heading">Demo Video</h4>' +
-									'This video is for demo.' +
-									'' +
-									'<!-- Nested media object -->' +
-									'<div class="media">' +
-									'Youtube' +
+					// '<div class="list-container">' +
+						'<div class="my_list">' +
+							'<ul class="media-list">' +
+								'<li class="media" onclick="ShowDiv(\'MyDiv\',\'fade\')">' +
+									'<a class="pull-left" href="#">' +
+										'<img class="media-object" data-src="holder.js/64x64" style="width: 80px; height: 80px;" src="assets/img/384px-Anastomus_oscitans_-_Bueng_Boraphet.jpg"/>' +
+									'</a>' +
+									'<div class="media-body">' +
+										'<h4 class="media-heading">Demo Video</h4>' +
+										'This video is for demo.' +
+										'' +
+										'<!-- Nested media object -->' +
+										'<div class="media">' +
+										'Youtube' +
+										'</div>' +
 									'</div>' +
-								'</div>' +
-							'</li>' +
-							'<li class="media">' +
-								'<a class="pull-left" href="#">' +
-									'<img class="media-object" data-src="holder.js/64x64" style="width: 80px; height: 80px;" src="assets/img/384px-Anastomus_oscitans_-_Bueng_Boraphet.jpg"/>' +
-								'</a>' +
-								'<div class="media-body">' +
-									'<h4 class="media-heading">Unnamed</h4>' +
-									'This is fake.' +
-									'' +
-									'<!-- Nested media object -->' +
-									'<div class="media">' +
-									'Nobody' +
+								'</li>' +
+								'<li class="media">' +
+									'<a class="pull-left" href="#">' +
+										'<img class="media-object" data-src="holder.js/64x64" style="width: 80px; height: 80px;" src="assets/img/384px-Anastomus_oscitans_-_Bueng_Boraphet.jpg"/>' +
+									'</a>' +
+									'<div class="media-body">' +
+										'<h4 class="media-heading">Unnamed</h4>' +
+										'This is fake.' +
+										'' +
+										'<!-- Nested media object -->' +
+										'<div class="media">' +
+										'Nobody' +
+										'</div>' +
 									'</div>' +
-								'</div>' +
-							'</li>' +
-							'<li class="media">' +
-								'<a class="pull-left" href="#">' +
-									'<img class="media-object" data-src="holder.js/64x64" style="width: 80px; height: 80px;" src="assets/img/384px-Anastomus_oscitans_-_Bueng_Boraphet.jpg"/>' +
-								'</a>' +
-								'<div class="media-body">' +
-									'<h4 class="media-heading">Unnamed</h4>' +
-									'This is fake.' +
-									'' +
-									'<!-- Nested media object -->' +
-									'<div class="media">' +
-									'Nobody' +
+								'</li>' +
+								'<li class="media">' +
+									'<a class="pull-left" href="#">' +
+										'<img class="media-object" data-src="holder.js/64x64" style="width: 80px; height: 80px;" src="assets/img/384px-Anastomus_oscitans_-_Bueng_Boraphet.jpg"/>' +
+									'</a>' +
+									'<div class="media-body">' +
+										'<h4 class="media-heading">Unnamed</h4>' +
+										'This is fake.' +
+										'' +
+										'<!-- Nested media object -->' +
+										'<div class="media">' +
+										'Nobody' +
+										'</div>' +
 									'</div>' +
-								'</div>' +
-							'</li>' +
-							// TODO Perfect scroll-bar
-	   					'</ul>' +
-   					'</div>');
+								'</li>' +
+								'<li class="media">' +
+									'<a class="pull-left" href="#">' +
+										'<img class="media-object" data-src="holder.js/64x64" style="width: 80px; height: 80px;" src="assets/img/384px-Anastomus_oscitans_-_Bueng_Boraphet.jpg"/>' +
+									'</a>' +
+									'<div class="media-body">' +
+										'<h4 class="media-heading">Unnamed</h4>' +
+										'This is fake.' +
+										'' +
+										'<!-- Nested media object -->' +
+										'<div class="media">' +
+										'Nobody' +
+										'</div>' +
+									'</div>' +
+								'</li>' +
+								'<li class="media">' +
+									'<a class="pull-left" href="#">' +
+										'<img class="media-object" data-src="holder.js/64x64" style="width: 80px; height: 80px;" src="assets/img/384px-Anastomus_oscitans_-_Bueng_Boraphet.jpg"/>' +
+									'</a>' +
+									'<div class="media-body">' +
+										'<h4 class="media-heading">Unnamed</h4>' +
+										'This is fake.' +
+										'' +
+										'<!-- Nested media object -->' +
+										'<div class="media">' +
+										'Nobody' +
+										'</div>' +
+									'</div>' +
+								'</li>' +
+								'<li class="media">' +
+									'<a class="pull-left" href="#">' +
+										'<img class="media-object" data-src="holder.js/64x64" style="width: 80px; height: 80px;" src="assets/img/384px-Anastomus_oscitans_-_Bueng_Boraphet.jpg"/>' +
+									'</a>' +
+									'<div class="media-body">' +
+										'<h4 class="media-heading">Unnamed</h4>' +
+										'This is fake.' +
+										'' +
+										'<!-- Nested media object -->' +
+										'<div class="media">' +
+										'Nobody' +
+										'</div>' +
+									'</div>' +
+								'</li>' +
+								'<li class="media">' +
+									'<a class="pull-left" href="#">' +
+										'<img class="media-object" data-src="holder.js/64x64" style="width: 80px; height: 80px;" src="assets/img/384px-Anastomus_oscitans_-_Bueng_Boraphet.jpg"/>' +
+									'</a>' +
+									'<div class="media-body">' +
+										'<h4 class="media-heading">Unnamed</h4>' +
+										'This is fake.' +
+										'' +
+										'<!-- Nested media object -->' +
+										'<div class="media">' +
+										'Nobody' +
+										'</div>' +
+									'</div>' +
+								'</li>' +
+		   					'</ul>' +
+	   					'</div>' //+
+					// '</div>'
+				);
+				node.find('.my_list').perfectScrollbar();
+				node.find('form.navbar-search').show();
+			},
+			beforeRecover: function(node){
+				node.find('form.navbar-search').hide();
 			},
 			recoverCallback: function(node) {
-				// do nothing
 				node.find('.my_list').remove();
+				node.find('form.navbar-search input').val('');
 			}
 		});
 	</script>
-	<style>
-		.my_list {
-			display: block;
-			clear: both;
-			margin: 0 -20px;
-			/*background-color: rgba(0, 0, 0, 0.1);*/
-			padding: 25px 0px;
-		}
-		ul li:nth-child(odd) {
-			background-color: rgba(0, 0, 0, 0.1);
-		}
-		li.media {
-			margin-top: 0px;
-		}
-		ul.media-list li.media a {
-			margin-right: 0px;
-		}
-		ul.media-list li.media a img {
-			margin: 20px;
-		}
-		ul.media-list li.media div.media-body {
-			margin: 20px;
-			height: 80px;
-		}
-		.close-btn {
-			/* background-color: transparent;
-			border: none; */
-			float: right;
-			margin: -20px -18px;
-			color: rgba(50, 50, 100, 0.3);
-		    font-size: 24px;
-		}
-	</style>
 </body></html>
