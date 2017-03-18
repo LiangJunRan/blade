@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Canvas Ring</title>
+	<style>
+		html, body {
+			margin: 0;
+			padding: 0;
+			height: 100%;
+			background-color: black;
+		}
+		canvas {
+			background-color: rgba(0,0,255,0.1);
+			/*height: 100%;*/
+		}
+	</style>
+</head>
+<body>
+	<canvas id="c"></canvas>
+	<a href="http://www.2cto.com/kf/201504/390770.html" style="left: 0px; top: 0px; position: fixed;">http://www.2cto.com/kf/201504/390770.html</a>
+	<script src="../_commons/jquery/jquery.min.js"></script>
+	<script>
+	var c, ctx, cw, ch;
+	c = document.getElementById('c');
+	ctx = c.getContext('2d');
+	cw = c.width = document.body.clientWidth;
+	ch = c.height = document.body.clientHeight - 4;
+	$(window).on('resize', function() {
+		cw = c.width = document.body.clientWidth;
+		ch = c.height = document.body.clientHeight - 4;
+	});
+
+	/*
+	function Circle() {
+	    this.radius = 100;    // 圆环半径
+	    this.lineWidth = 25;  // 圆环边的宽度
+	    this.strokeStyle = '#ccc'; //边的颜色
+	    this.fillStyle = 'blue';  //填充色
+	    this.lineCap = 'round';
+	}
+	Circle.prototype.draw = function(ctx) {
+	    ctx.beginPath();
+	    ctx.arc(250, 250, this.radius, 0, Math.PI*2, true);  // 坐标为250的圆，这里起始角度是0，结束角度是Math.PI*2
+	    ctx.lineWidth = this.lineWidth;
+	    ctx.strokeStyle = this.strokeStyle;
+	    ctx.stroke();  // 这里用stroke画一个空心圆，想填充颜色的童鞋可以用fill方法
+	};
+
+
+	function Ring(startAngle, percent) {
+	    Circle.call(this);
+	    this.startAngle = startAngle || 3 * Math.PI/2; //弧起始角度
+	    this.percent = percent;  //弧占的比例
+	}
+	Ring.prototype = Object.create(Circle.prototype);
+	Ring.prototype.drawRing = function(ctx) {
+	     this.draw(ctx);  // 调用Circle的draw方法画圈圈
+	     // angle
+	     ctx.beginPath();
+	     var anglePerSec = 2 * Math.PI / (100 / this.percent); // 蓝色的弧度
+	     ctx.arc(250, 250, this.radius, this.startAngle, this.startAngle + 1, false); //这里的圆心坐标要和cirle的保持一致
+	     ctx.strokeStyle = this.fillStyle;
+	     ctx.lineCap = this.lineCap;
+	     ctx.stroke();
+	     ctx.closePath();
+	}
+	// var ring = new Ring(2*Math.PI/3, 50);  // 从2*Math.PI/3弧度开始，进度为50%的环
+	// ring.drawRing(ctx);
+	*/
+	// 以上为参考程序
+	//////////////////////////////////////////////////////////////////////////////
+
+
+	// 对象，方便改变
+	function RingG(option) {
+		var _opts = {
+			x: 0,						// 圆心横坐标
+			y: 0,						// 圆心纵坐标
+			radius: 120,				// 圆半径
+			startAngle: Math.PI * 2.2,	// 圆环开始角度
+			endAngle: Math.PI * 0.8,	// 圆环结束角度
+			counterclockwise: true,		// 圆环角度是否顺时针
+			lineWidth: 10,				// 圆环边的宽度
+			strokeStyle: 'transparent',	// 圆环底色
+			fillStyle: 'red',			// 圆环本色
+			lineCap: 'round'			// 圆环端点样式
+		}
+		var opts = $.extend({}, _opts, option);	// 合并样式
+		var that = this;
+		$.each(opts, function(key){
+			that[key] = opts[key];
+		});
+	}
+	RingG.prototype.draw = function(ctx) {
+	    // console.log(this, this.opts);
+
+	    ctx.beginPath();
+	    ctx.arc(0, 0, this.radius, 0, Math.PI*2, true);
+	    ctx.lineWidth = this.lineWidth;
+	    ctx.strokeStyle = this.strokeStyle;
+	    ctx.stroke();
+
+	    ctx.beginPath();
+		ctx.arc(this.x, this.y, this.radius, this.startAngle, this.endAngle, this.counterclockwise);
+		ctx.strokeStyle = this.fillStyle;
+	    ctx.lineCap = this.lineCap;
+		ctx.stroke();
+		ctx.closePath();
+	};
+	var rg = new RingG({x: 0, y: 0, fillStyle: 'rgb(255, 120, 0)', lineWidth: 18});
+	ctx.translate(cw/2, ch/2);
+	rg.draw(ctx);
+	ctx.translate(-cw/2, -ch/2);
+
+
+	// 单函数式
+	function draw_ring(option){
+		var _opts = {
+			x: 0,						// 圆心横坐标
+			y: 0,						// 圆心纵坐标
+			radius: 120,				// 圆半径
+			startAngle: Math.PI * 2.2,	// 圆环开始角度
+			endAngle: Math.PI * 0.8,	// 圆环结束角度
+			counterclockwise: true,		// 圆环角度是否顺时针
+			lineWidth: 10,				// 圆环边的宽度
+			strokeStyle: 'transparent',	// 圆环底色
+			fillStyle: 'red',			// 圆环本色
+			lineCap: 'round'			// 圆环端点样式
+		}
+		var opts = $.extend({}, _opts, option);	// 合并样式
+
+		ctx.beginPath();
+	    ctx.arc(0, 0, opts.radius, 0, Math.PI*2, true);
+	    ctx.lineWidth = opts.lineWidth;
+	    ctx.strokeStyle = opts.strokeStyle;
+	    ctx.stroke();
+
+	    ctx.beginPath();
+		ctx.arc(opts.x, opts.y, opts.radius, opts.startAngle, opts.endAngle, opts.counterclockwise);
+		ctx.strokeStyle = opts.fillStyle;
+	    ctx.lineCap = opts.lineCap;
+		ctx.stroke();
+		ctx.closePath();
+
+	    ctx.save();
+	    ctx.restore();
+	}
+	ctx.translate(cw/2, ch/2);
+	draw_ring({fillStyle: 'rgb(255, 255, 255)'});
+	ctx.translate(-cw/2, -ch/2);
+
+
+	var endAngle = Math.PI * 0;
+	function anime() {
+		ctx.clearRect(0, 0, 999999, 999999);
+
+		ctx.translate(cw/2, ch/2);
+		rg.draw(ctx);
+		draw_ring({fillStyle: 'rgb(0, 0, 0)', lineWidth: 15});
+		ctx.translate(-cw/2, -ch/2);
+
+
+		ctx.translate(cw/2, ch/2);
+		rg_anime.lineWidth = Math.random() * 2 + 1;
+		endAngle += (Math.random() * 1 - 0.5) * 0.01 * Math.PI;
+		rg_anime.endAngle = endAngle;
+		rg_anime.draw(ctx);
+		ctx.translate(-cw/2, -ch/2);
+
+
+		requestAnimationFrame(anime);
+	}
+	var rg_anime = new RingG({x: 0, y: 0, fillStyle: 'rgb(255, 120, 0)', lineWidth: 15, counterclockwise: false, startAngle: Math.PI * -1.2});
+	anime(rg_anime);
+	</script>
+</body>
+</html>

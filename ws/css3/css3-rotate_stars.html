@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>变形</title>
+	<!-- Common START -->
+ 	<link rel="stylesheet" href="../_commons/bootstrap/css/bootstrap.min.css">
+ 	<link rel="stylesheet" href="../_commons/font-awesome/css/font-awesome.min.css">
+	<script src="../_commons/jquery/jquery.min.js"></script>
+	<script src="../_commons//bootstrap/js/bootstrap.min.js"></script>
+	<script src="../_commons/echarts/echarts.min.js"></script>
+	<!-- Common =END= -->
+	<style>
+		body, .bg {
+			background-color: #000;
+		}
+
+		.info {
+			border: solid 1px rgba(0,255,0,0.3);
+			background-color: rgba(0,255,0,0.1);
+		}
+
+		.bg {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		.l {
+			position: absolute;
+			/*letter-spacing: 100px;*/
+			word-spacing: 100px;
+			word-wrap: break-word;
+			/*letter-spacing: 50px;
+			line-height: 50px;*/
+			/*word-break设置强行换行;normal 亚洲语言和非亚洲语言的文本规则，允许在字内换行word-break: normal; */
+		}
+
+		img {
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+</head>
+<body>
+	<!-- 背景窗口 -->
+	<div class="perspective-back bg" style="overflow-y: hidden; border: none; opacity: 0.8; width: 100%; color: rgba(0, 255, 0, 0); text-shadow: 0px 0px 5px green;">
+		<!--
+		<div class="l l2 m1 perspective-front"></div>
+		<div class="l l2 m2 perspective-front"></div>
+		<div class="l l2 m3 perspective-front"></div>
+		-->
+	</div>
+
+	<!-- 信息窗口 -->
+	<div class="info" style="position: absolute; left: 10px; top: 10px; background-color: rgba(0,0,0,0.5); color: #fff; font-size: 9px; padding: 15px 20px 5px 20px;">
+		<p id="x"></p>
+		<p id="y"></p>
+		<p id="browserWidth"></p>
+		<p id="browserHeight"></p>
+	</div>
+
+	<script>
+		var layers = 10;
+		var max_w = 1600;
+		var max_h = 1600;
+		var min_w = 1400;
+		var min_h = 1400;
+		var left_last = 110;
+		var mn_l = -20;
+		/*
+		for (var l = 1; l <= layers; l++) {
+			var w = l / layers * (max_w - min_w);
+			var h = l / layers * (max_h - min_h);
+			var lft = (layers - l + 1) / layers * left_last + mn_l;
+			$('.bg').append(
+				'<div class="l l2 perspective-front" style="' +
+					'width: ' + w + 'px; ' +
+					'height: ' + h + 'px; ' +
+					'left: ' + lft + '%; ' +
+					'top: calc(50% - ' + (h / 2) + 'px);' +
+				'">'
+			);
+		}
+		*/
+
+		var l = 1;
+		var timer = setInterval(function(){
+			if (l <= layers) {
+				// 由小到大
+				var w = min_w + l / layers * (max_w - min_w);
+				var h = min_h + l / layers * (max_h - min_h);
+				// 一致
+				// var w = max_w;
+				// var h = max_h;
+				var lft = (layers - l + 1) / layers * left_last /*+ mn_l*/;
+				var text = '';
+				for (var i = 0; i < 600; i++) {
+					text +=
+						'<b style="' +
+							'position: absolute; ' +
+							'left: ' + (Math.random() * max_w) + 'px; ' +
+							'top: ' + (Math.random() * max_h) + 'px;">' +
+							(Math.random() > 0.5 ? 1 : 0) +
+						'</b>'
+				}
+
+
+				var newNode = $(
+					'<div class="l" style="' +
+						// 'border-radius: 9999px;' +
+						'width: ' + w + 'px; ' +
+						'height: ' + h + 'px; ' +
+						'left: calc(50% - ' + (w / 2) + 'px); ' +
+						'top: calc(50% - ' + (h / 2) + 'px);' +
+						// 'letter-spacing: ' + ( 30 + 5 * l + (Math.random() - 0.5) * 5) + 'px;' +
+						// 'line-height: ' + ( 30 + 4 * l + (Math.random() - 0.5) * 5) + 'px;' +
+						'font-size: ' + (4 * l) + 'px;' +
+					'">' +
+					text +
+					'</div>'
+				);
+				$('.bg').append(newNode);
+			} else {
+				clearInterval(timer);
+			}
+			l++;
+		}, 10);
+
+
+		// 鼠标处理
+		function getMousePos(event) {
+			var e = event || window.event;
+			return {'x': e.screenX, 'y': e.screenY}
+		}
+
+		document.onmousemove = mouseMoveFrame;
+
+		function mouseMoveFrame(ev) {
+			var mouseInfo = {};
+			if (!ev) {
+				mouseInfo = {x: $(window).width()/2, y: $(window).height()/2};
+			} else {
+				mouseInfo = getMousePos(ev);
+			}
+			$('#x').html('x: ' + mouseInfo.x);
+			$('#y').html('y: ' + mouseInfo.y);
+			$('body:eq(0)').data().m = {x: mouseInfo.x, y: mouseInfo.y};
+
+			$.each($('.l'), function (idx) {
+				var node = $(this);
+				var w = node.width();
+				var h = node.height();
+				var n = 0.005;	// 倍率
+				var centerBased_mouseX = $(window).width()/2 - mouseInfo.x;
+				var centerBased_mouseY = $(window).height()/2 - mouseInfo.y;
+				console.log(centerBased_mouseX, centerBased_mouseY);
+				node.css({
+					'left': 'calc(50% - ' + (w / 2) + 'px - ' + ((idx + 1) * n * centerBased_mouseX) + 'px)',
+					'top': 'calc(50% - ' + (h / 2) + 'px - ' + ((idx + 1) * n * centerBased_mouseY) + 'px)'
+				})
+			});
+
+			// $('.perspective-back').css('perspective-origin',
+			// 		($('body:eq(0)').data().m.x / $('body:eq(0)').data().b.w * 100) + '% ' +
+			// 		($('body:eq(0)').data().m.y / $('body:eq(0)').data().b.h * 100) + '%');
+			// console.log($('.perspective-back').css('perspective-origin'));
+		}
+
+		function getBrowserSize() {
+			$('#browserWidth').html('bw: ' + $(window).width());
+			$('#browserHeight').html('bh: ' + $(window).height());
+			$('body:eq(0)').data().b = {w: $(window).width(), h: $(window).height()};
+		}
+
+		$(window).resize(getBrowserSize);
+
+		getBrowserSize();
+		mouseMoveFrame();
+
+	</script>
+</body>
+</html>

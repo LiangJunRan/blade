@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas 变形</title>
+    <link href="../_commons/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>
+    <link href="../_commons/bootstrap-slider/css/bootstrap-slider.min.css" rel="stylesheet"></link>
+    <link href="../_commons/font-awesome/css/font-awesome.min.css" rel="stylesheet"></link>
+    <link href="assets/css/styles.css" rel="stylesheet"></link>
+    <script src='../_commons/jquery/jquery.min.js'></script>
+    <script src='assets/js/dat.gui.min.js'></script>
+    <script src='../_commons/bootstrap/js/bootstrap.min.js'></script>
+    <script src='../_commons/bootstrap-slider/js/bootstrap-slider.min.js'></script>
+    <script src='assets/js/scripts.js'></script>
+</head>
+
+<body>
+    <div class="row" style="margin: 10px; padding: 0px;">
+        <canvas id="canvas" width="800" height="600"></canvas>
+    </div>
+    <script>
+        var c, ctx, opts, oopts, a,b,c,d;
+        c = document.getElementById('canvas');
+        ctx = c.getContext('2d');
+        opts = {
+            center: {
+                x: 200,
+                y: 200
+            },
+            a: 1,
+            b: 0,
+            c: 0,
+            d: 1,
+            horizontal_offset: 0,
+            vertical_offset: 0
+        }
+        a = opts.a;
+        b = opts.b;
+        c = opts.c;
+        d = opts.d;
+
+        // add GUI controls
+        var gui = new dat.GUI();
+        var f = gui.addFolder('Center');
+        f.add(opts.center, 'x').min(-1000).max(1000);
+        f.add(opts.center, 'y').min(-1000).max(1000);
+
+        var f = gui.addFolder('Transform');
+        f.add(opts, 'a').min(-1).max(1);
+        f.add(opts, 'b').min(-1).max(1);
+        f.add(opts, 'c').min(-1).max(1);
+        f.add(opts, 'd').min(-1).max(1);
+        f.add(opts, 'horizontal_offset').min(-500).max(500);
+        f.add(opts, 'vertical_offset').min(-500).max(500);
+
+        function draw() {
+            ctx.clearRect(0, 0, 100000, 100000);
+            ctx.restore();
+
+            ctx.translate(opts.center.x, opts.center.y);
+
+            ctx.beginPath();
+            ctx.arc(
+                0,
+                0,
+                3,
+                Math.PI,
+                -Math.PI,
+                true);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(
+                10,
+                10,
+                3,
+                Math.PI,
+                -Math.PI,
+                true);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(
+                -10,
+                10,
+                3,
+                Math.PI,
+                -Math.PI,
+                true);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(
+                -10,
+                -10,
+                3,
+                Math.PI,
+                -Math.PI,
+                true);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(
+                10,
+                -10,
+                3,
+                Math.PI,
+                -Math.PI,
+                true);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.strokeRect(-50, -50, 100, 100);
+            // ctx.arc(
+            //     0,
+            //     0,
+            //     150,
+            //     Math.PI,
+            //     -Math.PI,
+            //     true);
+            ctx.closePath();
+            ctx.stroke();
+
+
+            var da,db,dc,dd;
+            da = (opts.a - a) * 1;
+            db = (opts.b - b) * 1;
+            dc = (opts.c - c) * 1;
+            dd = (opts.d - d) * 1;
+
+            console.log(da, db, dc, dd);
+
+            // 形变
+            /*ctx.setTransform(
+                opts.a,
+                opts.b,
+                opts.c,
+                opts.d,
+                opts.horizontal_offset,
+                opts.vertical_offset
+            );*/
+
+            ctx.transform(
+                1 + da,
+                0 + db,
+                0 + dc,
+                1 + dd,
+                0,
+                0
+            );
+
+            a = opts.a;
+            b = opts.b;
+            c = opts.c;
+            d = opts.d;
+
+            ctx.stroke();
+            ctx.translate(-opts.center.x, -opts.center.y);
+
+            ctx.save();
+
+            requestAnimationFrame(draw);
+        }
+        // draw();
+        // draw();
+        // draw();
+        draw();
+
+
+    function drsaw(id) {
+        var canvas = document.getElementById(id) || 'canvas';
+        if (canvas == null) {
+            return false;
+        }
+        var context = canvas.getContext('2d');
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        context.beginPath();
+
+        // center_x, center_y, r, start_angle, end_angle, 顺时针
+        context.arc(
+            $('body').data()['x'],
+            $('body').data()['y'],
+            $('body').data()['r'],
+            $('body').data()['st_a'],
+            $('body').data()['ed_a'],
+            true);
+        //不关闭路径路径会一直保留下去，当然也可以利用这个特点做出意想不到的效果
+        context.closePath();
+        context.fillStyle = 'rgba(' +
+            $('body').data()['red'] +
+            ',' +
+            $('body').data()['green'] +
+            ',' +
+            $('body').data()['blue'] +
+            ',' +
+            $('body').data()['alpha'] +
+            ')';
+        context.fill();
+    }
+    </script>
+</body>
+
+</html>

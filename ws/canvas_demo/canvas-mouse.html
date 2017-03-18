@@ -248,16 +248,24 @@
 
 	        	EllipseTwo(ctx, m.x, m.y - 90, 100, 100);
 
-	        	ctx.translate(cw / 2, ch / 2);			// 将绘图原点移到画布中点
-	        	arc_delta = Math.atan(m.cy / m.cx) - arc;	// 取差值
-	        	arc = Math.atan(m.cy / m.cx);				// 更新角度值
+	        	ctx.translate(cw / 2, ch / 2);				// 将绘图原点移到画布中点
 
-	        	trans_delta = Math.atan(Math.abs(m.obj.cy) / Math.abs(m.obj.cx)) - trans;	// 取差值
-	        	trans = Math.atan(Math.abs(m.obj.cy) / Math.abs(m.obj.cx));				// 更新角度值
+	        	// arc_delta = Math.atan(m.cy / m.cx) - arc;	// 取差值
+	        	// arc = Math.atan(m.cy / m.cx);				// 更新角度值
+
+	        	// trans_delta = Math.atan(Math.abs(m.obj.cy) / Math.abs(m.obj.cx)) - trans;	// 取差值
+	        	// trans = Math.atan(Math.abs(m.obj.cy) / Math.abs(m.obj.cx));				// 更新角度值
 
 				// ctx.rotate(arc_delta);					// 旋转
-				console.log(trans.toFixed(2), trans_delta.toFixed(2));
-				ctx.transform(1, /*Math.tan(Math.PI/180*30)*/trans_delta, 0 , 1, 0, 0);	// 形变
+
+				// ctx.setTransform(1, Math.tan(Math.PI/180*30), 0 , 1, 0, 0);	// 形变
+				var third = Math.sqrt(Math.pow(m.obj.cy, 2) + Math.pow(m.obj.cx, 2));
+				var x = Math.PI / 180 * Math.cos(m.obj.cy / third);
+
+				console.log((Math.atan(Math.abs(m.obj.cy) / Math.abs(m.obj.cx))), '|', Math.cos(m.obj.cy / third), '|', x);
+
+				ctx.setTransform(1, x, 0 , 1, 0, 0);	// 形变
+
 	            ctx.translate(-cw / 2, -ch / 2);		// 将画布原点还原
 
 		        /*ctx.arc(
