@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>变形</title>
+	<title>变形2</title>
 	<!-- Common START -->
- 	<link rel="stylesheet" href="../_commons/bootstrap/css/bootstrap.min.css">
- 	<link rel="stylesheet" href="../_commons/font-awesome/css/font-awesome.min.css">
+ 	<!-- <link rel="stylesheet" href="../_commons/bootstrap/css/bootstrap.min.css">
+ 	<link rel="stylesheet" href="../_commons/font-awesome/css/font-awesome.min.css"> -->
 	<script src="../_commons/jquery/jquery.min.js"></script>
-	<script src="../_commons//bootstrap/js/bootstrap.min.js"></script>
-	<script src="../_commons/echarts/echarts.min.js"></script>
+	<script src="../_commons/my/canvas_tools/canvas_tools.js"></script>
+	<!-- <script src="../_commons//bootstrap/js/bootstrap.min.js"></script>
+	<script src="../_commons/echarts/echarts.min.js"></script> -->
 	<!-- Common =END= -->
 	<style>
 		body, .bg {
@@ -16,13 +17,13 @@
 		}
 
 		div {
-			border: solid 1px rgba(0,255,0,0);
-			background-color: rgba(0,255,0,0.01);
-			opacity: 0.7;
+			/*border: solid 1px rgba(0,255,0,0);
+			background-color: rgba(0,255,0,0.01);*/
+			opacity: 1;
 		}
 		div:hover {
-			background-color: rgba(0,255,0,0.05);
-			border-color: rgba(0,255,0,1);
+			/*background-color: rgba(0,255,0,0.05);
+			border-color: rgba(0,255,0,1);*/
 			opacity: 1;
 		}
 
@@ -176,15 +177,20 @@
 
 			$('.perspective-back').css({
 				'perspective-origin':
-					($('body:eq(0)').data().m.x / window.innerWidth * 15 + 35) + '% ' +
-					($('body:eq(0)').data().m.y / $('body:eq(0)').data().b.h * 100) + '%'
+					($('body:eq(0)').data().m.x / window.innerWidth * 15 + 35) + '% '
+
+					/*($('body:eq(0)').data().m.x / window.innerWidth * 15 + 35) + '% ' +
+					($('body:eq(0)').data().m.y / $('body:eq(0)').data().b.h * 100) + '%'*/
+					// 以上两行注释符遮断鼠标y轴影响
 			});
 			$.each($('.perspective-front'), function(idx) {
 				var w = $(this).width();
 				var h = $(this).height();
 				var rt_horizontal = $('body:eq(0)').data().m.x / $('body:eq(0)').data().b.w * 2 + 0.18 * 2;
 				var rt_vertical = $('body:eq(0)').data().m.y / $('body:eq(0)').data().b.h - 0.5;
-				$(this).css('left', 'calc(' + left_percent + ' - ' + (w/2) + 'px - ' + idx * 20 /*100*/ * rt_horizontal + 'px)');
+				$(this).css('left', 'calc(' + left_percent + ' - ' + (w/2) + 'px - ' + idx * 7 /*100*/ * rt_horizontal + 'px)');
+
+				rt_vertical = 0;	// 遮断鼠标y轴影响
 				$(this).css('top', 'calc(50% - ' + (h/2) + 'px - ' + idx * 25 /*50*/ * rt_vertical + 'px)');
 			});
 		}
@@ -230,7 +236,7 @@
 			            ',' +
 			            0 +
 			            ',' +
-			            0.1 +
+			            0.0 +
 			            ')';
 			        ctx.fill();
 				}
@@ -252,9 +258,10 @@
 			            ',' +
 			            0 +
 			            ',' +
-			            0.1 +
+			            0.0 +
 			            ')';
 			        ctx.fill();
+
 				}
 
 				if (i == 2) {
@@ -274,7 +281,7 @@
 			            ',' +
 			            0 +
 			            ',' +
-			            0.1 +
+			            0.0 +
 			            ')';
 			        ctx.fill();
 				}
@@ -296,9 +303,30 @@
 			            ',' +
 			            0 +
 			            ',' +
-			            0.1 +
+			            0.0 +
 			            ')';
 			        ctx.fill();
+
+			        var _n = 12
+			        var part_angle = 2 / _n;
+			        var part_x_angle = 0.1 * part_angle;
+			        for (var j = 0; j < _n; j++) {
+			        	draw_ring(
+				        	ctx,
+				        	{
+								x: 0,
+								y: 0,
+								radius: 70,
+								startAngle: Math.PI * part_x_angle + part_angle * Math.PI * j,
+								endAngle: Math.PI * part_angle + part_angle * Math.PI * j,
+								counterclockwise: false,
+								lineWidth: 2,
+								fillStyle: 'orange',
+								lineCap: '',
+								isShadow: true
+							}
+						);
+			        }
 				}
 
 				if (i == 4) {
@@ -318,9 +346,103 @@
 			            ',' +
 			            0 +
 			            ',' +
-			            0.1 +
+			            0.0 +
 			            ')';
 			        ctx.fill();
+
+			        draw_bulged_ring(
+			        	ctx,
+			        	{
+			        		x: 0,
+							y: 0,
+							ring_parts: [
+								{
+									radius: 200,
+									startAngle: Math.PI * 1.55,
+									endAngle: Math.PI * 0.5
+								}, {
+									radius: 205,
+									startAngle: Math.PI * 0.51,
+									endAngle: Math.PI * 0.64
+								}, {
+									radius: 200,
+									startAngle: Math.PI * 0.65,
+									endAngle: Math.PI * 1.4
+								}, {
+									radius: 205,
+									startAngle: Math.PI * 1.41,
+									endAngle: Math.PI * 1.54
+								}
+							],
+							link_parts: true,
+							counterclockwise: false,
+							lineWidth: 1,
+							fillStyle: 'orange',
+							lineCap: '',
+							isShadow: true
+			        	}
+			        );
+
+			        /*draw_ring(
+			        	ctx,
+			        	{
+							x: 0,
+							y: 0,
+							radius: 200,
+							startAngle: Math.PI * -0.45,
+							endAngle: Math.PI * 0.5,
+							counterclockwise: false,
+							lineWidth: 1,
+							fillStyle: 'orange',
+							lineCap: '',
+							isShadow: true
+						}
+					);
+					draw_ring(
+			        	ctx,
+			        	{
+							x: 0,
+							y: 0,
+							radius: 200,
+							startAngle: Math.PI * 0.65,
+							endAngle: Math.PI * -0.6,
+							counterclockwise: false,
+							lineWidth: 1,
+							fillStyle: 'orange',
+							lineCap: '',
+							isShadow: true
+						}
+					);
+					draw_ring(
+			        	ctx,
+			        	{
+							x: 0,
+							y: 0,
+							radius: 205,
+							startAngle: Math.PI * -0.59,
+							endAngle: Math.PI * -0.46,
+							counterclockwise: false,
+							lineWidth: 1,
+							fillStyle: 'orange',
+							lineCap: '',
+							isShadow: true
+						}
+					);
+					draw_ring(
+			        	ctx,
+			        	{
+							x: 0,
+							y: 0,
+							radius: 205,
+							startAngle: Math.PI * 0.51,
+							endAngle: Math.PI * 0.64,
+							counterclockwise: false,
+							lineWidth: 1,
+							fillStyle: 'orange',
+							lineCap: '',
+							isShadow: true
+						}
+					);*/
 				}
 
 				if (i == 5) {
@@ -340,9 +462,27 @@
 			            ',' +
 			            0 +
 			            ',' +
-			            0.1 +
+			            0.0 +
 			            ')';
 			        ctx.fill();
+
+			        draw_repeat_lines_ring(
+			        	ctx,
+			        	{
+							x: 0,
+							y: 0,
+							radius: 210,
+							linesCount: 180,
+							lineStartDeltaRadius: -40,
+							lineEndDeltaRadius: -50,
+							ratioOfLineToRadius: 1 / 400,
+							linePlusStartDeltaRadius: -35,
+							linePlusEndDeltaRadius: -50,
+							ratioOfLinePlusToRadius: 1 / 400,
+							strokeStyle: '#fff',
+							lineCap: ''
+						}
+					);
 				}
 
 				if (i == 6) {
@@ -362,9 +502,70 @@
 			            ',' +
 			            0 +
 			            ',' +
-			            0.1 +
+			            0.0 +
 			            ')';
 			        ctx.fill();
+			        draw_ring(
+			        	ctx,
+			        	{
+							x: 0,
+							y: 0,
+							radius: 140,
+							startAngle: Math.PI * 0.07,
+							endAngle: Math.PI * 0.93,
+							counterclockwise: false,
+							lineWidth: 1,
+							strokeStyle: 'transparent',
+							fillStyle: 'lightblue',
+							lineCap: ''
+						}
+					);
+			        draw_ring(
+			        	ctx,
+			        	{
+							x: 0,
+							y: 0,
+							radius: 138.5,
+							startAngle: Math.PI * 0.47,
+							endAngle: Math.PI * 0.73,
+							counterclockwise: false,
+							lineWidth: 3,
+							strokeStyle: 'transparent',
+							fillStyle: 'lightblue',
+							lineCap: ''
+						}
+					);
+
+			        draw_ring(
+			        	ctx,
+			        	{
+							x: 0,
+							y: 0,
+							radius: 140,
+							startAngle: Math.PI * -0.07,
+							endAngle: Math.PI * -0.93,
+							counterclockwise: true,
+							lineWidth: 1,
+							strokeStyle: 'transparent',
+							fillStyle: 'lightblue',
+							lineCap: ''
+						}
+					);
+					draw_ring(
+			        	ctx,
+			        	{
+							x: 0,
+							y: 0,
+							radius: 138.5,
+							startAngle: Math.PI * -0.17,
+							endAngle: Math.PI * -0.53,
+							counterclockwise: true,
+							lineWidth: 3,
+							strokeStyle: 'transparent',
+							fillStyle: 'lightblue',
+							lineCap: ''
+						}
+					);
 				}
 		    }
 		}, 1000);

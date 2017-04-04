@@ -1,0 +1,293 @@
+[2017-03-31 10:16:38,163][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:16:38,165][db.py:217][DEBUG]:DB start heart beat
+[2017-03-31 10:16:38,167][db.py:71][DEBUG]:DB running sql: select name as "名字" from t
+[2017-03-31 10:16:38,167][db.py:89][ERROR]:DB run sql: "select name as "名字" from t" failed, retry_times: 0. Error.msg = AttributeError("'NoneType' object has no attribute 'unread_result'",)
+[2017-03-31 10:16:38,168][db.py:105][ERROR]:DB run sql: "select name as "名字" from t" failed. This error can NOT retry. Error.msg = AttributeError("'NoneType' object has no attribute 'unread_result'",)
+[2017-03-31 10:16:38,475][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:16:38,475][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:16:38,476][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:16:59,480][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:28:36,322][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:28:36,323][db.py:217][DEBUG]:DB start heart beat
+[2017-03-31 10:28:36,815][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:28:36,815][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:28:36,816][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:28:36,816][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:28:36,817][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:28:36,817][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:28:57,329][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:28:57,329][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:28:57,330][db.py:217][DEBUG]:DB start heart beat
+[2017-03-31 10:28:57,330][db.py:217][DEBUG]:DB start heart beat
+[2017-03-31 10:28:57,340][http_server.py:124][INFO]:Http service is ready.
+[2017-03-31 10:28:57,340][http_server.py:124][INFO]:Http service is ready.
+[2017-03-31 10:28:57,340][http_server.py:124][INFO]:Http service is ready.
+[2017-03-31 10:28:57,821][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:28:57,821][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:28:57,821][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:28:58,295][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:28:58,295][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:28:58,295][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:28:58,295][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:28:58,295][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:28:58,296][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:28:58,295][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:28:58,296][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:28:58,296][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:28:58,715][db.py:202][ERROR]:DB heart beat failed, retry_times: 1. Error msg: 'Cursor is None'
+[2017-03-31 10:28:58,715][db.py:202][ERROR]:DB heart beat failed, retry_times: 1. Error msg: 'Cursor is None'
+[2017-03-31 10:28:58,715][db.py:202][ERROR]:DB heart beat failed, retry_times: 1. Error msg: 'Cursor is None'
+[2017-03-31 10:28:58,715][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:28:58,715][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:28:58,715][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:28:58,716][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:28:58,716][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:28:58,716][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:29:19,300][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:29:19,300][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:29:19,300][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:29:19,721][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:29:19,721][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:29:19,721][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:29:20,154][db.py:202][ERROR]:DB heart beat failed, retry_times: 1. Error msg: 'Cursor is None'
+[2017-03-31 10:29:20,155][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:29:20,155][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:29:20,154][db.py:202][ERROR]:DB heart beat failed, retry_times: 1. Error msg: 'Cursor is None'
+[2017-03-31 10:29:20,154][db.py:202][ERROR]:DB heart beat failed, retry_times: 1. Error msg: 'Cursor is None'
+[2017-03-31 10:29:20,155][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:29:20,155][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:29:20,155][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:29:20,155][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:29:20,663][db.py:202][ERROR]:DB heart beat failed, retry_times: 2. Error msg: 'Cursor is None'
+[2017-03-31 10:29:20,663][db.py:202][ERROR]:DB heart beat failed, retry_times: 2. Error msg: 'Cursor is None'
+[2017-03-31 10:29:20,663][db.py:202][ERROR]:DB heart beat failed, retry_times: 2. Error msg: 'Cursor is None'
+[2017-03-31 10:29:20,663][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:29:20,663][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:29:20,663][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:29:20,664][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:29:20,664][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:29:20,664][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:30:00,412][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:30:00,414][db.py:217][DEBUG]:DB start heart beat
+[2017-03-31 10:30:01,220][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:30:01,222][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:30:01,223][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:30:01,220][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:30:01,222][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:30:01,223][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:30:07,788][http_server.py:110][CRITICAL]:Http service init failed: Must ensure DBS ready first
+[2017-03-31 10:30:21,682][http_server.py:126][INFO]:Http service is ready.
+[2017-03-31 10:30:48,739][http_server.py:31][INFO]:Handling POST request, data-form: {'schema': ['local'], 'table_id': ['1111,2222']}
+[2017-03-31 10:30:48,739][http_server.py:52][INFO]:Response content: b'Success!'
+[2017-03-31 10:42:25,579][na.py:317][DEBUG]:NA handler initializing schema: 'local' ...
+[2017-03-31 10:42:46,623][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:42:46,623][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:42:46,626][db.py:217][DEBUG]:DB start heart beat
+[2017-03-31 10:42:46,623][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:42:46,626][db.py:217][DEBUG]:DB start heart beat
+[2017-03-31 10:42:46,626][db.py:217][DEBUG]:DB start heart beat
+[2017-03-31 10:42:47,522][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:42:47,522][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:42:47,522][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:42:47,522][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:42:47,525][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:42:47,525][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:42:47,525][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:42:47,525][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:42:47,522][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:42:47,526][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:42:47,526][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:42:47,526][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:42:47,526][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:42:47,525][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:42:47,526][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:07,629][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:07,629][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:07,629][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:07,629][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:07,629][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:07,630][db.py:217][DEBUG]:DB start heart beat
+[2017-03-31 10:43:07,630][db.py:217][DEBUG]:DB start heart beat
+[2017-03-31 10:43:07,630][db.py:217][DEBUG]:DB start heart beat
+[2017-03-31 10:43:07,631][na.py:331][DEBUG]:NA handler initialized schema: 'local', watchers_count: 1, senders_count: 1
+[2017-03-31 10:43:07,630][db.py:217][DEBUG]:DB start heart beat
+[2017-03-31 10:43:07,630][db.py:217][DEBUG]:DB start heart beat
+[2017-03-31 10:43:07,631][na.py:331][DEBUG]:NA handler initialized schema: 'local', watchers_count: 1, senders_count: 1
+[2017-03-31 10:43:07,631][na.py:331][DEBUG]:NA handler initialized schema: 'local', watchers_count: 1, senders_count: 1
+[2017-03-31 10:43:07,632][na.py:339][DEBUG]:NA handler starting watchers ... schema: 'local'
+[2017-03-31 10:43:07,631][na.py:331][DEBUG]:NA handler initialized schema: 'local', watchers_count: 1, senders_count: 1
+[2017-03-31 10:43:07,631][na.py:331][DEBUG]:NA handler initialized schema: 'local', watchers_count: 1, senders_count: 1
+[2017-03-31 10:43:07,632][na.py:339][DEBUG]:NA handler starting watchers ... schema: 'local'
+[2017-03-31 10:43:07,632][na.py:339][DEBUG]:NA handler starting watchers ... schema: 'local'
+[2017-03-31 10:43:07,632][na.py:339][DEBUG]:NA handler starting watchers ... schema: 'local'
+[2017-03-31 10:43:07,632][na.py:339][DEBUG]:NA handler starting watchers ... schema: 'local'
+[2017-03-31 10:43:07,761][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:43:07,761][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:43:07,761][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:43:07,761][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:43:07,761][db.py:202][ERROR]:DB heart beat failed, retry_times: 0. Error msg: 'Cursor is None'
+[2017-03-31 10:43:07,763][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:07,763][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:07,763][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:07,763][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:07,776][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:07,763][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:07,776][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:07,776][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:07,776][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:07,776][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:08,040][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:08,040][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:08,040][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:08,040][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:08,040][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:08,040][na.py:355][DEBUG]:NA handler sending tasks ... Sender_count: 1, tasks_count: 2, split_tasks_count: [2]
+[2017-03-31 10:43:08,040][na.py:355][DEBUG]:NA handler sending tasks ... Sender_count: 1, tasks_count: 2, split_tasks_count: [2]
+[2017-03-31 10:43:08,040][na.py:355][DEBUG]:NA handler sending tasks ... Sender_count: 1, tasks_count: 2, split_tasks_count: [2]
+[2017-03-31 10:43:08,040][na.py:355][DEBUG]:NA handler sending tasks ... Sender_count: 1, tasks_count: 2, split_tasks_count: [2]
+[2017-03-31 10:43:08,040][na.py:355][DEBUG]:NA handler sending tasks ... Sender_count: 1, tasks_count: 2, split_tasks_count: [2]
+[2017-03-31 10:43:08,040][na.py:360][DEBUG]:NA sender idx: 0 is sending tasks with Process
+[2017-03-31 10:43:08,040][na.py:360][DEBUG]:NA sender idx: 0 is sending tasks with Process
+[2017-03-31 10:43:08,040][na.py:360][DEBUG]:NA sender idx: 0 is sending tasks with Process
+[2017-03-31 10:43:08,040][na.py:360][DEBUG]:NA sender idx: 0 is sending tasks with Process
+[2017-03-31 10:43:08,040][na.py:360][DEBUG]:NA sender idx: 0 is sending tasks with Process
+[2017-03-31 10:43:08,271][na.py:34][DEBUG]:NA connecting to {'username': 'nas\n', 'port': 8023, 'hostname': 'na', 'password': 'opsware\n'}
+[2017-03-31 10:43:08,271][na.py:34][DEBUG]:NA connecting to {'username': 'nas\n', 'port': 8023, 'hostname': 'na', 'password': 'opsware\n'}
+[2017-03-31 10:43:08,271][na.py:34][DEBUG]:NA connecting to {'username': 'nas\n', 'port': 8023, 'hostname': 'na', 'password': 'opsware\n'}
+[2017-03-31 10:43:08,271][na.py:34][DEBUG]:NA connecting to {'username': 'nas\n', 'port': 8023, 'hostname': 'na', 'password': 'opsware\n'}
+[2017-03-31 10:43:08,271][na.py:34][DEBUG]:NA connecting to {'username': 'nas\n', 'port': 8023, 'hostname': 'na', 'password': 'opsware\n'}
+[2017-03-31 10:43:08,530][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:08,530][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:08,530][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:08,530][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:08,530][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:08,699][db.py:202][ERROR]:DB heart beat failed, retry_times: 1. Error msg: 'Cursor is None'
+[2017-03-31 10:43:08,699][db.py:202][ERROR]:DB heart beat failed, retry_times: 1. Error msg: 'Cursor is None'
+[2017-03-31 10:43:08,699][db.py:202][ERROR]:DB heart beat failed, retry_times: 1. Error msg: 'Cursor is None'
+[2017-03-31 10:43:08,699][db.py:202][ERROR]:DB heart beat failed, retry_times: 1. Error msg: 'Cursor is None'
+[2017-03-31 10:43:08,699][db.py:202][ERROR]:DB heart beat failed, retry_times: 1. Error msg: 'Cursor is None'
+[2017-03-31 10:43:08,700][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:08,700][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:08,700][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:08,700][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:08,700][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:08,701][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:08,701][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:08,701][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:08,701][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:08,701][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:13,040][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:13,040][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:13,040][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:13,040][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:13,040][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:18,041][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:18,041][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:18,041][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:18,041][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:18,041][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:22,836][na.py:49][ERROR]:NA connect FAILURE: gaierror(11004, 'getaddrinfo failed')
+[2017-03-31 10:43:22,836][na.py:49][ERROR]:NA connect FAILURE: gaierror(11004, 'getaddrinfo failed')
+[2017-03-31 10:43:22,836][na.py:49][ERROR]:NA connect FAILURE: gaierror(11004, 'getaddrinfo failed')
+[2017-03-31 10:43:22,836][na.py:49][ERROR]:NA connect FAILURE: gaierror(11004, 'getaddrinfo failed')
+[2017-03-31 10:43:22,837][na.py:235][DEBUG]:NA sender connecting ... FAILED
+[2017-03-31 10:43:22,837][na.py:235][DEBUG]:NA sender connecting ... FAILED
+[2017-03-31 10:43:22,837][na.py:235][DEBUG]:NA sender connecting ... FAILED
+[2017-03-31 10:43:22,836][na.py:49][ERROR]:NA connect FAILURE: gaierror(11004, 'getaddrinfo failed')
+[2017-03-31 10:43:22,837][na.py:235][DEBUG]:NA sender connecting ... FAILED
+[2017-03-31 10:43:22,837][na.py:242][DEBUG]:NA sender, DB update_status running.
+[2017-03-31 10:43:22,837][na.py:242][DEBUG]:NA sender, DB update_status running.
+[2017-03-31 10:43:22,837][na.py:242][DEBUG]:NA sender, DB update_status running.
+[2017-03-31 10:43:22,837][na.py:235][DEBUG]:NA sender connecting ... FAILED
+[2017-03-31 10:43:22,837][na.py:242][DEBUG]:NA sender, DB update_status running.
+[2017-03-31 10:43:22,838][db.py:131][DEBUG]:Update_status. Sql is : 'UPDATE cmbc_switch_log SET run_status = \'running\', run_log = concat(run_log, \'\\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\\r\\n\'), start_time = \'2017-03-31 10:43:22\' WHERE id = 456854'
+[2017-03-31 10:43:22,838][db.py:131][DEBUG]:Update_status. Sql is : 'UPDATE cmbc_switch_log SET run_status = \'running\', run_log = concat(run_log, \'\\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\\r\\n\'), start_time = \'2017-03-31 10:43:22\' WHERE id = 456854'
+[2017-03-31 10:43:22,838][db.py:131][DEBUG]:Update_status. Sql is : 'UPDATE cmbc_switch_log SET run_status = \'running\', run_log = concat(run_log, \'\\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\\r\\n\'), start_time = \'2017-03-31 10:43:22\' WHERE id = 456854'
+[2017-03-31 10:43:22,837][na.py:242][DEBUG]:NA sender, DB update_status running.
+[2017-03-31 10:43:22,838][db.py:131][DEBUG]:Update_status. Sql is : 'UPDATE cmbc_switch_log SET run_status = \'running\', run_log = concat(run_log, \'\\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\\r\\n\'), start_time = \'2017-03-31 10:43:22\' WHERE id = 456854'
+[2017-03-31 10:43:22,839][db.py:71][DEBUG]:DB running sql: UPDATE cmbc_switch_log SET run_status = 'running', run_log = concat(run_log, '\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\r\n'), start_time = '2017-03-31 10:43:22' WHERE id = 456854
+[2017-03-31 10:43:22,839][db.py:71][DEBUG]:DB running sql: UPDATE cmbc_switch_log SET run_status = 'running', run_log = concat(run_log, '\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\r\n'), start_time = '2017-03-31 10:43:22' WHERE id = 456854
+[2017-03-31 10:43:22,839][db.py:71][DEBUG]:DB running sql: UPDATE cmbc_switch_log SET run_status = 'running', run_log = concat(run_log, '\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\r\n'), start_time = '2017-03-31 10:43:22' WHERE id = 456854
+[2017-03-31 10:43:22,838][db.py:131][DEBUG]:Update_status. Sql is : 'UPDATE cmbc_switch_log SET run_status = \'running\', run_log = concat(run_log, \'\\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\\r\\n\'), start_time = \'2017-03-31 10:43:22\' WHERE id = 456854'
+[2017-03-31 10:43:22,839][db.py:71][DEBUG]:DB running sql: UPDATE cmbc_switch_log SET run_status = 'running', run_log = concat(run_log, '\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\r\n'), start_time = '2017-03-31 10:43:22' WHERE id = 456854
+[2017-03-31 10:43:22,839][db.py:89][ERROR]:DB run sql: "UPDATE cmbc_switch_log SET run_status = 'running', run_log = concat(run_log, '\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\r\n'), start_time = '2017-03-31 10:43:22' WHERE id = 456854" failed, retry_times: 1. Error.msg = AttributeError("'NoneType' object has no attribute 'unread_result'",)
+[2017-03-31 10:43:22,839][db.py:89][ERROR]:DB run sql: "UPDATE cmbc_switch_log SET run_status = 'running', run_log = concat(run_log, '\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\r\n'), start_time = '2017-03-31 10:43:22' WHERE id = 456854" failed, retry_times: 1. Error.msg = AttributeError("'NoneType' object has no attribute 'unread_result'",)
+[2017-03-31 10:43:22,839][db.py:89][ERROR]:DB run sql: "UPDATE cmbc_switch_log SET run_status = 'running', run_log = concat(run_log, '\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\r\n'), start_time = '2017-03-31 10:43:22' WHERE id = 456854" failed, retry_times: 1. Error.msg = AttributeError("'NoneType' object has no attribute 'unread_result'",)
+[2017-03-31 10:43:22,839][db.py:71][DEBUG]:DB running sql: UPDATE cmbc_switch_log SET run_status = 'running', run_log = concat(run_log, '\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\r\n'), start_time = '2017-03-31 10:43:22' WHERE id = 456854
+[2017-03-31 10:43:22,839][db.py:89][ERROR]:DB run sql: "UPDATE cmbc_switch_log SET run_status = 'running', run_log = concat(run_log, '\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\r\n'), start_time = '2017-03-31 10:43:22' WHERE id = 456854" failed, retry_times: 1. Error.msg = AttributeError("'NoneType' object has no attribute 'unread_result'",)
+[2017-03-31 10:43:22,840][db.py:105][ERROR]:DB run sql: "UPDATE cmbc_switch_log SET run_status = 'running', run_log = concat(run_log, '\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\r\n'), start_time = '2017-03-31 10:43:22' WHERE id = 456854" failed. This error can NOT retry. Error.msg = AttributeError("'NoneType' object has no attribute 'unread_result'",)
+[2017-03-31 10:43:22,840][db.py:105][ERROR]:DB run sql: "UPDATE cmbc_switch_log SET run_status = 'running', run_log = concat(run_log, '\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\r\n'), start_time = '2017-03-31 10:43:22' WHERE id = 456854" failed. This error can NOT retry. Error.msg = AttributeError("'NoneType' object has no attribute 'unread_result'",)
+[2017-03-31 10:43:22,840][db.py:105][ERROR]:DB run sql: "UPDATE cmbc_switch_log SET run_status = 'running', run_log = concat(run_log, '\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\r\n'), start_time = '2017-03-31 10:43:22' WHERE id = 456854" failed. This error can NOT retry. Error.msg = AttributeError("'NoneType' object has no attribute 'unread_result'",)
+[2017-03-31 10:43:22,839][db.py:89][ERROR]:DB run sql: "UPDATE cmbc_switch_log SET run_status = 'running', run_log = concat(run_log, '\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\r\n'), start_time = '2017-03-31 10:43:22' WHERE id = 456854" failed, retry_times: 1. Error.msg = AttributeError("'NoneType' object has no attribute 'unread_result'",)
+[2017-03-31 10:43:22,840][db.py:105][ERROR]:DB run sql: "UPDATE cmbc_switch_log SET run_status = 'running', run_log = concat(run_log, '\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\r\n'), start_time = '2017-03-31 10:43:22' WHERE id = 456854" failed. This error can NOT retry. Error.msg = AttributeError("'NoneType' object has no attribute 'unread_result'",)
+[2017-03-31 10:43:22,840][na.py:247][DEBUG]:NA sender, send command: NA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"
+[2017-03-31 10:43:22,840][na.py:247][DEBUG]:NA sender, send command: NA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"
+[2017-03-31 10:43:22,840][na.py:247][DEBUG]:NA sender, send command: NA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"
+[2017-03-31 10:43:22,840][db.py:105][ERROR]:DB run sql: "UPDATE cmbc_switch_log SET run_status = 'running', run_log = concat(run_log, '\nNA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"\r\n'), start_time = '2017-03-31 10:43:22' WHERE id = 456854" failed. This error can NOT retry. Error.msg = AttributeError("'NoneType' object has no attribute 'unread_result'",)
+[2017-03-31 10:43:22,840][na.py:247][DEBUG]:NA sender, send command: NA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"
+[2017-03-31 10:43:22,841][na.py:303][ERROR]:NA sender error, e.msg: UnboundLocalError("local variable 'result' referenced before assignment",)
+[2017-03-31 10:43:22,841][na.py:303][ERROR]:NA sender error, e.msg: UnboundLocalError("local variable 'result' referenced before assignment",)
+[2017-03-31 10:43:22,841][na.py:303][ERROR]:NA sender error, e.msg: UnboundLocalError("local variable 'result' referenced before assignment",)
+[2017-03-31 10:43:22,840][na.py:247][DEBUG]:NA sender, send command: NA>run advanced script -ip 197.3.134.127 -name cmbc_zaibei_switch_test3 -presnapshot false -postsnapshot false -priority 1  -variables "tc_device_ip=199.0.47.106,testvar=success"
+[2017-03-31 10:43:22,841][na.py:303][ERROR]:NA sender error, e.msg: UnboundLocalError("local variable 'result' referenced before assignment",)
+[2017-03-31 10:43:22,841][na.py:303][ERROR]:NA sender error, e.msg: UnboundLocalError("local variable 'result' referenced before assignment",)
+[2017-03-31 10:43:23,042][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:23,042][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:23,042][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:23,042][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:23,042][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:28,042][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:28,042][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:28,042][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:28,042][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:28,042][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:28,772][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:28,772][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:28,772][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:28,772][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:28,772][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:29,145][db.py:202][ERROR]:DB heart beat failed, retry_times: 1. Error msg: 'Cursor is None'
+[2017-03-31 10:43:29,145][db.py:202][ERROR]:DB heart beat failed, retry_times: 1. Error msg: 'Cursor is None'
+[2017-03-31 10:43:29,145][db.py:202][ERROR]:DB heart beat failed, retry_times: 1. Error msg: 'Cursor is None'
+[2017-03-31 10:43:29,145][db.py:202][ERROR]:DB heart beat failed, retry_times: 1. Error msg: 'Cursor is None'
+[2017-03-31 10:43:29,145][db.py:202][ERROR]:DB heart beat failed, retry_times: 1. Error msg: 'Cursor is None'
+[2017-03-31 10:43:29,145][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:29,145][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:29,145][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:29,145][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:29,145][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:29,147][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:29,147][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:29,147][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:29,147][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:29,147][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:29,705][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:29,705][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:29,705][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:29,705][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:29,705][db.py:39][ERROR]:DB connected failed, "Can't connect to MySQL server on '197.1.25.175:3306' (10060 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。)"
+[2017-03-31 10:43:30,335][db.py:202][ERROR]:DB heart beat failed, retry_times: 2. Error msg: 'Cursor is None'
+[2017-03-31 10:43:30,335][db.py:202][ERROR]:DB heart beat failed, retry_times: 2. Error msg: 'Cursor is None'
+[2017-03-31 10:43:30,335][db.py:202][ERROR]:DB heart beat failed, retry_times: 2. Error msg: 'Cursor is None'
+[2017-03-31 10:43:30,335][db.py:202][ERROR]:DB heart beat failed, retry_times: 2. Error msg: 'Cursor is None'
+[2017-03-31 10:43:30,335][db.py:202][ERROR]:DB heart beat failed, retry_times: 2. Error msg: 'Cursor is None'
+[2017-03-31 10:43:30,336][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:30,336][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:30,336][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:30,336][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:30,336][db.py:205][DEBUG]:DB retrying heart beat...
+[2017-03-31 10:43:30,336][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:30,336][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:30,336][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:30,336][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:30,336][db.py:54][ERROR]:DB disconnect failed, Exception('Cursor is None',)
+[2017-03-31 10:43:33,042][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:33,042][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:33,042][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:33,042][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:33,042][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:38,043][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:38,043][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:38,043][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:38,043][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
+[2017-03-31 10:43:38,043][na.py:102][DEBUG]:NA watcher running ... Tasks count: 0, is_connect: False
