@@ -104,7 +104,15 @@ function start_watch() {
 		// console.log('   ', '' + this[0], '->', '' + this[1]);
 	});
 	// console.log('==================');
-	console.log('DIFF >>>', JSON.stringify(diff));
+	if (JSON.stringify(diff) != '{}') {
+		console.log('DIFF >>>', JSON.stringify(diff));
+	}
 	afHandler = requestAnimationFrame(start_watch);
 }
 start_watch();
+
+
+// ==========================================================
+
+$('div.selectNav:eq(0)').trigger('click');
+

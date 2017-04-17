@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="jquery.js"></script>
+</head>
+<body>
+	<iframe src="" frameborder="0" style="width: 100%; height: 600px;" id="container"></iframe>
+	<div>
+		<select id="url_list" style="height: 80px; width: 300px;" multiple></select>
+		<button type="button" id="next_btn">Next</button>
+	</div>
+	
+	<script src="http://bj.xdf.cn/portals/24/skins/home2010/jquery-1.4.2.min.js"></script>
+	<script>
+		var url_list = [
+			'http://bj.xdf.cn/tabid/20221/Default.aspx'
+		];
+		$.each(url_list, function(){
+			$('#url_list').append('<option value="' + this + '">' + this + '</option>')
+		});
+
+		function operation() {
+			// do something
+			var div_count = $(window.frames[0].document).find('div').length;
+			console.log('div count = ', div_count);
+		}
+
+		$('#next_btn').on('click', function(){
+			if (url_list.length != 0) {
+				$($('option')[0]).remove();
+				var url = url_list.pop();
+				if (url_list.length == 0) {
+					$('#next_btn').attr('disabled', 'disabled');
+				}
+				$('#container').attr('src', url);
+				setTimeout(operation, 2000);
+			} else {
+				return;
+			}
+		});
+
+
+		// 自动点击
+		// function clk() {
+		// 	$('#next_btn').trigger('click');
+		// 	if ($('#next_btn'))
+		// 	setTimeout(clk, 5000);
+		// }
+		// setTimeout(function(){
+		// 	clk();
+		// }, 5000);
+	</script>
+</body>
+</html>
