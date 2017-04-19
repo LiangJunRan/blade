@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="../_commons/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../_commons/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="../_commons/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/jquery.fullPage/jquery.fullPage.css" />
+	<style>
+		h1, h2{
+			font-weight: 900;
+		}
+		h3, h4 {
+			font-weight: 700;
+		}
+		.fp-tableCell {
+			vertical-align: top;
+		}
+		/*.container{padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto}*/
+		@media (min-width:768px){
+			.container{width: 100%/*750px*/}
+		}
+		@media (min-width:992px){
+			.container{width: 100%/*970px*/}
+		}
+		@media (min-width:1200px){
+			.container{width: 1170px}
+		}
+		.bg1 {
+			height: 945px;
+			background: #fff url(assets/imgs/bg1.jpg) no-repeat center;
+			background-color: #fff;
+			background-image: url(assets/imgs/bg1.jpg);
+			background-attachment: fixed;
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-position: center;
+		}
+		.logo {
+			position: absolute; float: left; z-index: 1000; top: 20px; left: 30px;
+		}
+		@media (min-width:768px){
+			.logo{left: 30px;}
+		}
+		@media (min-width:992px){
+			.logo{left: 30px;}
+		}
+		@media (min-width:1200px){
+			.logo{left: calc(50% - 575px + 30px);}
+		}
+
+		.show div {
+			height: 260px;
+			float: left;
+		}
+		.show div.vedio {
+			background-color: #000;
+			width: 40%;
+		}
+		.show div.description {
+			background-color: #2dcc70;
+			padding: 20px 30px;
+			width: 60%;
+		}
+
+		.align-center {
+			text-align: center;
+		}
+		.no-margin {
+			margin: 0;
+		}
+
+		.block-container {
+			margin-top: 10px;
+			margin-bottom: 20px;
+			height: 39px;
+		}
+		.block-title {
+			color: #eee;
+			width: 170px;
+			float: left;
+			left: calc(50% - 85px);
+			position: absolute;
+			background-color: darkgreen;
+			padding: 10px 15px;
+		}
+		.block-line {
+			border-bottom: solid 1px lightgray;
+			height: 19.5px;
+			margin-bottom: 23px;
+		}
+
+		.block-group-horizontal {
+			background-color: lightgray;
+			height: 100px;
+			margin-bottom: 20px;
+		}
+		.block-group-horizontal :nth-child(2) {
+			background-color: darkgreen;
+			position: absolute;
+			width: 180px;
+			height: 80px;
+			top: 10px;
+			left: 25px;
+		}
+		.block-group-horizontal :nth-child(1) {
+			background-color: gray;
+			position: absolute;
+			width: 77%;
+			height: 100px;
+			right: 15px;
+		}
+	</style>
+</head>
+<body>
+	<img class="logo" src="assets/imgs/logo.png" alt="xdf_logo">
+    <div id="fullpage">
+        <div class="section bg1">
+        	<div class="container" style="height: 100%">
+	        	<div class="row" style="height: 100%;">
+	        		<div class="col-lg-12" style="border: solid 0px red; height: 100%;">
+	        			<!-- <div style="width: 50px; height: 50px; position: absolute; top: calc(50% - 25px); left: calc(50% - 25px); background-color: red;"></div> -->
+
+		        		<img src="assets/imgs/title.png" alt="class_title" style="position: absolute; left: calc(35% - 350px + 20px); top: calc(40% - 200px); width: 700px;">
+
+		        		<img src="assets/imgs/person.png" alt="person" style="position: absolute; right: 0px; bottom: 285px; width: 340px;">
+
+		        		<div class="breadcast" style="position: absolute; left: 20px; bottom: 305px;"><i class="fa fa-play"></i> &nbsp; 当前位置: 首页 &gt; 精彩专题 &gt; 优能一对一全日制项目</div>
+		        		<div class="show" style="background-color: #7f7; position: absolute; height: 260px; bottom: 25px; width: 100%; margin: 0 -15px;">
+		        			<div class="vedio" style="float: left;"></div>
+		        			<div class="description">
+		        				<h2 style="text-align: center; font-weight: 900; margin: 3px 0 23px 0;"> 优能一对一全日制课程</h2>
+		        				<p style="text-indent: 2em;"> 优能一对一全日制课程是初高中辅导的明星课程，通过15-30天的集中学习，考生能够大幅度提高成绩，并获得良好的学习能力。全日制课程采取封闭式管理模式并配合高强度的课程学习。学院在良好的学习氛围里，将100%的精力投入到学习中去，成绩提升立竿见影。</p>
+		        				<p style="text-indent: 2em;">全日制课程细分为不同版本教材进行授课，学员的学习可以与在校课程无缝衔接。授课名师多为中考高一线名师，拥有一线教学经验，能够准确把握中高考出题命脉。教研组周周教研，精细化管理，面对教育改革率先触及对课程进行精准调整。秉承“细节之处助提分，真情关爱为学员”的宗旨，全日制课程全体教师仍在不断努力，力求为学员和家长提供更优质的服务。</p>
+		        			</div>
+		        		</div>
+		        	</div>
+		        </div>
+		    </div>
+		</div>
+        <div class="section">
+        	<div class="container align-center" style="height: 100%">
+	        	<div class="row" style="height: 100%;">
+	        		<div class="col-lg-12">
+	        			<h1>优能一对一全日制课程优势，让你收获好成绩</h1>
+	        		</div>
+
+					<div style="width: 50px; height: 50px; position: absolute; top: calc(50% - 25px); left: calc(50% - 25px); background-color: red;"></div>
+
+	        		<div class="col-lg-4 col-lg-offset-4 block-container">
+	        			<div class="block-title">
+	        				<h4 class="no-margin">课程优势</h4>
+	        			</div>
+	        			<div class="block-line"></div>
+	        		</div>
+
+	        		<div class="col-lg-6">
+	        			<div class="block-group-horizontal">
+		        			<div>
+		        				<p style="float: left;"></p>专属于一对一教育模式的研发团队，潜心研究学科体系、考试规律、学习认知规律。打造最有效的学习上升路径。
+		        				</div>
+		        			<div>科学有效的课程体系</div>
+		        		</div>
+	        		</div>
+	        		<div class="col-lg-6">
+	        			<div class="block-group-horizontal">
+		        			<div>科学有效的课程体系</div>
+		        			<div>专属于一对一教育模式的研发团队，潜心研究学科体系、考试规律、学习认知规律。打造最有效的学习上升路径。</div>
+		        		</div>
+	        		</div>
+	        		<div class="col-lg-6">
+	        			<div class="block-group-horizontal">
+		        			<div>科学有效的课程体系</div>
+		        			<div>专属于一对一教育模式的研发团队，潜心研究学科体系、考试规律、学习认知规律。打造最有效的学习上升路径。</div>
+		        		</div>
+	        		</div>
+	        		<div class="col-lg-6">
+	        			<div class="block-group-horizontal">
+		        			<div>科学有效的课程体系</div>
+		        			<div>专属于一对一教育模式的研发团队，潜心研究学科体系、考试规律、学习认知规律。打造最有效的学习上升路径。</div>
+		        		</div>
+	        		</div>
+	        		
+					<div class="col-lg-4 col-lg-offset-4 block-container">
+	        			<div class="block-title">
+	        				<h4 class="no-margin">服务特色</h4>
+	        			</div>
+	        			<div class="block-line"></div>
+	        		</div>
+
+	        		<div class="col-lg-6">
+	        			<div>首先通过入学测试、初始成绩确认明确定位，了解自身问题，认同提升所需路径及措施。</div>
+	        			<div>学习目标管理</div>
+	        		</div>
+	        		<div class="col-lg-6">
+	        			<div>首先通过入学测试、初始成绩确认明确定位，了解自身问题，认同提升所需路径及措施。</div>
+	        			<div>学习目标管理</div>
+	        		</div>
+	        		<div class="col-lg-6">
+	        			<div>首先通过入学测试、初始成绩确认明确定位，了解自身问题，认同提升所需路径及措施。</div>
+	        			<div>学习目标管理</div>
+	        		</div>
+	        		<div class="col-lg-6">
+	        			<div>首先通过入学测试、初始成绩确认明确定位，了解自身问题，认同提升所需路径及措施。</div>
+	        			<div>学习目标管理</div>
+	        		</div>
+	        		<div class="col-lg-6 col-lg-offset-3">
+	        			更多课程优势点击了解
+	        			<button><i class="fa fa-arrow-right"></i></button>
+	        		</div>
+	        	</div>
+	        </div>
+        </div>
+        <div class="section">
+	        <div class="bg1"></div>
+        </div>
+        <div class="section">
+	        <div class="bg1"></div>
+        </div>
+        <div class="section">
+	        <div class="bg1"></div>
+        </div>
+    </div>
+	
+	<script src="../_commons/jquery/jquery.min.js"></script>
+	<script src="../_commons/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendors/jquery.easings.min.js"></script>
+    <script src="assets/jquery.fullPage/jquery.fullPage.js"></script>
+
+    <script>
+        $(document).ready(function(){  
+            $("#fullpage").fullpage();  //激活fullpage  
+        })  
+    </script>
+</body>
+</html>
