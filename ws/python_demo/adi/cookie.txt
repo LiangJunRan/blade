@@ -1,0 +1,8 @@
+# Netscape HTTP Cookie File
+# http://www.netscape.com/newsref/std/cookie_spec.html
+# This is a generated file!  Do not edit.
+
+.adidas.com.cn	TRUE	/	FALSE	1492967421	ak_bmsc	DFAC22E89657C0ACD55803755A008430D2C07407564D0000DCC3FC5848E12744~plhSxLIZy2bHZ7EyNyvse0sQCtld2Qg9Fh5oqAbwyIrNKyMtJ4h6T1B/p1cOToZXv96Hk3TyDqpkZ6+eUe3PDK2wlxZEl/kBW5AXyeOprcAOvLoZcoHi2jubiWaU0hb0Ix2WX/KNfz1u25rI4Eeb7eyWYsLOITRx29fZVpG5TLeCvA/vHwT1h3AFlbfWUjMlsCK7tOV7r6btYHxHbxRRw4gSqNqG1BqWIhoaOwvmkYlZ4=
+.adidas.com.cn	TRUE	/	FALSE	1492967421	bm_mi	3BD0EADCC09B5D2E8D2261CD987CF021~1S4dT0lvtHGqBkF/TeSjU/TRt9ltDpO4nI74jGhROBmNAeZhimP4B1aZQv3csHDzzV2s7Ii4JlnsMlEH3VovlUHEHJKanCZQZuN6/8/rg+alhkAw3ajf0AajNco2tF4o7xEiT2ZMX82I2c3fl0J0zRo5iBgmtjkFVJgKdVe3P9lvkcNBEjiwS+xtqGjjkZOvHPYdvmXWtykSizvfxgIG+iQWM/9vt4iJVkyes2yrZI8=
+.adidas.com.cn	TRUE	/	FALSE	1492967423	bm_sv	A81885EE034A92A53E59F643892CA37F~NzqoeKAoeMG6i1Us2LaGuQ+MzoZz7XIWWtxIsUAdLZ3jttjgR6o46tgMDc6qUvAa+QsQcMsF1V58yXVe1Rzv3Cf5TThdYWHToWyRp06cbP8/rbUvdTw0f20iapouOnUHKqqa8MjrOOeqiAp4TgXEAqhvy8gzG45ISQnTJnQifBg=
+www.adidas.com.cn	FALSE	/	FALSE	1492967481	frontend	4rldqcjh7b2gvajf95suop16t4
