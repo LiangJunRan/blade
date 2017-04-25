@@ -1,0 +1,148 @@
+/*@media (min-width:768px){
+	.container{width: 100%}
+}
+@media (min-width:992px){
+	.container{width: 100%}
+}
+@media (min-width:1200px){
+	.container{width: 1170px}
+}*/
+h2 {
+	margin: 0;
+	padding: 15px 0;
+}
+section {
+	height: 100%;
+	line-height: 100%;
+}
+.container {
+	width: 100%;
+	padding: 0;
+	margin: 0 auto;
+}
+
+.header {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 50px;
+	z-index: 1000;
+	background-color: #ddd;
+	border-bottom: solid 3px #2dcc70;
+	text-align: center;
+}
+.logo {
+	height: 30px;
+	margin: 10px;
+}
+
+.bg1 {
+	height: 100%;
+	background: #fff url(../assets/imgs/bg1.jpg) no-repeat center;
+	background-color: #fff;
+	background-image: url(../assets/imgs/bg1.jpg);
+	background-attachment: scroll;
+	background-repeat: no-repeat;
+	background-size: auto 100%;
+	background-position: center;
+}
+
+.class_title {
+	width: 100%;
+	margin: 80px 0 50px;
+}
+.class_show {
+	background-color: #fff;
+	border-bottom: solid 3px #2dcc70;
+}
+.teacher {
+	display: none;
+}
+.breadcast {
+	display: none;
+}
+.class_description {
+	background: #2dcc70 url('../assets/imgs/person50.png');
+	background-size: auto 100%;
+	background-repeat: no-repeat;
+	background-position: right;
+	padding: 20px 20px;
+	color: #fff;
+	text-shadow: 0 0 5px #18210e;
+}
+.class_video {
+	background-color: #000;
+	width: 100%;
+	height: 300px;
+}
+
+
+@media (min-width:768px){
+	.container {
+		width: 786px;
+	}
+	.header {
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		width: 100%;
+		height: 50px;
+		z-index: 1000;
+		background-color: transparent;
+		border-bottom: none;
+		text-align: left;
+	}
+	.logo{
+		left: 30px;
+		height: initial;
+		border: solid 5px red;
+	}
+	.class_title {
+		display: inline-block;
+		width: 60%;
+		top: 50px;
+	}
+	.teacher {
+		display: inline-block;
+		width: 39%;
+	}
+	.breadcast {
+		display: inline-block;
+	    float: left;
+	    margin-top: -30px;
+	    margin-left: 15px;
+	}
+
+	.class_description {
+		background: #2dcc70;
+		float: right;
+		width: 60%;
+		height: 250px;
+	}
+	.class_video {
+		background-color: #000;
+		float: right;
+		width: 40%;
+		height: 250px;
+	}
+}
+@media (min-width:992px){
+	.container {
+		width: 992px;
+	}
+	.logo{
+		left: 30px;
+		border: solid 5px yellow;
+	}
+}
+@media (min-width:1200px){
+	.container {
+		width: 1000px;
+	}
+	.logo{
+		left: calc(50% - 575px + 100px);
+		border: solid 5px green;
+	}
+}
+

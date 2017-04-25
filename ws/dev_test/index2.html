@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test page</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<!--[if lte IE 6]>
+		<!-- bsie css 补丁文件 -->
+		<link rel="stylesheet" type="text/css" href="assets/bootstrap/css/bootstrap-ie6.css">
+
+		<!-- bsie 额外的 css 补丁文件 -->
+		<link rel="stylesheet" type="text/css" href="assets/bootstrap/css/ie.css">
+	<![endif]-->
+	<link rel="stylesheet" href="vendors/style.css">
+	<!-- 必须先引用bs.css，然后再引用respond.js -->
+	<!--[if lt IE 9]>
+		<script src="assets/respond.min.js"></script>
+		<script src="html5shiv.min.js"></script>
+	<![endif]-->
+
+	<!--[if lt IE 9]>
+	<![endif]-->
+
+    <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="assets/jquery.fullPage/jquery.fullPage.css" /> -->
+	<style>
+		h1, h2, .bold{
+			font-weight: 900;
+		}
+		h3 {
+			font-weight: 700;
+		}
+		.fp-tableCell {
+			vertical-align: top;
+		}
+		.bg1 {
+			height: 745px;
+			background: #fff url(assets/imgs/bg1.jpg) no-repeat center;
+			background-color: #fff;
+			background-image: url(assets/imgs/bg1.jpg);
+			background-attachment: scroll;
+			background-repeat: no-repeat;
+			background-size: auto 100%;
+			background-position: center;
+		}
+
+		.bg2 {
+			background-color: #2dcc70;
+		}
+
+		.bg3 {
+			background-color: #18210e;
+			color: #fff;
+		}
+
+		.show div {
+			height: 270px;
+			float: left;
+		}
+		.show div.vedio {
+			background-color: #000;
+			width: 43%;
+		}
+		.show div.description {
+			background-color: #2dcc70;
+			padding: 0px 20px;
+			width: 57%;
+		}
+
+		.align-center {
+			text-align: center;
+		}
+		.no-margin {
+			margin: 0;
+		}
+
+		.block-container {
+			margin-top: 20px;
+			margin-bottom: 20px;
+			height: 39px;
+			clear: both;
+		}
+		.block-title {
+			color: #fff;
+			float: left;
+			left: calc(50% - 50px);
+			position: absolute;
+			background-color: #18210e;
+			padding: 5px 1.2em;
+		}
+		.block-line {
+			border-bottom: solid 1px lightgray;
+			height: 12.5px;
+			margin-bottom: 23px;
+		}
+
+		.block-group-horizontal {
+			height: 100px;
+			margin-bottom: 20px;
+		}
+		.block-group-horizontal .title {
+			background-color: #18210e;
+			color: #fff;
+			position: absolute;
+			width: 120px;
+			height: 80px;
+			top: 10px;
+			left: 25px;
+			padding-top: 8px;
+		}
+		.block-group-horizontal .content {
+			background-color: lightgray;
+			position: absolute;
+			width: calc(100% - 100px);
+			height: 100px;
+			right: 15px;
+		}
+		.block-group-horizontal .content p{
+			text-align: left;
+			margin: 20px;
+			margin-left: 80px;
+		}
+
+		.block-group-vertical {
+			background-color: lightgray;
+			height: 160px;
+			margin-bottom: 20px;
+		}
+
+		.block-group-vertical .title {
+			background-color: #18210e;
+			color: #fff;
+			padding: 7px 10px;
+		}
+		.block-group-vertical .content {
+			background-color: lightgray;
+			text-align: left;
+			padding: 0.5em 1em;
+		}
+		.triangle-down {
+			width: 0px;
+			height: 0px;
+			margin: 0 auto 0;
+			border-top: solid 10px #18210e;
+			border-right: solid 10px transparent;
+			border-bottom: solid 0px transparent;
+			border-left: solid 10px transparent;
+		}
+
+		.btn-yellow {
+			border: none;
+			border-radius: 0px;
+			behavior: url('pie.htc');
+			opacity: 0.8;
+			background-color: #f4d400;
+		}
+		.btn-yellow:hover {
+			opacity: 1;
+			background-color: #f4d400;
+		}
+
+
+		.class-detail {
+			height: 210px;
+			background-color: #fff;
+			text-align: left;
+			padding-right: 20px;
+			margin-bottom: 20px;
+		}
+		.icon {
+			height: 210px;
+			float: left;
+			margin-left: -15px;
+			margin-right: 30px;
+		}
+
+		.round {
+			width: 100px;
+		}
+
+		.teacher-block {
+			height: 95px;
+			background-color: #fff;
+			color: #000;
+			text-align: left;
+			padding-right: 15px;
+		}
+		.teacher-block h2 {
+			padding-top: 15px;
+		}
+		.teacher-detail-block {
+			height: 95px;
+			line-height: 95px;
+			color: #000;
+			text-align: left;
+			padding-right: 15px;
+			margin-top: 20px;
+		}
+
+		.teacher-detail-block span, .teacher-detail-block i {
+			line-height: 75px;
+		}
+
+		.order-number {
+			float: left;
+			background-color: #2dcc70;
+			color: #fff;
+			height: 95px;
+			width: 90px;
+			line-height: 95px;
+			text-align: center;
+			font-size: 48px;
+			font-weight: 900;
+			margin-right: 10px;
+		}
+
+		.inner-image {
+			width: 100%;
+			margin-bottom: 30px;
+		}
+
+		.share-icon {
+			width: 1em;
+			height: 1em;
+			line-height: 1em;
+			border-style: solid;
+			border-width: 3px;
+			border-radius: 4px;
+			behavior: url('pie.htc');
+			color: #fff;
+			box-sizing: content-box;
+		}
+
+		.share-icon:hover {
+			opacity: 0.8;
+		}
+
+		.share-icon.red {
+			background-color: red;
+			border-color: red;
+		}
+		.share-icon.blue {
+			background-color: blue;
+			border-color: blue;
+		}
+		.share-icon.green {
+			background-color: green;
+			border-color: green;
+		}
+		.share-icon.lightblue {
+			background-color: lightblue;
+			border-color: lightblue;
+		}
+
+		.lisence {
+			width: 400px; margin: 0 auto 0;
+		}
+		.image-holder {
+			display: inline-block; float: left; text-align: right; width: 120px;
+		}
+		.image-holder img {
+			height: 50px; padding-right: 20px;
+		}
+		.lisence p {
+			font-size: 9px; text-align: left;
+		}
+	</style>
+	<!--[if lt IE 9]>
+		<style>
+			.block-group-horizontal .content p{
+				text-align: left;
+				margin: 10px;
+				margin-left: 150px;
+			}
+		</style>
+	<![endif]-->
+</head>
+<body>
+	<img class="logo" src="assets/imgs/logo.png" alt="xdf_logo">
+    <div id="fullpage">
+    	<!-- Section 1 -->
+        <div class="section bg1" style="margin-bottom: 50px;">
+        	<div class="container" style="height: 100%">
+	        	<div class="row" style="height: 100%;">
+	        		<div class="col-lg-10 col-lg-offset-1" style="border: solid 0px red; height: 100%;">
+	        			<!-- <div style="width: 50px; height: 50px; position: absolute; top: calc(50% - 25px); left: calc(50% - 25px); background-color: red;"></div> -->
+
+		        		<img src="assets/imgs/title.png" alt="class_title" style="position: absolute; left: calc(35% - 330px + 20px); top: calc(40% - 200px); width: 660px;">
+
+		        		<img src="assets/imgs/person.png" alt="person" style="position: absolute; right: 0px; bottom: 285px; width: 300px;">
+
+		        		<div class="breadcast" style="position: absolute; left: 20px; bottom: 305px;"><i class="fa fa-play"></i> &nbsp; 当前位置: 首页 &gt; 精彩专题 &gt; 优能一对一全日制项目</div>
+		        		<div class="show" style="background-color: #7f7; position: absolute; height: 260px; bottom: 25px; width: 100%; margin: 0 -15px;">
+		        			<div class="vedio" style="float: left;"></div>
+		        			<div class="description">
+		        				<h2 style="text-align: center; font-weight: 900;"> 优能一对一全日制课程</h2>
+		        				<p style="text-indent: 2em;"> 优能一对一全日制课程是初高中辅导的明星课程，通过15-30天的集中学习，考生能够大幅度提高成绩，并获得良好的学习能力。全日制课程采取封闭式管理模式并配合高强度的课程学习。学院在良好的学习氛围里，将100%的精力投入到学习中去，成绩提升立竿见影。</p>
+		        				<p style="text-indent: 2em;">全日制课程细分为不同版本教材进行授课，学员的学习可以与在校课程无缝衔接。授课名师多为中考高一线名师，拥有一线教学经验，能够准确把握中高考出题命脉。教研组周周教研，精细化管理，面对教育改革率先触及对课程进行精准调整。秉承“细节之处助提分，真情关爱为学员”的宗旨，全日制课程全体教师仍在不断努力，力求为学员和家长提供更优质的服务。</p>
+		        			</div>
+		        		</div>
+		        	</div>
+		        </div>
+		    </div>
+		</div>
+		<!-- Section 2 -->
+        <div class="section">
+        	<div class="container align-center" style="height: 100%">
+	        	<div class="row">
+	        		<div class="col-lg-10 col-lg-offset-1">
+						<div class="row">
+							<div class="col-lg-12">
+								<h1>优能一对一全日制课程优势，让你收获好成绩</h1>
+							</div>
+							<!-- 
+							<div style="width: 50px; height: 50px; position: absolute; top: calc(50% - 25px); left: calc(50% - 25px); background-color: red;"></div> -->
+
+			        		<div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 block-container">
+			        			<div class="block-title">
+			        				<h5 class="no-margin">课程优势</h5>
+			        			</div>
+			        			<div class="block-line"></div>
+			        		</div>
+
+			        		<div class="col-lg-6 col-md-6 col-sm-6">
+			        			<div class="block-group-horizontal">
+				        			<div class="content">
+				        				<p>专属于一对一教育模式的研发团队，潜心研究学科体系、考试规律、学习认知规律。打造最有效的学习上升路径。</p>
+				        			</div>
+				        			<div class="title">
+				        				<h5>科学有效的</h5>
+				        				<h4>课程体系</h4>
+				        			</div>
+				        		</div>
+			        		</div>
+			        		<div class="col-lg-6 col-md-6 col-sm-6">
+			        			<div class="block-group-horizontal">
+				        			<div class="content">
+				        				<p>专属于一对一教育模式的研发团队，潜心研究学科体系、考试规律、学习认知规律。打造最有效的学习上升路径。</p>
+				        			</div>
+				        			<div class="title">
+				        				<h5>科学有效的</h5>
+				        				<h4>课程体系</h4>
+				        			</div>
+				        		</div>
+			        		</div>
+			        		<div class="col-lg-6 col-md-6 col-sm-6">
+			        			<div class="block-group-horizontal">
+				        			<div class="content">
+				        				<p>专属于一对一教育模式的研发团队，潜心研究学科体系、考试规律、学习认知规律。打造最有效的学习上升路径。</p>
+				        			</div>
+				        			<div class="title">
+				        				<h5>科学有效的</h5>
+				        				<h4>课程体系</h4>
+				        			</div>
+				        		</div>
+			        		</div>
+			        		<div class="col-lg-6 col-md-6 col-sm-6">
+			        			<div class="block-group-horizontal">
+				        			<div class="content">
+				        				<p>专属于一对一教育模式的研发团队，潜心研究学科体系、考试规律、学习认知规律。打造最有效的学习上升路径。</p>
+				        			</div>
+				        			<div class="title">
+				        				<h5>科学有效的</h5>
+				        				<h4>课程体系</h4>
+				        			</div>
+				        		</div>
+			        		</div>
+			        		
+							<div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 block-container">
+			        			<div class="block-title">
+			        				<h5 class="no-margin">服务特色</h5>
+			        			</div>
+			        			<div class="block-line"></div>
+			        		</div>
+						</div>
+
+						<div class="row">
+			        		<div class="col-lg-3 col-md-3 col-sm-3">
+			        			<div class="block-group-vertical">
+				        			<div class="title">
+				        				<h5>学习目标管理</h5>
+				        			</div>
+				        			<div class="triangle-down"></div>
+				        			<div class="content">
+				        				<p>首先通过入学测试、初始成绩确认明确定位，了解自身问题，认同提升所需路径及措施。</p>
+				        			</div>
+				        		</div>
+			        		</div>
+			        		<div class="col-lg-3 col-md-3 col-sm-3">
+			        			<div class="block-group-vertical">
+				        			<div class="title">
+				        				<h5>学习目标管理</h5>
+				        			</div>
+				        			<div class="triangle-down"></div>
+				        			<div class="content">
+				        				<p>首先通过入学测试、初始成绩确认明确定位，了解自身问题，认同提升所需路径及措施。</p>
+				        			</div>
+				        		</div>
+			        		</div>
+			        		<div class="col-lg-3 col-md-3 col-sm-3">
+			        			<div class="block-group-vertical">
+				        			<div class="title">
+				        				<h5>学习目标管理</h5>
+				        			</div>
+				        			<div class="triangle-down"></div>
+				        			<div class="content">
+				        				<p>首先通过入学测试、初始成绩确认明确定位，了解自身问题，认同提升所需路径及措施。</p>
+				        			</div>
+				        		</div>
+			        		</div>
+			        		<div class="col-lg-3 col-md-3 col-sm-3">
+			        			<div class="block-group-vertical">
+				        			<div class="title">
+				        				<h5>学习目标管理</h5>
+				        			</div>
+				        			<div class="triangle-down"></div>
+				        			<div class="content">
+				        				<p>首先通过入学测试、初始成绩确认明确定位，了解自身问题，认同提升所需路径及措施。</p>
+				        			</div>
+				        		</div>
+			        		</div>
+			        		<div class="col-lg-6 col-md-6 col-sm-6 col-lg-offset-3" style="margin-top: 20px; margin-bottom: 50px;">
+			        			<button class="btn btn-yellow">
+			        				<span style="vertical-align: super; font-weight: 900;">
+			        					更多课程优势点击了解
+			        				</span>
+			        				<i class="fa fa-angle-right fa-2x"></i>
+			        			</button>
+			        		</div>
+			        	</div>
+	        		</div>
+				</div>
+				
+	        </div>
+        </div>
+        <!-- Section 3 -->
+        <div class="section bg2">
+        	<div class="container align-center" style="height: 100%">
+	        	<div class="row">
+	        		<div class="col-lg-10 col-lg-offset-1">
+						<div class="row">
+							<div class="col-lg-12">
+								<h1>全日制课程精准细分，满足学员不同的学习需求</h1>
+							</div>
+
+							<div class="col-lg-12 class-detail">
+								<img class="icon" src="assets/imgs/class1.jpg" alt="">
+								<h4 class="title bold" style="margin-top: 10px; margin-bottom: 10px;">课程名称：高考全日制</h4>
+								<p style="margin-bottom: 10px;">科目：全科/语文/数学/英语/物理/化学/生物/历史/地理/政治<br/>班制：走读/住宿 一对一/一对三<br/>教材细分：北京、山东、新课标<br/>适合学员：即将参加高考的应届生或往届生<br/>课程内容：封闭式高强度学习模式、定制式学习辅导。紧密围绕历年高考出题方向进行学科辅导。可培优、可补差，通过授课教师辅导，学生逐步掌握分析和解题能力。</p>
+								<div class="btn-line">
+									<button class="btn btn-yellow" style="padding: 0 12px;">
+				        				<span style="vertical-align: super; font-weight: 900;">
+				        					查看课程详情
+				        				</span>
+				        				<i class="fa fa-angle-right fa-2x"></i>
+				        			</button>
+				        			<button class="btn btn-yellow" style="padding: 0 12px;">
+				        				<span style="vertical-align: super; font-weight: 900;">
+				        					查看课程详情
+				        				</span>
+				        				<i class="fa fa-angle-right fa-2x"></i>
+				        			</button>
+								</div>
+							</div>
+
+							<div class="col-lg-12 class-detail">
+								<img class="icon" src="assets/imgs/class2.jpg" alt="">
+								<h4 class="title bold" style="margin-top: 10px; margin-bottom: 10px;">课程名称：高考全日制</h4>
+								<p style="margin-bottom: 10px;">科目：全科/语文/数学/英语/物理/化学/生物/历史/地理/政治<br/>班制：走读/住宿 一对一/一对三<br/>教材细分：北京、山东、新课标<br/>适合学员：即将参加高考的应届生或往届生<br/>课程内容：封闭式高强度学习模式、定制式学习辅导。紧密围绕历年高考出题方向进行学科辅导。可培优、可补差，通过授课教师辅导，学生逐步掌握分析和解题能力。</p>
+								<div class="btn-line">
+									<button class="btn btn-yellow" style="padding: 0 12px;">
+				        				<span style="vertical-align: super; font-weight: 900;">
+				        					查看课程详情
+				        				</span>
+				        				<i class="fa fa-angle-right fa-2x"></i>
+				        			</button>
+				        			<button class="btn btn-yellow" style="padding: 0 12px;">
+				        				<span style="vertical-align: super; font-weight: 900;">
+				        					查看课程详情
+				        				</span>
+				        				<i class="fa fa-angle-right fa-2x"></i>
+				        			</button>
+								</div>
+							</div>
+
+							<div class="col-lg-12 class-detail">
+								<img class="icon" src="assets/imgs/class3.jpg" alt="">
+								<h4 class="title bold" style="margin-top: 10px; margin-bottom: 10px;">课程名称：高考全日制</h4>
+								<p style="margin-bottom: 10px;">科目：全科/语文/数学/英语/物理/化学/生物/历史/地理/政治<br/>班制：走读/住宿 一对一/一对三<br/>教材细分：北京、山东、新课标<br/>适合学员：即将参加高考的应届生或往届生<br/>课程内容：封闭式高强度学习模式、定制式学习辅导。紧密围绕历年高考出题方向进行学科辅导。可培优、可补差，通过授课教师辅导，学生逐步掌握分析和解题能力。</p>
+								<div class="btn-line">
+									<button class="btn btn-yellow" style="padding: 0 12px;">
+				        				<span style="vertical-align: super; font-weight: 900;">
+				        					查看课程详情
+				        				</span>
+				        				<i class="fa fa-angle-right fa-2x"></i>
+				        			</button>
+				        			<button class="btn btn-yellow" style="padding: 0 12px;">
+				        				<span style="vertical-align: super; font-weight: 900;">
+				        					查看课程详情
+				        				</span>
+				        				<i class="fa fa-angle-right fa-2x"></i>
+				        			</button>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				
+	        </div>
+        </div>
+        <!-- Section 4 -->
+        <div class="section">
+	        <div class="container align-center" style="height: 100%">
+	        	<div class="row">
+	        		<div class="col-lg-10 col-lg-offset-1">
+						<div class="row">
+							<div class="col-lg-12">
+								<h1>严格紧凑的作息时间，高效率才有好成绩</h1>
+							</div>
+
+							<div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 block-container">
+			        			<div class="block-title">
+			        				<h5 class="no-margin">周一至周五</h5>
+			        			</div>
+			        			<div class="block-line"></div>
+			        		</div>
+			        	</div>
+
+			        	<div class="row">
+
+							<div class="col-sm-3" style="margin-bottom: 20px">
+								<img src="assets/imgs/life.png" alt="" class="round">
+								<div>7:00 - 8:00<br>早起洗漱 + 吃早饭</div>
+							</div>
+							<div class="col-sm-3" style="margin-bottom: 20px">
+								<img src="assets/imgs/study.png" alt="" class="round">
+								<div>7:00 - 8:00<br>早起洗漱 + 吃早饭</div>
+							</div>
+							<div class="col-sm-3" style="margin-bottom: 20px">
+								<img src="assets/imgs/study.png" alt="" class="round">
+								<div>7:00 - 8:00<br>早起洗漱 + 吃早饭</div>
+							</div>
+							<div class="col-sm-3" style="margin-bottom: 20px">
+								<img src="assets/imgs/study.png" alt="" class="round">
+								<div>7:00 - 8:00<br>早起洗漱 + 吃早饭</div>
+							</div>
+
+							<div class="col-sm-3" style="margin-bottom: 20px">
+								<img src="assets/imgs/life.png" alt="" class="round">
+								<div>7:00 - 8:00<br>早起洗漱 + 吃早饭</div>
+							</div>
+							<div class="col-sm-3" style="margin-bottom: 20px">
+								<img src="assets/imgs/study.png" alt="" class="round">
+								<div>7:00 - 8:00<br>早起洗漱 + 吃早饭</div>
+							</div>
+							<div class="col-sm-3" style="margin-bottom: 20px">
+								<img src="assets/imgs/study.png" alt="" class="round">
+								<div>7:00 - 8:00<br>早起洗漱 + 吃早饭</div>
+							</div>
+							<div class="col-sm-3" style="margin-bottom: 20px">
+								<img src="assets/imgs/study.png" alt="" class="round">
+								<div>7:00 - 8:00<br>早起洗漱 + 吃早饭</div>
+							</div>
+
+							<div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 block-container">
+			        			<div class="block-title">
+			        				<h5 class="no-margin">周六周日</h5>
+			        			</div>
+			        			<div class="block-line"></div>
+				        	</div>
+						</div>
+			        	<div class="row">
+							<div class="col-sm-6" style="margin-bottom: 10px; text-align: left; padding-right: 20px;">
+								<img src="assets/imgs/study.png" alt="" class="round pull-left" style="margin-right: 20px;">
+								<h4>周六：全真模考</h4>
+								<p>十年以上教龄的老师研发模拟试卷，根据试卷成绩分析，简历成绩走势图，及时调整学习方案，简历专属学员档案，确保学习效果可视化</p>
+
+							</div>
+							<div class="col-sm-6" style="margin-bottom: 10px; text-align: left; padding-right: 20px;">
+								<img src="assets/imgs/study.png" alt="" class="round pull-left" style="margin-right: 20px;">
+								<h4>周六：全真模考</h4>
+								<p>十年以上教龄的老师研发模拟试卷，根据试卷成绩分析，简历成绩走势图，及时调整学习方案，简历专属学员档案，确保学习效果可视化</p>
+
+							</div>
+
+							<div class="col-sm-12">注：具体作息时间会由于课程不同有所调整，解释，请以实际作息安排为准</div>
+
+							<div class="col-lg-6 col-md-6 col-sm-6 col-lg-offset-3" style="margin-top: 10px; margin-bottom: 50px;">
+			        			<button class="btn btn-yellow">
+			        				<span style="vertical-align: super; font-weight: 900;">
+			        					点击咨询详细作息安排
+			        				</span>
+			        				<i class="fa fa-angle-right fa-2x"></i>
+			        			</button>
+			        		</div>
+						</div>
+					</div>
+				</div>
+				
+	        </div>
+        </div>
+        <!-- Section 5 -->
+        <div class="section bg3" style="height: 600px;">
+	        <div class="container align-center" style="height: 100%">
+	        	<div class="row">
+	        		<div class="col-lg-10 col-lg-offset-1">
+						<div class="row">
+							<div class="col-lg-12" style="margin-bottom: 5%;">
+								<h1>名师“炼”成，重重关卡，严格选拔</h1>
+							</div>
+
+							<div class="col-sm-6">
+								<div class="teacher-block">
+									<div class="order-number">01</div>
+									<h2>“出身”要求</h2>
+									<p>全日制项目教师要求来自211、985院校一水儿名校毕业</p>
+								</div>
+							</div>
+
+							<div class="col-sm-6">
+								<div class="teacher-block">
+									<div class="order-number">02</div>
+									<h2>“出身”要求</h2>
+									<p>全日制项目教师要求来自211、985院校一水儿名校毕业</p>
+								</div>
+							</div>
+
+							<div class="col-sm-6">
+								<div class="teacher-block">
+									<div class="order-number">03</div>
+									<h2>“出身”要求</h2>
+									<p>全日制项目教师要求来自211、985院校一水儿名校毕业</p>
+								</div>
+							</div>
+
+							<div class="col-sm-6">
+								<div class="teacher-block">
+									<div class="order-number">04</div>
+									<h2>“出身”要求</h2>
+									<p>全日制项目教师要求来自211、985院校一水儿名校毕业</p>
+								</div>
+							</div>
+
+							<div class="col-sm-6">
+								<div class="teacher-block">
+									<div class="order-number">05</div>
+									<h2>“出身”要求</h2>
+									<p>全日制项目教师要求来自211、985院校一水儿名校毕业</p>
+								</div>
+							</div>
+
+							<div class="col-sm-6">
+								<div class="teacher-block">
+									<div class="order-number">06</div>
+									<h2>“出身”要求</h2>
+									<p>全日制项目教师要求来自211、985院校一水儿名校毕业</p>
+								</div>
+							</div>
+
+							<div class="col-sm-6">
+								<div class="teacher-block">
+									<div class="order-number">07</div>
+									<h2>“出身”要求</h2>
+									<p>全日制项目教师要求来自211、985院校一水儿名校毕业</p>
+								</div>
+							</div>
+
+							<div class="col-sm-6">
+								<button class="teacher-detail-block btn btn-block btn-yellow">
+			        				<span style="vertical-align: super; font-weight: 900; font-size: 24px;">
+			        					点击咨询详细作息安排
+			        				</span>
+			        				<i class="fa fa-angle-right fa-4x pull-right"></i>
+			        			</button>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				
+	        </div>
+        </div>
+		<!-- Section 6 -->
+		<div class="section">
+			<div class="container align-center">
+	        	<div class="row">
+	        		<div class="col-lg-10 col-lg-offset-1">
+						<div class="row">
+							<div class="col-lg-12">
+								<h1>封闭式管理的学习环境，环境清幽，保障安全</h1>
+							</div>
+
+							<div class="col-sm-4">
+								<img src="assets/imgs/env.jpg" alt="" class="inner-image">
+							</div>
+							<div class="col-sm-4">
+								<img src="assets/imgs/room2.jpg" alt="" class="inner-image">
+							</div>
+							<div class="col-sm-4">
+								<img src="assets/imgs/tree.jpg" alt="" class="inner-image">
+							</div>
+
+						</div>
+
+						<div class="row">
+							<div class="col-sm-3">
+								<img src="assets/imgs/room.jpg" alt="" class="inner-image">
+							</div>
+							<div class="col-sm-3">
+								<img src="assets/imgs/room.jpg" alt="" class="inner-image">
+							</div>
+							<div class="col-sm-3">
+								<img src="assets/imgs/room.jpg" alt="" class="inner-image">
+							</div>
+							<div class="col-sm-3">
+								<img src="assets/imgs/room.jpg" alt="" class="inner-image">
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-sm-12">
+								分享到：
+								<i class="fa fa-wechat share-icon green"></i>
+								<i class="fa fa-weibo share-icon red"></i>
+								<i class="fa fa-twitter share-icon lightblue"></i>
+								<i class="fa fa-facebook share-icon blue" style="text-align: right;"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="section fp-auto-height" style="height: 150px">
+			<div class="container align-center">
+	        	<div class="row">
+	        		<div class="col-lg-10 col-lg-offset-1">
+	        			<div class="row">
+							<div class="col-sm-12" style="border-top: solid 1px lightgray; padding-top: 20px; margin-top: 20px;">
+								<p><a href="">关于我们</a> | <a href="">招贤纳士</a> | <a href="">帮助中心</a> | <a href="">报班指南</a> | <a href="">网站地图</a></p>
+								<div class="lisence">
+									<div class="image-holder">
+										<img src="assets/imgs/gs.jpg" alt="">
+									</div>
+									<p>
+										经营许许可证编号: 京ICP备05067667 <br>
+										版权所有: 北京新东方教育科技（集团）有限公司 <br>
+										咨询电话: 010-82644848 投诉电话: 010-62578989
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+	
+	<!-- jQuery 1.7.2 or higher -->
+	<script src="assets/jquery/jquery-1.11.3.min.js"></script>
+
+	<!-- Optional, bootstrap javascript library -->
+	<!-- <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script> -->
+	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+	<!--[if lte IE 6]>
+		<!-- bsie js 补丁只在IE6中才执行 -->
+		<script type="text/javascript" src="assets/bootstrap/js/bootstrap-ie.js"></script>
+	<![endif]-->
+
+    <!-- <script src="vendors/jquery.easings.min.js"></script> -->
+    <!-- <script src="assets/jquery.fullPage/jquery.fullPage.js"></script> -->
+
+    <script>
+        // $(document).ready(function(){
+        //     $("#fullpage").fullpage();  //激活fullpage  
+        // })
+
+        $(window).resize(function(){
+        	// console.log(document.innerHeight);
+        });
+    </script>
+</body>
+</html>
