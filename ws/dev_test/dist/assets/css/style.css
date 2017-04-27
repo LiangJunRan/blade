@@ -188,6 +188,7 @@ h2 {
 	opacity: 0.8;
 	background-color: #f4d400;
 	background-image: initial;
+	border-radius: 0;
 }
 .btn-yellow:hover {
 	opacity: 1;
@@ -300,14 +301,12 @@ h2 {
 }
 
 .lisence {
-	/*width: 400px;*/
 	margin: 0 auto 0;
 }
 .image-holder {
 	display: inline-block;
 	float: left;
 	text-align: right;
-	/*width: 120px;*/
 	height: 80px;
 	line-height: 80px;
 }
@@ -330,12 +329,19 @@ h2 {
     text-align: left;
     padding-left: 45px;
 }
+.plan-2-container {
+	display: inline-block;
+}
 
 .bg3 {
 	background-color: #18210e;
 	color: #fff;
 }
-
+@media (min-width:400px){
+	.lisence {
+		width: 400px;
+	}
+} 
 @media (min-width:768px){
 	.container {
 		width: 786px;
@@ -409,9 +415,6 @@ h2 {
 	.plan-2 {
 		padding-left: 50px;
 	}
-	.lisence {
-		width: 400px;
-	}
 	.image-holder {
 		width: 120px;
 	}
@@ -422,7 +425,6 @@ h2 {
 	}
 	.logo{
 		left: 30px;
-		/*border: solid 5px yellow;*/
 	}
 	.block-title-content {
 	    width: 992px;
