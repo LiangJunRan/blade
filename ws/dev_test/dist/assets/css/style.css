@@ -1,13 +1,3 @@
-/*@media (min-width:768px){
-	.container{width: 100%}
-}
-@media (min-width:992px){
-	.container{width: 100%}
-}
-@media (min-width:1200px){
-	.container{width: 1170px}
-}*/
-
 * {
 	font-family: "微软雅黑";
 }
@@ -67,9 +57,9 @@ h2 {
 
 .bg1 {
 	height: 100%;
-	background: #fff url(../assets/imgs/bg1.jpg) no-repeat center;
+	background: #fff url(../imgs/bg1.jpg) no-repeat center;
 	background-color: #fff;
-	background-image: url(../assets/imgs/bg1.jpg);
+	background-image: url(../imgs/bg1.jpg);
 	background-attachment: scroll;
 	background-repeat: no-repeat;
 	background-size: auto 100%;
@@ -92,7 +82,7 @@ h2 {
 	z-index: 1000;
 }
 .class_description {
-	background: #2dcc70 url('../assets/imgs/person50.png');
+	background: #2dcc70 url('../imgs/person50.png');
 	background-size: auto 100%;
 	background-repeat: no-repeat;
 	background-position: right;
@@ -195,8 +185,6 @@ h2 {
 
 .btn-yellow {
 	border: none;
-	border-radius: 0px;
-	behavior: url('pie.htc');
 	opacity: 0.8;
 	background-color: #f4d400;
 	background-image: initial;
@@ -285,7 +273,7 @@ h2 {
 	border-style: solid;
 	border-width: 3px;
 	border-radius: 4px;
-	behavior: url('pie.htc');
+	behavior: url('../plugins/ie-fix/pie.htc');
 	color: #fff;
 	box-sizing: content-box;
 }
