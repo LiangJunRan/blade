@@ -1,0 +1,225 @@
+
+<!-- saved from url=(0061)http://www.adidas.com.cn/specific/product/ajaxview/?id=345018 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>#haloword-pron { background: url(chrome-extension://bhkcehpnnlgncpnefpanachijmhikocj/img/icon.svg) -94px -34px; }#haloword-pron:hover { background: url(chrome-extension://bhkcehpnnlgncpnefpanachijmhikocj/img/icon.svg) -111px -34px; }#haloword-open { background: url(chrome-extension://bhkcehpnnlgncpnefpanachijmhikocj/img/icon.svg) -94px -17px; }#haloword-open:hover { background: url(chrome-extension://bhkcehpnnlgncpnefpanachijmhikocj/img/icon.svg) -111px -17px; }#haloword-close { background: url(chrome-extension://bhkcehpnnlgncpnefpanachijmhikocj/img/icon.svg) -94px 0; }#haloword-close:hover { background: url(chrome-extension://bhkcehpnnlgncpnefpanachijmhikocj/img/icon.svg) -111px 0; }#haloword-add { background: url(chrome-extension://bhkcehpnnlgncpnefpanachijmhikocj/img/icon.svg) -94px -51px; }#haloword-add:hover { background: url(chrome-extension://bhkcehpnnlgncpnefpanachijmhikocj/img/icon.svg) -111px -51px; }#haloword-remove { background: url(chrome-extension://bhkcehpnnlgncpnefpanachijmhikocj/img/icon.svg) -94px -68px; }#haloword-remove:hover { background: url(chrome-extension://bhkcehpnnlgncpnefpanachijmhikocj/img/icon.svg) -111px -68px; }</style></head><body><form onkeydown="if(event.keyCode==13)return false;" action="http://www.adidas.com.cn/checkout/cart/add/" method="post" id="product_addtocart_form">
+	<!--start product size-->
+	<input type="hidden" name="token" value="1c33744889a0f4415457d25c0410ff39">
+	<input type="hidden" name="isajax" value="yes">
+        <input type="hidden" name="release2" value="yes">
+	<input type="hidden" name="product" value="345018">
+	<div class="pdpSizeBox cf">
+<!--		<p class="pdpSizeTxt"><a href="#sizechart" style='color: #0286cd;'>尺码表</a></p>-->
+                 <a href="javascript:;" title="尺码表" class="pdpSizeTxt">尺码表</a>
+		<div class="copySelectSize">
+<p class="errormessage"></p>
+<select id="size_box">
+
+                                     
+                   	<option value="814">A/XS</option>
+                   	<option value="813">A/S</option>
+                   	<option value="812">A/M</option>
+                   	<option value="811">A/L</option>
+                   	<option value="810">A/XL</option>
+                   	<option value="809">A2XL</option>
+                    
+      </select>
+<input name="super_attribute[184]" type="hidden" id="attribute184" class="size">
+</div>                                                                             <input type="hidden" id="sim_stock_812" value="114">
+				                                         <input type="hidden" id="sim_stock_813" value="65">
+				                                         <input type="hidden" id="sim_stock_814" value="23">
+				                                         <input type="hidden" id="sim_stock_809" value="69">
+				                                         <input type="hidden" id="sim_stock_810" value="87">
+				                                         <input type="hidden" id="sim_stock_811" value="119">
+											<div style="" class="copySelect">
+			<select id="qtystock" name="qty">
+				<option selected="selected">1</option>
+								<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+				<option>6</option>
+				<option>7</option>
+				<option>8</option>
+				<option>9</option>
+				<option>10</option>
+							</select>
+		</div>
+	</div>
+	<!--end product size-->
+		<div class="mt20"><a onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;cart&#39;, &#39;add&#39;,&#39;product&#39;, 329);" id="buy_now" name="addp" href="javascript:;" title="加入购物袋" class="addCart btnCommon btnBlueLinear btnAddBag">加入购物袋</a></div>	<div id="hypersale_error" style="margin-top:15px;color:red;"></div>
+	</form>
+
+<script type="text/javascript">
+var _sizeval=_qtyval='';
+        $(".copySelectSize select").bind("change",function(event,index,option){
+			_sizeval=$(option).val();
+                        _sizetext=$(option).text();
+			_qtyval=$("#sim_stock_"+_sizeval).val();
+            var _str='<select id="qtystock" name="qty">';
+            for(i=1;i<=_qtyval;i++){
+                if(i==11){
+					break;
+                }
+            	_str+='<option>'+i+'</option>';
+          	 }
+            _str+='</select>';
+            $(".pdpSizeBox .copySelect select").replaceWith(_str);
+            $(".pdpSizeBox .copySelect").data("copySelect").updata();
+            $(".copySelectSize .errormessage").html('');
+            $(".copySelectSize").removeClass('errorSelect');
+            $(".copySelectSize .size").val(_sizeval);
+            utag.link({
+                event_name  : 'SIZE CHANGE',
+                product_id : [ 'S98656' ],
+                product_size : [_sizetext]
+            });
+            console.log(_sizetext);	
+       });
+var global_captchaObj ;   
+function submitCart(callback)
+{
+	var el=$('#qtystock').find("option[selected='selected']").index()<=0?$('#qtystock').find("option").eq(0):$('#qtystock').find("option[selected='selected']");
+	var size_box_el=$('#size_box').find("option[selected='selected']").text();
+	$.ajax({
+		   type: "POST",
+		   url: $('#product_addtocart_form').attr('action'),
+		   data: $('#product_addtocart_form').serialize(),
+		   success: function(data){ 
+                          if(data=='fail'){
+                                  callback({result:"fail"});//
+                          }else if(data=="success2"){
+                        	  	  $common.loading.show();
+                                  location.href="http://www.adidas.com.cn/yancheckout/process/hypersale/";
+                          }else if(data == '4'){
+                              $('#hypersale_error').html('重复购买');
+                          }else{
+                              console.log(data);
+                              if(!data){return;}
+                              data = eval("("+data+")");
+                              if(data.msg=="success"){
+                              _obj=data.data;
+                              _obj.size=size_box_el;
+                              _obj.qty=el.val();
+                               callback({result:"success",obj:_obj});         
+                               getAjaxUrl("miniShoppingcar");
+                               analyst_add_to_cart() ;
+                              }else{
+                                  callback({result:"error"});//
+                              }
+                          }
+		   },
+		   complete:function(obj,status){
+			   if(obj.status == 429 ){
+				   $('#hypersale_error').html('当前提交人数过多，请刷新页面重新提交');
+			   }
+		   }
+		});
+}
+function setAddCart(el,callback){
+	var id = ($(el).attr('id')) ;
+	if(id=='buy_now'){
+		if($(".copySelectSize .size").val()){
+			var el=$('#qtystock').find("option[selected='selected']").index()<=0?$('#qtystock').find("option").eq(0):$('#qtystock').find("option[selected='selected']");
+			$('#qtystock').val(el.val());
+            var size_box_el=$('#size_box').find("option[selected='selected']").text();
+							submitCart(callback);
+            		
+            }else{
+			$(".copySelectSize").addClass('errorSelect');
+			$(".copySelectSize .errormessage").html('请选择尺码');
+			 callback({result:"error"});//
+		}
+	}else{
+		var id = ($(el).attr('id')) ;
+		var attribute = $('#p_attr' + id).val() ;
+		var option_id = $('#p_opt' + id + ' option:selected').val() ;
+		var super_attribute = 'super_attribute['+ attribute +']' ;
+        var data = "isajax=yes&product="+id+"&qty=1&"+super_attribute+"="+option_id;
+        $.ajax({
+            url: "http://www.adidas.com.cn/checkout/cart/add/",
+            type : 'post',
+            data : data,
+            success: function(data){
+            if(data == 'success'){
+				  callback({result:"success"});//
+				  analyst_add_to_cart() ; 
+			  }else if(data=='fail'){
+				  $('#hypersale_error').html('添加失败，定制和普通商品不能同时加入购物车！');
+				  callback({result:"fail"});//
+		  	  }else if(data=='success2'){
+				  location.href="http://www.adidas.com.cn/yancheckout/process/hypersale/";
+			  }else{
+				  callback({result:"error"});//
+			  }
+            }
+        });
+
+	}
+	
+}
+</script>
+
+<script>
+
+//$('#size_box').change(function(){
+//	utag.link({
+//    	event_name  : 'SIZE CHANGE',
+//    	product_id : [ '' ],
+//    	product_size : [$(this).attr('data-result') ],
+//    	product_upc : [ $(this).val() ]
+//    	});	
+//	console.log('size change proudct_upc: '+$(this).val()) ; 
+//	console.log($(this).attr('data-result')) ; 
+//}) ;	
+// $('#buy_now').click(function(){
+	
+// 	});
+function analyst_add_to_cart()
+{
+	var qty = $('#qtystock').attr('data-result') ; 
+	if(!qty){
+		qty = 1 ; 
+	}
+	console.log(qty) ; 
+	var size = $('#size_box').attr('data-result') ; 
+	utag.link({
+		// other fields not required since they are the same as on page load
+		event_name  : 'ADD TO CART',
+		product_brand : [ '60' ],
+		product_id : [ 'S98656' ],
+		product_price : [ '329.0000' ],
+		product_quantity : [ qty ],
+		product_size : [ size ]
+		});
+	console.info('addtocart proudct_upc: '+$('#size_box').val());
+}
+
+$('.pdpAddFavorate').click(function(){ 
+	utag.link({
+		event_name  : 'ADD TO WISHLIST',
+		product_id : [ 'S98656' ]
+		});
+	console.log('wish') ; 
+	}) ; 
+
+$('.pdpEmailTo').click(function(){ 
+	utag_product_share('email') ; 
+}) ; 
+$('.pdpWeibo').click(function(){ 
+	utag_product_share('weibo') ; 
+}) ; 
+$('.pdpWeixn').click(function(){ 
+	utag_product_share('wechat') ; 
+}) ; 
+
+function utag_product_share(name){
+	utag.link({
+		event_name  : 'PRODUCT SHARE',
+		social_network : name  
+		});	
+	console.log('share:'+name) ; 
+}
+	
+</script>
+
+
+<div id="haloword-lookup" class="ui-widget-content ui-draggable"><div id="haloword-title"><span id="haloword-word"></span><a herf="#" id="haloword-pron" class="haloword-button" title="发音"></a><audio id="haloword-audio"></audio><div id="haloword-control-container"><a herf="#" id="haloword-add" class="haloword-button" title="加入单词表"></a><a herf="#" id="haloword-remove" class="haloword-button" title="移出单词表"></a><a href="http://www.adidas.com.cn/specific/product/ajaxview/?id=345018#" id="haloword-open" class="haloword-button" title="查看单词详细释义" target="_blank"></a><a herf="#" id="haloword-close" class="haloword-button" title="关闭查询窗"></a></div><br style="clear: both;"></div><div id="haloword-content"></div></div></body></html>
