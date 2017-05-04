@@ -18,6 +18,9 @@
     </style>
 </head>
 <body>
+    <div id="cost" style="background-color: #333; color: #fff; font-size: 48;">
+
+    </div>
     <div>
         <audio controls autoplay style="display: none;"></audio>
         <input onclick="startRecording()" style="width:150px; height: 40px; line-height: 40px;" type="button" value="录音" />
@@ -33,23 +36,30 @@
 
 
     <script>
-
+        var ts1 = 0;
+        var ts2 = 0;
         var recorder;
 
         var audio = document.querySelector('audio');
 
         function startRecording() {
             HZRecorder.get(function (rec) {
+                ts1 = new Date();
                 recorder = rec;
                 recorder.start();
+                ts2 = new Date();
             });
         }
 
         function stopRecording() {
+            var cost =  new Date() - ts2;
             recorder.stop();
+            var cost2 = new Date() - ts1;
+            document.querySelector('#cost').innerHTML = cost/1000 + ' ' + cost2/1000;
         }
 
         function playRecording() {
+            timestamp = new Date();
             recorder.play(audio);
         }
 

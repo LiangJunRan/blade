@@ -1,0 +1,1 @@
+为了解决ie8上bootstrap响应式无法生效，引用了respond.js。该插件必须发布后使用，我是使用了node的http-server发布后查看的效果。

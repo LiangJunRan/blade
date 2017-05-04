@@ -1,0 +1,70 @@
+Prepare
+	node.js 6.10.x or greater LTS version
+	.npmrc
+		registry=http://registry.npm.taobao.org/
+		strict-ssl=false
+
+		### if npm install report error message like "... proxy ...", try the following configuration:
+		# proxy=http://127.0.0.1:1080/
+		# https-proxy=http://127.0.0.1:1080/
+
+Install
+	npm install -g cordova ionic
+	(This may take half an hour ...)
+
+Try
+	(In workspace)
+	ionic start test1 (Same with) ionic start test1 black
+	ionic start test2 tabs
+	ionic start test3 sidemenu
+	(These command may take 5 minutes or less)
+	
+	(Then)
+	cd test2
+	ionic serve
+
+Install mobile device support
+	Android
+		JDK
+			java version "1.8.0_121"
+			Java(TM) SE Runtime Environment (build 1.8.0_121-b13)
+			Java HotSpot(TM) 64-Bit Server VM (build 25.121-b13, mixed mode)
+		Android SDK
+			Download URL:
+				https://developer.android.com/studio/index.html
+
+Device Simulator
+	cd myApp
+	ionic platform add ios(或android)
+
+	报错：
+		You have been opted out of telemetry. To change this, run: cordova telemetry on.
+	解决：
+		可以试试下面的方法解决
+		Commands to resolve or disable this, using CLI
+
+		cordova/ionic telemetry on
+		cordova/ionic telemetry off
+		cordova/ionic build --no-telemetry
+
+		cordova telemetry on
+
+	报错：
+		Error: Cannot find module 'config-chain'
+	解决：
+		npm install -g config-chain
+
+	报错：
+		Error: Cannot find module 'umask'
+	解决：
+		npm install -g umask
+
+	报错：
+		Error: Cannot find module 'uid-number'
+	解决：
+		npm install -g uid-number
+			
+	报错：
+		Error: Cannot find module 'which'
+	解决：
+		npm install -g which

@@ -1,28 +1,28 @@
 * {
 	font-family: "微软雅黑";
 }
-
-br {
-	height: 30px;
-	line-height: 30px;
-}
 body {
 	text-align: center;
 }
 h2 {
 	margin: 0;
-	padding:  0 0 15px 0 ;
 	text-align: center;
 	font-weight: 900;
+}
+p {
+	margin: 14px 0;
+	line-height: 1.2;
 }
 .section {
 	height: 100%;
 	line-height: 100%;
-	padding-bottom: 20px;
-	margin-bottom: 20px;
+	/*padding-bottom: 20px;
+	margin-bottom: 20px;*/
 }
 .section-title {
-	padding:  30px 0 15px 0;
+	margin-bottom: 20px;
+    margin-top: 20px;
+    font-weight: bold;
 }
 .container {
 	width: 100%;
@@ -30,8 +30,8 @@ h2 {
 	margin: 0 auto;
 }
 .container .row {
-	margin-left: 0;
-	margin-right: 0;
+	/*margin-left: 0;
+	margin-right: 0;*/
 }
 
 .header {
@@ -82,7 +82,7 @@ h2 {
 	z-index: 1000;
 }
 .class_description {
-	background: #2dcc70 url('../imgs/person50.png');
+	background: #2dcc70;
 	background-size: auto 100%;
 	background-repeat: no-repeat;
 	background-position: right;
@@ -118,8 +118,8 @@ h2 {
 }
 .block-title-line {
 	border-bottom: solid 1px #ddd;
-    height: 23px;
-    margin: 0 auto 23px auto;
+    height: 19px;
+    margin: 0 auto 46px auto;
     width: 100%;
 }
 
@@ -132,29 +132,27 @@ h2 {
 }
 .block-group-horizontal .title {
 	background-color: #18210e;
-	color: #fff;
-	position: absolute;
-	width: 120px;
-	height: 80px;
-	top: 10px;
-	left: 25px;
-	padding-top: 8px;
-	text-align: center;
+    color: #fff;
+    position: absolute;
+    width: 120px;
+    height: 80px;
+    top: 20px;
+    left: 25px;
+    padding-top: 8px;
+    text-align: center;
 }
 .block-group-horizontal .content-left {
 	display: table-cell;
 	width: 70px;
-	height: 100px;
 }
 .block-group-horizontal .content {
 	display: table-cell;
-	background-color: #ddd;
-	height: 100px;
+    background-color: #ddd;
 }
 .block-group-horizontal .content p{
-	text-align: left;
-	margin: 20px;
-	margin-left: 80px;
+    text-align: left;
+    margin: 20px;
+    margin-left: 80px;
 }
 
 .block-group-vertical {
@@ -172,6 +170,9 @@ h2 {
 	background-color: #ddd;
 	text-align: left;
 	padding: 0.5em 1em;
+}
+.block-group-vertical .content p {
+	margin-top: 0;
 }
 .triangle-down {
 	width: 0px;
@@ -214,27 +215,27 @@ h2 {
 }
 
 .round {
-	width: 100px;
+	width: 217px;
 }
 
 .teacher-block {
 	background-color: #fff;
 	color: #000;
 	text-align: left;
-	padding-right: 15px;
+	/*padding-right: 15px;*/
 	margin-bottom: 20px;
 }
 .teacher-order {
 	display: table-cell;
 	background-color: #2dcc70;
 	color: #fff;
-	width: 90px;
+	width: 161px;
+	height: 98px;
+	line-height: 98px;
 	text-align: center;
-	font-size: 48px;
+	font-size: 50px;
 	font-weight: 900;
 	margin-right: 10px;
-	height: 100px;
-	line-height: 100px;
 }
 .teacher-content {
 	display: table-cell;
@@ -321,13 +322,15 @@ h2 {
 }
 
 .plan {
-	margin-bottom: 20px;
+	margin-bottom: 50px;
+	font-size: 20px;
+	line-height: 24px;
 }
 .plan-2 {
     margin-bottom: 30px;
     padding-right: 20px;
     text-align: left;
-    padding-left: 45px;
+    padding-left: 76px;
 }
 .plan-2-container {
 	display: inline-block;
@@ -343,11 +346,33 @@ h2 {
 	}
 } 
 @media (min-width:768px){
+
+	p {
+		font-size: 16px;
+		line-height: 16px;
+	}
+	/*br {
+		height: 30px;
+		line-height: 30px;
+	}*/
+	h2 {
+		font-size: 30px;
+		line-height: 30px;
+	}
+	h4 {
+		font-size: 26px;
+		line-height: 26px;
+	}
+	h5 {
+		font-size: 24px;
+		line-height: 24px;
+	}
+
 	.container {
 		width: 786px;
 	}
 	.header {
-		position: fixed;
+		/*position: fixed;*/
 		top: 0px;
 		left: 0px;
 		width: 100%;
@@ -379,18 +404,32 @@ h2 {
 	    margin-left: 15px;
 	}
 
+	.class_show {
+		display: table-row;
+	}
 	.class_description {
 		background: #2dcc70;
-		float: right;
+		/*float: right;*/
+		display: table-cell;
 		width: 60%;
-		height: 270px;
+		vertical-align: middle;
+		/*height: 270px;*/
 	}
 	.class_video {
 		background-color: #000;
-		float: right;
+		/*float: right;*/
+		display: table-cell;
 		width: 40%;
-		height: 270px;
+		/*height: 270px;*/
 	}
+
+	.section-title {
+		margin-bottom: 40px;
+	    margin-top: 40px;
+	    padding: none;
+	    font-weight: bold;
+	}
+
 	.block-title-content {
 	    width: 786px;
 	}
@@ -401,22 +440,96 @@ h2 {
 	.class-icon {
 		display: table-cell;
 		vertical-align: middle;
+		width: 407px;
 	}
 	.class-icon img {
-		height: 100%;
+		width: 100%;
 		width: initial;
 		max-width: initial;
 	}
 	.class-des {
 		display: table-cell;
 		padding: 20px;
-		vertical-align: middle;
+		padding-bottom: 0px;
+		/*vertical-align: middle;*/
 	}
+	.class-des p {
+		line-height: 24px;
+	}
+	.class-des br {
+		line-height: 24px;
+	}
+	.btn-line .btn-yellow {
+		width: 165px;
+	    height: 58px;
+	    font-size: 18px;
+	    font-weight: normal;
+	    text-shadow: none;
+	    text-align: left;
+	    line-height: 58px;
+	    margin-top: 20px;
+	    margin-bottom: 25px;
+	}
+	.btn-line .btn-yellow i, .btn-line-2 .btn-yellow i {
+		line-height: 58px;
+	}
+	.btn-line-2 .btn-yellow {
+		width: 340px;
+	    height: 58px;
+	    font-size: 24px;
+	    font-weight: normal;
+	    text-shadow: none;
+	    text-align: left;
+	    line-height: 58px;
+	    padding: 0 10px 0 15px;
+		margin-top: 10px;
+		margin-bottom: 60px;
+	}
+
 	.plan-2 {
-		padding-left: 50px;
+		padding-left: 12px;
+	}
+	.plan-2-container h5 {
+		font-weight: bold;
+		line-height: 42px;
+		margin-bottom: 17px;
+	}
+	.plan-2-container p {
+		line-height: 28px;
 	}
 	.image-holder {
 		width: 120px;
+	}
+
+	.block-group-horizontal {
+		height: 100px;
+		display: table-row;
+	}
+
+	.block-group-horizontal .title {
+		background-color: #18210e;
+		color: #fff;
+		position: absolute;
+		width: 186px;
+		height: 175px;
+		top: 23px;
+		left: 25px;
+		padding-top: 40px;
+		text-align: center;
+	}
+	.block-group-horizontal .content-left {
+		display: table-cell;
+		width: 70px;
+	}
+	.block-group-horizontal .content {
+		display: table-cell;
+		background-color: #ddd;
+	}
+	.block-group-horizontal .content p{
+		text-align: left;
+		margin: 46px;
+		margin-right: 30px;
+		margin-left: 150px;
 	}
 }
 @media (min-width:992px){
@@ -430,19 +543,40 @@ h2 {
 	    width: 992px;
 	}
 	.plan-2 {
-		padding-left: 75px;
+		padding-left: 15px;
+	}
+
+	.block-group-horizontal .title {
+		height: 112px;
+		padding-top: 12px;
+	}
+
+	.btn-line .btn-yellow {
+		margin-right: 20px;
 	}
 }
 @media (min-width:1200px){
+
 	.container {
-		width: 1000px;
+		width: 1170px;
 	}
 	.logo{
 		left: calc(50% - 575px + 100px);
 		/*border: solid 5px green;*/
 	}
 	.block-title-content {
-	    width: 1000px;
+	    width: 1170px;
+	}
+
+	.plan-2 {
+	    padding-left: 37px;
+	}
+
+	.block-group-horizontal .content {
+		display: table-cell;
+		background-color: #ddd;
+		vertical-align: middle;
+		height: 158px;
 	}
 }
 
