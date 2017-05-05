@@ -8,6 +8,7 @@ h2 {
 	margin: 0;
 	text-align: center;
 	font-weight: 900;
+	font-size: 18px;
 }
 p {
 	margin: 14px 0;
@@ -88,7 +89,7 @@ p {
 	background-position: right;
 	padding: 20px 20px;
 	color: #fff;
-	text-shadow: 0 0 5px #18210e;
+	/*text-shadow: 0 0 5px #18210e;*/
 }
 .class_description p {
 	text-align: left;
@@ -308,15 +309,12 @@ p {
 	display: inline-block;
 	float: left;
 	text-align: right;
-	height: 80px;
-	line-height: 80px;
 }
 .image-holder img {
 	height: 50px;
 	padding-right: 20px;
 }
 .lisence p {
-	height: 80px;
 	font-size: 9px;
 	text-align: left;
 }
@@ -340,6 +338,34 @@ p {
 	background-color: #18210e;
 	color: #fff;
 }
+
+.btn-line .btn-yellow {
+	width: 165px;
+    height: 58px;
+    font-size: 18px;
+    font-weight: normal;
+    text-shadow: none;
+    text-align: left;
+    line-height: 58px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+}
+.btn-line .btn-yellow i, .btn-line-2 .btn-yellow i {
+	line-height: 58px;
+}
+.btn-line-2 .btn-yellow {
+	width: 340px;
+    height: 58px;
+    font-size: 24px;
+    font-weight: normal;
+    text-shadow: none;
+    text-align: left;
+    line-height: 58px;
+    padding: 0 10px 0 15px;
+	margin-top: 10px;
+	margin-bottom: 60px;
+}
+
 @media (min-width:400px){
 	.lisence {
 		width: 400px;
