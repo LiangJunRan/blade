@@ -33,9 +33,10 @@ Install mobile device support
 			Download URL:
 				https://developer.android.com/studio/index.html
 
-Device Simulator
+Platform add
 	cd myApp
 	ionic platform add ios(或android)
+	(之后会在myApp路径下增加platforms文件夹)
 
 	报错：
 		You have been opted out of telemetry. To change this, run: cordova telemetry on.
@@ -51,20 +52,181 @@ Device Simulator
 
 	报错：
 		Error: Cannot find module 'config-chain'
-	解决：
-		npm install -g config-chain
-
-	报错：
 		Error: Cannot find module 'umask'
+		Error: Cannot find module 'uid-number'
+		Error: Cannot find module 'npm-registry-client'
+		Error: Cannot find module 'chownr'
+		Error: Cannot find module 'dezalgo'
+		Error: Cannot find module 'npm-cache-filename'
+		Error: Cannot find module 'which'
+		Cannot find module '@ionic/app-generators' (CLI v2.2.3)
 	解决：
-		npm install -g umask
+		npm install -g $module_name
+
+	最终解决：
+		(因为cordova没有被正确安装，卸载的时候也卸不干净，导致出现.staging和ENOxxx错误)
+		npm uninstall -g cordova
+		(如果提示没有清空，或者去npm全局安装路径看一下cordova没有被删除，手动删除cordova文件夹)
+			(可以选择尝试)
+			npm cache clean
+		npm install -g cordova
+		(然后再次尝试ionic platform add ios(或android)就不会出现报错了)
+
+
+Build ionic app -> android app:
+	E:\ws\ionic\myApp>ionic build android
+
+	> ionic-hello-world@0.0.0 ionic:build E:\ws\ionic\myApp
+	> ionic-app-scripts build
+
+	[11:41:37]  ionic-app-scripts 1.3.6
+	[11:41:37]  build dev started ...
+	[11:41:37]  clean started ...
+	[11:41:37]  clean finished in 22 ms
+	[11:41:37]  copy started ...
+	[11:41:37]  transpile started ...
+	[11:41:39]  transpile finished in 1.76 s
+	[11:41:39]  preprocess started ...
+	[11:41:39]  deeplinks started ...
+	[11:41:39]  deeplinks finished in 18 ms
+	[11:41:39]  preprocess finished in 18 ms
+	[11:41:39]  webpack started ...
+	[11:41:39]  copy finished in 1.89 s
+	[11:41:46]  webpack finished in 6.75 s
+	[11:41:46]  sass started ...
+	[11:41:46]  sass finished in 711 ms
+	[11:41:46]  postprocess started ...
+	[11:41:46]  postprocess finished in 13 ms
+	[11:41:46]  lint started ...
+	[11:41:46]  build dev finished in 9.33 s
+	[11:41:48]  lint finished in 1.40 s
 
 	报错：
-		Error: Cannot find module 'uid-number'
-	解决：
-		npm install -g uid-number
-			
+		Error: No platforms added to this project. Please use `cordova platform add <platform>`.
+	解决方法：
+		ionic platform add android
+
 	报错：
-		Error: Cannot find module 'which'
+		Error: Failed to run "javac -version", make sure that you have a JDK installed.
 	解决：
-		npm install -g which
+		检查javac路径是否被添加到环境变量中，添加后解决。
+
+	报错：
+		Error: Could not find an installed version of Gradle either in Android Studio,
+		or on your system to install the gradle wrapper. Please include gradle
+		in your path, or install Android Studio
+	解决：
+		找到Android Studio安装路径，下面有个gradle路径，添加到环境变量的Path中去
+		D:\Program Files\Android\Android Studio\gradle\gradle-3.2\bin
+		重试后一直在下载https://services.gradle.org/distributions/gradle-3.3-all.zip
+		打开AndroidStudio后，莫名其妙成功了，猜测AndroidStudio在第一次新建项目的时候会自动下载gradle（挂代理方式）
+		D:\Program Files\Android\Android Studio\gradle\m2repository\org\jacoco\org.jacoco.core\0.7.5.201505241946
+		下载需要很长时间，猜想可以直接复制AndroidStudio下的gradle文件夹到新机器上
+			Download https://repo1.maven.org/maven2/org/jacoco/org.jacoco.core/0.7.5.201505241946/org.jacoco.core-0.7.5.201505241946.jar
+			Download https://repo1.maven.org/maven2/org/jacoco/org.jacoco.report/0.7.5.201505241946/org.jacoco.report-0.7.5.201505241946.jar
+			Download https://repo1.maven.org/maven2/net/sf/jopt-simple/jopt-simple/4.9/jopt-simple-4.9.jar
+		以上均会卡住（假死），其实已经下载完毕了（不知道后续在做什么操作），多等一会儿 或 <CTRL> + <C> 后重试即可
+	终极解决方案：
+		[参考1]http://www.cnblogs.com/Ave-Maria/p/6274621.html
+		[参考2]https://zhidao.baidu.com/question/617578155873104292.html
+		[参考3]http://www.cnblogs.com/yoyotl/p/6291703.html
+		
+		参考1
+			参考内容：
+				===================================================================================
+				1.修改build.gradle:
+				buildscript {
+				    repositories {
+				        maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+				    }
+				}
+				allprojects {
+				    repositories {
+				        maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+				    }
+				}
+				需要注意的一点是子项目下的build.gradle需要一并修改
+				------------------------------------------------------------------------------------
+			实际：
+				任意找到一个build.gradle，相应内容为：
+					===================================================================================
+					buildscript {
+					    repositories {
+					        mavenCentral()
+					        jcenter()
+					    }
+
+					    // Switch the Android Gradle plugin version requirement depending on the
+					    // installed version of Gradle. This dependency is documented at
+					    // http://tools.android.com/tech-docs/new-build-system/version-compatibility
+					    // and https://issues.apache.org/jira/browse/CB-8143
+					    dependencies {
+					        classpath 'com.android.tools.build:gradle:2.2.3'
+					    }
+					}
+
+					// Allow plugins to declare Maven dependencies via build-extras.gradle.
+					allprojects {
+					    repositories {
+					        mavenCentral();
+					        jcenter()
+					    }
+					}
+					------------------------------------------------------------------------------------
+				担心使用参考1内容，以后的每个app都要改，且不确定参考1语法是否可用
+		参考2
+			尝试替换中央仓库
+			原文：
+				===================================================================================
+				Maven缺省的本地仓库地址为
+					${user.home}/.m2/repository
+				也就是说，一个用户会对应的拥有一个本地仓库
+				你也可以自定义本地仓库的位置，修改
+					${user.home}/.m2/settings.xml
+				------------------------------------------------------------------------------------
+			无法找到这两个位置，害怕使用${user.home}/.m2/repository，影响其他项目
+
+		参考3
+			尝试修改gradle的maven中央仓库
+			原文：
+				===================================================================================
+				找到gradle的配置文件路径，例如Windows中的路径为C:\Users\${你的用户名}\.gradle
+
+				新建一个文件名为init.gradle，用记事本或者类似的编辑器打开，输入以下内容：
+
+				allprojects{
+				  repositories {
+				    def REPOSITORY_URL = 'http://maven.aliyun.com/nexus/content/groups/public/'
+				      all { ArtifactRepository repo ->
+				        if(repo instanceof MavenArtifactRepository){
+				          def url = repo.url.toString()
+				          if (url.startsWith('https://repo1.maven.org/maven2') || url.startsWith('https://jcenter.bintray.com/')) {
+				            project.logger.lifecycle "Repository ${repo.url} replaced by $REPOSITORY_URL."
+				            remove repo
+				          }
+				       }
+				    }
+				    maven {
+				      url REPOSITORY_URL
+				    }
+				  }
+				}
+
+				再执行gradle build的时候，你能看到下载地址切换到阿里云了，终于不用漫长的等待了。
+				------------------------------------------------------------------------------------
+			实际：
+				C:\Users\lvyang1\.gradle\wrapper\dists\gradle-3.3-all\55gk2rcmfc6p2dg9u9ohc3hw9\gradle-3.3\init.d
+				此路径下有readme.txt:
+					===================================================================================
+					You can add .gradle init scripts to this directory. Each one is executed at the start of the build.
+					------------------------------------------------------------------------------------
+				猜想可以在这里写init.gradle
+				粘贴参考3内容
+				重试
+				……直接在init.d下建立文件.gradle对建立过程有影响，但是报错
+				……貌似失败了，重试了参考3原始方法和我认为的方法……
+
+
+
+
+
