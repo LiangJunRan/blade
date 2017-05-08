@@ -7,6 +7,7 @@ Prepare
 		### if npm install report error message like "... proxy ...", try the following configuration:
 		# proxy=http://127.0.0.1:1080/
 		# https-proxy=http://127.0.0.1:1080/
+	Android Studio
 
 Install
 	npm install -g cordova ionic
@@ -126,7 +127,11 @@ Build ionic app -> android app:
 			Download https://repo1.maven.org/maven2/org/jacoco/org.jacoco.report/0.7.5.201505241946/org.jacoco.report-0.7.5.201505241946.jar
 			Download https://repo1.maven.org/maven2/net/sf/jopt-simple/jopt-simple/4.9/jopt-simple-4.9.jar
 		以上均会卡住（假死），其实已经下载完毕了（不知道后续在做什么操作），多等一会儿 或 <CTRL> + <C> 后重试即可
-	终极解决方案：
+
+		2017年5月8日09:04:18重新尝试成功，当时公司没什么人，日志详见blade/note/ionic-build-android.success.log
+
+		（以下为尝试使用代理的过程，未果）
+
 		[参考1]http://www.cnblogs.com/Ave-Maria/p/6274621.html
 		[参考2]https://zhidao.baidu.com/question/617578155873104292.html
 		[参考3]http://www.cnblogs.com/yoyotl/p/6291703.html
@@ -226,7 +231,24 @@ Build ionic app -> android app:
 				……直接在init.d下建立文件.gradle对建立过程有影响，但是报错
 				……貌似失败了，重试了参考3原始方法和我认为的方法……
 
+Install ADB：
+	http://adbshell.com/downloads
+	下载http://adbshell.com/upload/adb.zip
+
+	解压缩
+
+	将adb.exe所在的路径加入到环境变量的Path中
 
 
+Test android-app at avt:
 
+	BIOS > Advanced > CPU setup > Intel(R) Virtualization Technology [Disabled -> Enabled]
+
+	然后再Android Studio中，点击"AVD Manager"按钮
+	
+	通过一系列下载设置后，启动虚拟设备（注意我这里的sd卡设置使用的是软件支持，自动和硬件支持都闪退）
+
+	E:\ws\aionek\myApp\platforms\android\build\outputs\apk>adb install android-debug.apk
+
+	然后会在虚拟设备中找到当前myApp
 

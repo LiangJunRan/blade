@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- 
+		Done:
+			正则限制textarea输入
+			自制气泡提示
+		
+		Todo:
+			不支持ie（未测试）
+			气泡非响应式，建议使用成熟插件代替
+			正则支持输入的符号可能不全
+			...
+
+		Author:	kuroikenshi@sina.com
+		Date:	2017/05/08 16:50:00
+	-->
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+	<script src="assets/jquery/jquery.min.js"></script>
+	<style>
+		.pop_tips {
+			position: absolute;
+		}
+		.pop_tips_content {
+			float: left;
+			padding: 0.4em 1em;
+			background: #333;
+			color: #fff;
+			border-radius: 5px;
+			width: 10em;
+		}
+		.pop_tips_trangle_left {
+			float: left;
+			margin-top: 0.7em;
+			border-top: solid 0.4em transparent;
+			border-right: solid 0.9em #333;
+			border-bottom: solid 0.4em transparent;
+			border-left: solid 0 transparent;
+		}
+
+		.pop_tips_content.anime_alert {
+			animation: anime_alert_background 0.3s 4 ease-in-out;
+			animation-fill-mode: both;
+		}
+		.pop_tips_trangle_left.anime_alert {
+			animation: anime_alert_border 0.3s 4 ease-in-out;
+			animation-fill-mode: both;
+		}
+		@keyframes anime_alert_background{
+			0% {
+				background: #f00;
+			}
+		}
+		@keyframes anime_alert_border{
+			0% {
+				border-right-color: #f00;
+			}
+		}
+
+		.anime_remove {
+			animation: anime_remove 0.5s 1 ease-in-out;
+			animation-fill-mode: both;
+		}
+		@keyframes anime_remove {
+			100% {
+				opacity: 0;
+			}
+		}
+	</style>
+</head>
+<body>
+	<hr>
+	<div class="container">
+		<div class="row">
+			<label class="col-sm-4"><h2>测试正则限制非法输入>>></h2></label>
+			<textarea class="col-sm-8" type="composition" name="english" id="" cols="300" rows="20"></textarea>
+		</div>
+	</div>
+	<hr>
+	<script>
+		/*
+			str = str.replace(/[^替换我]/g, '')
+			
+			/替换我/g		表示替换全部
+			[替换我]		表示单一字符符合“替换我”的条件
+			[^替换我]		表示单一字符不符合“替换我”的条件
+
+			“替换我”可以替换成以下公式：
+				中文		\u4E00-\u9FA5
+				数字		\0-\9
+				英文		\a-\z\A-\Z
+				其它符号	\@\!\#
+				全角		\uFF00-\uFFFF
+
+			多个条件连续写就可以了，例如：
+				中英文 + 数字 + @符号 + 点符号   \a-\z\A-\Z0-9\u4E00-\u9FA5\@\.
+
+			若想在文本框里不能右键弹出菜单和不能粘贴进复制的信息的话
+
+			就要在'<input>'里输入 onpaste="return false;" oncontextmenu="return false;"
+		*/
+
+		// 使用input事件，不支持ie
+		$('[type="composition"]').on('input', function(){
+			var original_value = $(this).val();
+			var invaild_symbols = original_value.match(/[^\a-\z\A-\Z\0-\9\,\.\;\?\!\-\+\*\/\'\"\(\)\:\%]/g);
+			var value = original_value.replace(/[^\a-\z\A-\Z\0-\9\,\.\;\?\!\-\+\*\/\'\"\(\)\:\%]/g, '');
+
+			console.log('>>>', $(this).val());
+			console.log('<<<', value);
+			console.log('');
+			if (original_value.length != value.length){
+				var alert_msg = '"' + invaild_symbols + '"为非法字符';
+				console.log(alert_msg);
+				pop_show($(this), {content: alert_msg});
+			}
+			$(this).val(value);
+		});
+
+		// 自制气泡
+
+		// pop_show($('[type="composition"]'), {content: 'aaaaaaaaaaaaa'});		// 测试用
+		function pop_show(trigger, _opts) {
+			var default_opts = {
+				content: '气泡demo',
+				position: 'right',
+				offset: {
+					horizontal: 30,
+					vertical: 0
+				},
+				only_one: true,
+				delay: 3000
+			};
+
+			var opts = $.extend({}, default_opts, _opts);
+
+			if (opts.only_one) {
+				$('.pop_tips').remove();
+			}
+
+			// 绘制
+			var pop_tips = $(
+				'<div class="pop_tips">' + 
+					'<div class="pop_tips_trangle_left anime_alert"></div>' + 
+					'<div class="pop_tips_content anime_alert">' + opts.content  + '</div>' +
+				'</div>');
+			var left = trigger.offset().left + opts.offset.horizontal;
+			var top = trigger.offset().top + opts.offset.vertical;
+
+			if (opts.position == 'right') {
+				left += trigger.width();
+				top += trigger.height() / 2;
+			}
+
+			pop_tips.css({'left': left, 'top': top});
+
+			console.log(pop_tips);
+
+			// 定时删掉
+			setTimeout(function(){
+				pop_tips.addClass('anime_remove');
+			}, opts.delay - 500);
+			setTimeout(function(){
+				pop_tips.remove();
+			}, opts.delay);
+
+			trigger.after(pop_tips);
+		}
+
+	</script>
+</body>
+</html>
