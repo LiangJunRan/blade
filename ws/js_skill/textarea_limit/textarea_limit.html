@@ -5,6 +5,8 @@
 		Done:
 			正则限制textarea输入
 			自制气泡提示
+			气泡提示增加鼠标悬停暂缓消失功能
+			提示信息更加精确
 		
 		Todo:
 			不支持ie（未测试）
@@ -29,7 +31,7 @@
 			background: #333;
 			color: #fff;
 			border-radius: 5px;
-			width: 10em;
+			width: 11em;
 		}
 		.pop_tips_trangle_left {
 			float: left;
@@ -60,7 +62,7 @@
 		}
 
 		.anime_remove {
-			animation: anime_remove 0.5s 1 ease-in-out;
+			animation: anime_remove 0.7s 1 ease-in-out;
 			animation-fill-mode: both;
 		}
 		@keyframes anime_remove {
@@ -74,7 +76,15 @@
 	<hr>
 	<div class="container">
 		<div class="row">
-			<label class="col-sm-4"><h2>测试正则限制非法输入>>></h2></label>
+			<label class="col-sm-4">
+				<h2>测试正则限制非法输入>>></h2>
+				<p>
+					测试中文测试全角：【】（）《》，。！？ａｂｃｄｅｆｇ，。，．
+				</p>
+				<p>
+					Test english, test half-width symbol: {}()[]#&§*-/\~,.:;?!'"|‖→
+				</p>
+			</label>
 			<textarea class="col-sm-8" type="composition" name="english" id="" cols="300" rows="20"></textarea>
 		</div>
 	</div>
@@ -105,14 +115,37 @@
 		// 使用input事件，不支持ie
 		$('[type="composition"]').on('input', function(){
 			var original_value = $(this).val();
-			var invaild_symbols = original_value.match(/[^\a-\z\A-\Z\0-\9\,\.\;\?\!\-\+\*\/\'\"\(\)\:\%]/g);
-			var value = original_value.replace(/[^\a-\z\A-\Z\0-\9\,\.\;\?\!\-\+\*\/\'\"\(\)\:\%]/g, '');
+			var invaild_symbols = original_value.match(/[^\a-\z\A-\Z\0-\9\{\}\(\)\[\]\#\&\§\*\-\/\\\~\,\.\:\;\?\!\'\"\|\‖\→]/g);
+			var value = original_value.replace(/[^\a-\z\A-\Z\0-\9\{\}\(\)\[\]\#\&\§\*\-\/\\\~\,\.\:\;\?\!\'\"\|\‖\→]/g, '');
 
 			console.log('>>>', $(this).val());
 			console.log('<<<', value);
 			console.log('');
 			if (original_value.length != value.length){
-				var alert_msg = '"' + invaild_symbols + '"为非法字符';
+				var symbol_list = invaild_symbols;
+				var chinese_char_list = [];
+				var full_mark_list = [];
+				for (var i = 0; i < symbol_list.length; i++) {
+					if (symbol_list[i].match(/[\u4E00-\u9FA5]/g)) {
+						chinese_char_list.push(symbol_list[i]);
+					} else {
+						full_mark_list.push(symbol_list[i]);
+					}
+				}
+				var alert_msg = '';
+				if (chinese_char_list.length > 0) {
+					alert_msg += '"' + chinese_char_list.join('", "') + '" 为中文字符'
+				}
+				if (chinese_char_list.length > 0 && full_mark_list.length > 0) {
+					alert_msg += '<br>';
+				}
+				if (full_mark_list.length > 0) {
+					alert_msg += '"' + full_mark_list.join('", "') + '" 为全角字符或非法字符'
+				}
+
+				if (chinese_char_list.length > 0 || full_mark_list.length > 0) {
+					alert_msg += '<br><strong>请输入半角英文字符</strong>';
+				}
 				console.log(alert_msg);
 				pop_show($(this), {content: alert_msg});
 			}
@@ -137,6 +170,9 @@
 			var opts = $.extend({}, default_opts, _opts);
 
 			if (opts.only_one) {
+				$.each($('.pop_tips'), function(){
+					clearTimeout($(this).data().auto_remove_timer);
+				});
 				$('.pop_tips').remove();
 			}
 
@@ -155,18 +191,45 @@
 			}
 
 			pop_tips.css({'left': left, 'top': top});
+			pop_tips.data().time_left = opts.delay;
 
 			console.log(pop_tips);
 
 			// 定时删掉
-			setTimeout(function(){
-				pop_tips.addClass('anime_remove');
-			}, opts.delay - 500);
-			setTimeout(function(){
-				pop_tips.remove();
-			}, opts.delay);
+			// setTimeout(function(){
+			// 	pop_tips.addClass('anime_remove');
+			// }, opts.delay - 500);
+			// setTimeout(function(){
+			// 	pop_tips.remove();
+			// }, opts.delay);
 
+			// 鼠标悬停，暂停并重置消失倒计时
+			pop_tips.on('mouseover', function() {
+				$(this).data().time_left = opts.delay;
+				clearTimeout($(this).data().auto_remove_timer);
+				$(this).removeClass('anime_remove');
+			})
+			// 鼠标离开，开始消失倒计时
+			.on('mouseout', function(){
+				auto_remove();
+			});
+
+			// 每帧自动检测是否需要自动消失
+			function auto_remove() {
+				pop_tips.data().time_left -= 16;
+
+				if (pop_tips.data().time_left <= 700) {
+					if (!pop_tips.hasClass('anime_remove')){
+						pop_tips.addClass('anime_remove');
+					}
+				}
+				if (pop_tips.data().time_left <= 0) {
+					pop_tips.remove();
+				}
+				pop_tips.data().auto_remove_timer = setTimeout(auto_remove, 16);
+			}
 			trigger.after(pop_tips);
+			auto_remove();
 		}
 
 	</script>
