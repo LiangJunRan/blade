@@ -13,14 +13,14 @@
 			content: '气泡demo',
 			position: 'right',
 			offset: {
-				horizontal: 30,
-				vertical: 0
+				x: 0,
+				y: 0
 			},
 			only_one: true,
 			delay: 3000
 		};
 
-		var opts = $.extend({}, default_opts, _opts);
+		var opts = $.extend(true, {}, default_opts, _opts);
 
 		if (opts.only_one) {
 			$.each($('.pop_tips'), function(){
@@ -29,19 +29,33 @@
 			$('.pop_tips').remove();
 		}
 
+
+		// 计算位置
+		var left = trigger.offset().left;
+		var top = trigger.offset().top;
+		var pop_tips_trangle_class = 'pop_tips_trangle_';
+
+		if (opts.position == 'right') {
+			left += trigger.width() + 32;
+			top += trigger.height() / 2;
+			pop_tips_trangle_class += 'left';
+		}
+		if (opts.position == 'center') {
+			left += (trigger.width() - 160) / 2;
+			top += trigger.height() / 2;
+			pop_tips_trangle_class += 'none';
+		}
+		left += opts.offset.x;
+		top += opts.offset.y;
+
 		// 绘制
 		var pop_tips = $(
 			'<div class="pop_tips">' + 
-				'<div class="pop_tips_trangle_left anime_alert"></div>' + 
+				'<div class="pop_tips_trangle_container">' +
+					'<div class="' + pop_tips_trangle_class + ' anime_alert"></div>' +
+				'</div>' + 
 				'<div class="pop_tips_content anime_alert">' + opts.content  + '</div>' +
 			'</div>');
-		var left = trigger.offset().left + opts.offset.horizontal;
-		var top = trigger.offset().top + opts.offset.vertical;
-
-		if (opts.position == 'right') {
-			left += trigger.width();
-			top += trigger.height() / 2;
-		}
 
 		pop_tips.css({'left': left, 'top': top});
 		pop_tips.data().time_left = opts.delay;

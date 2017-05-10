@@ -1,21 +1,27 @@
 .pop_tips {
 	position: absolute;
+	display: table-row;
 }
 .pop_tips_content {
-	float: left;
+	display: table-cell;
 	padding: 0.4em 1em;
 	background: #333;
 	color: #fff;
 	border-radius: 5px;
-	width: 11em;
+	width: 160px;
+}
+.pop_tips_trangle_container {
+	display: table-cell;
+	vertical-align: middle;
 }
 .pop_tips_trangle_left {
-	float: left;
-	margin-top: 0.7em;
 	border-top: solid 0.4em transparent;
 	border-right: solid 0.9em #333;
 	border-bottom: solid 0.4em transparent;
 	border-left: solid 0 transparent;
+}
+.pop_tips_trangle_none {
+	display: none;
 }
 
 .pop_tips_content.anime_alert {

@@ -81,7 +81,16 @@
 				if (chinese_char_list.length > 0 || full_mark_list.length > 0) {
 					alert_msg += '<br><strong>请输入半角英文字符</strong>';
 				}
-				$(this).pop_show({content: alert_msg});
+				$(this).pop_show({
+					content: alert_msg,
+					position: 'center',
+					only_one: false
+				});
+				$(this).pop_show({
+					content: alert_msg,
+					position: 'right',
+					only_one: false
+				});
 			}
 			$(this).val(value);
 		}
