@@ -1,0 +1,48 @@
+.pop_tips {
+	position: absolute;
+}
+.pop_tips_content {
+	float: left;
+	padding: 0.4em 1em;
+	background: #333;
+	color: #fff;
+	border-radius: 5px;
+	width: 11em;
+}
+.pop_tips_trangle_left {
+	float: left;
+	margin-top: 0.7em;
+	border-top: solid 0.4em transparent;
+	border-right: solid 0.9em #333;
+	border-bottom: solid 0.4em transparent;
+	border-left: solid 0 transparent;
+}
+
+.pop_tips_content.anime_alert {
+	animation: anime_alert_background 0.3s 4 ease-in-out;
+	animation-fill-mode: both;
+}
+.pop_tips_trangle_left.anime_alert {
+	animation: anime_alert_border 0.3s 4 ease-in-out;
+	animation-fill-mode: both;
+}
+@keyframes anime_alert_background{
+	0% {
+		background: #f00;
+	}
+}
+@keyframes anime_alert_border{
+	0% {
+		border-right-color: #f00;
+	}
+}
+
+.anime_remove {
+	animation: anime_remove 0.7s 1 ease-in-out;
+	animation-fill-mode: both;
+}
+@keyframes anime_remove {
+	100% {
+		opacity: 0;
+	}
+}

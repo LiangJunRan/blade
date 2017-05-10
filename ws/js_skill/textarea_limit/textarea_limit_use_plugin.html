@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/pop_show/pop_show.css">
+	<script src="assets/jquery/jquery.min.js"></script>
+	<script src="assets/pop_show/pop_show.js"></script>
+	<style>
+		
+	</style>
+</head>
+<body>
+	<hr>
+	<div class="container">
+		<div class="row">
+			<label class="col-sm-4">
+				<h2>测试正则限制非法输入>>></h2>
+				<p>
+					测试中文测试全角：【】（）《》，。！？ａｂｃｄｅｆｇ，。，．
+				</p>
+				<p>
+					Test english, test half-width symbol: {}()[]#&§*-/\~,.:;?!'"|‖→
+				</p>
+			</label>
+			<textarea class="col-sm-8" type="composition" name="english" id="" cols="300" rows="20"></textarea>
+		</div>
+	</div>
+	<hr>
+	<script>
+		/*
+			str = str.replace(/[^替换我]/g, '')
+			
+			/替换我/g		表示替换全部
+			[替换我]		表示单一字符符合“替换我”的条件
+			[^替换我]		表示单一字符不符合“替换我”的条件
+
+			“替换我”可以替换成以下公式：
+				中文		\u4E00-\u9FA5
+				数字		\0-\9
+				英文		\a-\z\A-\Z
+				其它符号	\@\!\#
+				全角		\uFF00-\uFFFF
+
+			多个条件连续写就可以了，例如：
+				中英文 + 数字 + @符号 + 点符号   \a-\z\A-\Z0-9\u4E00-\u9FA5\@\.
+
+			若想在文本框里不能右键弹出菜单和不能粘贴进复制的信息的话
+
+			就要在'<input>'里输入 onpaste="return false;" oncontextmenu="return false;"
+		*/
+
+		function textarea_limit() {
+			var original_value = $(this).val();
+			var invaild_symbols = original_value.match(/[^\a-\z\A-\Z\0-\9\{\}\(\)\[\]\#\&\§\*\-\/\\\~\,\.\:\;\?\!\'\"\|\‖\→]/g);
+			var value = original_value.replace(/[^\a-\z\A-\Z\0-\9\{\}\(\)\[\]\#\&\§\*\-\/\\\~\,\.\:\;\?\!\'\"\|\‖\→]/g, '');
+
+			if (original_value.length != value.length){
+				var symbol_list = invaild_symbols;
+				var chinese_char_list = [];
+				var full_mark_list = [];
+				for (var i = 0; i < symbol_list.length; i++) {
+					if (symbol_list[i].match(/[\u4E00-\u9FA5]/g)) {
+						chinese_char_list.push(symbol_list[i]);
+					} else {
+						full_mark_list.push(symbol_list[i]);
+					}
+				}
+				var alert_msg = '';
+				if (chinese_char_list.length > 0) {
+					alert_msg += '"' + chinese_char_list.join('", "') + '" 为中文字符'
+				}
+				if (chinese_char_list.length > 0 && full_mark_list.length > 0) {
+					alert_msg += '<br>';
+				}
+				if (full_mark_list.length > 0) {
+					alert_msg += '"' + full_mark_list.join('", "') + '" 为全角字符或非法字符'
+				}
+
+				if (chinese_char_list.length > 0 || full_mark_list.length > 0) {
+					alert_msg += '<br><strong>请输入半角英文字符</strong>';
+				}
+				$(this).pop_show({content: alert_msg});
+			}
+			$(this).val(value);
+		}
+
+		// 使用input事件，不支持ie
+		$('[type="composition"]').on('input', textarea_limit);
+
+		</script>
+</body>
+</html>
