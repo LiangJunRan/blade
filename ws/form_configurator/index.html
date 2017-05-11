@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Form Configurator</title>
+	<link rel="stylesheet" href="../_commons/bootstrap/css/bootstrap.min.css">
+	<script src="../_commons/jquery/jquery.min.js"></script>
+	<script src="../_commons/bootstrap/js/bootstrap.min.js"></script>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+		body {
+			position: absolute;
+			display: table;
+			left: 0;
+			top: 0;
+			height: 100%;
+			width: 100%;
+		}
+		.bg {
+			display: table-row;
+			height: 100%;
+		}
+		.item_list {
+			display: table-cell;
+			height: 100%;
+			border-right: solid 1px #555;
+			padding: 30px;
+			padding-right: 40px;
+			width: 30%;
+		}
+		.dashed {
+			border: dashed 1px transparent;
+		}
+		.dashed:hover {
+			border: dashed 1px #555;
+		}
+		.radius {
+			padding: 10px;
+			border-radius: 0px;
+		}
+		.page_content {
+			display: table-cell;
+			padding: 20px;
+		}
+		.space {
+			height: 200px;
+		}
+		.over {
+			background-color: rgba(0, 255, 0, 0.3);
+		}
+
+		.anime_alert {
+			height: calc(100%);
+			animation: anime_alert_background 1s infinite ease-in-out;
+			animation-fill-mode: both;
+			border: solid 5px transparent;
+		}
+		@keyframes anime_alert_background{
+			50% {
+				/*background: rgba(255, 255, 0, 0.3);*/
+				border-color: rgba(255, 255, 0, 0.7);
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="bg">
+		<div class="item_list">
+			<div class="row components_container">
+				<div class="col-sm-12 drag_item">
+					<div class="item row dashed radius">
+		                <label class="col-sm-4 form-control-static dashed">文本框：</label>
+		                <div class="col-sm-8 dashed">
+		                    <input type="text" class="form-control" />
+		                </div>
+		            </div>
+				</div>
+			</div>
+		</div>
+		<div class="page_content">
+			<div class="row drop_container">
+				<div class="col-sm-12 drag_item">
+					<div class="item row dashed radius">
+		                <label class="col-sm-4 form-control-static dashed">文本框：</label>
+		                <div class="col-sm-8 dashed">
+		                    <input type="text" class="form-control" />
+		                </div>
+		            </div>
+				</div>
+				<div class="col-sm-6 drag_item">
+					<div class="item row dashed radius">
+		                <label class="col-sm-4 form-control-static dashed">文本框：</label>
+		                <div class="col-sm-8 dashed">
+		                    <input type="text" class="form-control" />
+		                </div>
+		            </div>
+				</div>
+				<div class="col-sm-6 drag_item">
+					<div class="item row dashed radius">
+		                <label class="col-sm-4 form-control-static dashed">文本框：</label>
+		                <div class="col-sm-8 dashed">
+		                    <input type="text" class="form-control" />
+		                </div>
+		            </div>
+				</div>
+				<div class="col-sm-6 drag_item">
+					<div class="item row dashed radius">
+		                <label class="col-sm-4 form-control-static dashed">文本框：</label>
+		                <div class="col-sm-8 dashed">
+		                    <input type="text" class="form-control" />
+		                </div>
+		            </div>
+				</div>
+			</div>
+		</div>	
+	</div>
+
+	<script>
+		var mouseWatcher;
+		var location_list = [];
+		// function watchMouse()
+		document.onmousedown = function(ev) {
+			ev = ev || window.event; 
+			var mousePos = mouseCoords(ev); 
+			// console.log(mousePos.x, mousePos.y);
+			$('body').data().mousePos = mousePos;
+			// $('document') = mousePos.x; 
+			// document.getElementById("yyy").value = mousePos.y; 
+		} 
+		function mouseCoords(ev) { 
+			if(ev.pageX || ev.pageY) { 
+				return {x: ev.pageX, y: ev.pageY}; 
+			} 
+			return { 
+				x:ev.clientX + document.body.scrollLeft - document.body.clientLeft, 
+				y:ev.clientY + document.body.scrollTop - document.body.clientTop 
+			};
+		}
+		var anime;
+
+		function show_location(ev) {
+			var m = $('body').data().mousePos;
+			var beforeIndex = -1;
+			for (var i = 0; i < location_list.length; i++) {
+				if (isBefore(m, location_list[i])) {
+					beforeIndex = i;
+					break;
+				}
+			}
+			console.log(mouseCoords(ev));
+			console.log(beforeIndex);
+			if (beforeIndex >= 0) {
+				// 在deforeIndex的左边插入
+			} else {
+				// 在最末插入
+			}
+
+			// anime = requestAnimationFrame(show_location);
+		}
+
+		function isBefore(mouseInfo, thisInfo) {
+			if (mouseInfo.x < (thisInfo.x + thisInfo.w) && mouseInfo.y >= thisInfo.y && mouseInfo.y <= (thisInfo.y + thisInfo.h)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		function dragStart(ev) {
+			ev.dataTransfer.setData("id", ev.target.id);
+			ev.dataTransfer.setData("node_html", $(ev.target)[0].outerHTML);
+			if ($(ev.target).parent().hasClass('components_container')) {
+				ev.dataTransfer.setData("move_mode", 'copy');
+			} else {
+				ev.dataTransfer.setData("move_mode", 'move');
+			}
+			console.log(ev);
+			$('.drop_container').addClass('anime_alert');
+
+			location_list = [];
+			$.each($('.drop_container').children(), function(){
+				location_list.push({
+					x: $(this).offset().left,
+					y: $(this).offset().top,
+					w: $(this).width(),
+					h: $(this).height()
+				})
+			});
+			// var dummy = $($(ev.target)[0].outerHTML);
+			// dummy.css('opacity', '0.5');
+			// $(ev.target).replaceWith(dummy);
+		}
+
+		function hasSameId(id) {
+			var elements = $('[id^="' + id + '"]');
+			var id_same_count = 0;
+			if (elements.length >= 1) {
+				$.each(elements, function() {
+					if ($(this).attr('id') == id) {
+						id_same_count += 1;
+					}
+				});
+			}
+			if (id_same_count >= 1) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+	    function drop(ev) {
+			ev.preventDefault();
+			console.log(ev.dataTransfer.getData("node_html"));
+			var data = ev.dataTransfer.getData("id");
+
+			show_location(ev);
+
+			if ($(ev.target).hasClass('drop_container')) {
+				// 复制模式
+				if (ev.dataTransfer.getData('move_mode') == 'copy') {
+					var new_node = $(ev.dataTransfer.getData("node_html"));
+					new_node.css('background-color', 'rgb(' + parseInt(Math.random() * 255) + ', ' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ')');
+					while (true) {
+						if (hasSameId(new_node.attr('id'))) {
+							var id = new_node.attr('id');
+							var order = parseInt(id.split('-')[id.split('-').length - 1]) + 1;
+							new_node.attr('id', 'drag-item-' + order); 
+						} else {
+							break;
+						}
+					}
+					$(ev.target).append(new_node);
+				}
+				// 移动模式
+				else {
+					// TODO: 改成根据鼠标坐标插入到固定位置
+					ev.target.appendChild(document.getElementById(data));
+				}
+			}
+			
+
+			// $('#' + data).parent().attr('style', '');
+		}
+
+		function dragEnd(ev) {
+			$('.drop_container').removeClass('anime_alert');
+			cancelAnimationFrame(anime);
+			$('.over').removeClass('over');
+		}
+
+		function dragOver(ev) {
+			ev.preventDefault();
+			show_location(ev);
+			$('.over').removeClass('over');
+			$(ev.toElement).addClass('over');
+		}
+
+	    var containers = document.querySelectorAll('.drop_container');
+	    for(var i = 0, l = containers.length; i < l; i++) {
+	        containers[i].setAttribute('ondragover', 'dragOver(event)');
+	        containers[i].setAttribute('ondrop', 'drop(event);');
+	    }
+
+	    var drag_items = document.querySelectorAll('.drag_item');
+	    for(var i = 0, l = drag_items.length; i < l; i++) {
+	    	drag_items[i].setAttribute('id', 'drag-item-' + i);
+	        drag_items[i].setAttribute('draggable', 'true');
+	        drag_items[i].setAttribute('ondragstart', 'dragStart(event);');
+	        drag_items[i].setAttribute('ondragend', 'dragEnd(event);');
+	    }
+	</script>
+</body>
+</html>
