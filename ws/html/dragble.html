@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.5, maximum-scale=1.5, user-scalable=no">
+    <link href="../static/components/bootstrap/dist_v3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="../static/components/bootstrap/dist_v3.3.5/css/bootstrap-theme.min.css" rel="stylesheet"> -->
+    <link href="../static/components/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="../static/components/circle-menu/css/style.css" rel="stylesheet">
+
+    <link href="../static/components/html5-css3-circle-menu/css/reset.css" rel="stylesheet">
+    <!-- <link href="../static/components/html5-css3-circle-menu/css/style.css" media="screen" rel="stylesheet"> -->
+    <link href="../static/css/mysite5.css" rel="stylesheet">
+    <link href="../static/css/my-circle-menu5.css" rel="stylesheet">
+
+    <script src="../static/components/jquery/dist/jquery.min.js"></script>
+    <script src="../static/components/bootstrap/dist_v3.3.5/js/bootstrap.min.js"></script>
+    <script src="../static/components/Chart.js/Chart.js"></script>
+    <script src="../static/js/mysite.js"></script>
+
+
+    <!-- <script src="../static/components/html5-css3-circle-menu/gg_bd_ad_720x90.js" type="text/javascript"></script>
+    <script src="../static/components/html5-css3-circle-menu/follow.js" type="text/javascript"></script> -->
+    <style>
+        body > div {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top:0;
+            left:0;
+            background-color: #000;
+            margin: 0px;
+            border: none;
+            border-radius: 0px;
+        }
+        div {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(100,0,255,0.5);
+            border: solid 2px rgba(100,0,255,1);;
+            border-radius: 15px;
+            margin: 5px 0px 0px 5px;
+            display: inline-block;
+        }
+        div:hover {
+			box-shadow: 0px 0px 10px 5px #5f7;
+        }
+        div.red {
+        	background-color: rgba(255,0,0,0.5);
+            border: solid 2px rgba(255,0,0,1);
+        }
+		div.container-style {
+			width: 230px;
+			height: 235px;
+			background-color: rgba(200,200,200,1);
+            border: solid 2px rgba(200,0,255,1);
+            position: absolute;
+            right: 0;
+            bottom: 0;
+		}
+		.container-self {
+		    padding-right: 0px;
+		    padding-left: 0px;
+		    margin-right: auto;
+			margin-left: auto;
+		}
+    </style>
+</head>
+<body>
+    <div class="container-self">
+	    <div class="drag-item"></div>
+	    <div class="drag-item red"></div>
+	    <div class="drag-item"></div>
+	    <div class="drag-item"></div>
+	    <div class="drag-item"></div>
+	    <div class="drag-item"></div>
+	    <div class="drag-item"></div>
+	    <div class="drag-item"></div>
+
+    	<div class="container-style container-self"></div>
+    </div>
+
+    <script>
+
+    function drag(ev) {
+		ev.dataTransfer.setData("id", ev.target.id);
+		console.log(ev);
+	}
+
+    function drop(ev) {
+		ev.preventDefault();
+		var data = ev.dataTransfer.getData("id");
+		ev.target.appendChild(document.getElementById(data));
+	}
+
+	function dragOver(ev) {
+		ev.preventDefault();
+		ev.toElement.setAttribute('background-color', '#fff');
+	}
+
+    var containers = document.querySelectorAll('.container-self');
+    for(var i = 0, l = containers.length; i < l; i++) {
+        containers[i].setAttribute('ondragover', 'dragOver(event)');
+        containers[i].setAttribute('ondrop', 'drop(event);');
+    }
+
+    var drag_items = document.querySelectorAll('.drag-item');
+    for(var i = 0, l = drag_items.length; i < l; i++) {
+    	drag_items[i].setAttribute('id', 'drag-item-' + i);
+        drag_items[i].setAttribute('draggable', 'true');
+        drag_items[i].setAttribute('ondragstart', 'drag(event);');
+    }
+    </script>
+</body>
+
+</html>
