@@ -37,12 +37,13 @@ core.text = '<input type="text" class="form-control" />';
 opts.text = {
     "name": "demo_text",
     "type": "text",                         // 基本类型
-    "label": "文本",
+    "label": "文本框",
     "placeholder": "请输入文本",                // 非必填
     "description": "请输入英文、数字、下划线"
 }
 
 core.select = '<select class="form-control"></select>';
+// sub.select = '<option value=""></option>';
 opts.select = {
     "name": "demo_select",
     "type": "select",                         // 基本类型

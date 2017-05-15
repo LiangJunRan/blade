@@ -272,6 +272,22 @@
 
 			// case by type
 			switch (opt.type) {
+				case 'select': 
+					$select = $(core[opt.type]);
+					// TODO 合并参数
+					if (opt.dataUrl) {
+						console.log('--opt.dataUrl--');
+					} else if (opt.options !== undefined && opt.options.length > 0){
+						console.log('--opt.options--');
+						$.each(opt.options, function(key) {
+
+						});
+					} else {
+						console.log('--No-Item--');
+						$select.append('<option value="">--No-Item--</option>');
+					}
+					$('core', $node).replaceWith($select);		// 在非new情况下，这步不起作用
+					break;
             	case 'hidden':
 	            case 'text':
 	            case 'number':
