@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Form Configurator</title>
+	<link rel="stylesheet" href="../_commons/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../_commons/font-awesome/css/font-awesome.min.css">
+	<script src="../_commons/jquery/jquery.min.js"></script>
+	<script src="../_commons/bootstrap/js/bootstrap.min.js"></script>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+		body {
+			position: absolute;
+			display: table;
+			left: 0;
+			top: 0;
+			height: 100%;
+			width: 100%;
+		}
+		.bg {
+			display: table-row;
+			height: 100%;
+		}
+		.item_list {
+			display: table-cell;
+			height: 100%;
+			border-right: solid 1px #555;
+			padding: 30px;
+			padding-right: 40px;
+			width: 30%;
+		}
+		.dashed {
+			border: dashed 1px transparent;
+		}
+		/*.dashed:hover {
+			border: dotted 1px #555;
+		}*/
+		.radius {
+			padding: 10px;
+			border-radius: 0px;
+		}
+		.page_content {
+			display: table-cell;
+			padding: 20px;
+		}
+		.space {
+			height: 200px;
+		}
+		.over {
+			/*background-color: rgba(0, 255, 0, 0.3);*/
+			margin-right: -15px;
+		}
+		.insert_place_holder {
+			border: dashed 1px #555;
+			width: 13px;
+			height: 56px;
+			display: inline-block;
+			float: left;
+		}
+		.insert_place_holder.col-sm-6 {
+			width: 100%;
+		}
+		.insert_place_holder.insert_mark {
+			background-color: rgba(255, 0, 0, 0.3);
+			/*width: 15px;
+			height: 58px;
+			display: inline-block;
+			float: left;*/
+		}
+		/*@keyframes anime_insert_mark {
+			50% {
+				background: rgba(255, 0, 0, 0.3);
+			}
+		}*/
+
+		.anime_alert {
+			height: calc(100%);
+			animation: anime_alert_border 1s infinite ease-in-out;
+			animation-fill-mode: both;
+			border: solid 5px transparent;
+		}
+		@keyframes anime_alert_border{
+			50% {
+				/*background: rgba(255, 255, 0, 0.3);*/
+				border-color: rgba(255, 255, 0, 0.7);
+			}
+		}
+
+		.control_bar {
+			position: absolute;
+			background-color: rgba(0, 0, 0, 0.3);
+			text-align: center;
+			line-height: 100%;
+			vertical-align: middle;
+			animation: anime_show 0.1s 1 ease-in;
+		}
+		@keyframes anime_show{
+			0% {
+				opacity: 0;
+				box-shadow: 0 0 15px 5px #555;
+			}
+		}
+		.control_bar button {
+			height: 42px;
+			line-height: 42px;
+			width: 42px;
+			border-radius: 42px;
+			text-align: center;
+			vertical-align: middle;
+			padding: 0;
+			border-width: 0px;
+			margin: 0 10px;
+			animation: anime_margin 0.2s ease-in 1 normal;
+			/*box-shadow: 0 0 15px 1px #555;*/
+		}
+		.btn:focus,
+		.btn:active:focus,
+		.btn.active:focus,
+		.btn.focus,
+		.btn:active.focus,
+		.btn.active.focus {
+		    outline: none;          
+		}
+		@keyframes anime_margin{
+			0% {
+				margin: 0 -21px;
+			}
+
+			50% {
+				margin: 0 -21px;
+			}
+		}
+		.control_bar button i {
+			height: 42px;
+			line-height: 41px;
+			width: 42px;
+			border-radius: 42px;
+			text-align: center;
+			vertical-align: middle;
+			padding: 0;
+		}
+
+		.item_detail {
+			position: absolute;
+			width: 500px;
+			/*height: 200px;*/
+			padding: 15px 30px;
+			border-radius: 5px;
+			background-color: #fff;
+			box-shadow: 0 0 15px 5px #999;
+			/*left: calc(50% - 150px);
+			top: 100px;*/
+		}
+		.item_detail_in {
+			animation: anime_item_detail_in 0.2s ease-in 1 normal;;
+		}
+	</style>
+	<style id="anime_item_detail_in">
+		@keyframes anime_item_detail_in {
+			0% {
+				
+			}
+			100% {
+
+			} 
+		}
+		.item_detail {
+			left: 0px;
+			top: 0px;
+		}
+	</style>
+</head>
+<body>
+	<div class="bg">
+		<div class="item_list">
+			<div class="row components_container">
+				<div class="col-sm-12 drag_item base">
+					<div class="item row dashed radius">
+		                <label class="col-sm-4 form-control-static dashed">文本框：</label>
+		                <div class="col-sm-8 dashed">
+		                    <input type="text" class="form-control" />
+		                </div>
+		            </div>
+				</div>
+			</div>
+		</div>
+		<div class="page_content">
+			<div class="row drop_container">
+				<div class="col-sm-12 drag_item">
+					<div class="item row dashed radius">
+						                <label class="col-sm-4 form-control-static dashed">文本框：</label>
+						                <div class="col-sm-8 dashed">
+						                    <input type="text" class="form-control" />
+						                </div>
+						            </div>
+				</div>
+				<div class="col-sm-6 drag_item">
+					<div class="item row dashed radius">
+						                <label class="col-sm-4 form-control-static dashed">文本框：</label>
+						                <div class="col-sm-8 dashed">
+						                    <input type="text" class="form-control" />
+						                </div>
+						            </div>
+				</div>
+				<div class="col-sm-6 drag_item">
+					<div class="item row dashed radius">
+						                <label class="col-sm-4 form-control-static dashed">文本框：</label>
+						                <div class="col-sm-8 dashed">
+						                    <input type="text" class="form-control" />
+						                </div>
+						            </div>
+				</div>
+				<div class="col-sm-6 drag_item">
+					<div class="item row dashed radius">
+						                <label class="col-sm-4 form-control-static dashed">文本框：</label>
+						                <div class="col-sm-8 dashed">
+						                    <input type="text" class="form-control" />
+						                </div>
+						            </div>
+				</div>
+			</div>
+		</div>	
+	</div>
+
+	<script>
+		// 初始化模型参数 // TODO
+		$('.base').data().opts = {
+			label: '文本框',
+			input_type: 'text',
+			key: 'test_input',
+			col_width: 12
+		};
+		// var mouseWatcher;
+
+		// 每个已插入元素的坐标和宽高	// TODO: 改成传递变量
+		var location_list = [];
+		
+		// function watchMouse()
+		/*document.onmousedown = function(ev) {
+			ev = ev || window.event; 
+			var mousePos = mouseCoords(ev); 
+			// console.log(mousePos.x, mousePos.y);
+			$('body').data().mousePos = mousePos;
+			// $('document') = mousePos.x; 
+			// document.getElementById("yyy").value = mousePos.y; 
+		}*/
+
+		// 从事件获取鼠标相的绝对坐标
+		function mouseCoords(ev) { 
+			if(ev.pageX || ev.pageY) { 
+				return {x: ev.pageX, y: ev.pageY}; 
+			} 
+			return { 
+				x:ev.clientX + document.body.scrollLeft - document.body.clientLeft, 
+				y:ev.clientY + document.body.scrollTop - document.body.clientTop 
+			};
+		}
+		var anime;
+
+		function isBefore(mouseInfo, thisInfo) {
+			if (mouseInfo.x < (thisInfo.x + thisInfo.w) && mouseInfo.y >= thisInfo.y && mouseInfo.y <= (thisInfo.y + thisInfo.h)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		function show_location(ev) {
+			var m = mouseCoords(ev);/*$('body').data().mousePos;*/
+			var beforeIndex = -1;
+			for (var i = 0; i < location_list.length; i++) {
+				if (isBefore(m, location_list[i])) {
+					beforeIndex = i;
+					break;
+				}
+			}
+			// console.log(mouseCoords(ev));
+			// console.log(beforeIndex);
+			if (beforeIndex >= 0) {
+				// 在deforeIndex的左边插入
+			} else {
+				// 在最末插入
+			}
+
+			// anime = requestAnimationFrame(show_location);
+		}
+
+		
+
+		// ///////////////////////////////////////////////////////////////////
+		// 拖拽开始
+		// ///////////////////////////////////////////////////////////////////
+		function dragStart(ev) {
+			console.log('dragStart');
+
+			close_config();
+			close_detail();
+
+			// 随拖拽准备的数据
+			ev.dataTransfer.setData("id", ev.target.id);
+			ev.dataTransfer.setData("node_html", $(ev.target)[0].outerHTML);
+			
+			// 确定拖拽模式
+			if ($(ev.target).parent().hasClass('components_container')) {
+				ev.dataTransfer.setData("move_mode", 'copy');
+			} else {
+				ev.dataTransfer.setData("move_mode", 'move');
+			}
+
+			// 页面变化
+			console.log(ev);
+			$('.drop_container').addClass('anime_alert');
+
+
+			var insert_place_holder = '<div class="insert_place_holder"></div>';
+			$.each($('.drop_container').children(), function() {
+				var item = $(this);
+				item.addClass('over');
+				item.before(insert_place_holder);
+			});
+
+			$('.drop_container').append('<div class="insert_place_holder col-sm-6"></div>');
+
+			location_list = [];
+			$.each($('.drop_container').children(), function(){
+				location_list.push({
+					x: $(this).offset().left,
+					y: $(this).offset().top,
+					w: $(this).width(),
+					h: $(this).height()
+				})
+			});
+			// var dummy = $($(ev.target)[0].outerHTML);
+			// dummy.css('opacity', '0.5');
+			// $(ev.target).replaceWith(dummy);
+		}
+
+		function hasSameId(id) {
+			var elements = $('[id^="' + id + '"]');
+			var id_same_count = 0;
+			if (elements.length >= 1) {
+				$.each(elements, function() {
+					if ($(this).attr('id') == id) {
+						id_same_count += 1;
+					}
+				});
+			}
+			if (id_same_count >= 1) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+	    function drop(ev) {
+	    	console.log('drop');
+			ev.preventDefault();
+			var origin_id = ev.dataTransfer.getData("id");
+
+			show_location(ev);
+
+			// 复制模式
+			if (ev.dataTransfer.getData('move_mode') == 'copy') {
+				var new_node = $(ev.dataTransfer.getData("node_html"));
+				// new_node.css('background-color', 'rgb(' + parseInt(Math.random() * 255) + ', ' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ')');
+				while (hasSameId(new_node.attr('id'))) {
+					var id = new_node.attr('id');
+					var order = parseInt(id.split('-')[id.split('-').length - 1]) + 1;
+					new_node.attr('id', 'drag-item-' + order);
+				}
+				$('.insert_mark').replaceWith(new_node);
+				console.log($('#' + origin_id).data().opts);
+				new_node.data().opts = $('#' + origin_id).data().opts;
+
+				console.log(new_node.data().opts);
+			}
+			// 移动模式
+			else {
+				// ev.target.appendChild(document.getElementById(data));
+				console.log('move_mode move');
+				$('.insert_mark').replaceWith($('#' + origin_id));
+			}
+
+			// $('#' + data).parent().attr('style', '');
+		}
+
+		function dragEnd(ev) {
+	    	console.log('dragEnd');
+			$('.drop_container').removeClass('anime_alert');
+			cancelAnimationFrame(anime);
+			$('.over').removeClass('over');
+			$('.insert_mark').removeClass('insert_mark');
+			$('.insert_place_holder').remove();
+		}
+
+		function dragOver(ev) {
+			ev.preventDefault();
+			show_location(ev);
+
+			$('.insert_mark').removeClass('insert_mark');
+
+			if ($(ev.toElement).closest('.drag_item').length > 0) {
+				$(ev.toElement).closest('.drag_item').prev().addClass('insert_mark');
+			} else {
+				$('.insert_place_holder:last').addClass('insert_mark');
+			}
+
+			/*if ($(ev.toElement).hasClass('drop_container')) {
+				$(ev.toElement).find('.insert_place_holder:last').addClass('insert_mark');
+			} else {
+				$(ev.toElement).closest('.drag_item').prev().addClass('insert_mark');
+			}*/
+		}
+
+		function get_absolute_location_info($obj) {
+			return {
+				x: $obj.offset().left,
+				y: $obj.offset().top,
+				w: $obj.width(),
+				h: $obj.height()
+			}
+		}
+
+		function pop_detail($item){
+			console.log();
+
+			var detail_window = $('<div class="item_detail item_detail_in"></div>');
+
+			detail_window.data().item = $item;
+
+			$.each($item.data().opts, function(key) {
+				detail_window.append(
+					'<div class="row">' +
+						'<div class="col-sm-12">' +
+							'<div class="row">' +
+				                '<label class="col-sm-4 form-control-static">' + key + '</label>' +
+				                '<div class="col-sm-8">' +
+				                    '<input type="text" name="' + key + '" class="form-control" value="' + $item.data().opts[key] + '"/>' +
+				                '</div>' +
+				            '</div>' +
+						'</div>' +
+					'</div>'
+				);
+			});
+
+			var item_info = get_absolute_location_info($item);
+			var e_info = {
+				x: item_info.x + item_info.w / 2 - 250,
+				y: item_info.y + item_info.h + 10
+			}
+
+			$('#anime_item_detail_in').html(
+				'@keyframes anime_item_detail_in {' +
+					'0% {' +
+						'left: ' + (item_info.x + item_info.w / 2) + 'px;' +
+						'top: ' + (item_info.y + item_info.h / 2) + 'px;' +
+						'width: 0px;' +
+						'height: 0px;' +
+					'}' +
+					'100% {' +
+						'left: ' + e_info.x + 'px;' +
+						'top: ' + e_info.y + 'px;' +
+					'} ' +
+				'}' +
+				'.item_detail {' +
+					'left: ' + e_info.x + 'px;' +
+					'top: ' + e_info.y + 'px;' +
+				'}'
+			);
+
+			$('body').append(detail_window);
+		}
+
+		function rebuild_item($item) {
+			// $.each($item.data().opts, function(key) {
+			// 	// label: '文本框',
+			// 	// input_type: 'text',
+			// 	// key: 'test_input',
+			// 	// col_width: 12
+			// });
+			
+		}
+
+		function close_detail(save) {
+			if (save) {
+				rebuild_item($('.item_detail:eq(0)').data().item);
+			}
+			$('.item_detail').remove();
+		}
+		function close_config() {
+			$('.control_bar').remove();
+		}
+
+		// 开始配置
+		function config(ev) {
+			close_config();
+			close_detail();
+			var $this = $(ev.target);
+			// $this.appendTo('<div class="config_container"></div>');
+
+			var info = {};
+			info.x = $this.closest('.drag_item').offset().left;
+			info.y = $this.closest('.drag_item').offset().top;
+			info.w = $this.closest('.drag_item').width() + 30;
+			info.h = $this.closest('.drag_item').height();
+
+			if ($this.closest('.drag_item').length > 0) {
+				var control_bar = $(
+					'<div class="control_bar">' +
+							'<button class="btn btn-primary edit_btn btn_group_1">' +
+								'<i class="fa fa-cogs"></i>' +
+							'</button>' +
+							'<button class="btn btn-danger remove_btn btn_group_1">' +
+								'<i class="fa fa-trash"></i>' +
+							'</button>' +
+
+							'<button class="btn btn-success commit_btn btn_group_2" style="display: none;">' +
+								'<i class="fa fa-check"></i>' +
+							'</button>' +
+							'<button class="btn btn-danger cancel_btn btn_group_2" style="display: none;">' +
+								'<i class="fa fa-close"></i>' +
+							'</button>' +
+					'</div>'
+				);
+				control_bar.css({'left': info.x + 'px', 'top': info.y + 'px', 'width': info.w + 'px', 'height': info.h + 'px', 'line-height': info.h + 'px'});
+
+				control_bar.find('.remove_btn').on('click', function() {
+					$this.closest('.drag_item').remove();
+					control_bar.remove();
+					close_detail();
+				});
+
+				control_bar.find('.edit_btn').on('click', function() {
+					control_bar.find('.btn_group_1').hide();
+					control_bar.find('.btn_group_2').show();
+
+					// 弹出编辑窗口
+					pop_detail($this.closest('.drag_item'));
+				});
+
+				control_bar.find('.commit_btn').on('click', function() {
+					control_bar.find('.btn_group_2').hide();
+					control_bar.find('.btn_group_1').show();
+					close_detail(true);
+				});
+
+				control_bar.find('.cancel_btn').on('click', function() {
+					control_bar.find('.btn_group_2').hide();
+					control_bar.find('.btn_group_1').show();
+					close_detail();
+				});
+
+				// control_bar.on('mouseout', function() {
+				// 	control_bar.remove();
+				// })
+				$('body').append(control_bar);
+			}
+		}
+
+	    var containers = document.querySelectorAll('.drop_container');
+	    for(var i = 0, l = containers.length; i < l; i++) {
+	        containers[i].setAttribute('ondragover', 'dragOver(event)');
+	        containers[i].setAttribute('ondrop', 'drop(event);');
+	    }
+
+	    var drag_items = document.querySelectorAll('.drag_item');
+	    for(var i = 0, l = drag_items.length; i < l; i++) {
+	    	drag_items[i].setAttribute('id', 'drag-item-' + i);
+	        drag_items[i].setAttribute('draggable', 'true');
+	        drag_items[i].setAttribute('ondragstart', 'dragStart(event);');
+	        drag_items[i].setAttribute('ondragend', 'dragEnd(event);');
+	        drag_items[i].setAttribute('ondblclick', 'config(event);');
+	    }
+	</script>
+</body>
+</html>

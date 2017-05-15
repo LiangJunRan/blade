@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="../_commons/font-awesome/css/font-awesome.min.css">
 	<script src="../_commons/jquery/jquery.min.js"></script>
 	<script src="../_commons/bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/templates.js"></script>
 	<style>
 		* {
 			box-sizing: border-box;
@@ -23,13 +24,13 @@
 			display: table-row;
 			height: 100%;
 		}
-		.item_list {
+		.left_bar {
 			display: table-cell;
 			height: 100%;
 			border-right: solid 1px #555;
 			padding: 30px;
 			padding-right: 40px;
-			width: 30%;
+			width: 400px;
 		}
 		.dashed {
 			border: dashed 1px transparent;
@@ -37,10 +38,13 @@
 		/*.dashed:hover {
 			border: dotted 1px #555;
 		}*/
-		.radius {
+		.item, .padbtm {
+			padding: 10px;
+		}
+		/*.radius {
 			padding: 10px;
 			border-radius: 0px;
-		}
+		}*/
 		.page_content {
 			display: table-cell;
 			padding: 20px;
@@ -48,22 +52,26 @@
 		.space {
 			height: 200px;
 		}
-		.over {
-			/*background-color: rgba(0, 255, 0, 0.3);*/
+		/* .over {
+			background-color: rgba(0, 255, 0, 0.3);
 			margin-right: -15px;
+		} */
+		.insert_pointer {
+			position: absolute;
+			border: dashed 1px #555;
 		}
-		.insert_place_holder {
+		 .append_holder {
 			border: dashed 1px #555;
 			width: 13px;
 			height: 56px;
 			display: inline-block;
 			float: left;
-		}
-		.insert_place_holder.col-sm-6 {
+		} 
+		.append_holder.col-sm-12 {
 			width: 100%;
 		}
-		.insert_place_holder.insert_mark {
-			background-color: rgba(255, 0, 0, 0.3);
+		.insert_mark {
+			background-color: rgba(255, 0, 0, 0.7);
 			/*width: 15px;
 			height: 58px;
 			display: inline-block;
@@ -79,12 +87,12 @@
 			height: calc(100%);
 			animation: anime_alert_border 1s infinite ease-in-out;
 			animation-fill-mode: both;
-			border: solid 5px transparent;
+			/*border: solid 5px transparent;*/
 		}
 		@keyframes anime_alert_border{
 			50% {
-				/*background: rgba(255, 255, 0, 0.3);*/
-				border-color: rgba(255, 255, 0, 0.7);
+				background: rgba(255, 255, 0, 0.3);
+				/*border-color: rgba(255, 255, 0, 0.7);*/
 			}
 		}
 
@@ -156,6 +164,16 @@
 		.item_detail_in {
 			animation: anime_item_detail_in 0.2s ease-in 1 normal;;
 		}
+
+		.footer {
+			position: fixed;
+			width: 100%;
+			padding: 5px 10px;
+			bottom: 0px;
+			display: block;
+			background-color: #ddd;
+		}
+
 	</style>
 	<style id="anime_item_detail_in">
 		@keyframes anime_item_detail_in {
@@ -174,64 +192,126 @@
 </head>
 <body>
 	<div class="bg">
-		<div class="item_list">
+		<div class="left_bar">
 			<div class="row components_container">
-				<div class="col-sm-12 drag_item base">
-					<div class="item row dashed radius">
-		                <label class="col-sm-4 form-control-static dashed">文本框：</label>
-		                <div class="col-sm-8 dashed">
-		                    <input type="text" class="form-control" />
-		                </div>
-		            </div>
-				</div>
 			</div>
 		</div>
 		<div class="page_content">
 			<div class="row drop_container">
-				<!-- <div class="col-sm-12 drag_item">
-					<div class="item row dashed radius">
-						                <label class="col-sm-4 form-control-static dashed">文本框：</label>
-						                <div class="col-sm-8 dashed">
-						                    <input type="text" class="form-control" />
-						                </div>
-						            </div>
-				</div>
-				<div class="col-sm-6 drag_item">
-					<div class="item row dashed radius">
-						                <label class="col-sm-4 form-control-static dashed">文本框：</label>
-						                <div class="col-sm-8 dashed">
-						                    <input type="text" class="form-control" />
-						                </div>
-						            </div>
-				</div>
-				<div class="col-sm-6 drag_item">
-					<div class="item row dashed radius">
-						                <label class="col-sm-4 form-control-static dashed">文本框：</label>
-						                <div class="col-sm-8 dashed">
-						                    <input type="text" class="form-control" />
-						                </div>
-						            </div>
-				</div>
-				<div class="col-sm-6 drag_item">
-					<div class="item row dashed radius">
-						                <label class="col-sm-4 form-control-static dashed">文本框：</label>
-						                <div class="col-sm-8 dashed">
-						                    <input type="text" class="form-control" />
-						                </div>
-						            </div>
-				</div> -->
 			</div>
 		</div>	
 	</div>
 
+	<div class="footer">
+		<div class="row">
+			<div class="col-sm-12">
+				<button class="btn btn-primary btn-sm pull-left" onclick="getJson();">
+					Get JSON		
+				</button>
+			</div>
+		</div>
+	</div>
+
 	<script>
+		function getJson() {
+			var result = [];
+			$.each($('.drop_container').children(), function() {
+				result.push($(this).data().opts);
+			});
+			var str_result = '';
+			$.each(result, function() {
+				str_result += JSON.stringify(this) + '\n';
+			})
+			console.log(str_result);
+		}
+
+		//序列化表格元素为JSON  
+		$.fn.serializeJson = function() {  
+		    var o = {};  
+		    var a = this.serializeArray();  
+		    $.each(a, function() {  
+		        if (o[this.name] !== undefined) {  
+		            if (o[this.name] == null || !o[this.name].push) {  
+		                o[this.name] = [o[this.name]];  
+		            }  
+		            o[this.name].push(this.value || null);  
+		        } else {  
+		            o[this.name] = this.value || null;  
+		        }  
+		    });  
+		    return o;  
+		}  
+
+		function _addOrReplaceClass($obj, new_class) {
+			var notFound = true;
+			var list_class = $obj.prop('class').split(' ');
+			$.each(list_class, function(idx) {
+				if (this.indexOf('col-sm-') >=0) {
+					notFound = false;
+					list_class[idx] = new_class;
+				}
+			});
+			if (notFound) {
+				list_class.push(new_class);
+			}
+			$obj.prop('class', list_class.join(' '));
+		}
+
+		function render(_opt, _$node) {
+			var default_opt = {
+			    "name": "demo_text",
+			    "label": "测试文本",
+			    "outerWidth": 12,
+			    "labelWidth": 4,
+			    "contentWidth": 8
+			};
+			var opt = $.extend(true, {}, default_opt, _opt);
+			var isNew = !(_$node);
+			$node = _$node || $(shellTemplate);		// 指定了，就是用指定点
+
+
+			// case by type
+			switch (opt.type) {
+            	case 'hidden':
+	            case 'text':
+	            case 'number':
+	            case 'datepicker':
+	            default:
+					$('core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
+					$('input', $node).prop('placeholder', opt.placeholder);
+					break;
+			}
+
+			// common
+			$('.formLabel', $node).html(opt.label);
+			$('input, select, textarea', $node).prop('name', opt.name);
+			$('.formDescription', $node).prop('title', opt.description);
+			_addOrReplaceClass($node, 'col-sm-' + opt.outerWidth);
+			_addOrReplaceClass($('.labelClass', $node), 'col-sm-' + opt.labelWidth);
+			_addOrReplaceClass($('.contentClass', $node), 'col-sm-' + opt.contentWidth);
+
+			// bind json
+			$node.data().opts = opt;
+
+			return $node;
+		}
+
+		function initComponentsContainer() {
+			$.each(opts, function(key){
+				var $c = render(opts[key]);
+				$('.components_container').append($c);
+			});
+		}
+		initComponentsContainer();
+
+
 		// 初始化模型参数 // TODO
-		$('.base').data().opts = {
-			label: '文本框',
-			input_type: 'text',
-			key: 'test_input',
-			col_width: 12
-		};
+		// $('.base').data().opts = {
+		// 	label: '文本框',
+		// 	input_type: 'text',
+		// 	key: 'test_input',
+		// 	col_width: 12
+		// };
 		// var mouseWatcher;
 
 		// 每个已插入元素的坐标和宽高	// TODO: 改成传递变量
@@ -310,27 +390,31 @@
 			}
 
 			// 页面变化
-			console.log(ev);
+			console.log(ev.dataTransfer);
 			$('.drop_container').addClass('anime_alert');
 
-
-			var insert_place_holder = '<div class="insert_place_holder"></div>';
+			// 加入插入位置提示
 			$.each($('.drop_container').children(), function() {
-				var item = $(this);
-				item.addClass('over');
-				item.before(insert_place_holder);
+				var $item = $(this);
+				var loc = get_absolute_location_info($item);
+				var $insert_pointer = $('<div class="insert_pointer"></div>');
+				$insert_pointer.css({
+					'left': (loc.x /*- 6*/) + 'px',
+					'top': loc.y + 'px',
+					'width': '10px',
+					'height': (loc.h - 2) + 'px'
+				});
+				// 互相绑定
+				$item.data().insert_pointer = $insert_pointer;
+				$insert_pointer.data().item = $item;
+				$('body').append($insert_pointer);
 			});
 
-			$('.drop_container').append('<div class="insert_place_holder col-sm-6"></div>');
+			$('.drop_container').append('<div class="append_holder col-sm-12"></div>');
 
 			location_list = [];
 			$.each($('.drop_container').children(), function(){
-				location_list.push({
-					x: $(this).offset().left,
-					y: $(this).offset().top,
-					w: $(this).width(),
-					h: $(this).height()
-				})
+				location_list.push(get_absolute_location_info($(this)));
 			});
 			// var dummy = $($(ev.target)[0].outerHTML);
 			// dummy.css('opacity', '0.5');
@@ -359,56 +443,60 @@
 			ev.preventDefault();
 			var origin_id = ev.dataTransfer.getData("id");
 
-			show_location(ev);
-
 			// 复制模式
 			if (ev.dataTransfer.getData('move_mode') == 'copy') {
 				var new_node = $(ev.dataTransfer.getData("node_html"));
-				// new_node.css('background-color', 'rgb(' + parseInt(Math.random() * 255) + ', ' + parseInt(Math.random() * 255) + ',' + parseInt(Math.random() * 255) + ')');
 				while (hasSameId(new_node.attr('id'))) {
 					var id = new_node.attr('id');
 					var order = parseInt(id.split('-')[id.split('-').length - 1]) + 1;
 					new_node.attr('id', 'drag-item-' + order);
 				}
-				$('.insert_mark').replaceWith(new_node);
-				console.log($('#' + origin_id).data().opts);
-				new_node.data().opts = $('#' + origin_id).data().opts;
 
-				console.log(new_node.data().opts);
+				if ($('.insert_mark').hasClass('append_holder')) {
+					$('.insert_mark').replaceWith(new_node);
+				} else {
+					$('.insert_mark').data().item.before(new_node);					
+				}
+
+				new_node.data().opts = $('#' + origin_id).data().opts;
 			}
 			// 移动模式
 			else {
-				// ev.target.appendChild(document.getElementById(data));
-				console.log('move_mode move');
-				$('.insert_mark').replaceWith($('#' + origin_id));
+				console.log('MOVE_MODE move');
+				if ($('.insert_mark').hasClass('append_holder')) {
+					$('.insert_mark').replaceWith($('#' + origin_id));
+				} else {
+					$('.insert_mark').data().item.before($('#' + origin_id));					
+				}
 			}
-
-			// $('#' + data).parent().attr('style', '');
 		}
 
 		function dragEnd(ev) {
 	    	console.log('dragEnd');
 			$('.drop_container').removeClass('anime_alert');
 			cancelAnimationFrame(anime);
-			$('.over').removeClass('over');
+			// $('.over').removeClass('over');
 			$('.insert_mark').removeClass('insert_mark');
-			$('.insert_place_holder').remove();
+			$('.append_holder').remove();
+			$('.insert_pointer').remove();
 		}
 
 		function dragOver(ev) {
 			ev.preventDefault();
-			show_location(ev);
+			// show_location(ev);
 
 			$('.insert_mark').removeClass('insert_mark');
 
 			if ($(ev.toElement).closest('.drag_item').length > 0) {
-				$(ev.toElement).closest('.drag_item').prev().addClass('insert_mark');
+				console.log('insert');
+				$(ev.toElement).closest('.drag_item').data().insert_pointer.addClass('insert_mark');
 			} else {
-				$('.insert_place_holder:last').addClass('insert_mark');
+				$('.append_holder:last').addClass('insert_mark');
+				console.log('append');
 			}
 
 			/*if ($(ev.toElement).hasClass('drop_container')) {
-				$(ev.toElement).find('.insert_place_holder:last').addClass('insert_mark');
+				$(ev.toElement).find('.append_holder:last').addClass('insert_mark');
 			} else {
 				$(ev.toElement).closest('.drag_item').prev().addClass('insert_mark');
 			}*/
@@ -423,27 +511,12 @@
 			}
 		}
 
-		function pop_detail($drag_item){
+		function pop_detail($item){
 			console.log();
 
-			var detail_window = $('<div class="item_detail item_detail_in"></div>');
+			var detail_window = $('<form class="item_detail item_detail_in"></form>');
 
-			$.each($drag_item.data().opts, function(key) {
-				detail_window.append(
-					'<div class="row">' +
-						'<div class="col-sm-12">' +
-							'<div class="row">' +
-				                '<label class="col-sm-4 form-control-static">' + key + '</label>' +
-				                '<div class="col-sm-8">' +
-				                    '<input type="text" name="' + key + '" class="form-control" value="' + $drag_item.data().opts[key] + '"/>' +
-				                '</div>' +
-				            '</div>' +
-						'</div>' +
-					'</div>'
-				);
-			});
-
-			var item_info = get_absolute_location_info($drag_item);
+			var item_info = get_absolute_location_info($item);
 			var e_info = {
 				x: item_info.x + item_info.w / 2 - 250,
 				y: item_info.y + item_info.h + 10
@@ -469,9 +542,39 @@
 			);
 
 			$('body').append(detail_window);
+
+			detail_window.data().item = $item;
+
+			$.each($item.data().opts, function(key) {
+				var $info = $(
+					/*'<div class="row">' +
+						'<div class="col-sm-12">' +*/
+							'<div class="row padbtm">' +
+				                '<label class="col-sm-4 form-control-static">' + key + '</label>' +
+				                '<div class="col-sm-8">' +
+				                    '<input type="text" name="' + key + '" class="form-control" value="' + $item.data().opts[key] + '"/>' +
+				                '</div>' +
+				            '</div>'// +
+						/*'</div>' +
+					'</div>'*/
+				);
+				if (key == 'type') {
+					$('input', $info).prop('readonly', 'readonly');
+				}
+				detail_window.append($info);
+			});
 		}
 
-		function close_detail() {
+		function rebuild_item($detail) {
+			var opt = $detail.serializeJson();
+			var $item = $detail.data().item;
+			render(opt, $item);
+		}
+
+		function close_detail(save) {
+			if (save) {
+				rebuild_item($('.item_detail:eq(0)'));
+			}
 			$('.item_detail').remove();
 		}
 		function close_config() {
@@ -483,6 +586,9 @@
 			close_config();
 			close_detail();
 			var $this = $(ev.target);
+			if ($this.closest('.drag_item').parent().hasClass('components_container')) {
+				return false;
+			}
 			// $this.appendTo('<div class="config_container"></div>');
 
 			var info = {};
@@ -494,7 +600,7 @@
 			if ($this.closest('.drag_item').length > 0) {
 				var control_bar = $(
 					'<div class="control_bar">' +
-							'<button class="btn btn-primary edit_btn btn_group_1">' +
+							'<button class="btn btn-warning edit_btn btn_group_1">' +
 								'<i class="fa fa-cogs"></i>' +
 							'</button>' +
 							'<button class="btn btn-danger remove_btn btn_group_1">' +
@@ -504,7 +610,7 @@
 							'<button class="btn btn-success commit_btn btn_group_2" style="display: none;">' +
 								'<i class="fa fa-check"></i>' +
 							'</button>' +
-							'<button class="btn btn-danger cancel_btn btn_group_2" style="display: none;">' +
+							'<button class="btn btn-primary cancel_btn">' +
 								'<i class="fa fa-close"></i>' +
 							'</button>' +
 					'</div>'
@@ -528,13 +634,13 @@
 				control_bar.find('.commit_btn').on('click', function() {
 					control_bar.find('.btn_group_2').hide();
 					control_bar.find('.btn_group_1').show();
-					close_detail();
+					close_detail(true);
+					close_config();
 				});
 
 				control_bar.find('.cancel_btn').on('click', function() {
-					control_bar.find('.btn_group_2').hide();
-					control_bar.find('.btn_group_1').show();
 					close_detail();
+					close_config();
 				});
 
 				// control_bar.on('mouseout', function() {
