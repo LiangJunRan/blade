@@ -33,6 +33,8 @@ var shellTemplate =
 
 var core = {}, sub = {}, opts = {};
 
+
+
 core.text = '<input type="text" class="form-control" />';
 opts.text = {
     "name": "demo_text",
@@ -40,14 +42,63 @@ opts.text = {
     "label": "文本框",
     "placeholder": "请输入文本",                // 非必填
     "description": "请输入英文、数字、下划线"
-}
+};
+
+
 
 core.select = '<select class="form-control"></select>';
-// sub.select = '<option value=""></option>';
 opts.select = {
     "name": "demo_select",
     "type": "select",                         // 基本类型
     "label": "下拉框",
     "placeholder": "--请选择--",                // 非必填
-    "description": "未完成"
-}
+    "description": "请点击选择",
+    "options": [
+        {"label": "选项1", "value": 1},
+        {"label": "选项2", "value": 2},
+        {"label": "选项3", "value": 3},
+        {"label": "选项4", "value": 4}
+    ]
+};
+
+
+
+core.radio = '<div class="formContent"></div>';
+sub.radio =
+    '<div class="radio clip-radio radio-primary radio-inline">' +
+        '<input type="radio">' +
+        '<label class="itemLabel"><input type="radio"></label>' +
+    '</div>';
+opts.radio = {
+    "name": "demo_radio",
+    "type": "radio",                         // 基本类型
+    "label": "单选",
+    "description": "未完成",
+    "options": [
+        {"label": "选项1", "value": 1},
+        {"label": "选项2", "value": 2},
+        {"label": "选项3", "value": 3},
+        {"label": "选项4", "value": 4}
+    ]
+};
+
+
+
+core.checkbox = '<div class="formContent"></div>';
+sub.checkbox =
+    '<div class="checkbox clip-check check-primary checkbox-inline">' +
+        '<input type="checkbox">' +
+        '<label class="itemLabel"></label>' +
+    '</div>';
+opts.checkbox = {
+    "name": "demo_checkbox",
+    "type": "checkbox",                         // 基本类型
+    "label": "多选",
+    "description": "未完成",
+    "options": [
+        {"label": "选项1", "value": 1},
+        {"label": "选项2", "value": 2},
+        {"label": "选项3", "value": 3},
+        {"label": "选项4", "value": 4}
+    ]
+};

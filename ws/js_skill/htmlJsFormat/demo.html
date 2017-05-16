@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link href="common/bootstrap.min.css" rel="stylesheet">
+    <link href="common/font-awesome.min.css" rel="stylesheet">
+    <script src="common/jquery.min.js"></script>
+    <script src="common/bootstrap.min.js"></script>
+    <!-- ///////////////////////////////////////////////// -->
+    <script src="special/htmlformat.js"></script>
+    <script src="special/jsformat.js"></script>
+
+</head>
+<body>
+	<h1>
+		Hello world
+	</h1>
+	<hr>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<button id="btn" class="btn btn-danger" onclick="formatHtmlOrJs();">format</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<textarea id="result"></textarea>
+			</div>
+		</div>
+	</div>
+	<script>
+	function formatHtmlOrJs() {
+        document.getElementById('btn').disabled = true;
+        js_source = document.getElementById('result').value.replace(/^\s+/, '');
+        tabsize = 4; //document.getElementById('tabsize').value;
+        tabchar = ' ';
+        if (tabsize == 1) {
+            tabchar = '\t';
+        }
+        var fmt_code = '';
+        if (js_source && js_source.charAt(0) === '<') {
+            document.getElementById('result').value = style_html(js_source, tabsize, tabchar, 80);
+        } else {
+            document.getElementById('result').value = js_beautify(js_source, tabsize, tabchar);
+        }
+        document.getElementById('btn').disabled = false;
+        return false;
+    }
+	</script>
+</body>
+</html>

@@ -5,9 +5,12 @@
 	<title>Form Configurator</title>
 	<link rel="stylesheet" href="../_commons/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="../_commons/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="assets/styles-radio-checkbox.css">
 	<script src="../_commons/jquery/jquery.min.js"></script>
 	<script src="../_commons/bootstrap/js/bootstrap.min.js"></script>
 	<script src="assets/templates.js"></script>
+	<script src="assets/html_formater/htmlformat.js"></script>
+	<script src="assets/html_formater/jsformat.js"></script>
 	<style>
 		* {
 			box-sizing: border-box;
@@ -39,7 +42,7 @@
 			border: dotted 1px #555;
 		}*/
 		.item, .padbtm {
-			padding: 10px;
+			padding: 10px 0;
 		}
 		/*.radius {
 			padding: 10px;
@@ -129,7 +132,7 @@
 		.btn.focus,
 		.btn:active.focus,
 		.btn.active.focus {
-		    outline: none;          
+				outline: none;					
 		}
 		@keyframes anime_margin{
 			0% {
@@ -153,7 +156,9 @@
 		.item_detail {
 			position: absolute;
 			width: 500px;
-			/*height: 200px;*/
+			height: 600px;
+			overflow-x: hidden;
+			overflow-y: scroll;
 			padding: 15px 30px;
 			border-radius: 5px;
 			background-color: #fff;
@@ -202,10 +207,34 @@
 		</div>	
 	</div>
 
+	<!-- Button trigger modal -->
+	<!-- <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+		Launch demo modal
+	</button> -->
+
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">JSON</h4>
+				</div>
+				<div class="modal-body" id="modalContent">
+					...
+				</div>
+				<!-- <div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div> -->
+			</div>
+		</div>
+	</div>
+
 	<div class="footer">
 		<div class="row">
 			<div class="col-sm-12">
-				<button class="btn btn-primary btn-sm pull-left" onclick="getJson();">
+				<button class="btn btn-primary btn-sm pull-left" onclick="getJson();" data-toggle="modal" data-target="#myModal">
 					Get JSON		
 				</button>
 			</div>
@@ -213,34 +242,57 @@
 	</div>
 
 	<script>
+		function formatCode(code) {
+			js_source = code.replace(/^\s+/, '');
+	        tabsize = 4;
+	        tabchar = ' ';
+	        if (tabsize == 1) {
+	            tabchar = '\t';
+	        }
+	        var fmt_code = '';
+	        if (js_source && js_source.charAt(0) === '<') {
+	            code = style_html(js_source, tabsize, tabchar, 80);
+	        } else {
+	            code = js_beautify(js_source, tabsize, tabchar);
+	        }
+	        return code;
+		}
+
 		function getJson() {
 			var result = [];
 			$.each($('.drop_container').children(), function() {
 				result.push($(this).data().opts);
 			});
 			var str_result = '';
-			$.each(result, function() {
-				str_result += JSON.stringify(this) + '\n';
-			})
+			// $.each(result, function() {
+			// 	str_result += JSON.stringify(this) + ', ';
+			// });
+			str_result = JSON.stringify(result);
+			str_result = formatCode(str_result);
 			console.log(str_result);
+			$('#modalContent').html('<textarea cols="30" rows="10" style="width: 100%;">' + str_result + '</textarea>');
 		}
 
-		//序列化表格元素为JSON  
-		$.fn.serializeJson = function() {  
-		    var o = {};  
-		    var a = this.serializeArray();  
-		    $.each(a, function() {  
-		        if (o[this.name] !== undefined) {  
-		            if (o[this.name] == null || !o[this.name].push) {  
-		                o[this.name] = [o[this.name]];  
-		            }  
-		            o[this.name].push(this.value || null);  
-		        } else {  
-		            o[this.name] = this.value || null;  
-		        }  
-		    });  
-		    return o;  
-		}  
+		function randomId(prefix){
+	        return ( prefix || '' ) + ( new Date().valueOf().toString(36)+Math.random().toString(36) ).split('0.').join('_').toUpperCase();
+	    }
+
+		//序列化表格元素为JSON	
+		$.fn.serializeJson = function() {	
+				var o = {};	
+				var a = this.serializeArray();	
+				$.each(a, function() {	
+						if (o[this.name] !== undefined) {	
+								if (o[this.name] == null || !o[this.name].push) {	
+										o[this.name] = [o[this.name]];	
+								}	
+								o[this.name].push(this.value || null);	
+						} else {	
+								o[this.name] = this.value || null;	
+						}	
+				});	
+				return o;	
+		}	
 
 		function _addOrReplaceClass($obj, new_class) {
 			var notFound = true;
@@ -259,11 +311,11 @@
 
 		function render(_opt, _$node) {
 			var default_opt = {
-			    "name": "demo_text",
-			    "label": "测试文本",
-			    "outerWidth": 12,
-			    "labelWidth": 4,
-			    "contentWidth": 8
+				"name": "demo_text",
+				"label": "测试文本",
+				"outerWidth": 12,
+				"labelWidth": 3,
+				"contentWidth": 9
 			};
 			var opt = $.extend(true, {}, default_opt, _opt);
 			var isNew = !(_$node);
@@ -272,30 +324,97 @@
 
 			// case by type
 			switch (opt.type) {
-				case 'select': 
-					$select = $(core[opt.type]);
-					// TODO 合并参数
+				// 单选、多选
+				case 'radio':
+				case 'checkbox':
+					var $content;
+					if (isNew) {
+						$content = $(core[opt.type]);
+					} else {
+						$content = $('.formContent', _$node);
+						$content.html('');
+					}
 					if (opt.dataUrl) {
 						console.log('--opt.dataUrl--');
-					} else if (opt.options !== undefined && opt.options.length > 0){
-						console.log('--opt.options--');
-						$.each(opt.options, function(key) {
-
+						$.ajax({
+							url: opt.dataUrl,
+							success: function(data) {
+								// TODO
+								alert('[OK] Not support dataUrl yet');
+							},
+							error: function(data) {
+								// TODO
+								alert('[ER] Not support dataUrl yet');
+							}
 						});
+					} else if (opt.options !== undefined && opt.options.length > 0){
+						$.each(opt.options, function() {
+							console.log('append', this.value, this.label);
+							var $sub = $(sub[opt.type]);
+							var random_id = randomId();
+							$('.itemLabel', $sub).html(this.label).prop('for', random_id);
+							$('input', $sub).prop('value', this.value).prop('id', random_id);
+
+							$content.append($sub);
+						});
+						console.log($content.html());
+					} else {
+						console.log('--No-Item--');
+						$content.append('--No-Item--');
+					}
+					$('core', $node).replaceWith($content);		// 在非new情况下，这步不起作用
+					break;
+
+				// 下拉框
+				case 'select':
+					var $select;
+					if (isNew) {
+						$select = $(core[opt.type]);
+					} else {
+						$select = $('select', _$node);
+						$select.html('');
+					}
+					if (opt.placeholder) {
+						$select.append('<option value="">' + opt.placeholder + '</option>')
+					}
+					if (opt.dataUrl) {
+						console.log('--opt.dataUrl--');
+						$.ajax({
+							url: opt.dataUrl,
+							success: function(data) {
+								// TODO
+								alert('[OK] Not support dataUrl yet');
+							},
+							error: function(data) {
+								// TODO
+								alert('[ER] Not support dataUrl yet');
+							}
+						});
+					} else if (opt.options !== undefined && opt.options.length > 0){
+						console.log('--opt.options--', opt.options.length);
+						$.each(opt.options, function() {
+							console.log('append', this.value, this.label);
+							$select.append('<option value="' + this.value + '">' + this.label + '</option>');
+							console.log($select.html());
+						});
+						console.log($select.html());
 					} else {
 						console.log('--No-Item--');
 						$select.append('<option value="">--No-Item--</option>');
 					}
 					$('core', $node).replaceWith($select);		// 在非new情况下，这步不起作用
 					break;
-            	case 'hidden':
-	            case 'text':
-	            case 'number':
-	            case 'datepicker':
-	            default:
+
+				// 文本框
+				case 'hidden':
+				case 'text':
+				case 'number':
+				case 'datepicker':
+				default:
 					$('core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
 					$('input', $node).prop('placeholder', opt.placeholder);
 					break;
+
 			}
 
 			// common
@@ -314,6 +433,7 @@
 
 		function initComponentsContainer() {
 			$.each(opts, function(key){
+				console.log('key', key, opts[key]);
 				var $c = render(opts[key]);
 				$('.components_container').append($c);
 			});
@@ -454,8 +574,8 @@
 			}
 		}
 
-	    function drop(ev) {
-	    	console.log('drop');
+		function drop(ev) {
+			console.log('drop');
 			ev.preventDefault();
 			var origin_id = ev.dataTransfer.getData("id");
 
@@ -475,6 +595,8 @@
 				}
 
 				new_node.data().opts = $('#' + origin_id).data().opts;
+				// 重新渲染，以生成需要用到的随机id
+				render(new_node.data().opts, new_node);
 			}
 			// 移动模式
 			else {
@@ -488,7 +610,7 @@
 		}
 
 		function dragEnd(ev) {
-	    	console.log('dragEnd');
+				console.log('dragEnd');
 			$('.drop_container').removeClass('anime_alert');
 			cancelAnimationFrame(anime);
 			// $('.over').removeClass('over');
@@ -562,27 +684,90 @@
 			detail_window.data().item = $item;
 
 			$.each($item.data().opts, function(key) {
-				var $info = $(
-					/*'<div class="row">' +
-						'<div class="col-sm-12">' +*/
-							'<div class="row padbtm">' +
-				                '<label class="col-sm-4 form-control-static">' + key + '</label>' +
-				                '<div class="col-sm-8">' +
-				                    '<input type="text" name="' + key + '" class="form-control" value="' + $item.data().opts[key] + '"/>' +
-				                '</div>' +
-				            '</div>'// +
-						/*'</div>' +
-					'</div>'*/
-				);
-				if (key == 'type') {
-					$('input', $info).prop('readonly', 'readonly');
+				if (key != 'options') {
+					var $info = $(
+						'<div class="row padbtm">' +
+							'<label class="col-sm-4 form-control-static">' + key + '</label>' +
+							'<div class="col-sm-8">' +
+								'<input type="text" name="' + key + '" class="form-control" value="' + $item.data().opts[key] + '"/>' +
+							'</div>' +
+						'</div>'
+					);
+					if (key == 'type') {
+						$('input', $info).prop('readonly', 'readonly');
+					}
+					detail_window.append($info);
 				}
-				detail_window.append($info);
 			});
+			// 针对选项做特殊处理
+			if (['select', 'radio', 'checkbox'].indexOf($item.data().opts.type) != -1) {
+				var options_html = '';
+				$.each($item.data().opts.options, function() {
+					if (!!this.label && !!this.value) {
+						options_html += 
+							'<div class="row padbtm">' +
+								'<div class="col-sm-5">' + 
+									'<input type="text" class="form-control" name="options.label" value="' + this.label + '"/>' + 
+								'</div>' +
+								'<div class="col-sm-4">' + 
+									'<input type="text" class="form-control" name="options.value" value="' + this.value + '"/>' +
+								'</div>' +
+								'<div class="col-sm-3">' +
+									'<button type="button" class="btn btn-danger btn-block delOption"><i class="fa fa-close"></i></button>' +
+								'</div>' +
+							'</div>';
+					}
+				});
+					
+				var $info = $(
+					'<div class="row padbtm">' +
+						'<label class="col-sm-4 form-control-static">options</label>' +
+						'<div class="col-sm-8">' +
+							options_html +
+							'<button type="button" class="btn btn-success btn-sm addOption"><i class="fa fa-plus"></i></button>' +
+						'</div>' +
+					'</div>');
+				$('.delOption', $info).on('click', function(){
+					$(this).closest('.row').remove();
+				});
+
+				$('.addOption', $info).on('click', function(){
+					var $option = $(
+						'<div class="row padbtm">' +
+							'<div class="col-sm-5">' + 
+								'<input type="text" class="form-control" name="options.label" />' + 
+							'</div>' +
+							'<div class="col-sm-4">' + 
+								'<input type="text" class="form-control" name="options.value" />' +
+							'</div>' +
+							'<div class="col-sm-3">' +
+								'<button type="button" class="btn btn-danger btn-block delOption"><i class="fa fa-close"></i></button>' +
+							'</div>' +
+						'</div>');
+					$(this).before($option);
+					$('.delOption', $option).on('click', function(){
+						$(this).closest('.row').remove();
+					});
+				});
+
+				detail_window.append($info);
+			}
 		}
 
 		function rebuild_item($detail) {
 			var opt = $detail.serializeJson();
+			if (opt['options.label'] && opt['options.label']) {
+				var options = [];
+				for(var idx = 0; idx < opt['options.label'].length; idx ++) {
+					if (!!opt['options.label'][idx] && !!opt['options.value'][idx]) {
+						options.push({'label': opt['options.label'][idx], 'value': opt['options.value'][idx]});
+					}
+				}
+				opt['options'] = options;
+			}
+			opt['options.label'] = undefined;
+			opt['options.value'] = undefined;
+			console.log(opt);
 			var $item = $detail.data().item;
 			render(opt, $item);
 		}
@@ -666,20 +851,20 @@
 			}
 		}
 
-	    var containers = document.querySelectorAll('.drop_container');
-	    for(var i = 0, l = containers.length; i < l; i++) {
-	        containers[i].setAttribute('ondragover', 'dragOver(event)');
-	        containers[i].setAttribute('ondrop', 'drop(event);');
-	    }
+			var containers = document.querySelectorAll('.drop_container');
+			for(var i = 0, l = containers.length; i < l; i++) {
+					containers[i].setAttribute('ondragover', 'dragOver(event)');
+					containers[i].setAttribute('ondrop', 'drop(event);');
+			}
 
-	    var drag_items = document.querySelectorAll('.drag_item');
-	    for(var i = 0, l = drag_items.length; i < l; i++) {
-	    	drag_items[i].setAttribute('id', 'drag-item-' + i);
-	        drag_items[i].setAttribute('draggable', 'true');
-	        drag_items[i].setAttribute('ondragstart', 'dragStart(event);');
-	        drag_items[i].setAttribute('ondragend', 'dragEnd(event);');
-	        drag_items[i].setAttribute('ondblclick', 'config(event);');
-	    }
+			var drag_items = document.querySelectorAll('.drag_item');
+			for(var i = 0, l = drag_items.length; i < l; i++) {
+				drag_items[i].setAttribute('id', 'drag-item-' + i);
+					drag_items[i].setAttribute('draggable', 'true');
+					drag_items[i].setAttribute('ondragstart', 'dragStart(event);');
+					drag_items[i].setAttribute('ondragend', 'dragEnd(event);');
+					drag_items[i].setAttribute('ondblclick', 'config(event);');
+			}
 	</script>
 </body>
 </html>
