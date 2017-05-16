@@ -73,7 +73,7 @@ opts.radio = {
     "name": "demo_radio",
     "type": "radio",                         // 基本类型
     "label": "单选",
-    "description": "未完成",
+    "description": "单选描述",
     "options": [
         {"label": "选项1", "value": 1},
         {"label": "选项2", "value": 2},
@@ -94,7 +94,7 @@ opts.checkbox = {
     "name": "demo_checkbox",
     "type": "checkbox",                         // 基本类型
     "label": "多选",
-    "description": "未完成",
+    "description": "多选描述",
     "options": [
         {"label": "选项1", "value": 1},
         {"label": "选项2", "value": 2},
