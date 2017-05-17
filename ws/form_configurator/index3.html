@@ -24,46 +24,52 @@
 			width: 100%;
 		}
 		.bg {
-			display: table-row;
-			height: 100%;
+			position: absolute;
+			width: 100%;
+			height: calc(100% - 40px);
 		}
 		.left_bar {
-			display: table-cell;
+			float: left;
 			height: 100%;
 			border-right: solid 1px #555;
-			padding: 30px;
-			padding-right: 40px;
+			padding: 20px 0px;
+			/*background-color: #ddd;*/
 			width: 400px;
 		}
+		.page_content {
+			float: left;
+			width: calc(100% - 400px);
+			height: 100%;
+			overflow-y: auto;
+			padding: 20px;
+		}
+		/*.base:first-child {
+			border-top: solid 1px #999;
+		}
+		.base {
+			border-bottom: solid 1px #999;
+		}*/
+		.base:nth-child(odd) {
+			background-color: #eee;
+		}
+		.base:nth-child(even) {
+			background-color: #fff;
+		}
+
 		.dashed {
 			border: dashed 1px transparent;
 		}
-		/*.dashed:hover {
-			border: dotted 1px #555;
-		}*/
 		.item, .padbtm {
 			padding: 10px 0;
-		}
-		/*.radius {
-			padding: 10px;
-			border-radius: 0px;
-		}*/
-		.page_content {
-			display: table-cell;
-			padding: 20px;
 		}
 		.space {
 			height: 200px;
 		}
-		/* .over {
-			background-color: rgba(0, 255, 0, 0.3);
-			margin-right: -15px;
-		} */
 		.insert_pointer {
 			position: absolute;
 			border: dashed 1px #555;
 		}
-		 .append_holder {
+		.append_holder {
 			border: dashed 1px #555;
 			width: 13px;
 			height: 56px;
@@ -75,27 +81,16 @@
 		}
 		.insert_mark {
 			background-color: rgba(255, 0, 0, 0.7);
-			/*width: 15px;
-			height: 58px;
-			display: inline-block;
-			float: left;*/
 		}
-		/*@keyframes anime_insert_mark {
-			50% {
-				background: rgba(255, 0, 0, 0.3);
-			}
-		}*/
 
 		.anime_alert {
 			height: calc(100%);
 			animation: anime_alert_border 1s infinite ease-in-out;
 			animation-fill-mode: both;
-			/*border: solid 5px transparent;*/
 		}
 		@keyframes anime_alert_border{
 			50% {
 				background: rgba(255, 255, 0, 0.3);
-				/*border-color: rgba(255, 255, 0, 0.7);*/
 			}
 		}
 
@@ -124,7 +119,6 @@
 			border-width: 0px;
 			margin: 0 10px;
 			animation: anime_margin 0.2s ease-in 1 normal;
-			/*box-shadow: 0 0 15px 1px #555;*/
 		}
 		.btn:focus,
 		.btn:active:focus,
@@ -134,6 +128,54 @@
 		.btn.active.focus {
 				outline: none;					
 		}
+
+		.page_content .btnClearAll {
+			display: none;
+		}
+		.page_content:hover .btnClearAll {
+			display: block;
+		}
+		.btnClearAll {
+			position: fixed;
+			right: 0px;
+			top: 0px;
+			border-radius: 0 0 0 100px;
+			padding-top: 0px;
+			padding-right: 4px;
+		}
+		.btnClearAll:hover {
+			border-left-width: 2px;
+			border-bottom-width: 2px;
+			border-left-color: #f00;
+			border-bottom-color: #f00;
+			animation: btnClearAll 0.1s ease-in-out 1 normal;
+
+			box-shadow: 0 0 55px 10px red;
+		}
+		@keyframes btnClearAll {
+			0% {
+				box-shadow: 0 0 1px 0px red;
+			}
+		}
+		.btnClearAll:active {
+			background-color: white;
+			color: red;
+			border-color: white;
+			animation: btnClearAll_active 0.1s ease-in-out 1 normal;
+			box-shadow: 0 0 55px 10px white;
+		}
+		@keyframes btnClearAll_active {
+			0% {
+				background-color: red;
+				color: white;
+			}
+		}
+
+		.delOption {
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+
 		@keyframes anime_margin{
 			0% {
 				margin: 0 -21px;
@@ -153,21 +195,63 @@
 			padding: 0;
 		}
 
-		.item_detail {
-			position: absolute;
-			width: 500px;
-			height: 600px;
+		.item_detail_header {
+			border-radius: 5px 5px 0 0;
+			height: 50px ;
+			padding: 7px 20px;
+			background-color: #eee;
+		}
+		.item_detail_form {
+			height: 593px;
+			padding: 15px 30px;	
 			overflow-x: hidden;
-			overflow-y: scroll;
-			padding: 15px 30px;
+			overflow-y: auto;
+		}
+		.item_detail_footer {
+			width: 100%;
+			border-radius: 0 0 5px 5px;
+			height: 58px ;
+			padding: 7px 20px;
+			text-align: right;
+			background-color: #eee;
+		}
+		.item_detail_footer button {
+			height: 42px;
+			line-height: 42px;
+			width: 42px;
+			border-radius: 42px;
+			text-align: center;
+			vertical-align: middle;
+			padding: 0;
+			border-width: 0px;
+			margin: 0 10px;
+			animation: anime_margin 0.2s ease-in 1 normal;
+		}
+		.item_detail_container {
+			position: absolute;
+			width: 400px;
 			border-radius: 5px;
 			background-color: #fff;
 			box-shadow: 0 0 15px 5px #999;
-			/*left: calc(50% - 150px);
-			top: 100px;*/
+			left: 0px;
+			top: calc(50% - 350px);
 		}
-		.item_detail_in {
-			animation: anime_item_detail_in 0.2s ease-in 1 normal;;
+		.item_detail_container_in {
+			animation: anime_item_detail_container_in 0.2s ease-in 1 normal;;
+		}
+		@keyframes anime_item_detail_container_in {
+			0% {
+				left: -400px;
+			}
+			70% {
+				left: 50px;
+			}
+			80% {
+				left: 25px;
+			}
+			90% {
+				left: 12px;
+			}
 		}
 
 		.footer {
@@ -180,37 +264,19 @@
 		}
 
 	</style>
-	<style id="anime_item_detail_in">
-		@keyframes anime_item_detail_in {
-			0% {
-				
-			}
-			100% {
-
-			} 
-		}
-		.item_detail {
-			left: 0px;
-			top: 0px;
-		}
-	</style>
 </head>
 <body>
 	<div class="bg">
 		<div class="left_bar">
-			<div class="row components_container">
+			<div class="components_container">
 			</div>
 		</div>
 		<div class="page_content">
-			<div class="row drop_container">
+			<div class="drop_container">
 			</div>
+			<button class="btn btn-danger btn-sm btnClearAll" onclick="clearAll();"><i class="fa fa-trash"></i></button>
 		</div>	
 	</div>
-
-	<!-- Button trigger modal -->
-	<!-- <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-		Launch demo modal
-	</button> -->
 
 	<!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -242,20 +308,97 @@
 	</div>
 
 	<script>
+
+
+		/* 
+			*************************************************************************
+			
+				┏━━┳━┓　┏━━━┓　　━┓╮　　　━━╮　╭　　━┓　
+				　　　┃　　　┃　　　┃　╮　┃┃　┏━┳━━┛┃　━━┣┛
+				　　　┃　　　┣━━━┫┏┻┳┣┻┓　　┣━━┓┗╯　　┃　
+				　　　┃　　　┣━━━┫┏━╯┣━┓╭　┃　　┃┗　━━┣┛
+				　　　┃　　　┻━━━┻━━━┣━━┃　┃　　┃┃　╭━╯┓
+				┗━━┻━┛┗━━╯━┛╰━━╯━┛┗━╯　━╯┗╯┗━━┛
+
+			*************************************************************************
+		*/
+
+		// 格式化html、js、json
 		function formatCode(code) {
 			js_source = code.replace(/^\s+/, '');
-	        tabsize = 4;
-	        tabchar = ' ';
-	        if (tabsize == 1) {
-	            tabchar = '\t';
-	        }
-	        var fmt_code = '';
-	        if (js_source && js_source.charAt(0) === '<') {
-	            code = style_html(js_source, tabsize, tabchar, 80);
-	        } else {
-	            code = js_beautify(js_source, tabsize, tabchar);
-	        }
-	        return code;
+			tabsize = 4;
+			tabchar = ' ';
+			if (tabsize == 1) {
+				tabchar = '\t';
+			}
+			var fmt_code = '';
+			if (js_source && js_source.charAt(0) === '<') {
+				code = style_html(js_source, tabsize, tabchar, 80);
+			} else {
+				code = js_beautify(js_source, tabsize, tabchar);
+			}
+			return code;
+		}
+
+		// 随机id(固定前缀)
+		function randomId(prefix){
+			return ( prefix || '' ) + ( new Date().valueOf().toString(36)+Math.random().toString(36) ).split('0.').join('_').toUpperCase();
+		}
+
+		// 序列化表格元素为JSON
+		$.fn.serializeJson = function() {
+			var o = {};
+			var a = this.serializeArray();
+			$.each(a, function() {
+				if (o[this.name] !== undefined) {
+					if (o[this.name] == null || !o[this.name].push) {
+						o[this.name] = [o[this.name]];
+					}
+					o[this.name].push(this.value || null);
+				} else {
+					o[this.name] = this.value || null;
+				}
+			});
+			return o;
+		}
+
+		// 从事件获取鼠标相的绝对坐标
+		function mouseCoords(ev) { 
+			if(ev.pageX || ev.pageY) { 
+				return {x: ev.pageX, y: ev.pageY}; 
+			} 
+			return { 
+				x:ev.clientX + document.body.scrollLeft - document.body.clientLeft, 
+				y:ev.clientY + document.body.scrollTop - document.body.clientTop 
+			};
+		}
+
+		// 获取Jquery对象绝对布局下的坐标、宽高
+		function get_absolute_location_info($obj) {
+			return {
+				x: $obj.offset().left,
+				y: $obj.offset().top,
+				w: $obj.width(),
+				h: $obj.height()
+			}
+		}
+
+		// 判断当前id是否有重复的
+		function hasSameId(id) {
+			var elements = $('[id^="' + id + '"]');
+			var id_same_count = 0;
+			if (elements.length >= 1) {
+				$.each(elements, function() {
+					if ($(this).attr('id') == id) {
+						id_same_count += 1;
+					}
+				});
+			}
+			if (id_same_count >= 1) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		function getJson() {
@@ -270,29 +413,13 @@
 			str_result = JSON.stringify(result);
 			str_result = formatCode(str_result);
 			console.log(str_result);
-			$('#modalContent').html('<textarea cols="30" rows="10" style="width: 100%;">' + str_result + '</textarea>');
+			$('#modalContent').html('<textarea cols="30" rows="10" style="width: 100%; height: 600px;">' + str_result + '</textarea>');
 		}
 
-		function randomId(prefix){
-	        return ( prefix || '' ) + ( new Date().valueOf().toString(36)+Math.random().toString(36) ).split('0.').join('_').toUpperCase();
-	    }
-
-		//序列化表格元素为JSON	
-		$.fn.serializeJson = function() {	
-				var o = {};	
-				var a = this.serializeArray();	
-				$.each(a, function() {	
-						if (o[this.name] !== undefined) {	
-								if (o[this.name] == null || !o[this.name].push) {	
-										o[this.name] = [o[this.name]];	
-								}	
-								o[this.name].push(this.value || null);	
-						} else {	
-								o[this.name] = this.value || null;	
-						}	
-				});	
-				return o;	
-		}	
+		function clearAll() {
+			$('.drop_container').children().remove();
+		}
+	
 
 		function _addOrReplaceClass($obj, new_class) {
 			var notFound = true;
@@ -308,6 +435,7 @@
 			}
 			$obj.prop('class', list_class.join(' '));
 		}
+
 
 		function render(_opt, _$node) {
 			var default_opt = {
@@ -360,7 +488,7 @@
 						console.log($content.html());
 					} else {
 						console.log('--No-Item--');
-						$content.append('--No-Item--');
+						$content.append('<div class="form-control-static">-- 未配置选项 --</div>');
 					}
 					$('core', $node).replaceWith($content);		// 在非new情况下，这步不起作用
 					break;
@@ -437,42 +565,27 @@
 				var $c = render(opts[key]);
 				$('.components_container').append($c);
 			});
+
+			$('.base').on('dblclick', function() {
+				var new_node = $(this.outerHTML);
+				new_node.removeClass('base');
+				while (hasSameId(new_node.attr('id'))) {
+					var id = new_node.attr('id');
+					var order = parseInt(id.split('-')[id.split('-').length - 1]) + 1;
+					new_node.attr('id', 'drag-item-' + order);
+				}
+
+				$('.drop_container').append(new_node);
+
+				new_node.data().opts = $(this).data().opts;
+				// 重新渲染，以生成需要用到的随机id
+				render(new_node.data().opts, new_node);
+			});
 		}
 		initComponentsContainer();
 
-
-		// 初始化模型参数 // TODO
-		// $('.base').data().opts = {
-		// 	label: '文本框',
-		// 	input_type: 'text',
-		// 	key: 'test_input',
-		// 	col_width: 12
-		// };
-		// var mouseWatcher;
-
 		// 每个已插入元素的坐标和宽高	// TODO: 改成传递变量
 		var location_list = [];
-		
-		// function watchMouse()
-		/*document.onmousedown = function(ev) {
-			ev = ev || window.event; 
-			var mousePos = mouseCoords(ev); 
-			// console.log(mousePos.x, mousePos.y);
-			$('body').data().mousePos = mousePos;
-			// $('document') = mousePos.x; 
-			// document.getElementById("yyy").value = mousePos.y; 
-		}*/
-
-		// 从事件获取鼠标相的绝对坐标
-		function mouseCoords(ev) { 
-			if(ev.pageX || ev.pageY) { 
-				return {x: ev.pageX, y: ev.pageY}; 
-			} 
-			return { 
-				x:ev.clientX + document.body.scrollLeft - document.body.clientLeft, 
-				y:ev.clientY + document.body.scrollTop - document.body.clientTop 
-			};
-		}
 		var anime;
 
 		function isBefore(mouseInfo, thisInfo) {
@@ -483,31 +596,20 @@
 			}
 		}
 
-		function show_location(ev) {
-			var m = mouseCoords(ev);/*$('body').data().mousePos;*/
-			var beforeIndex = -1;
-			for (var i = 0; i < location_list.length; i++) {
-				if (isBefore(m, location_list[i])) {
-					beforeIndex = i;
-					break;
-				}
-			}
-			// console.log(mouseCoords(ev));
-			// console.log(beforeIndex);
-			if (beforeIndex >= 0) {
-				// 在deforeIndex的左边插入
-			} else {
-				// 在最末插入
-			}
+		/* 
+			*************************************************************************
+			
+				　┓┣━━┓╭┓　┏　　
+				┏┣　　┃　┏┣┏┣━┓
+				　┃┣━┣┓　┃┣┣━┫
+				　┃┃　┃┃　┃┗┣━┛
+				╰┣┃　┃╯┗┣╭┣━┛
+				┗╯╰━━┛┗╯　╰━┛
 
-			// anime = requestAnimationFrame(show_location);
-		}
+			*************************************************************************
+		*/
 
-		
-
-		// ///////////////////////////////////////////////////////////////////
 		// 拖拽开始
-		// ///////////////////////////////////////////////////////////////////
 		function dragStart(ev) {
 			console.log('dragStart');
 
@@ -527,7 +629,7 @@
 
 			// 页面变化
 			console.log(ev.dataTransfer);
-			$('.drop_container').addClass('anime_alert');
+			$('.page_content').addClass('anime_alert');
 
 			// 加入插入位置提示
 			$.each($('.drop_container').children(), function() {
@@ -535,7 +637,7 @@
 				var loc = get_absolute_location_info($item);
 				var $insert_pointer = $('<div class="insert_pointer"></div>');
 				$insert_pointer.css({
-					'left': (loc.x /*- 6*/) + 'px',
+					'left': loc.x + 'px',
 					'top': loc.y + 'px',
 					'width': '10px',
 					'height': (loc.h - 2) + 'px'
@@ -557,23 +659,7 @@
 			// $(ev.target).replaceWith(dummy);
 		}
 
-		function hasSameId(id) {
-			var elements = $('[id^="' + id + '"]');
-			var id_same_count = 0;
-			if (elements.length >= 1) {
-				$.each(elements, function() {
-					if ($(this).attr('id') == id) {
-						id_same_count += 1;
-					}
-				});
-			}
-			if (id_same_count >= 1) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-
+		// 扔下
 		function drop(ev) {
 			console.log('drop');
 			ev.preventDefault();
@@ -582,6 +668,7 @@
 			// 复制模式
 			if (ev.dataTransfer.getData('move_mode') == 'copy') {
 				var new_node = $(ev.dataTransfer.getData("node_html"));
+				new_node.removeClass('base');
 				while (hasSameId(new_node.attr('id'))) {
 					var id = new_node.attr('id');
 					var order = parseInt(id.split('-')[id.split('-').length - 1]) + 1;
@@ -609,9 +696,10 @@
 			}
 		}
 
+		// 拖拽结束
 		function dragEnd(ev) {
-				console.log('dragEnd');
-			$('.drop_container').removeClass('anime_alert');
+			console.log('dragEnd');
+			$('.page_content').removeClass('anime_alert');
 			cancelAnimationFrame(anime);
 			// $('.over').removeClass('over');
 			$('.insert_mark').removeClass('insert_mark');
@@ -619,9 +707,9 @@
 			$('.insert_pointer').remove();
 		}
 
+		// 拖拽经过
 		function dragOver(ev) {
 			ev.preventDefault();
-			// show_location(ev);
 
 			$('.insert_mark').removeClass('insert_mark');
 
@@ -640,48 +728,53 @@
 			}*/
 		}
 
-		function get_absolute_location_info($obj) {
-			return {
-				x: $obj.offset().left,
-				y: $obj.offset().top,
-				w: $obj.width(),
-				h: $obj.height()
-			}
-		}
 
-		function pop_detail($item){
+		/* 
+			*************************************************************************
+			
+				┏┳┳╮┏╮┏┳━━┳┓
+				┏┣┣╮　┃┗┻┳━┻╯
+				┃┃┃┃┏┛┗━┣━━┛
+				┃╯┗┃┃　┏━┻━━┓
+				┣━━┫┃　┃　┣　　┃
+				╰━━┛┗┛┻━┻━━┻
+
+			*************************************************************************
+		*/
+
+		// 弹出配置详情页面
+		function pop_detail($item) {
 			console.log();
 
-			var detail_window = $('<form class="item_detail item_detail_in"></form>');
+			var $detail_window = $(
+				'<div class="item_detail_container item_detail_container_in">' +
+					'<div class="item_detail_header"><h4><i class="fa fa-cog"></i> 详细配置</h4></div>' +
+					'<form class="item_detail_form"></form>' +
+					'<div class="item_detail_footer">' +
+						'<button class="btn btn-success commit_btn">' +
+							'<i class="fa fa-check"></i>' +
+						'</button>' +
+						'<button class="btn btn-primary cancel_btn">' +
+							'<i class="fa fa-close"></i>' +
+						'</button>' +
+					'</div>' +
+				'</div>');
 
-			var item_info = get_absolute_location_info($item);
-			var e_info = {
-				x: item_info.x + item_info.w / 2 - 250,
-				y: item_info.y + item_info.h + 10
-			}
+			$detail_window.find('.commit_btn').on('click', function() {
+				close_detail(true);
+				close_config();
+			});
 
-			$('#anime_item_detail_in').html(
-				'@keyframes anime_item_detail_in {' +
-					'0% {' +
-						'left: ' + (item_info.x + item_info.w / 2) + 'px;' +
-						'top: ' + (item_info.y + item_info.h / 2) + 'px;' +
-						'width: 0px;' +
-						'height: 0px;' +
-					'}' +
-					'100% {' +
-						'left: ' + e_info.x + 'px;' +
-						'top: ' + e_info.y + 'px;' +
-					'} ' +
-				'}' +
-				'.item_detail {' +
-					'left: ' + e_info.x + 'px;' +
-					'top: ' + e_info.y + 'px;' +
-				'}'
-			);
+			$detail_window.find('.cancel_btn').on('click', function() {
+				close_detail();
+				close_config();
+			});
 
-			$('body').append(detail_window);
+			var $detail_form = $('.item_detail_form', $detail_window);
 
-			detail_window.data().item = $item;
+			$('body').append($detail_window);
+
+			$detail_window.data().item = $item;
 
 			$.each($item.data().opts, function(key) {
 				if (key != 'options') {
@@ -696,7 +789,7 @@
 					if (key == 'type') {
 						$('input', $info).prop('readonly', 'readonly');
 					}
-					detail_window.append($info);
+					$detail_form.append($info);
 				}
 			});
 			// 针对选项做特殊处理
@@ -750,39 +843,44 @@
 					});
 				});
 
-				detail_window.append($info);
+				$detail_form.append($info);
 			}
 		}
 
-		function rebuild_item($detail) {
-			var opt = $detail.serializeJson();
-			if (opt['options.label'] && opt['options.label']) {
-				var options = [];
-				for(var idx = 0; idx < opt['options.label'].length; idx ++) {
-					if (!!opt['options.label'][idx] && !!opt['options.value'][idx]) {
-						options.push({'label': opt['options.label'][idx], 'value': opt['options.value'][idx]});
-					}
-				}
-				opt['options'] = options;
-			}
-			opt['options.label'] = undefined;
-			opt['options.value'] = undefined;
-			console.log(opt);
-			var $item = $detail.data().item;
-			render(opt, $item);
-		}
-
+		// 关闭配置详情页面
 		function close_detail(save) {
 			if (save) {
-				rebuild_item($('.item_detail:eq(0)'));
+				var $detail_window = $('.item_detail_container:eq(0)');
+				var $detail_form = $('.item_detail_form', $detail_window);
+
+				// 更新json配置
+				var opt = $detail_form.serializeJson();
+				if ((typeof(opt['options.label']) == 'object') && (typeof(opt['options.value']) == 'object')) {
+					if (opt['options.label'] && opt['options.value']) {
+						var options = [];
+						for(var idx = 0; idx < opt['options.label'].length; idx ++) {
+							if (!!opt['options.label'][idx] && !!opt['options.value'][idx]) {
+								options.push({'label': opt['options.label'][idx], 'value': opt['options.value'][idx]});
+							}
+						}
+						opt['options'] = options;
+					}
+				} else if ((typeof(opt['options.label']) == 'string') && (typeof(opt['options.value']) == 'string')) {
+					var options = [{'label': opt['options.label'], 'value': opt['options.value']}];
+					opt['options'] = options;
+				}
+				opt['options.label'] = undefined;
+				opt['options.value'] = undefined;
+
+				var $item = $detail_window.data().item;
+
+				// 重新渲染指定对象
+				render(opt, $item);
 			}
-			$('.item_detail').remove();
-		}
-		function close_config() {
-			$('.control_bar').remove();
+			$('.item_detail_container').remove();
 		}
 
-		// 开始配置
+		// 弹出操作遮罩层
 		function config(ev) {
 			close_config();
 			close_detail();
@@ -802,14 +900,10 @@
 				var control_bar = $(
 					'<div class="control_bar">' +
 							'<button class="btn btn-warning edit_btn btn_group_1">' +
-								'<i class="fa fa-cogs"></i>' +
+								'<i class="fa fa-cog"></i>' +
 							'</button>' +
 							'<button class="btn btn-danger remove_btn btn_group_1">' +
 								'<i class="fa fa-trash"></i>' +
-							'</button>' +
-
-							'<button class="btn btn-success commit_btn btn_group_2" style="display: none;">' +
-								'<i class="fa fa-check"></i>' +
 							'</button>' +
 							'<button class="btn btn-primary cancel_btn">' +
 								'<i class="fa fa-close"></i>' +
@@ -826,17 +920,8 @@
 
 				control_bar.find('.edit_btn').on('click', function() {
 					control_bar.find('.btn_group_1').hide();
-					control_bar.find('.btn_group_2').show();
-
 					// 弹出编辑窗口
 					pop_detail($this.closest('.drag_item'));
-				});
-
-				control_bar.find('.commit_btn').on('click', function() {
-					control_bar.find('.btn_group_2').hide();
-					control_bar.find('.btn_group_1').show();
-					close_detail(true);
-					close_config();
 				});
 
 				control_bar.find('.cancel_btn').on('click', function() {
@@ -850,21 +935,25 @@
 				$('body').append(control_bar);
 			}
 		}
+		// 关闭操作遮罩层
+		function close_config() {
+			$('.control_bar').remove();
+		}
 
-			var containers = document.querySelectorAll('.drop_container');
-			for(var i = 0, l = containers.length; i < l; i++) {
-					containers[i].setAttribute('ondragover', 'dragOver(event)');
-					containers[i].setAttribute('ondrop', 'drop(event);');
-			}
+		var containers = document.querySelectorAll('.page_content');
+		for(var i = 0, l = containers.length; i < l; i++) {
+				containers[i].setAttribute('ondragover', 'dragOver(event)');
+				containers[i].setAttribute('ondrop', 'drop(event);');
+		}
 
-			var drag_items = document.querySelectorAll('.drag_item');
-			for(var i = 0, l = drag_items.length; i < l; i++) {
-				drag_items[i].setAttribute('id', 'drag-item-' + i);
-					drag_items[i].setAttribute('draggable', 'true');
-					drag_items[i].setAttribute('ondragstart', 'dragStart(event);');
-					drag_items[i].setAttribute('ondragend', 'dragEnd(event);');
-					drag_items[i].setAttribute('ondblclick', 'config(event);');
-			}
+		var drag_items = document.querySelectorAll('.drag_item');
+		for(var i = 0, l = drag_items.length; i < l; i++) {
+			drag_items[i].setAttribute('id', 'drag-item-' + i);
+				drag_items[i].setAttribute('draggable', 'true');
+				drag_items[i].setAttribute('ondragstart', 'dragStart(event);');
+				drag_items[i].setAttribute('ondragend', 'dragEnd(event);');
+				drag_items[i].setAttribute('ondblclick', 'config(event);');
+		}
 	</script>
 </body>
 </html>
