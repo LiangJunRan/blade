@@ -11,6 +11,9 @@
 	<script src="assets/templates.js"></script>
 	<script src="assets/html_formater/htmlformat.js"></script>
 	<script src="assets/html_formater/jsformat.js"></script>
+	<script src="assets/jquery-validation/jquery.validate.js"></script>
+	<script src="assets/jquery-validation/localization/messages_zh.min.js"></script>
+	<script src="assets/jquery-validation/localization/messages_zh_fieldname.js"></script>
 	<style>
 		* {
 			box-sizing: border-box;
@@ -272,8 +275,8 @@
 			</div>
 		</div>
 		<div class="page_content">
-			<div class="drop_container">
-			</div>
+			<form class="drop_container" id="dropForm">
+			</form>
 			<button class="btn btn-danger btn-sm btnClearAll" onclick="clearAll();"><i class="fa fa-trash"></i></button>
 		</div>	
 	</div>
@@ -566,6 +569,7 @@
 				$('.components_container').append($c);
 			});
 
+			// 用双击事件来做拖拽的事儿
 			$('.base').on('dblclick', function() {
 				var new_node = $(this.outerHTML);
 				new_node.removeClass('base');
@@ -578,15 +582,46 @@
 				$('.drop_container').append(new_node);
 
 				new_node.data().opts = $(this).data().opts;
+				new_node.data().rule = {'required': true};		// TODO	删掉
 				// 重新渲染，以生成需要用到的随机id
 				render(new_node.data().opts, new_node);
 			});
 		}
+
+		function setFormRules() {
+			console.log('重设Rules');
+			var formRules = {};
+			var $form = $('#dropForm');
+			$.each($form.children(), function(){
+				var $this = $(this);
+				formRules[$this.data().opts.name] = $this.data().rule;
+			});
+			$form.validate({
+                rules: formRules
+            });
+		}
+
+		// TODO
+		/*function addValidation() {
+			var formRules = {};
+			$.each($('.components_container').children(), function(){
+				var $this = $(this);
+				var _rule = rule[$this.data().item.type];
+				if (_rule != undefined) {
+					$.each('')
+				}
+			});
+			$('#dropForm').data().rules = formRules;
+		}*/
+
 		initComponentsContainer();
+
 
 		// 每个已插入元素的坐标和宽高	// TODO: 改成传递变量
 		var location_list = [];
+		// requestAnimationFrame句柄
 		var anime;
+
 
 		function isBefore(mouseInfo, thisInfo) {
 			if (mouseInfo.x < (thisInfo.x + thisInfo.w) && mouseInfo.y >= thisInfo.y && mouseInfo.y <= (thisInfo.y + thisInfo.h)) {
@@ -669,12 +704,13 @@
 			if (ev.dataTransfer.getData('move_mode') == 'copy') {
 				var new_node = $(ev.dataTransfer.getData("node_html"));
 				new_node.removeClass('base');
+				// 去掉重复id
 				while (hasSameId(new_node.attr('id'))) {
 					var id = new_node.attr('id');
 					var order = parseInt(id.split('-')[id.split('-').length - 1]) + 1;
 					new_node.attr('id', 'drag-item-' + order);
 				}
-
+				// 加入新对象
 				if ($('.insert_mark').hasClass('append_holder')) {
 					$('.insert_mark').replaceWith(new_node);
 				} else {
@@ -682,8 +718,10 @@
 				}
 
 				new_node.data().opts = $('#' + origin_id).data().opts;
+				new_node.data().rule = $('#' + origin_id).data().rule;
 				// 重新渲染，以生成需要用到的随机id
 				render(new_node.data().opts, new_node);
+				setFormRules();
 			}
 			// 移动模式
 			else {
