@@ -58,7 +58,11 @@
 		.base:nth-child(even) {
 			background-color: #fff;
 		}
-
+		.symbol.required:before {
+			content: "*";
+			display: inline;
+			color: #E6674A;
+		}
 		.dashed {
 			border: dashed 1px transparent;
 		}
@@ -230,12 +234,21 @@
 			padding: 7px 20px;
 			background-color: #eee;
 		}
-		.item_detail_form {
+		.item_detail_body {
 			height: 593px;
-			padding: 15px 30px;	
+			padding: 15px;	
 			overflow-x: hidden;
 			overflow-y: auto;
 		}
+		.item_detail_body form{
+			padding: 0 15px;
+			border-top: solid 1px #777;
+			margin-bottom: 30px;
+		}
+		.item_detail_body h4{
+			border-left: solid 5px #337ab7;
+			text-indent: 0.5em;
+		} 
 		.item_detail_footer {
 			width: 100%;
 			border-radius: 0 0 5px 5px;
@@ -385,7 +398,13 @@
 					}
 					o[this.name].push(this.value || null);
 				} else {
-					o[this.name] = this.value || null;
+					if (this.value === "false") {
+						o[this.name] = false;
+					} else if (this.value === "true") {
+						o[this.name] = true;
+					} else {
+						o[this.name] = this.value || null;
+					}
 				}
 			});
 			return o;
@@ -441,7 +460,6 @@
 			// });
 			str_result = JSON.stringify(result);
 			str_result = formatCode(str_result);
-			console.log(str_result);
 			$('#modalContent').html('<textarea cols="30" rows="10" style="width: 100%; height: 600px;">' + str_result + '</textarea>');
 		}
 
@@ -492,7 +510,6 @@
 						$content.html('');
 					}
 					if (opt.dataUrl) {
-						console.log('--opt.dataUrl--');
 						$.ajax({
 							url: opt.dataUrl,
 							success: function(data) {
@@ -506,7 +523,6 @@
 						});
 					} else if (opt.options !== undefined && opt.options.length > 0){
 						$.each(opt.options, function() {
-							console.log('append', this.value, this.label);
 							var $sub = $(sub[opt.type]);
 							var random_id = randomId();
 							$('.itemLabel', $sub).html(this.label).prop('for', random_id);
@@ -514,9 +530,7 @@
 
 							$content.append($sub);
 						});
-						console.log($content.html());
 					} else {
-						console.log('--No-Item--');
 						$content.append('<div class="form-control-static">-- 未配置选项 --</div>');
 					}
 					$('core', $node).replaceWith($content);		// 在非new情况下，这步不起作用
@@ -535,7 +549,6 @@
 						$select.append('<option value="">' + opt.placeholder + '</option>')
 					}
 					if (opt.dataUrl) {
-						console.log('--opt.dataUrl--');
 						$.ajax({
 							url: opt.dataUrl,
 							success: function(data) {
@@ -548,15 +561,10 @@
 							}
 						});
 					} else if (opt.options !== undefined && opt.options.length > 0){
-						console.log('--opt.options--', opt.options.length);
 						$.each(opt.options, function() {
-							console.log('append', this.value, this.label);
 							$select.append('<option value="' + this.value + '">' + this.label + '</option>');
-							console.log($select.html());
 						});
-						console.log($select.html());
 					} else {
-						console.log('--No-Item--');
 						$select.append('<option value="">--No-Item--</option>');
 					}
 					$('core', $node).replaceWith($select);		// 在非new情况下，这步不起作用
@@ -590,7 +598,6 @@
 
 		function initComponentsContainer() {
 			$.each(opts, function(key){
-				console.log('key', key, opts[key]);
 				var $c = render(opts[key]);
 				$('.components_container').append($c);
 			});
@@ -615,7 +622,9 @@
 			});
 		}
 
+		var dropFormValidator = undefined;
 		function initValidator() {
+			console.log('[V] init', dropFormValidator);
 			$.validator.setDefaults({
 				ignore: '.ignore',
 				errorClass: 'text-danger',
@@ -627,19 +636,44 @@
 					label.remove();
 				}
 			});
+			dropFormValidator = $('#dropForm').validate();
+			console.log('[V] inited', dropFormValidator);
 		}
 
 		function setFormRules() {
-			console.log('重设Rules');
+			console.log('[V] setFormRules');
 			var formRules = {};
 			var $form = $('#dropForm');
 			$.each($form.children(), function(){
 				var $this = $(this);
 				formRules[$this.data().opts.name] = $this.data().rule;
+				if ($this.data().rule.required) {
+                    $('.textRequired', $this).addClass('symbol required');
+                } else {
+                	$('.textRequired', $this).removeClass('symbol required');
+                }
+                if (dropFormValidator) {
+	                $this.find(':input').rules('remove', 'required');
+	                console.log('>>>removed required');
+	                $this.find(':input').rules('add', $this.data().rule);
+	                console.log('>>>add required');
+                } else {
+                	console.log('XXXdropFormValidator is', dropFormValidator);
+                };
 			});
-			$form.validate({
+			/*if ($form.rules()) {
+				console.log('>>>', $form.rules());
+			}*/
+			if (dropFormValidator) {
+				dropFormValidator.resetForm();
+			}
+
+			// setTimeout(function(){
+			console.log('启动validate');
+			/*dropFormValidator = $form.validate({
 				rules: formRules
-			});
+			});*/
+			// }, 1000);
 		}
 
 		// TODO
@@ -655,8 +689,8 @@
 			$('#dropForm').data().rules = formRules;
 		}*/
 
-		initComponentsContainer();
 		initValidator();
+		initComponentsContainer();
 
 
 		// 每个已插入元素的坐标和宽高	// TODO: 改成传递变量
@@ -705,7 +739,6 @@
 			}
 
 			// 页面变化
-			console.log(ev.dataTransfer);
 			$('.page_content').addClass('anime_alert');
 
 			// 加入插入位置提示
@@ -767,7 +800,6 @@
 			}
 			// 移动模式
 			else {
-				console.log('MOVE_MODE move');
 				if ($('.insert_mark').hasClass('append_holder')) {
 					$('.insert_mark').replaceWith($('#' + origin_id));
 				} else {
@@ -794,11 +826,9 @@
 			$('.insert_mark').removeClass('insert_mark');
 
 			if ($(ev.toElement).closest('.drag_item').length > 0) {
-				console.log('insert');
 				$(ev.toElement).closest('.drag_item').data().insert_pointer.addClass('insert_mark');
 			} else {
 				$('.append_holder:last').addClass('insert_mark');
-				console.log('append');
 			}
 
 			/*if ($(ev.toElement).hasClass('drop_container')) {
@@ -822,14 +852,37 @@
 			*************************************************************************
 		*/
 
+		function booleanItem(label, key, defaultValue) {
+			// TODO: 改成switch组件
+			var $item = $(
+				'<div class="row padbtm">' +
+					'<label class="col-sm-4 form-control-static">' + label + '</label>' +
+					'<div class="col-sm-8">' +
+						'<div class="radio clip-radio radio-primary radio-inline">' +
+							'<input type="radio" name="' + key + '" id="' + key + '_radio_1" value="true">' +
+							'<label class="itemLabel" for="' + key + '_radio_1">是</label>' +
+						'</div>' +
+						'<div class="radio clip-radio radio-primary radio-inline">' +
+							'<input type="radio" name="' + key + '" id="' + key + '_radio_2" value="false">' +
+							'<label class="itemLabel" for="' + key + '_radio_2">否</label>' +
+						'</div>' +
+					'</div>' +
+				'</div>');
+			$item.find('input[value="' + defaultValue + '"]').click();
+			return $item;
+		}
+
 		// 弹出配置详情页面
 		function pop_detail($item) {
-			console.log();
-
 			var $detail_window = $(
 				'<div class="item_detail_container item_detail_container_in">' +
 					'<div class="item_detail_header"><h4><i class="fa fa-cog"></i> 详细配置</h4></div>' +
-					'<form class="item_detail_form"></form>' +
+					'<div class="item_detail_body">' +
+						'<h4>详细设置</h4>' +
+						'<form class="item_detail_form"></form>' +
+						'<h4>校验规则</h4>' +
+						'<form class="item_rule_form"></form>' +
+					'</div>'+
 					'<div class="item_detail_footer">' +
 						'<button class="btn btn-success commit_btn">' +
 							'<i class="fa fa-check"></i>' +
@@ -850,11 +903,12 @@
 				close_config();
 			});
 
+			// 详细设置
 			var $detail_form = $('.item_detail_form', $detail_window);
 
 			$('body').append($detail_window);
 
-			$detail_window.data().item = $item;
+			$detail_window.data().item = $item;		// 绑定对象到弹出窗口，方便关闭时局部render
 
 			$.each($item.data().opts, function(key) {
 				if (key != 'options') {
@@ -864,8 +918,7 @@
 							'<div class="col-sm-8">' +
 								'<input type="text" name="' + key + '" class="form-control" value="' + $item.data().opts[key] + '"/>' +
 							'</div>' +
-						'</div>'
-					);
+						'</div>');
 					if (key == 'type') {
 						$('input', $info).prop('readonly', 'readonly');
 					}
@@ -925,6 +978,19 @@
 
 				$detail_form.append($info);
 			}
+			console.log('增加detail');
+
+			// 校验规则
+			var $rule_form = $('.item_rule_form', $detail_window);
+			var rule = $item.data().rule;
+
+			switch($item.data().opts.type) {
+				case 'text':
+				default:
+					$rule_form.append(booleanItem('必填', 'required', rule['required']));
+					break;
+			}
+			console.log('增加校验配置');
 		}
 
 		// 关闭配置详情页面
@@ -932,8 +998,9 @@
 			if (save) {
 				var $detail_window = $('.item_detail_container:eq(0)');
 				var $detail_form = $('.item_detail_form', $detail_window);
+				var $rule_form = $('.item_rule_form', $detail_window);
 
-				// 更新json配置
+				// 更新详细配置
 				var opt = $detail_form.serializeJson();
 				if ((typeof(opt['options.label']) == 'object') && (typeof(opt['options.value']) == 'object')) {
 					if (opt['options.label'] && opt['options.value']) {
@@ -953,9 +1020,18 @@
 				opt['options.value'] = undefined;
 
 				var $item = $detail_window.data().item;
-
 				// 重新渲染指定对象
 				render(opt, $item);
+
+				// 更新校验规则
+				var rule = $rule_form.serializeJson();
+				/*$.each(rule, function(key) {
+					if 
+				})*/
+				console.log('更改前', $item.data().rule);
+				$item.data().rule = rule;
+				console.log('更改后', $item.data().rule);
+				setFormRules();
 			}
 			$('.item_detail_container').remove();
 		}
@@ -980,13 +1056,13 @@
 				var control_bar = $(
 					'<div class="control_bar">' +
 						'<div class="control_bar_core">' +
-							'<button class="btn btn-warning edit_btn btn_group_1">' +
+							'<button type="button" class="btn btn-warning edit_btn btn_group_1">' +
 								'<i class="fa fa-cog"></i>' +
 							'</button>' +
-							'<button class="btn btn-danger remove_btn btn_group_1">' +
+							'<button type="button" class="btn btn-danger remove_btn btn_group_1">' +
 								'<i class="fa fa-trash"></i>' +
 							'</button>' +
-							'<button class="btn btn-primary cancel_btn">' +
+							'<button type="button" class="btn btn-primary cancel_btn">' +
 								'<i class="fa fa-close"></i>' +
 							'</button>' +
 						'</div>' +

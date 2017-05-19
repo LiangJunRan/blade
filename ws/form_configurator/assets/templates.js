@@ -89,7 +89,7 @@ core.radio = '<div class="formContent"></div>';
 sub.radio =
 	'<div class="radio clip-radio radio-primary radio-inline">' +
 		'<input type="radio">' +
-		'<label class="itemLabel"><input type="radio"></label>' +
+		'<label class="itemLabel"></label>' +
 	'</div>';
 opts.radio = {
 	"name": "demo_radio",
