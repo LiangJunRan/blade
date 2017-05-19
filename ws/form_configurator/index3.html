@@ -97,14 +97,40 @@
 			}
 		}
 
-		.control_bar {
+		/* .control_bar {
 			position: absolute;
 			background-color: rgba(0, 0, 0, 0.3);
 			text-align: center;
 			line-height: 100%;
 			vertical-align: middle;
 			animation: anime_show 0.1s 1 ease-in;
+		} */
+		.control_bar {
+		    position: absolute;
+		    width: 100%;
+			height: 100%;
+		    float: left;
+		    top: 0px;
+			text-align: center;
+			vertical-align: middle;
+		    background-color: rgba(0, 0, 0, 0.3);
+		    margin-left: -15px;
+		    margin-right: -15px;
+			animation: anime_show 0.1s 1 ease-in;
 		}
+
+		.control_bar_core {
+			height: 42px;
+			position: absolute;
+			margin: auto;
+			left: 0;
+			text-align: center;
+			top: 0;
+			bottom: 0;
+			right: 0;
+		}
+		
+
 		@keyframes anime_show{
 			0% {
 				opacity: 0;
@@ -585,6 +611,21 @@
 				new_node.data().rule = {'required': true};		// TODO	删掉
 				// 重新渲染，以生成需要用到的随机id
 				render(new_node.data().opts, new_node);
+				setFormRules();
+			});
+		}
+
+		function initValidator() {
+			$.validator.setDefaults({
+				ignore: '.ignore',
+				errorClass: 'text-danger',
+				errorPlacement: function (label, element) {
+					$(label).html($(label).html().replace(/:|：/g, ''));
+					$(element).closest('.contentClass').find('.help-block-error').append(label);
+				},
+				success: function (label, element) {
+					label.remove();
+				}
 			});
 		}
 
@@ -597,8 +638,8 @@
 				formRules[$this.data().opts.name] = $this.data().rule;
 			});
 			$form.validate({
-                rules: formRules
-            });
+				rules: formRules
+			});
 		}
 
 		// TODO
@@ -615,6 +656,7 @@
 		}*/
 
 		initComponentsContainer();
+		initValidator();
 
 
 		// 每个已插入元素的坐标和宽高	// TODO: 改成传递变量
@@ -928,15 +970,16 @@
 			}
 			// $this.appendTo('<div class="config_container"></div>');
 
-			var info = {};
+			/*var info = {};
 			info.x = $this.closest('.drag_item').offset().left;
 			info.y = $this.closest('.drag_item').offset().top;
 			info.w = $this.closest('.drag_item').width() + 30;
-			info.h = $this.closest('.drag_item').height();
+			info.h = $this.closest('.drag_item').height();*/
 
 			if ($this.closest('.drag_item').length > 0) {
 				var control_bar = $(
 					'<div class="control_bar">' +
+						'<div class="control_bar_core">' +
 							'<button class="btn btn-warning edit_btn btn_group_1">' +
 								'<i class="fa fa-cog"></i>' +
 							'</button>' +
@@ -946,9 +989,10 @@
 							'<button class="btn btn-primary cancel_btn">' +
 								'<i class="fa fa-close"></i>' +
 							'</button>' +
+						'</div>' +
 					'</div>'
 				);
-				control_bar.css({'left': info.x + 'px', 'top': info.y + 'px', 'width': info.w + 'px', 'height': info.h + 'px', 'line-height': info.h + 'px'});
+				// control_bar.css({'left': info.x + 'px', 'top': info.y + 'px', 'width': info.w + 'px', 'height': info.h + 'px', 'line-height': info.h + 'px'});
 
 				control_bar.find('.remove_btn').on('click', function() {
 					$this.closest('.drag_item').remove();
@@ -970,7 +1014,9 @@
 				// control_bar.on('mouseout', function() {
 				// 	control_bar.remove();
 				// })
-				$('body').append(control_bar);
+
+				// $('body').append(control_bar);
+				$this.closest('.drag_item').append(control_bar);
 			}
 		}
 		// 关闭操作遮罩层

@@ -122,3 +122,4 @@ opts.checkbox = {
 		{"label": "选项3", "value": 3}
 	]
 };
+
