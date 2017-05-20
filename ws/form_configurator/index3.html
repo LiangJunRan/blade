@@ -233,9 +233,13 @@
 			height: 50px ;
 			padding: 7px 20px;
 			background-color: #eee;
+			width: 100%;
+			position: absolute;
+			top: 0px;
 		}
 		.item_detail_body {
-			height: 593px;
+			height: calc(100% - 108px);
+			margin-top: 50px;
 			padding: 15px;	
 			overflow-x: hidden;
 			overflow-y: auto;
@@ -256,6 +260,8 @@
 			padding: 7px 20px;
 			text-align: right;
 			background-color: #eee;
+			position: absolute;
+			bottom: 0px;
 		}
 		.item_detail_footer button {
 			height: 42px;
@@ -276,7 +282,8 @@
 			background-color: #fff;
 			box-shadow: 0 0 15px 5px #999;
 			left: 0px;
-			top: calc(50% - 350px);
+			top: 3%;
+			height: 93%;
 		}
 		.item_detail_container_in {
 			animation: anime_item_detail_container_in 0.2s ease-in 1 normal;;
@@ -343,7 +350,11 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<button class="btn btn-primary btn-sm pull-left" onclick="getJson();" data-toggle="modal" data-target="#myModal">
-					Get JSON		
+					<i class="fa fa-code"></i> Get JSON
+				</button>
+				&nbsp;
+				<button class="btn btn-warning btn-sm checkForm" onclick="checkForm();">
+					<i class="fa fa-search"></i> 检查规则
 				</button>
 			</div>
 		</div>
@@ -449,19 +460,7 @@
 			}
 		}
 
-		function getJson() {
-			var result = [];
-			$.each($('.drop_container').children(), function() {
-				result.push($(this).data().opts);
-			});
-			var str_result = '';
-			// $.each(result, function() {
-			// 	str_result += JSON.stringify(this) + ', ';
-			// });
-			str_result = JSON.stringify(result);
-			str_result = formatCode(str_result);
-			$('#modalContent').html('<textarea cols="30" rows="10" style="width: 100%; height: 600px;">' + str_result + '</textarea>');
-		}
+		
 
 		function clearAll() {
 			$('.drop_container').children().remove();
@@ -615,6 +614,12 @@
 				$('.drop_container').append(new_node);
 
 				new_node.data().opts = $(this).data().opts;
+
+				// 为了防止name相同bug，暂时采用重置name的方法，以后需要解决
+				// TODO
+				var new_name = new_node.data().opts.name + '_' + randomId();
+				new_node.data().opts.name = new_name;
+
 				new_node.data().rule = {'required': true};		// TODO	删掉
 				// 重新渲染，以生成需要用到的随机id
 				render(new_node.data().opts, new_node);
@@ -626,6 +631,7 @@
 		function initValidator() {
 			console.log('[V] init', dropFormValidator);
 			$.validator.setDefaults({
+				debug: true,
 				ignore: '.ignore',
 				errorClass: 'text-danger',
 				errorPlacement: function (label, element) {
@@ -785,6 +791,8 @@
 					var order = parseInt(id.split('-')[id.split('-').length - 1]) + 1;
 					new_node.attr('id', 'drag-item-' + order);
 				}
+				
+
 				// 加入新对象
 				if ($('.insert_mark').hasClass('append_holder')) {
 					$('.insert_mark').replaceWith(new_node);
@@ -793,6 +801,11 @@
 				}
 
 				new_node.data().opts = $('#' + origin_id).data().opts;
+				// 为了防止name相同bug，暂时采用重置name的方法，以后需要解决
+				// TODO
+				var new_name = new_node.data().opts.name + '_' + randomId();
+				new_node.data().opts.name = new_name;
+
 				new_node.data().rule = $('#' + origin_id).data().rule;
 				// 重新渲染，以生成需要用到的随机id
 				render(new_node.data().opts, new_node);
@@ -1114,6 +1127,50 @@
 				drag_items[i].setAttribute('ondragend', 'dragEnd(event);');
 				drag_items[i].setAttribute('ondblclick', 'config(event);');
 		}
+
+		/*
+
+			┏━━┻━┓╭━┓　┏┓┏━━┳━┓　┏━━━┓　┣━━━┓
+			┃┏━━┳╮┏┳┳┓┃┛　　　┃　　　┃　　　┃╭┃　　　┃
+			┃┃　　┃　┏┻┻┓┃┃　　　┃　　　┣━━━┫┗╯╮┏━╯
+			┃┣━━┣┛┏━━┓┃┃　　　┃　　　┣━━━┫┗━━╯━┛
+			┃┃　　┃┓┃　　┃┣╯　　　┃　　　┻━━━┻┗━┳┣┳┛
+			╯┗╰━╰┛┗━━┛┗　┗━━┻━┛┗━━╯━┛┗━╯┛┗╯
+
+		*/
+		function getJson() {
+			var result = [];
+			$.each($('.drop_container').children(), function() {
+				result.push($(this).data().opts);
+			});
+			var str_result = '';
+			// $.each(result, function() {
+			// 	str_result += JSON.stringify(this) + ', ';
+			// });
+			str_result = JSON.stringify(result);
+			str_result = formatCode(str_result);
+			$('#modalContent').html('<textarea cols="30" rows="10" style="width: 100%; height: 600px;">' + str_result + '</textarea>');
+		}
+
+		function checkForm() {
+			// 检查是否有重名，重名报错。
+			var names = [];
+			$.each($('#dropForm').children(), function() {
+				names.push($(this).data().opts.name);
+			});
+			for (var i = 0; i < names.length; i ++) {
+				for (var j = i + 1; j < names.length; j ++) {
+					if (names[i] == names[j]) {
+						console.log('[ERROR] Same name found,', i, j);
+						return false;
+					}
+				}
+			}
+
+			// 一切正常再提交检查规则
+			$('#dropForm').submit();
+		}
+
 	</script>
 </body>
 </html>
