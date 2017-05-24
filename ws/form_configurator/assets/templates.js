@@ -45,7 +45,29 @@ opts.text = {
 };
 rule.text = {
 	"required": false,
-	"contentCheck": [
+	"maxlength": 10,
+	"minlength": 5
+
+	/*
+	required:true//                必输字段
+	remote:"check.PHP"//      使用ajax方法调用check.php验证输入值
+	email:true//                    必须输入正确格式的电子邮件
+	url:true//                        必须输入正确格式的网址
+	date:true//                      必须输入正确格式的日期 日期校验ie6出错，慎用
+	dateISO:true//                必须输入正确格式的日期(ISO)，例如：2009-06-23，1998/01/22 只验证格式，不验证有效性
+	number:true//                 必须输入合法的数字(负数，小数)
+	digits:true//                    必须输入整数
+	creditcard://                   必须输入合法的信用卡号
+	equalTo:"#field"//          输入值必须和#field相同
+	accept://                       输入拥有合法后缀名的字符串（上传文件的后缀）
+	maxlength:5//               输入长度最多是5的字符串(汉字算一个字符
+	minlength:10//              输入长度最小是10的字符串(汉字算一个字符
+	rangelength:[5,10]//      输入长度必须介于 5 和 10 之间的字符串"(汉字算一个字符
+	range:[5,10]//               输入值必须介于 5 和 10 之间
+	max:5//                        输入值不能大于5
+	min:10//                       输入值不能小于10
+	*/
+	/*"contentCheck": [
 		"none",			// 无
 		// "number",		// 数字
 		"letter",		// 字母
@@ -60,7 +82,7 @@ rule.text = {
 		"datetime",		// 日期时间
 		"time",			// 时间
 		"customize"		// 自定义(正则)
-	]
+	]*/
 };
 
 
@@ -102,6 +124,9 @@ opts.radio = {
 		{"label": "选项3", "value": 3}
 	]
 };
+rule.radio = {
+	"required": false
+};
 
 
 
@@ -122,4 +147,6 @@ opts.checkbox = {
 		{"label": "选项3", "value": 3}
 	]
 };
-
+rule.checkbox = {
+	"required": false
+};
