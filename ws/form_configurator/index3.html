@@ -34,8 +34,9 @@
 		.left_bar {
 			float: left;
 			height: 100%;
-			border-right: solid 1px #555;
-			padding: 20px 0px;
+			/*border-right: solid 1px #555;*/
+			box-shadow: 0 0 15px 5px #ddd;
+			padding: 0px;
 			/*background-color: #ddd;*/
 			width: 400px;
 		}
@@ -311,13 +312,53 @@
 			display: block;
 			background-color: #ddd;
 		}
+		.left_bar_title {
+			width: 426px;
+			background-color: #fff;
+			box-shadow: 0 0 15px 5px #ddd;
+			border-radius: 0 25px 25px 0;
+			height: 50px;
+		}
+		.btn-round {
+			height: 42px;
+			line-height: 42px;
+			width: 42px;
+			border-radius: 42px;
+			text-align: center;
+			vertical-align: middle;
+			padding: 0;
+			border-width: 0px;
+			margin: 0 10px;
+		}
+		.btn-round.white-border {
+			line-height: 32px;
+			border: solid 5px #fff;
+		}
 
+		.alertBox {
+			animation: anime_alertBox 1s infinite ease-in-out;
+			animation-fill-mode: both;
+		}
+		@keyframes anime_alertBox{
+			50% {
+				background: rgba(255, 0, 0, 0.3);
+			}
+		}
 	</style>
 </head>
 <body>
 	<div class="bg">
 		<div class="left_bar">
-			<div class="components_container">
+			<div class="left_bar_title">
+				<button type="button" class="btn btn-default btn-primary btn-round white-border leftBarBtn" style="position: relative; top: 4px; right: -6px; float: right;" disabled>
+					<i class="fa fa-arrow-left"></i>
+				</button>
+				<h4 style="margin: 0px; padding: 15px; background-color: ">
+					<i class="fa fa-puzzle-piece" aria-hidden="true"></i>
+					可选插件
+				</h4>
+			</div>
+			<div class="components_container" style="border-top: solid 1px #ddd;">
 			</div>
 		</div>
 		<div class="page_content">
@@ -333,15 +374,15 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="myModalLabel">JSON</h4>
+					<h4 class="modal-title" id="myModalLabel">JSON <small>(可逆向)</small></h4>
 				</div>
 				<div class="modal-body" id="modalContent">
 					...
 				</div>
-				<!-- <div class="modal-footer">
+				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
-				</div> -->
+					<button type="button" class="btn btn-primary" onclick="renderJson();" data-dismiss="modal">Render</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -350,11 +391,11 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<button class="btn btn-primary btn-sm pull-left" onclick="getJson();" data-toggle="modal" data-target="#myModal">
-					<i class="fa fa-code"></i> Get JSON
+					<i class="fa fa-code"></i> JSON配置
 				</button>
 				&nbsp;
 				<button class="btn btn-warning btn-sm checkForm" onclick="checkForm();">
-					<i class="fa fa-search"></i> 检查规则
+					<i class="fa fa-search"></i> 校验Form
 				</button>
 			</div>
 		</div>
@@ -469,7 +510,7 @@
 
 		function _addOrReplaceClass($obj, new_class) {
 			var notFound = true;
-			var list_class = $obj.prop('class').split(' ');
+			var list_class = $obj.attr('class').split(' ');
 			$.each(list_class, function(idx) {
 				if (this.indexOf('col-sm-') >=0) {
 					notFound = false;
@@ -479,7 +520,7 @@
 			if (notFound) {
 				list_class.push(new_class);
 			}
-			$obj.prop('class', list_class.join(' '));
+			$obj.attr('class', list_class.join(' '));
 		}
 
 		function render(_opt, _$node) {
@@ -523,8 +564,8 @@
 						$.each(opt.options, function() {
 							var $sub = $(sub[opt.type]);
 							var random_id = randomId();
-							$('.itemLabel', $sub).html(this.label).prop('for', random_id);
-							$('input', $sub).prop('value', this.value).prop('id', random_id);
+							$('.itemLabel', $sub).html(this.label).attr('for', random_id);
+							$('input', $sub).attr('value', this.value).attr('id', random_id);
 
 							$content.append($sub);
 						});
@@ -575,15 +616,15 @@
 				case 'datepicker':
 				default:
 					$('core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
-					$('input', $node).prop('placeholder', opt.placeholder);
+					$('input', $node).attr('placeholder', opt.placeholder);
 					break;
 
 			}
 
 			// common
 			$('.formLabel', $node).html(opt.label);
-			$('input, select, textarea', $node).prop('name', opt.name);
-			$('.formDescription', $node).prop('title', opt.description);
+			$('input, select, textarea', $node).attr('name', opt.name);
+			$('.formDescription', $node).attr('title', opt.description);
 			_addOrReplaceClass($node, 'col-sm-' + opt.outerWidth);
 			_addOrReplaceClass($('.labelClass', $node), 'col-sm-' + opt.labelWidth);
 			_addOrReplaceClass($('.contentClass', $node), 'col-sm-' + opt.contentWidth);
@@ -941,7 +982,7 @@
 							'</div>' +
 						'</div>');
 					if (key == 'type') {
-						$('input', $info).prop('readonly', 'readonly');
+						$('input', $info).attr('readonly', 'readonly');
 					}
 					$detail_form.append($info);
 				}
@@ -1048,6 +1089,11 @@
 				// 重新渲染指定对象
 				render(opt, $item);
 
+				// 如果通不过同名校验，则禁止进行修改rule的操作
+				if (!checkSameName()) {
+					return false;
+				}
+
 				// 更新校验规则
 				var rule = $rule_form.serializeJson();
 				console.log('更新后的校验规则>>>', rule);
@@ -1057,6 +1103,7 @@
 				console.log('更改前', $item.data().rule);
 				$item.data().rule = rule;
 				console.log('更改后', $item.data().rule);
+
 				setFormRules();
 			}
 			$('.item_detail_container').remove();
@@ -1151,6 +1198,7 @@
 			╯┗╰━╰┛┗━━┛┗　┗━━┻━┛┗━━╯━┛┗━╯┛┗╯
 
 		*/
+
 		function getJson() {
 			var structured_json = {};
 			var json_opts = [], json_rules = {};
@@ -1163,10 +1211,58 @@
 				'rules': json_rules};
 			str_json = JSON.stringify(structured_json);
 			str_json = formatCode(str_json);
-			$('#modalContent').html('<textarea cols="30" rows="10" style="width: 100%; height: 600px;">' + str_json + '</textarea>');
+			$('#modalContent').html('<textarea cols="30" rows="10" style="width: 100%; height: 280px;">' + str_json + '</textarea>');
 		}
 
-		function checkForm() {
+		function renderJson() {
+			var jsonConf = $.parseJSON($('#modalContent textarea').val());
+			var json_opts = jsonConf['items'];
+			var json_rules = jsonConf['rules'];
+
+			console.log('json_opts', json_opts);
+			console.log('json_rules', json_rules);
+
+			clearAll();
+
+			$.each(json_opts, function(_idx){
+				var $item = render(this);
+
+				$item.attr('id', 'drag-item-' + _idx);
+				$item.attr('draggable', 'true');
+				$item.attr('ondragstart', 'dragStart(event);');
+				$item.attr('ondragend', 'dragEnd(event);');
+				$item.attr('ondblclick', 'config(event);');
+
+				$item.removeClass('base');
+				// 去掉重复id
+				while (hasSameId($item.attr('id'))) {
+					var id = $item.attr('id');
+					var order = parseInt(id.split('-')[id.split('-').length - 1]) + 1;
+					$item.attr('id', 'drag-item-' + order);
+				}
+				// 加入新对象
+				$('.drop_container').append($item);
+
+				$item.data().opts = this;
+				$item.data().rule = json_rules[this.name];
+			});
+
+			setFormRules();
+		}
+
+		function alertBox(loc) {
+			var $box = $('<div class="alertBox"></div>');
+			$box.css({
+				'left': loc.x + 'px',
+				'top': loc.y + 'px',
+				'width': (loc.w + 30) + 'px',
+				'height': loc.h + 'px'
+			});
+			return $box;
+		}
+
+		function checkSameName() {
+			$('.alertBox').removeClass('alertBox');
 			// 检查是否有重名，重名报错。
 			var names = [];
 			$.each($('#dropForm').children(), function() {
@@ -1175,12 +1271,20 @@
 			for (var i = 0; i < names.length; i ++) {
 				for (var j = i + 1; j < names.length; j ++) {
 					if (names[i] == names[j]) {
-						console.log('[ERROR] Same name found,', i, j);
+						alert('[ERROR] Same name found!');
+						$($('#dropForm').children()[i]).addClass('alertBox');
+						$($('#dropForm').children()[j]).addClass('alertBox');
 						return false;
 					}
 				}
 			}
+			return true;
+		}
 
+		function checkForm() {
+			if (!checkSameName()){
+				return false;
+			}
 			// 一切正常再提交检查规则
 			$('#dropForm').submit();
 		}
