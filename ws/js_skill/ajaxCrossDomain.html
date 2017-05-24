@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>测试cookie</title>
+	<script src="../_commons/jquery/jquery.min.js"></script>
+</head>
+<body>
+	<script>
+	$(document).ajaxError(function(event, xhr, options, exc){
+		console.log('ajax global ERROR');
+		if (options.crossDomain) {
+			alert('crossDomain');
+		}
+		if (xhr.status == 404) {
+			location = 'http://www.baidu.com';
+		}
+		console.log('event', event);
+		console.log('xhr', xhr);
+		console.log('options', options);
+		console.log('exc', exc);
+		// console.log('xhr', xhr.showAll());
+		// console.log('options', options.showAll());
+		// console.log('exc', exc.showAll());
+		// console.log(event, xhr, options, exc);
+	});
+
+	$(document).ajaxSend(function(event, xhr, options, exc){
+		console.log('ajax global SEND');
+		console.log('event', event);
+		console.log('xhr', xhr);
+		console.log('options', options);
+		console.log('exc', exc);
+		// console.log('xhr', xhr.showAll());
+		// console.log('options', options.showAll());
+		// console.log('exc', exc.showAll());
+		// console.log(event, xhr, options, exc);
+	});
+	$(document).ready(function(){
+		$.ajax({
+			url: "http://bjtest.xdf.cn/ls/myclass/myTest?classCode=ZTF13108",
+			success: function(data) {
+				alert('ok');
+			},
+			error: function(r) {
+				console.log('ajax error');
+				console.log('r', r);
+			}
+		});
+		$.ajax({
+			url: 'ls/myclass/myTest?classCode=ZTF13108', 
+			error: function(r) {
+				console.log(r)
+			}
+		})
+	});
+		
+	</script>
+</body>
+</html>
