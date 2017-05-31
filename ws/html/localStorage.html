@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>html5本地存储</title>
+	<script src="../_commons/jquery/jquery.min.js"></script>
+</head>
+<body>
+	<label for="user">user:</label>
+	<input type="text" id="user">
+	<hr>
+	<label for="sessionStorage">sessionStorage:</label>
+	<textarea id="sessionStorage" cols="30" rows="10"></textarea>
+	<hr>
+	<label for="localStorage">localStorage:</label>
+	<textarea id="localStorage" cols="30" rows="10"></textarea>
+	<button type="button" onclick="$('#localStorage').val(localLoad('key'));">reload</button>
+	<script>
+		function localSave(key, value, liveMillsecond) {
+			// liveMillsecond=-1	为无限期
+			var user = $('#user').val() || undefined;
+			if (user !== undefined) {
+				var ls = $.parseJSON(localStorage.getItem(user) || '{}');
+
+				// TODO: 更新过期时间
+				var d = new Date();
+				liveMillsecond = liveMillsecond || (7 * 24 * 3600 * 1000);
+				var __expire_timestamp__ = 0;
+				if (liveMillsecond != -1) {
+					__expire_timestamp__ = d.valueOf() + liveMillsecond;
+				} else {
+					__expire_timestamp__ = -1;
+				}
+				ls = $.extend(true, {}, ls, {'__expire_timestamp__': __expire_timestamp__});
+
+				ls = JSON.stringify($.extend(true, {}, ls, {key: value}));
+				localStorage.setItem(user, ls);
+				console.log('SAVED', user);
+			} else {
+				console.warn('SAVE 未登录');
+			}
+		}
+		function localLoad(key) {
+			var user = $('#user').val() || undefined;
+			if (user !== undefined) {
+				var ls = $.parseJSON(localStorage.getItem(user) || '{}');
+				var __expire_timestamp__ = ls.__expire_timestamp__ || -1;
+				console.log('LOADED >>>', ls);
+				// TODO: 判断是否过期
+				var now = new Date();
+				if (__expire_timestamp__ != -1 && now.valueOf() <= __expire_timestamp__) {
+					console.log('还剩', (__expire_timestamp__ - now.valueOf()) / 1000, '秒 过期');
+					var keys = key.split('.');
+					var result = ls;
+					$.each(keys, function(){
+						try {
+						   //在此运行代码
+						   console.log('result -1->', result, 'this -->', this);
+						   result = result[this];
+						   console.log('result -2->', result);
+						} catch(err) {
+						   //在此处理错误
+						   console.error('[ERROR]', err);
+						}
+					});
+					return result;
+				} else {
+					localStorage.removeItem(user);
+					console.warn('LOAD 本地存储过期');
+				}
+			} else {
+				console.warn('LOAD 未登录');
+			}
+		}
+		$('#user').on('input', function() {
+			console.log('>>>', $(this).val(), ($(this).val() || undefined));
+			document.cookie.user = ($(this).val() || undefined);
+			console.log('cookie.user =', document.cookie.user);
+			localStorage.setItem("user", $(this).val());
+		});
+		$('#sessionStorage').on('input', function() {
+			sessionStorage.setItem("key", $(this).val());
+		});
+		$('#localStorage').on('input', function() {
+			// localStorage.setItem("key", $(this).val());
+			localSave('key', $(this).val(), 30 * 1000);
+		});
+		$(document).ready(function(){
+			$('#user').val(localStorage.getItem('user'));
+			$('#sessionStorage').val(sessionStorage.getItem('key'));
+			// $('#localStorage').val(localStorage.getItem('key'));
+			$('#localStorage').val(localLoad('key'));
+		})
+	</script>
+</body>
+</html>
