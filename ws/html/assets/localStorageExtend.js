@@ -7,7 +7,7 @@
         factory(jQuery);
     }
 }(function ($) {
-	var debugMode = true;	// 设置为true可以在console中看到详细信息
+	var debugMode = false;	// 设置为true可以在console中看到详细信息
 
 	$(document).ready(function(){
 		// localSave绑定
@@ -17,8 +17,10 @@
 				var itemKey 	= getItemKey($this);
 				var key 		= getKey($this);
 				var value 		= $this.val();
-				var expireTime = getExpireTime($this);
+				var expireTime 	= getExpireTime($this);
+				info('[localSave]         ' + itemKey + '.' + key + '=' + value + ' expireTime=' + expireTime);
 				localSave(itemKey, key, value, expireTime);
+				info('[localSave]         ' + itemKey + '.' + key + ' is saved');
 			}
 		});
 
@@ -27,12 +29,15 @@
 	});
 
 	function localInitLoad() {
+		info('[localInitLoad]');
 		$.each($('[localStorage]'), function(){
 			var $this = $(this);
 			if (isOK($this)) {
 				var itemKey = getItemKey($this);
 				var key 	= getKey($this);
+				info('[localLoad]         ' + itemKey + '.' + key);
 				$this.val(localLoad(itemKey, key));
+				info('[localLoad]         ' + itemKey + '.' + key + ' is loaded');
 			}
 		});
 	}
@@ -52,8 +57,13 @@
 	}
 
 	function getExpireTime($obj) {
-		info('读取到的过期时间（毫秒）=' + $obj.attr('localStorage').split('@')[1]);
-		return $obj.attr('localStorage').split('@')[1];
+		var et = parseFloat($obj.attr('localStorage').split('@')[1]);
+
+		info('  [getExpireTime]   读取到的过期时间 = ' + et + ' 小时');
+		if (isNaN(et)) {
+			return undefined;
+		}
+		return et;
 	}
 
 	// 获取key值的方法
@@ -62,53 +72,35 @@
 	}
 
 	// 本地存储的实现
-    function localSave(itemKey, key, value, liveMillsecond) {
+    function localSave(itemKey, key, value, liveHour) {
     	deleteExpiredItem();
-    	// liveMillsecond=-1	为无限期
     	
-		var ls = $.parseJSON(localStorage.getItem(itemKey) || '{}');
+		var item = $.parseJSON(localStorage.getItem(itemKey) || '{}');
 
-		// TODO: 更新过期时间
+		// 更新过期时间
 		var d = new Date();
-		liveMillsecond = liveMillsecond || (7 * 24 * 3600 * 1000);
-		info('最终的生命周期（毫秒）=' + liveMillsecond);
-		var __expire_timestamp__ = 0;
-		if (liveMillsecond != -1) {
-			__expire_timestamp__ = d.valueOf() + liveMillsecond;
+		var liveMillsecond;
+		if (liveHour !== undefined) {
+			liveMillsecond = liveHour * 3600 * 1000;
 		} else {
-			__expire_timestamp__ = -1;
+			liveMillsecond = 7 * 24 * 3600 * 1000;
 		}
-		ls = $.extend(true, {}, ls, {'__expire_timestamp__': __expire_timestamp__});
+		var __expire_timestamp__ = d.valueOf() + liveMillsecond;
+
 		var jsonValue = {};
-		jsonValue[key] = value;
-		ls = JSON.stringify($.extend(true, {}, ls, jsonValue));
-		localStorage.setItem(itemKey, ls);
+		jsonValue[key] = {'value': value, '__expire_timestamp__': __expire_timestamp__};
+		var itemStr = JSON.stringify($.extend(true, {}, item, jsonValue));
+		localStorage.setItem(itemKey, itemStr);
     };
 
     function localLoad(itemKey, key) {
     	deleteExpiredItem();
 
-		var ls = $.parseJSON(localStorage.getItem(itemKey) || '{}');
-		var __expire_timestamp__ = ls.__expire_timestamp__ || -1;
-		// TODO: 判断是否过期
-		var now = new Date();
-		if (__expire_timestamp__ != -1 && now.valueOf() <= __expire_timestamp__) {
-			info('还剩' + (__expire_timestamp__ - now.valueOf()) / 1000 + '秒 过期');
-			var keys = key.split('.');
-			var result = ls;
-			$.each(keys, function(){
-				try {
-				   //在此运行代码
-				   result = result[this];
-				} catch(e) {
-				   //在此处理错误
-				   err('[ERROR]', e);
-				}
-			});
-			return result;
+		var item = $.parseJSON(localStorage.getItem(itemKey) || '{}');
+		if (item[key]) {
+			return item[key]['value'];
 		} else {
-			localStorage.removeItem(itemKey);
-			warn('LOAD 本地存储过期');
+			return undefined;
 		}
     };
 
@@ -141,19 +133,27 @@
     		} catch (e) {
     			var msg = e.message;
     			if ((e.name == 'SyntaxError') && !!(msg.match(/Unexpected\ token\ .*\ in\ JSON/g)).length) {
-    				warn('Not a jsonSting, pass');
+    				warn('Not a jsonString, pass');
     			} else {
     				throw e;
     			}
     		}
     		if (jsonData) {
-				var __expire_timestamp__ = jsonData.__expire_timestamp__ || -1;
-	    		if (__expire_timestamp__ != -1) {
+	    		$.each(jsonData, function(key) {
+	    			var __expire_timestamp__ = this.__expire_timestamp__;
 	    			var now = new Date();
+					info('  [deleteExpire...] ' + itemKey + '.' + key + ' 还剩 ' + (__expire_timestamp__ - now.valueOf()) / 1000 + ' 秒');
 	    			if (now.valueOf() > __expire_timestamp__) {
+						info('  [deleteExpire...] ' + itemKey + '.' + key + ' 已过期，删掉！');
 	    				// 过期，删除
-	    				localStorage.removeItem(itemKey);
+	    				delete jsonData[key];
 	    			}
+	    		});
+	    		if ($.isEmptyObject(jsonData)) {
+	    			localStorage.removeItem(itemKey);
+	    		} else {
+	    			var itemStr = JSON.stringify(jsonData);
+					localStorage.setItem(itemKey, itemStr);
 	    		}
     		}
     	});
