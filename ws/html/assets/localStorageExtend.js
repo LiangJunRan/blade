@@ -1,3 +1,7 @@
+/*
+	Author: kuroikenshi@sina.com
+	Update: 2017-06-06 11:22:32
+*/
 ;(function (factory) {
     if (typeof define === "function" && define.amd) {
         // AMD模式
