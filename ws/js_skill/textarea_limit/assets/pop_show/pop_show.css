@@ -8,7 +8,8 @@
 	background: #333;
 	color: #fff;
 	border-radius: 5px;
-	width: 160px;
+	width: 190px;
+	max-width: 190px;
 }
 .pop_tips_trangle_container {
 	display: table-cell;

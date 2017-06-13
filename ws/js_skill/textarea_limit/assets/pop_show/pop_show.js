@@ -28,25 +28,15 @@
 			});
 			$('.pop_tips').remove();
 		}
-
-
-		// 计算位置
-		var left = trigger.offset().left;
-		var top = trigger.offset().top;
+		
+		// 决定三角的样式
 		var pop_tips_trangle_class = 'pop_tips_trangle_';
-
 		if (opts.position == 'right') {
-			left += trigger.width() + 32;
-			top += trigger.height() / 2;
 			pop_tips_trangle_class += 'left';
 		}
 		if (opts.position == 'center') {
-			left += (trigger.width() - 160) / 2;
-			top += trigger.height() / 2;
 			pop_tips_trangle_class += 'none';
 		}
-		left += opts.offset.x;
-		top += opts.offset.y;
 
 		// 绘制
 		var pop_tips = $(
@@ -56,7 +46,24 @@
 				'</div>' + 
 				'<div class="pop_tips_content anime_alert">' + opts.content  + '</div>' +
 			'</div>');
+		$('body:eq(0)').append(pop_tips);
 
+		// 计算位置
+		var left = trigger.offset().left;
+		var top = trigger.offset().top;
+
+		if (opts.position == 'right') {
+			left += trigger.width() + 32;
+			top += (trigger.height() - pop_tips.height()) / 2;
+		}
+		if (opts.position == 'center') {
+			left += (trigger.width() - 190) / 2;
+			top += (trigger.height() - pop_tips.height()) / 2;
+			console.log(trigger.height(), pop_tips.height());
+		}
+		left += opts.offset.x;
+		top += opts.offset.y;
+		
 		pop_tips.css({'left': left, 'top': top});
 		pop_tips.data().time_left = opts.delay;
 
@@ -85,7 +92,6 @@
 			}
 			pop_tips.data().auto_remove_timer = setTimeout(auto_remove, 16);
 		}
-		$('body:eq(0)').append(pop_tips);
 		auto_remove();
     };
 }));
