@@ -14,10 +14,6 @@
 			console.error('[ERROR] Must import jquery.validator first.');
 			return false;
 		}
-		if (style_html === undefined || js_beautify === undefined) {
-			console.error('[ERROR] Must import html_formater first.');
-			return false;
-		}
 		if ($.formc === undefined || $.formc.templates === undefined) {
 			console.error('[ERROR] Must import formc.templates first.');
 			return false;
