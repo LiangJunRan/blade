@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Test Speed - kuroikenshi@sina.com</title>
+	<script src="../_commons/jquery/jquery.min.js"></script>
+</head>
+<body>
+	<label for="url_1" style="width: 100px;">测试地址：</label>
+	<input id="url_1" type="text" name="url" value="http://bjstatic.kaolawu.com/static/lib/ls/img/xdf.png" style="width: calc(100% - 320px);">
+	<button type="button" onclick="testSpeed();" style="width: 100px;">开始测试</button>
+	<button type="button" onclick="testSpeedAuto();" style="width: 100px;">连续测试</button>
+	<hr>
+	<pre style="height: 300px; max-height: 300px; overflow-y: auto; background-color: #ddd; padding: 20px;"></pre>
+	<script>
+		function loadImage(url, callback) {
+			var img = new Image(); //创建一个Image对象，实现图片的预下载
+			img.st = new Date();
+			img.src = url + '?v=' + Math.random();
+			img.st1 = new Date();
+
+			if(img.complete) { // 如果图片已经存在于浏览器缓存，直接调用回调函数
+				callback.call(img);
+				return; // 直接返回，不用再处理onload事件
+			}
+			img.onload = function () { //图片下载完毕时异步调用callback函数。
+				this.ed = new Date();
+				callback.call(img);//将回调函数的this替换为Image对象
+			};
+		};
+
+		function testSpeed() {
+			var $that = $('button');
+			console.log($that);
+			$that.attr({"disabled": "disabled"});
+			loadImage($('#url_1').val(), function(){
+				console.log('Ready, cost', (this.ed - this.st));
+				var preHtml = $('pre').html();
+				preHtml = (this.ed - this.st) + ' ms<br>' + preHtml;
+				$('pre').html(preHtml);
+				$that.removeAttr('disabled');
+			});
+		}
+
+		function autoTest(){
+			loadImage($('#url_1').val(), function(){
+				console.log('Ready, cost', (this.ed - this.st));
+				var preHtml = $('pre').html();
+				preHtml = (this.ed - this.st) + ' ms<br>' + preHtml;
+				$('pre').html(preHtml);
+				autoTest();
+			});
+		}
+
+		function testSpeedAuto() {
+			var $that = $('button');
+			console.log($that);
+			$that.attr({"disabled": "disabled"});
+			autoTest.call(this);
+		}
+	</script>
+</body>
+</html>
