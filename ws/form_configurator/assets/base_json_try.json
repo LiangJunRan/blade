@@ -90,5 +90,8 @@
 		"auto_3": {
 			"required": true,
 		}
-	}
+	},
+	
+	"values": {
 
+	}
