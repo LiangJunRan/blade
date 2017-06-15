@@ -14,6 +14,12 @@ body {
 	width: 100%;
 	height: calc(100% - 40px);
 }
+.bg2 {
+	background-color: #eee;
+}
+.bg2 form {
+	background-color: #fff;
+}
 .left_bar {
 	float: left;
 	height: 100%;
