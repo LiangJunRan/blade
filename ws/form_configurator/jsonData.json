@@ -1,0 +1,96 @@
+{
+    "items": [{
+        "name": "demo_text",
+        "label": "文本框",
+        "outerWidth": "12",
+        "labelWidth": "3",
+        "contentWidth": "9",
+        "type": "text",
+        "placeholder": "请输入文本",
+        "description": "请输入英文、数字、下划线"
+    },
+    {
+        "name": "demo_select",
+        "label": "下拉框",
+        "outerWidth": "12",
+        "labelWidth": "3",
+        "contentWidth": "9",
+        "type": "select",
+        "multiple": false,
+        "placeholder": "--请选择--",
+        "description": "请点击选择",
+        "dataUrl": "d.json",
+        "options": [{
+            "label": "选项1",
+            "value": "1"
+        },
+        {
+            "label": "选项2",
+            "value": "2"
+        },
+        {
+            "label": "选项3",
+            "value": "3"
+        }]
+    },
+    {
+        "name": "demo_radio",
+        "label": "单选",
+        "outerWidth": "12",
+        "labelWidth": "3",
+        "contentWidth": "9",
+        "type": "radio",
+        "description": "单选描述",
+        "dataUrl": "d.json",
+        "options": [{
+            "label": "选项1",
+            "value": "1"
+        },
+        {
+            "label": "选项2",
+            "value": "2"
+        },
+        {
+            "label": "选项3",
+            "value": "3"
+        }]
+    },
+    {
+        "name": "demo_checkbox",
+        "label": "多选",
+        "outerWidth": "12",
+        "labelWidth": "3",
+        "contentWidth": "9",
+        "type": "checkbox",
+        "description": "多选描述",
+        "dataUrl": "d.json",
+        "options": [{
+            "label": "选项1",
+            "value": "1"
+        },
+        {
+            "label": "选项2",
+            "value": "2"
+        },
+        {
+            "label": "选项3",
+            "value": "3"
+        }]
+    }],
+    "rules": {
+        "demo_text": {
+            "required": true,
+            "maxlength": "10",
+            "minlength": "5"
+        },
+        "demo_select": {
+            "required": true
+        },
+        "demo_radio": {
+            "required": true
+        },
+        "demo_checkbox": {
+            "required": false
+        }
+    }
+}

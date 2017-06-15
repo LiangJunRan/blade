@@ -22,6 +22,10 @@
 			console.error('[ERROR] Must import formc.templates first.');
 			return false;
 		}
+		if ($.fn.renderForm === undefined || $.formb === undefined) {
+			console.error('[ERROR] Must import form-builder first.');
+			return false;
+		}
 		return true;
 	}
 	if (!checkEnv()) {
@@ -119,117 +123,8 @@
 		});
 	}
 
-	// 组件 - 渲染
-	function render(_opt, _$node) {
-		var default_opt = {
-			"name": "demo_text",
-			"label": "测试文本",
-			"outerWidth": 12,
-			"labelWidth": 3,
-			"contentWidth": 9
-		};
-		var opt = $.extend(true, {}, default_opt, _opt);
-		var isNew = !(_$node);
-		$node = _$node || $(shellTemplate);		// 指定了，就是用指定点
-
-		// case by type
-		switch (opt.type) {
-			// 单选、多选
-			case 'radio':
-			case 'checkbox':
-				var $content;
-				if (isNew) {
-					$content = $(core[opt.type]);
-				} else {
-					$content = $('.formContent', _$node);
-					$content.html('');
-				}
-				if (opt.dataUrl) {
-					$.ajax({
-						url: opt.dataUrl,
-						success: function(data) {
-							// TODO
-							alert('[OK] Not support dataUrl yet');
-						},
-						error: function(data) {
-							// TODO
-							alert('[ER] Not support dataUrl yet');
-						}
-					});
-				} else if (opt.options !== undefined && opt.options.length > 0){
-					$.each(opt.options, function() {
-						var $sub = $(sub[opt.type]);
-						var random_id = randomId();
-						$('.itemLabel', $sub).html(this.label).attr('for', random_id);
-						$('input', $sub).attr('value', this.value).attr('id', random_id);
-
-						$content.append($sub);
-					});
-				} else {
-					$content.append('<div class="form-control-static">-- 未配置选项 --</div>');
-				}
-				$('core', $node).replaceWith($content);		// 在非new情况下，这步不起作用
-				break;
-
-			// 下拉框
-			case 'select':
-				var $select;
-				if (isNew) {
-					$select = $(core[opt.type]);
-				} else {
-					$select = $('select', _$node);
-					$select.html('');
-				}
-				if (opt.placeholder) {
-					$select.append('<option value="">' + opt.placeholder + '</option>')
-				}
-				if (opt.dataUrl) {
-					$.ajax({
-						url: opt.dataUrl,
-						success: function(data) {
-							// TODO
-							alert('[OK] Not support dataUrl yet');
-						},
-						error: function(data) {
-							// TODO
-							alert('[ER] Not support dataUrl yet');
-						}
-					});
-				} else if (opt.options !== undefined && opt.options.length > 0){
-					$.each(opt.options, function() {
-						$select.append('<option value="' + this.value + '">' + this.label + '</option>');
-					});
-				} else {
-					$select.append('<option value="">--No-Item--</option>');
-				}
-				$('core', $node).replaceWith($select);		// 在非new情况下，这步不起作用
-				break;
-
-			// 文本框
-			case 'hidden':
-			case 'text':
-			case 'number':
-			case 'datepicker':
-			default:
-				$('core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
-				$('input', $node).attr('placeholder', opt.placeholder);
-				break;
-
-		}
-
-		// common
-		$('.formLabel', $node).html(opt.label);
-		$('input, select, textarea', $node).attr('name', opt.name);
-		$('.formDescription', $node).attr('title', opt.description);
-		addOrReplaceClass($node, 'col-sm-' + opt.outerWidth);
-		addOrReplaceClass($('.labelClass', $node), 'col-sm-' + opt.labelWidth);
-		addOrReplaceClass($('.contentClass', $node), 'col-sm-' + opt.contentWidth);
-
-		// bind json
-		$node.data().opts = opt;
-
-		return $node;
-	}
+	// 组件 - 渲染 (从formb引用)
+	var render = $.formb.render;
 
 
 
@@ -344,7 +239,7 @@
 			});
 				
 			var $info = $(
-				'<div class="row padbtm">' +
+				'<div class="row padbtm" style="border: dashed 1px #aaa;">' +
 					'<label class="col-sm-4 form-control-static">options</label>' +
 					'<div class="col-sm-8">' +
 						options_html +
@@ -373,6 +268,27 @@
 					$(this).closest('.row').remove();
 				});
 			});
+
+			// 针对dataUrl的特殊处理
+			var $dataUrl = $detail_form.find('[name=dataUrl]');
+			if ($dataUrl.val() == 'null') {
+				$dataUrl.val('');
+			}
+			$dataUrl.attr('placeholder', '留空使用options ↓↓↓');
+			// 绑定联动
+			$dataUrl.on('input', function() {
+				if ($(this).val().length == 0) {
+					$info.show();
+				} else {
+					$info.hide();
+				}
+			});
+			// 初始状态
+			if ($dataUrl.val().length == 0) {
+				$info.show();
+			} else {
+				$info.hide();
+			}
 
 			$detail_form.append($info);
 		}
@@ -524,6 +440,7 @@
 		str_json = JSON.stringify(structured_json);
 		str_json = formatCode(str_json);
 		$('#modalContent').html('<textarea cols="30" rows="10" style="width: 100%; height: 280px;">' + str_json + '</textarea>');
+		return structured_json;
 	}
 
 	// 根据当前json配置渲染form
@@ -621,6 +538,7 @@
 		if ($('.taggleMode:eq(0)').attr('disabled') === undefined) {
 			$('.bg2').show();
 			$('.bg').hide();
+			$('#viewForm').renderForm(getJson());
 		} else {
 			$('.bg').show();
 			$('.bg2').hide();

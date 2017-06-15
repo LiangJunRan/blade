@@ -1,0 +1,14 @@
+{
+	"options": [{
+		"label": "remote选项1",
+		"value": 1
+	},
+	{
+		"label": "remote选项2",
+		"value": 2
+	},
+	{
+		"label": "remote选项3",
+		"value": 3
+	}]
+}

@@ -50,6 +50,7 @@
 		"multiple": false,
 		"placeholder": "--请选择--",				// 非必填
 		"description": "请点击选择",
+		"dataUrl": "",							// 填写使用Url加载待选项，否则使用options
 		"options": [
 			{"label": "选项1", "value": 1},
 			{"label": "选项2", "value": 2},
@@ -73,6 +74,7 @@
 		"type": "radio",						 // 基本类型
 		"label": "单选",
 		"description": "单选描述",
+		"dataUrl": "",							// 填写使用Url加载待选项，否则使用options
 		"options": [
 			{"label": "选项1", "value": 1},
 			{"label": "选项2", "value": 2},
@@ -96,6 +98,7 @@
 		"type": "checkbox",						 // 基本类型
 		"label": "多选",
 		"description": "多选描述",
+		"dataUrl": "",							// 填写使用Url加载待选项，否则使用options
 		"options": [
 			{"label": "选项1", "value": 1},
 			{"label": "选项2", "value": 2},
