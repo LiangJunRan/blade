@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Form Configurator - kuroikenshi@sina.com</title>
+	<!-- 基本 -->
+	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
+	<script src="assets/jquery/jquery.min.js"></script>
+	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- html和json格式化插件 -->
+	<script src="assets/html_formater/htmlformat.js"></script>
+	<script src="assets/html_formater/jsformat.js"></script>
+
+	<!-- 校验 -->
+	<script src="assets/jquery-validation/jquery.validate.js"></script>
+	<script src="assets/jquery-validation/localization/messages_zh.min.js"></script>
+	<script src="assets/jquery-validation/localization/messages_zh_fieldname.js"></script>
+
+	<!-- 特殊radio和checkbox样式 -->
+	<link rel="stylesheet" href="assets/styles-radio-checkbox.css">
+
+	<!-- fc页面样式 -->
+	<link rel="stylesheet" href="assets/form-configurator_v5/css/form-configurator.css">
+	<!-- fc模板文件 -->
+	<script src="assets/form-configurator_v5/js/form-configurator-templates.js"></script>
+	<!-- fb本体 -->
+	<script src="assets/form-configurator_v5/js/form-builder.js"></script>
+	<!-- fc本体 -->
+	<script src="assets/form-configurator_v5/js/form-configurator-main.js"></script>
+
+</head>
+<body>
+	<div class="bg">
+		<div class="left_bar">
+			<div class="left_bar_title">
+				<!-- <button type="button" class="btn btn-default btn-primary btn-round white-border leftBarBtn" style="position: relative; top: 4px; right: -6px; float: right;" disabled>
+					<i class="fa fa-arrow-left"></i>
+				</button> -->
+				<h4 style="margin: 0px; padding: 15px; background-color: ">
+					<i class="fa fa-puzzle-piece" aria-hidden="true"></i>
+					可选插件
+				</h4>
+			</div>
+			<div class="components_container" style="border-top: solid 1px #ddd;">
+			</div>
+		</div>
+		<div class="page_content">
+			<form class="drop_container" id="dropForm">
+			</form>
+			<button class="btn btn-danger btn-sm btnClearAll" id="clearAll"><i class="fa fa-trash"></i></button>
+		</div>	
+	</div>
+
+	<div class="bg2">
+		<div class="container">
+			<form id="viewForm">
+			</form>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">JSON <small>(可逆向)</small></h4>
+				</div>
+				<div class="modal-body" id="modalContent">
+					...
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="renderJson" data-dismiss="modal">Render</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="footer">
+		<div class="row">
+			<div class="col-sm-12">
+				<button class="btn btn-primary btn-sm pull-left" id="getJson" data-toggle="modal" data-target="#myModal">
+					<i class="fa fa-code"></i> JSON配置
+				</button>
+				&nbsp;
+				<button class="btn btn-warning btn-sm" id="checkForm">
+					<i class="fa fa-search"></i> 校验Form
+				</button>
+				&nbsp;
+				<label for="mode">切换模式：(TODO: 换成iSwitch控件)</label>
+				<div class="btn-group" id="mode">
+					<button class="btn btn-default btn-sm taggleMode" disabled>
+						<i class="fa fa-edit"></i> 编辑
+					</button>
+					<button class="btn btn-success btn-sm taggleMode">
+						<i class="fa fa-eye"></i> 预览
+					</button>
+				</div>
+				&nbsp;
+				<button class="btn btn-primary btn-sm" id="editEventBind">
+					<i class="fa fa-link"></i> 编辑联动绑定
+				</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

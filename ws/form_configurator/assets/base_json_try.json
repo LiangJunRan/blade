@@ -91,7 +91,29 @@
 			"required": true,
 		}
 	},
-	
+	"events": {
+		"age": {
+			"change": {
+				"change": {
+
+				}
+			}, 
+			"click": {
+				
+			}
+		}
+	},
+	"events": [{
+		"type": "valueChange->showHide",
+		"triggerName": "maritalStatus",
+		"triggerValue": "0",
+		"showName": ["coupleName"],
+		"hideName": [""]
+	}, {
+		"triggerName": "maritalStatus",
+		"events": 
+	}],
 	"values": {
 
 	}
+}

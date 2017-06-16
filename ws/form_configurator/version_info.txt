@@ -1,0 +1,25 @@
+index1
+	基本的拖拽
+	插入想法展示
+
+index2
+	基本结构成型
+	增加编辑功能
+	可以取得json
+
+index3
+	增加快捷操作
+	调整编辑模式
+	增加校验
+
+index4
+	封装插件，
+	独立出form-builder插件
+	可以单独使用(test_form_builder.html)
+	与from-configurator做共通化处理
+	可以配置异步数据源做为待选项
+
+index5 (TODO)
+	目标：
+	增加配置绑定响应事件，如：
+	输入项A 影响 输入项B、C的显示（优先实现，然后再想办法做成共通化）
