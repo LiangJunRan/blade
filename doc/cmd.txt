@@ -1,0 +1,4 @@
+# 批量带路径复制文件
+echo F | xcopy D:\aa\bb\a.txt D:\gg\aa\bb\a.txt
+echo F | xcopy D:\aa\cc\b.txt D:\gg\aa\cc\b.txt
+echo F | xcopy D:\dd\ee\ff\c.txt D:\gg\dd\ee\ff\c.txt
