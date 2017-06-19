@@ -69,6 +69,7 @@
 		initValidator();
 		componentsContainer_init();
 		drag_init();
+		eventBinds_init();
 
 		$('#clearAll').on('click', clearAll);
 		$('#getJson').on('click', getJson);
@@ -114,7 +115,7 @@
 
 			// 为了防止name相同bug，暂时采用重置name的方法，以后需要解决
 			// TODO
-			var new_name = new_node.data().opts.name + '_' + randomId();
+			var new_name = new_node.data().opts.name.replace(/_[^a-z]+/g, '') + '_' + randomId();
 			new_node.data().opts.name = new_name;
 
 			// new_node.data().rule = {'required': true};		// TODO	删掉
@@ -424,22 +425,111 @@
 
 
 
+	// /////////////////////////////////////////////////////////////////////////////
+	// 事件绑定 - Event Bind
+	// /////////////////////////////////////////////////////////////////////////////
+
+	// 事件绑定初始化
+	function eventBinds_init() {
+		// TODO
+	}
+
+	// 重新激活绑定事件
+	function activeEventBinds() {
+		var $form = $('#dropForm');
+		$form.find('.bandEvent').removeClass('bandEvent');
+		// TODO: unbind
+
+		var ebs = $('#editEventBind').data().ebs;
+		$.each(ebs, function(){
+			var eb = this;
+
+			switch(eb.eventType) {
+				case 'valueChangeShowHide':
+					var $trigger = $('[name=' + eb.trigger + ']', $form);
+					var $triggerItem = $trigger.closest('.drag_item');
+					$triggerItem.addClass('bandEvent');
+
+					var allResp = [];
+					$.each(eb.valueResps, function(value){
+						if ($.isArray(eb.valueResps[value])) {
+							$.each(eb.valueResps[value], function(){
+								allResp.push(this);
+							});
+						} else {
+							allResp.push(eb.valueResps[value]);
+						}
+					});
+					// TODO: 去重allResp
+					$trigger.addClass('band').on('change', function(){
+						$.each(allResp, function(){
+							$('[name=' + this + ']', $form).closest('.drag_item').hide();
+							if ($.isArray(this)) {
+								$.each(this, function(){
+									$('[name=' + this + ']', $form).closest('.drag_item').hide();
+								})
+							} else {
+								
+							}
+						});
+						if ($.isArray(eb.valueResps[$(this).val()])) {
+							$.each(eb.valueResps[$(this).val()], function(){
+								$('[name=' + this + ']', $form).closest('.drag_item').show();
+							});
+						} else {
+							$('[name=' + eb.valueResps[$(this).val()] + ']', $form).closest('.drag_item').show();
+						}
+					});
+
+					break;
+				default:
+					log('[WARN] Not support yet.', eb.eventType);
+					break;
+			}
+		});
+	}
+
 	// 关闭绑定事件页面
 	function close_event_bind(save) {
 		if (save) {
-			
+			var $event_forms = $('.event_bind_form');
+			var ebs = [];
+			$.each($event_forms, function(){
+				var eb = $(this).serializeJson();
+				var valueResps = {};
+				var valueRespsAllNull = true;
+				$.each(eb, function(key) {
+					if (key.indexOf('_value_') == 0) {
+						valueResps[key.replace('_value_', '')] = eb[key];
+						valueRespsAllNull = valueRespsAllNull && !eb[key];
+						delete eb[key];				
+					}
+				});
+				eb['valueResps'] = valueResps;
+				if (eb['eventType'] && eb['trigger'] && eb['valueResps'] && !valueRespsAllNull) {
+					ebs.push(eb);
+				}
+			})
+
+			$('#editEventBind').data().ebs = ebs;
+			activeEventBinds();
 		}
-		$('.item_detail_container').remove();
+		$('.event_bind_container').remove();
 	}
 
 	// 弹出绑定事件页面
 	function pop_event_bind() {
+		if ($('.event_bind_container').length > 0) {
+			return false;
+		}
+		close_config();
+		close_detail();
 		var $detail_window = $(
-			'<div class="item_detail_container item_detail_container_in">' +
+			'<div class="event_bind_container item_detail_container_in">' +
 				'<div class="item_detail_header"><h4><i class="fa fa-link"></i> 联动绑定配置</h4></div>' +
-				'<div class="item_detail_body">' +
-					'<form class="event_bind_form">' +
-					'</form>' +
+				'<div class="event_bind_body">' +
+					'<div class="event_bind_forms">' +
+					'</div>' +
 					'<button type="button" class="btn btn-success btn-sm" id="addEventBind">' +
 						'<i class="fa fa-plus"></i>' +
 					'</button>' +
@@ -467,18 +557,154 @@
 		});
 
 		$('body').append($detail_window);
+
+		// 加载已存的事件联动(初始化)
+		var ebs = $('#editEventBind').data().ebs;
+		$.each(ebs, function(){
+			var eb = this;
+			var $eventBind = addEventBind();
+			$('[name=' + 'eventType' + ']', $eventBind).val(eb.eventType).trigger('change');
+			$('[name=' + 'trigger' + ']', $eventBind).val(eb.trigger).trigger('change');
+
+			switch(eb.eventType) {
+				case 'valueChangeShowHide':
+					$.each(eb.valueResps, function(value){
+						$('[name=_value_' + value + ']', $eventBind).val(eb.valueResps[value]);
+					});
+					break;
+				default:
+					log('[WARN] Not support yet.', eb.eventType);
+					break;
+			}
+		});
 	}
 
+	// 新建事件绑定组
 	function addEventBind() {
-		// TODO: 完成事件绑定
 		var $eventBind = $(
-			'<div class="row eventContainer" style="padding: 10px; border: dashed 1px #aaa;">' +
-				'<label class="col-sm-4 form-control-static">' + 'eventType' + '</label>' +
-				'<div class="col-sm-8">' +
-					'<select name="' + 'eventType' + '" class="form-control"></select>' +
+			'<form class="event_bind_form">' +
+				'<div class="eventDeleteBtnContainer">' +
+					'<button type="button" class="btn btn-danger btn-sm eventDeleteBtn">' +
+						'<i class="fa fa-close"></i>' +
+					'</button>' +
 				'</div>' +
-			'</div>');
-		$('.event_bind_form').append($eventBind);
+				'<div class="row event-detail-row eventBindType">' +
+					'<label class="col-sm-4 form-control-static">' + '联动模型' + '</label>' +
+					'<div class="col-sm-8">' +
+						'<select name="' + 'eventType' + '" class="form-control">' +
+							'<option value="">-- 请选择 --</option>' +
+							'<option value="valueChangeShowHide">值改变 -> 显示/隐藏</option>' +
+						'</select>' +
+					'</div>' +
+				'</div>' +
+				'<div class="row event-detail-row eventBindTrigger">' +
+				'</div>' +
+				'<div class="row event-detail-row eventBindDetail">' +
+				'</div>' +
+			'</form>');
+		$('.event_bind_forms').append($eventBind);
+
+		// 删除按钮
+		$('.eventDeleteBtn').click(function(){
+			$(this).closest('.event_bind_form').remove();
+		});
+
+		var $eventBindTrigger = $('.eventBindTrigger', $eventBind);
+		var $eventBindDetail = $('.eventBindDetail', $eventBind);
+
+		$eventBind.find('[name=eventType]').on('change', function() {
+			if (!checkSameName()) {
+				return false;
+			}
+
+			var $eventBindTriggerContent = '';
+			switch($(this).val()) {
+				case undefined:
+					$eventBindTriggerContent = $('<div>Something is wrong, check it.</div>');
+					break;
+				case 'valueChangeShowHide':
+					$eventBindTriggerContent = $(
+						'<label class="col-sm-4 form-control-static">' + '触发对象' + '</label>' +
+						'<div class="col-sm-8">' +
+							'<input type="text" name="trigger" class="form-control clickToSelectInputElement" placeholder="点击选择" />' +
+						'</div>');
+					$eventBindTriggerContent.find('[name=trigger]').on('change', function(){
+						var triggerName = $(this).val();
+						var $trigger = $('#dropForm').find('[name=' + triggerName + ']:eq(0)');
+						if ($trigger.length > 0) {
+							var $triggerItem = $trigger.closest('.drag_item');
+
+							var valuesPair = [];
+							if ($triggerItem.data().opts.dataUrl && $triggerItem.data().opts.dataUrl.length != 0) {
+								log('[WARN] Not support dataUrl opitons.', $triggerItem);
+							} else if ($triggerItem.data().opts.options && $triggerItem.data().opts.options.length > 0){
+								valuesPair = $triggerItem.data().opts.options;
+							} else {
+								log('[WARN] Not valid opts.opitons.', $triggerItem);
+							}
+
+							// 添加值-响应对
+							$eventBindDetail.html('');
+							if (valuesPair.length == 0) {
+								$eventBindDetail.append('<div class="col-sm-12 form-control-static">--未发现待选项--</div>');
+							} else {
+								$.each(valuesPair, function() {
+									$eventBindDetail.append(
+										'<label class="col-sm-4 form-control-static text-right">' + this.label + '</label>' +
+										'<div class="col-sm-8 valueRespContainer">' +
+											'<div class="input-group">' +
+												'<span class="input-group-addon btn btn-success addValueRespBtn"><i class="fa fa-plus"></i></span>' +
+												'<input type="text" name="_value_' + this.value + '" class="form-control clickToSelectInputElement" placeholder="点击选择" />' +
+												'<span class="input-group-addon btn btn-danger delValueRespBtn"><i class="fa fa-close"></i></span>' +
+											'</div>' +
+										'</div>');
+
+								});
+								$eventBindDetail.on('click', '.addValueRespBtn', function(){
+									var new_node = $($(this).closest('.input-group')[0].outerHTML);
+									$(this).closest('.input-group').after(new_node);
+								});
+								$eventBindDetail.on('click', '.delValueRespBtn', function(){
+									if ($(this).closest('.valueRespContainer').children().length > 1) {
+										$(this).closest('.input-group').remove();
+									} else {
+										$(this).parent().find('input').val('');
+									}
+								});
+							}
+						}
+					});
+					break;
+			}
+
+			$eventBindTrigger.html('');
+			$eventBindTrigger.append($eventBindTriggerContent);
+		});
+
+		$eventBind.on('click', '.clickToSelectInputElement', function(){
+			config();		
+			// $(this).attr('disabled', 'disabled');
+			$('.clickToSelectInputElement').attr('disabled', 'disabled');
+			$(this).val('');
+			$(this).attr('placeholder', '请点击要选中的对象');
+			start_clickToSelectDragItem($(this));
+		});
+
+		return $eventBind;
+	}
+
+	// 开始点击选择对象
+	function start_clickToSelectDragItem (_$trigger) {
+		function clickToSelectDragItem() {
+			_$trigger.val($(this).closest('.drag_item').data().opts.name);
+			// _$trigger.removeAttr('disabled');
+			$('.clickToSelectInputElement').removeAttr('disabled');
+			_$trigger.attr('placeholder', '点击选择');
+			_$trigger.trigger('change');
+
+			$('#dropForm').find('.drag_item').unbind('click.readyToBind').removeClass('readyToBind');
+		}
+		$('#dropForm').find('.drag_item').addClass('readyToBind').bind('click.readyToBind', clickToSelectDragItem);
 	}
 
 
@@ -497,7 +723,8 @@
 		});
 		structured_json = {
 			'items': json_opts,
-			'rules': json_rules};
+			'rules': json_rules,
+			'events': $('#editEventBind').data().ebs};
 		str_json = JSON.stringify(structured_json);
 		str_json = formatCode(str_json);
 		$('#modalContent').html('<textarea cols="30" rows="10" style="width: 100%; height: 280px;">' + str_json + '</textarea>');
@@ -509,6 +736,8 @@
 		var jsonConf = $.parseJSON($('#modalContent textarea').val());
 		var json_opts = jsonConf['items'];
 		var json_rules = jsonConf['rules'];
+
+		var json_ebs = jsonConf['events'];
 
 		log('json_opts', json_opts);
 		log('json_rules', json_rules);
@@ -539,6 +768,10 @@
 		});
 
 		setFormRules();
+
+		log('json_ebs', json_ebs);
+		$('#editEventBind').data().ebs = json_ebs;
+		activeEventBinds();
 	}
 
 	// 生成警告框
@@ -713,7 +946,7 @@
 			new_node.data().opts = $('#' + origin_id).data().opts;
 			// 为了防止name相同bug，暂时采用重置name的方法，以后需要解决
 			// TODO
-			var new_name = new_node.data().opts.name + '_' + randomId();
+			var new_name = new_node.data().opts.name.replace(/_[^a-z]+/g, '') + '_' + randomId();
 			new_node.data().opts.name = new_name;
 
 			new_node.data().rule = $('#' + origin_id).data().rule;
@@ -877,14 +1110,14 @@
 				if (o[this.name] == null || !o[this.name].push) {
 					o[this.name] = [o[this.name]];
 				}
-				o[this.name].push(this.value || null);
+				o[this.name].push(this.value || '');
 			} else {
 				if (this.value === "false") {
 					o[this.name] = false;
 				} else if (this.value === "true") {
 					o[this.name] = true;
 				} else {
-					o[this.name] = this.value || null;
+					o[this.name] = this.value || '';
 				}
 			}
 		});
@@ -940,6 +1173,13 @@
 			list_class.push(new_class);
 		}
 		$obj.attr('class', list_class.join(' '));
+	}
+
+	// 扩展string类型原生方法，替换全部
+	String.prototype.replaceAll = function (fromStr, toStr) {
+		var str = this + '';
+		str = eval('str.replace(/' + fromStr + '/g, "' + toStr + '")');
+		return str;
 	}
 
 }));

@@ -66,6 +66,9 @@ body {
 .item, .padbtm {
 	padding: 10px 0;
 }
+.event-detail-row {
+	padding: 10px 0 0;
+} 
 .space {
 	height: 200px;
 }
@@ -246,6 +249,41 @@ body {
 	border-top: solid 1px #777;
 	margin-bottom: 30px;
 }
+.event_bind_body {
+	height: calc(100% - 108px);
+	margin-top: 50px;
+	padding: 15px;	
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+/* .event_bind_body form {
+	padding: 0;
+	margin-bottom: 10px;
+} */
+.event_bind_form {
+	padding: 0 10px 10px;
+    border: dashed 1px #aaa;
+    display: table;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.eventDeleteBtnContainer {
+    position: relative;
+    height: 0px;
+    float: right;
+}
+.eventDeleteBtn {
+	position: relative;
+	float: right;
+	top: -9px;
+	right: -20px;
+	padding: 0px;
+	border-radius: 10px;
+	line-height: 16px;
+	width: 18px;
+}
+
 .item_detail_body h4{
 	border-left: solid 5px #337ab7;
 	text-indent: 0.5em;
@@ -272,7 +310,7 @@ body {
 	margin: 0 10px;
 	animation: anime_margin 0.2s ease-in 1 normal;
 }
-.item_detail_container {
+.item_detail_container, .event_bind_container {
 	position: absolute;
 	width: 400px;
 	border-radius: 5px;
@@ -330,7 +368,24 @@ body {
 	line-height: 32px;
 	border: solid 5px #fff;
 }
-
+.readyToBind {
+	animation: anime_bindBox 1s infinite ease-in-out;
+	animation-fill-mode: both;
+}
+@keyframes anime_bindBox{
+	50% {
+		background: rgba(0, 0, 255, 0.3);
+	}
+}
+.bandEvent {
+	animation: anime_activeBox 1s infinite ease-in-out;
+	animation-fill-mode: both;
+}
+@keyframes anime_activeBox{
+	50% {
+		background: rgba(0, 255, 0, 0.3);
+	}
+}
 .alertBox {
 	animation: anime_alertBox 1s infinite ease-in-out;
 	animation-fill-mode: both;
