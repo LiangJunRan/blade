@@ -72,7 +72,13 @@
 
 		afterAllAjaxCompleteDo(deferredObjectList, setFormRules, [$form]);
 
-		$form.append('<button type="submit" class="btn btn-primary">Submit</button>');
+		activeEventBinds($form, jsonConf.events);
+
+		$form.append(
+			// '<hr class="col-sm-12" />' +
+			'<div class="col-sm-9 col-sm-offset-3">' +
+				'<button type="submit" class="btn btn-primary">Submit</button>' +
+			'</div>');
 		$form.find('button[type=submit]').on('click', function(){
 			$form.submit();
 		});
@@ -293,6 +299,107 @@
 		}*/
 
 		log('[校验] 设置（重设）表单校验规则-后');
+	}
+
+
+	// 注册成为formb的方法
+	$.formb.activeEventBinds = activeEventBinds;
+
+	// 添加联动事件
+	function activeEventBinds($form, ebs, configueMode) {
+		var isConfig = configueMode || false;
+		// var $form = $('#dropForm');
+		$form.find('.bandEvent').removeClass('bandEvent');
+		// TODO: unbind
+
+		$.each(ebs, function(){
+			var eb = this;
+
+			switch(eb.eventType) {
+				case 'valueChangeShowHide':
+					var $trigger = $('[name=' + eb.trigger + ']', $form);
+					var $triggerItem = $trigger.closest('.drag_item');
+					$triggerItem.addClass('bandEvent');
+
+					var allResp = [];
+					$.each(eb.valueResps, function(value){
+						if ($.isArray(eb.valueResps[value])) {
+							$.each(eb.valueResps[value], function(key){
+								allResp.push(eb.valueResps[value][key]);
+							});
+						} else {
+							allResp.push(eb.valueResps[value]);
+						}
+					});
+
+					// 实际使用
+					if (!isConfig) {
+						// 隐藏已设定项
+						$.each(allResp, function() {
+							if (!!this && this.length > 0) {
+								$('[name=' + this + ']', $form).closest('.drag_item').hide();
+							}
+						});
+						$('.bandEvent', $form).removeClass('bandEvent');
+
+						// TODO: 去重allResp
+						$trigger.addClass('band').on('change', function(){
+							$.each(allResp, function(){
+								if (!!this && this.length > 0) {
+									$('[name=' + this + ']', $form).closest('.drag_item').hide();
+								}
+							});
+							if ($.isArray(eb.valueResps[$(this).val()])) {
+								$.each(eb.valueResps[$(this).val()], function(){
+									if (!!this && this.length > 0) {
+										$('[name=' + this + ']', $form).closest('.drag_item').show();
+									}
+								});
+							} else {
+								if (!!eb.valueResps[$(this).val()] && eb.valueResps[$(this).val()].length > 0) {
+									$('[name=' + eb.valueResps[$(this).val()] + ']', $form).closest('.drag_item').show();
+								}
+							}
+						});
+					}
+					// 
+					else {
+						// 隐藏已设定项
+						$.each(allResp, function() {
+							if (!!this && this.length > 0) {
+								$('[name=' + this + ']', $form).closest('.drag_item').addClass('fakeHide');
+							}
+						});
+
+						// TODO: 去重allResp
+						$trigger.addClass('band').on('change', function(){
+							$.each(allResp, function(){
+								if (!!this && this.length > 0) {
+									$('[name=' + this + ']', $form).closest('.drag_item').addClass('fakeHide');
+								}
+							});
+							if ($.isArray(eb.valueResps[$(this).val()])) {
+								$.each(eb.valueResps[$(this).val()], function(){
+									if (!!this && this.length > 0) {
+										$('[name=' + this + ']', $form).closest('.drag_item').removeClass('fakeHide');
+									}
+								});
+							} else {
+								if (!!eb.valueResps[$(this).val()] && eb.valueResps[$(this).val()].length > 0) {
+									$('[name=' + eb.valueResps[$(this).val()] + ']', $form).closest('.drag_item').removeClass('fakeHide');
+								}
+							}
+						});
+					}
+
+					
+
+					break;
+				default:
+					log('[WARN] Not support yet.', eb.eventType);
+					break;
+			}
+		});
 	}
 
 

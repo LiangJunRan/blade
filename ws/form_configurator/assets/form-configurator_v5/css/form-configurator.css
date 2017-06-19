@@ -17,7 +17,7 @@ body {
 .bg2 {
 	background-color: #eee;
 }
-.bg2 form {
+.bg2 .container {
 	background-color: #fff;
 }
 .left_bar {
@@ -282,6 +282,9 @@ body {
 	border-radius: 10px;
 	line-height: 16px;
 	width: 18px;
+}
+.fakeHide {
+	opacity: 0.3;
 }
 
 .item_detail_body h4{

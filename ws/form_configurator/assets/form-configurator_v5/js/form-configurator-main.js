@@ -434,59 +434,11 @@
 		// TODO
 	}
 
+	var activeEventBinds = $.formb.activeEventBinds;
+
 	// 重新激活绑定事件
-	function activeEventBinds() {
-		var $form = $('#dropForm');
-		$form.find('.bandEvent').removeClass('bandEvent');
-		// TODO: unbind
-
-		var ebs = $('#editEventBind').data().ebs;
-		$.each(ebs, function(){
-			var eb = this;
-
-			switch(eb.eventType) {
-				case 'valueChangeShowHide':
-					var $trigger = $('[name=' + eb.trigger + ']', $form);
-					var $triggerItem = $trigger.closest('.drag_item');
-					$triggerItem.addClass('bandEvent');
-
-					var allResp = [];
-					$.each(eb.valueResps, function(value){
-						if ($.isArray(eb.valueResps[value])) {
-							$.each(eb.valueResps[value], function(){
-								allResp.push(this);
-							});
-						} else {
-							allResp.push(eb.valueResps[value]);
-						}
-					});
-					// TODO: 去重allResp
-					$trigger.addClass('band').on('change', function(){
-						$.each(allResp, function(){
-							$('[name=' + this + ']', $form).closest('.drag_item').hide();
-							if ($.isArray(this)) {
-								$.each(this, function(){
-									$('[name=' + this + ']', $form).closest('.drag_item').hide();
-								})
-							} else {
-								
-							}
-						});
-						if ($.isArray(eb.valueResps[$(this).val()])) {
-							$.each(eb.valueResps[$(this).val()], function(){
-								$('[name=' + this + ']', $form).closest('.drag_item').show();
-							});
-						} else {
-							$('[name=' + eb.valueResps[$(this).val()] + ']', $form).closest('.drag_item').show();
-						}
-					});
-
-					break;
-				default:
-					log('[WARN] Not support yet.', eb.eventType);
-					break;
-			}
-		});
+	function reactiveEventBinds() {
+		activeEventBinds($('#dropForm'), $('#editEventBind').data().ebs, true);
 	}
 
 	// 关闭绑定事件页面
@@ -512,7 +464,7 @@
 			})
 
 			$('#editEventBind').data().ebs = ebs;
-			activeEventBinds();
+			reactiveEventBinds();
 		}
 		$('.event_bind_container').remove();
 	}
@@ -569,7 +521,19 @@
 			switch(eb.eventType) {
 				case 'valueChangeShowHide':
 					$.each(eb.valueResps, function(value){
-						$('[name=_value_' + value + ']', $eventBind).val(eb.valueResps[value]);
+						console.log('>>>>', value, ':', eb.valueResps[value], 'isArray:', $.isArray(eb.valueResps[value]));
+						if ($.isArray(eb.valueResps[value])) {
+							var $basicNode = $('[name=_value_' + value + ']:eq(0)', $eventBind);
+							for (var i = 1; i < eb.valueResps[value].length; i++) {
+								var new_node = $($basicNode.closest('.input-group')[0].outerHTML);
+								$basicNode.closest('.input-group').after(new_node);
+							}
+							$.each(eb.valueResps[value], function(idx) {
+								$('[name=_value_' + value + ']:eq(' + idx + ')', $eventBind).val(eb.valueResps[value][idx]);
+							});
+						} else {
+							$('[name=_value_' + value + ']', $eventBind).val(eb.valueResps[value]);
+						}
 					});
 					break;
 				default:
@@ -771,7 +735,9 @@
 
 		log('json_ebs', json_ebs);
 		$('#editEventBind').data().ebs = json_ebs;
-		activeEventBinds();
+		reactiveEventBinds();
+
+		$('#viewForm').renderForm(getJson());
 	}
 
 	// 生成警告框
