@@ -363,8 +363,7 @@
 
 			// 如果改名了，修改联动事件中的名字
 			if (itemOldName != opt.name) {
-				// TODO
-				var ebs = $('#editEventBind').data().ebs;
+				var ebs = $('#editEventBind').data().ebs || [];
 				var strEbs = JSON.stringify(ebs);
 				strEbs = strEbs.replaceAll('"' + itemOldName + '"', '\"' + opt.name + '\"');
 
