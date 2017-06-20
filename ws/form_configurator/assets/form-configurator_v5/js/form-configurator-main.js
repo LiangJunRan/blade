@@ -190,7 +190,7 @@
 			'</div>');
 
 		$detail_window.find('.commit_btn').on('click', function() {
-			close_detail(true);
+			close_detail(true, $item.data().opts.name);
 			close_config();
 		});
 
@@ -315,7 +315,7 @@
 	}
 
 	// 关闭配置详情页面
-	function close_detail(save) {
+	function close_detail(save, itemOldName) {
 		if (save) {
 			var $detail_window = $('.item_detail_container:eq(0)');
 			var $detail_form = $('.item_detail_form', $detail_window);
@@ -360,6 +360,18 @@
 			log('更改后', $item.data().rule);
 
 			setFormRules();
+
+			console.log(itemOldName, '<= ' + ((itemOldName == opt.name) ? 'SAME' : 'NOT SAME') + ' =>', opt.name)
+			// 如果改名了，修改联动事件中的名字
+			if (itemOldName != opt.name) {
+				// TODO
+				var ebs = $('#editEventBind').data().ebs;
+				var strEbs = JSON.stringify(ebs);
+				strEbs = strEbs.replaceAll('"' + itemOldName + '"', '\"' + opt.name + '\"');
+				console.log(ebs, '=>', $.parseJSON(strEbs));
+
+				$('#editEventBind').data().ebs = $.parseJSON(strEbs);
+			}
 		}
 		$('.item_detail_container').remove();
 	}
@@ -1123,6 +1135,7 @@
 	// 清除全部内容
 	function clearAll() {
 		$('.drop_container').children().remove();
+		$('#eventBind').data().ebs = [];
 	}
 
 	// 添加或替换col-sm的class
@@ -1144,7 +1157,7 @@
 	// 扩展string类型原生方法，替换全部
 	String.prototype.replaceAll = function (fromStr, toStr) {
 		var str = this + '';
-		str = eval('str.replace(/' + fromStr + '/g, "' + toStr + '")');
+		str = eval('str.replace(/' + fromStr + '/g, \'' + toStr + '\')');
 		return str;
 	}
 
