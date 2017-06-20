@@ -35,7 +35,7 @@
 	var rule = $.formc.templates.rule;
 
 	// 调试模式开关
-	var debug_mode = true;
+	var debug_mode = false;
 
 	// form校验器
 	var dropFormValidator = undefined;
@@ -308,10 +308,76 @@
 	// 添加联动事件
 	function activeEventBinds($form, ebs, configueMode) {
 		var isConfig = configueMode || false;
-		// var $form = $('#dropForm');
-		$form.find('.bandEvent').removeClass('bandEvent');
-		// TODO: unbind
 
+		// 模板定义，TODO: 挪到真正的模板中	<<<---START--->>>
+		var definedFunction = {};
+
+		var definedEvents = {
+			'valueChangeShowHide': 'change.valueChangeShowHide'
+		};	// 用来绑定和解绑事件
+
+		// 加入到事件模板？？
+		// TODO: 加入魔板
+		// TODO: 解决checkbox多选问题>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		definedFunction['valueChangeShowHide'] = function(event) {
+			var allResp = event.data.allResp;
+			var $form = event.data.$form;
+			var eb = event.data.eb;
+			var configueMode = event.data.configueMode;
+
+			var valueRespMap = eb.valueResps;		// {触发器的value: 响应对象的name}的关系
+			var triggerValues = [];					// 触发器现在的值(为了可读性，实际未使用)
+			var respNames = [];						// 取得当前值对应的所有响应对象
+
+			if ($(this).attr('type') == 'checkbox') {
+				$.each($('[name=' + $(this).attr('name') + ']:checked'), function(){
+					triggerValues.push($(this).val());
+					respNames.add(valueRespMap[$(this).val()]);
+				});
+			} else {
+				triggerValues = [$(this).val()];
+				respNames.add(valueRespMap[$(this).val()]);
+			}
+			log('Selected: [' + triggerValues.join(', ') + ']');
+
+			// 初始化，隐藏所有响应对象
+			$.each(allResp, function(){
+				if (!!this && this.length > 0) {
+					if (configueMode) {
+						$('[name=' + this + ']', $form).closest('.drag_item').addClass('fakeHide');
+					} else {
+						$('[name=' + this + ']', $form).closest('.drag_item').hide();
+					}
+				}
+			});
+
+			// 遍历前值对应的所有响应对象，显示
+			$.each(respNames, function(){
+				if (!!this && this.length > 0) {
+					if (configueMode) {
+						$('[name=' + this + ']', $form).closest('.drag_item').removeClass('fakeHide');
+					} else {
+						$('[name=' + this + ']', $form).closest('.drag_item').show();
+					}
+				}
+			});
+		}
+		// 模板定义，TODO: 挪到真正的模板中	<<<--- END --->>>
+
+		// 先去掉所有的已绑定事件和样式 ============================
+		// 遍历所有已定义的事件变量，解绑所有自定义绑定的事件
+		$.each(definedEvents, function(key) {
+			var event = definedEvents[key];
+			// form中使用.band标记已绑定事件的对象
+			$form.find('.band').off(event);
+		})
+		// 去掉所有触发器的样式
+		$form.find('.bandTrigger').removeClass('bandTrigger');
+		// 去掉所有配置模式的样式
+		$form.find('.fakeHide').removeClass('fakeHide');
+
+		// 然后重新绑定事件和样式 ==================================
+		// 遍历绑定联动事件
 		$.each(ebs, function(){
 			var eb = this;
 
@@ -319,81 +385,39 @@
 				case 'valueChangeShowHide':
 					var $trigger = $('[name=' + eb.trigger + ']', $form);
 					var $triggerItem = $trigger.closest('.drag_item');
-					$triggerItem.addClass('bandEvent');
+					if (isConfig) {
+						$triggerItem.addClass('bandTrigger');
+					}
 
+					// 获取所有被联动对象(resp)的name
+					// TODO: 去重allResp
 					var allResp = [];
 					$.each(eb.valueResps, function(value){
-						if ($.isArray(eb.valueResps[value])) {
-							$.each(eb.valueResps[value], function(key){
-								allResp.push(eb.valueResps[value][key]);
-							});
-						} else {
-							allResp.push(eb.valueResps[value]);
+						allResp.add(eb.valueResps[value]);
+					});
+
+					// 隐藏所有被联动对象
+					$.each(allResp, function() {
+						if (!!this && this.length > 0) {
+							if (!isConfig) {
+								$('[name=' + this + ']', $form).closest('.drag_item').hide();
+							} else {
+								$('[name=' + this + ']', $form).closest('.drag_item').addClass('fakeHide');
+							}
 						}
 					});
 
-					// 实际使用
-					if (!isConfig) {
-						// 隐藏已设定项
-						$.each(allResp, function() {
-							if (!!this && this.length > 0) {
-								$('[name=' + this + ']', $form).closest('.drag_item').hide();
-							}
-						});
-						$('.bandEvent', $form).removeClass('bandEvent');
-
-						// TODO: 去重allResp
-						$trigger.addClass('band').on('change', function(){
-							$.each(allResp, function(){
-								if (!!this && this.length > 0) {
-									$('[name=' + this + ']', $form).closest('.drag_item').hide();
-								}
-							});
-							if ($.isArray(eb.valueResps[$(this).val()])) {
-								$.each(eb.valueResps[$(this).val()], function(){
-									if (!!this && this.length > 0) {
-										$('[name=' + this + ']', $form).closest('.drag_item').show();
-									}
-								});
-							} else {
-								if (!!eb.valueResps[$(this).val()] && eb.valueResps[$(this).val()].length > 0) {
-									$('[name=' + eb.valueResps[$(this).val()] + ']', $form).closest('.drag_item').show();
-								}
-							}
-						});
-					}
-					// 
-					else {
-						// 隐藏已设定项
-						$.each(allResp, function() {
-							if (!!this && this.length > 0) {
-								$('[name=' + this + ']', $form).closest('.drag_item').addClass('fakeHide');
-							}
-						});
-
-						// TODO: 去重allResp
-						$trigger.addClass('band').on('change', function(){
-							$.each(allResp, function(){
-								if (!!this && this.length > 0) {
-									$('[name=' + this + ']', $form).closest('.drag_item').addClass('fakeHide');
-								}
-							});
-							if ($.isArray(eb.valueResps[$(this).val()])) {
-								$.each(eb.valueResps[$(this).val()], function(){
-									if (!!this && this.length > 0) {
-										$('[name=' + this + ']', $form).closest('.drag_item').removeClass('fakeHide');
-									}
-								});
-							} else {
-								if (!!eb.valueResps[$(this).val()] && eb.valueResps[$(this).val()].length > 0) {
-									$('[name=' + eb.valueResps[$(this).val()] + ']', $form).closest('.drag_item').removeClass('fakeHide');
-								}
-							}
-						});
-					}
-
-					
-
+					// 绑定事件
+					$trigger.addClass('band').on(
+						definedEvents[eb.eventType],
+						'',
+						{
+							allResp: allResp, 
+							$form: $form, 
+							eb: eb,
+							configueMode: isConfig
+						},
+						definedFunction[eb.eventType]);
 					break;
 				default:
 					log('[WARN] Not support yet.', eb.eventType);
@@ -450,6 +474,18 @@
 			list_class.push(new_class);
 		}
 		$obj.attr('class', list_class.join(' '));
+	}
+
+	// 扩展array类型原生方法，添加obj如果是array，就让其元素合并，否则直接加入
+	Array.prototype.add = function(obj) {
+		var arrList = this;
+		if ($.isArray(obj)) {
+			$.each(obj, function(_idx) {
+				arrList.push(obj[_idx]);
+			});
+		} else {
+			arrList.push(obj);
+		}
 	}
 
 }));

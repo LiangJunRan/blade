@@ -42,7 +42,7 @@
 	var rule = $.formc.templates.rule;
 
 	// 调试模式开关
-	var debug_mode = true;
+	var debug_mode = false;
 
 	// form校验器
 	var dropFormValidator = undefined;
@@ -361,14 +361,12 @@
 
 			setFormRules();
 
-			console.log(itemOldName, '<= ' + ((itemOldName == opt.name) ? 'SAME' : 'NOT SAME') + ' =>', opt.name)
 			// 如果改名了，修改联动事件中的名字
 			if (itemOldName != opt.name) {
 				// TODO
 				var ebs = $('#editEventBind').data().ebs;
 				var strEbs = JSON.stringify(ebs);
 				strEbs = strEbs.replaceAll('"' + itemOldName + '"', '\"' + opt.name + '\"');
-				console.log(ebs, '=>', $.parseJSON(strEbs));
 
 				$('#editEventBind').data().ebs = $.parseJSON(strEbs);
 			}
@@ -533,16 +531,17 @@
 			switch(eb.eventType) {
 				case 'valueChangeShowHide':
 					$.each(eb.valueResps, function(value){
-						console.log('>>>>', value, ':', eb.valueResps[value], 'isArray:', $.isArray(eb.valueResps[value]));
 						if ($.isArray(eb.valueResps[value])) {
 							var $basicNode = $('[name=_value_' + value + ']:eq(0)', $eventBind);
-							for (var i = 1; i < eb.valueResps[value].length; i++) {
-								var new_node = $($basicNode.closest('.input-group')[0].outerHTML);
-								$basicNode.closest('.input-group').after(new_node);
+							if ($basicNode.length != 0) {
+								for (var i = 1; i < eb.valueResps[value].length; i++) {
+									var new_node = $($basicNode.closest('.input-group')[0].outerHTML);
+									$basicNode.closest('.input-group').after(new_node);
+								}
+								$.each(eb.valueResps[value], function(idx) {
+									$('[name=_value_' + value + ']:eq(' + idx + ')', $eventBind).val(eb.valueResps[value][idx]);
+								});
 							}
-							$.each(eb.valueResps[value], function(idx) {
-								$('[name=_value_' + value + ']:eq(' + idx + ')', $eventBind).val(eb.valueResps[value][idx]);
-							});
 						} else {
 							$('[name=_value_' + value + ']', $eventBind).val(eb.valueResps[value]);
 						}
@@ -1135,7 +1134,7 @@
 	// 清除全部内容
 	function clearAll() {
 		$('.drop_container').children().remove();
-		$('#eventBind').data().ebs = [];
+		$('#editEventBind').data().ebs = [];
 	}
 
 	// 添加或替换col-sm的class
@@ -1160,5 +1159,18 @@
 		str = eval('str.replace(/' + fromStr + '/g, \'' + toStr + '\')');
 		return str;
 	}
+
+	// 扩展array类型原生方法，添加obj如果是array，就让其元素合并，否则直接加入
+	Array.prototype.add = function(obj) {
+		var arrList = this;
+		if ($.isArray(obj)) {
+			$.each(obj, function(_idx) {
+				arrList.push(obj[_idx]);
+			});
+		} else {
+			arrList.push(obj);
+		}
+	}
+
 
 }));

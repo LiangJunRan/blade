@@ -284,7 +284,7 @@ body {
 	width: 18px;
 }
 .fakeHide {
-	opacity: 0.7;
+	opacity: 0.5;
 }
 
 .item_detail_body h4{
@@ -380,7 +380,7 @@ body {
 		background: rgba(0, 0, 255, 0.3);
 	}
 }
-.bandEvent {
+.bandTrigger {
 	animation: anime_activeBox 1s infinite ease-in-out;
 	animation-fill-mode: both;
 }
