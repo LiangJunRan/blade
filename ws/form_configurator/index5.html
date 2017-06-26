@@ -86,6 +86,13 @@
 					<i class="fa fa-code"></i> JSON配置
 				</button>
 				&nbsp;
+				<label for="filenameGroup">Filename: </label>
+				<div class="btn-group" id="filenameGroup">
+					<input type="text" class="form-control" name="filename" id="filename" />
+				</div>
+				<button type="button" class="btn btn-success btn-sm" id="submitForm" onclick="filename();">提交</button>
+
+				&nbsp;
 				<button class="btn btn-warning btn-sm" id="checkForm">
 					<i class="fa fa-search"></i> 校验Form
 				</button>
@@ -106,5 +113,26 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		function filename() {
+			var filename = $('#filename').val();
+			var jsonData = $.getJson();
+			console.log(filename);
+			var data = $.extend({}, {filename: filename}, {'jsonData': jsonData});
+			$.ajax({
+				url: '',
+				dataType: 'json',
+				type: 'post',
+				// data: data,
+				data: JSON.stringify(data),
+				success: function(){
+					alert('success');
+				}, 
+				error: function() {
+					alert('error');
+				}
+			})
+		}
+	</script>
 </body>
 </html>

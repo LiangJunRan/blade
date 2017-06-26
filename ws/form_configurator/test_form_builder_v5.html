@@ -36,6 +36,7 @@
 				url: 'jsonData.json',
 				success: function(data) {
 					$('#testForm').renderForm(data);
+					$('#testForm').setFormValue(data.values);
 				}
 			});
 		});

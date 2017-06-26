@@ -177,12 +177,12 @@
         }
     },
     "events": [{
-        "eventType": "valueChangeShowHide",
-        "trigger": "status",
-        "valueResps": {
-            "inSchool": "schoolName",
-            "workInChina": "companyName",
-            "workOutChina": ["countryName", "companyName"],
+        "eventType": "valueChangeShowHide",     // 联动的模型，目前只定义了这种
+        "trigger": "status",                    // 触发对象，值是触发对象的name属性
+        "valueResps": {                         // 触发对象的待选项 和 被联动对象的name属性 的map
+            "inSchool": "schoolName",                           
+            "workInChina": "companyName",                          // 一对一关系，用字符串表示
+            "workOutChina": ["countryName", "companyName"],        // 一对多关系，用数组表示
             "neet": "games"
         }
     },
@@ -196,13 +196,5 @@
             "other": "otherGame",
             "other2": "otherGame2"
         }
-    }],
-    "values": {
-        "name": "吕阳",
-        "gender": "1",
-        "status": "neet",
-        "games": ["bh3", "other", "other2"],
-        "otherGame": "梦幻西游",
-        "otherGame2": "街头篮球"
-    }
+    }]
 }

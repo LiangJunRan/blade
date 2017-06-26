@@ -108,4 +108,7 @@
 	rule.checkbox = {
 		"required": false
 	};
+
+
+
 }));

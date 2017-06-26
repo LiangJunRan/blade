@@ -698,18 +698,24 @@
 		structured_json = {
 			'items': json_opts,
 			'rules': json_rules,
-			'events': $('#editEventBind').data().ebs};
+			'events': $('#editEventBind').data().ebs,
+			'values': $('#dropForm').serializeJson()};
 		str_json = JSON.stringify(structured_json);
 		str_json = formatCode(str_json);
 		$('#modalContent').html('<textarea cols="30" rows="10" style="width: 100%; height: 280px;">' + str_json + '</textarea>');
 		return structured_json;
 	}
 
+	$.extend({
+		getJson: getJson
+	});
+
 	// 根据当前json配置渲染form
 	function renderJson() {
 		var jsonConf = $.parseJSON($('#modalContent textarea').val());
 		var json_opts = jsonConf['items'];
 		var json_rules = jsonConf['rules'];
+		var json_values = jsonConf['values'];
 
 		var json_ebs = jsonConf['events'];
 
@@ -748,6 +754,9 @@
 		reactiveEventBinds();
 
 		$('#viewForm').renderForm(getJson());
+
+		$('#dropForm').setFormValue(json_values);
+		$('#viewForm').setFormValue(json_values);
 	}
 
 	// 生成警告框

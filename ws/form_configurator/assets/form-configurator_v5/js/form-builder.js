@@ -84,6 +84,7 @@
 		});
 
 		// removeAllUselessStuff();
+		log(jsonConf);
 	}
 
 	// 根据json渲染form的内容
@@ -425,6 +426,40 @@
 			}
 		});
 	}
+
+
+
+	// /////////////////////////////////////////////////////////////////////////////
+	// 表单赋值与取值
+	// /////////////////////////////////////////////////////////////////////////////
+	function setFormValue(values) {
+		var $form = $(this);
+		console.log(values);
+		$.each(values, function(name) {
+			var value = values[name];
+
+			var targets = $('[name=' + name + ']', $form);
+
+			console.log(targets.length, name, value);
+
+			$.each(targets, function() {
+				var $this = $(this);
+				console.log($this.attr('type'), (['radio', 'checkbox'].indexOf($this.attr('type')) != -1));
+				if (['radio', 'checkbox'].indexOf($this.attr('type')) != -1) {
+					if ((!$.isArray(value) && $this.attr('value') == value) || 
+						($.isArray(value) && value.indexOf($this.attr('value')) != -1)) {
+						$this.prop('checked', true);
+						$this.trigger('change');
+					}
+				} else {
+					$this.val(value);
+					$this.trigger('change');
+				}
+			});
+		});
+	}
+	// 注册成为jQuery对象方法
+	$.fn.setFormValue = setFormValue;
 
 
 
