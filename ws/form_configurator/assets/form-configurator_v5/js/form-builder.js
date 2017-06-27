@@ -74,14 +74,14 @@
 
 		activeEventBinds($form, jsonConf.events);
 
-		$form.append(
+		/*$form.append(
 			// '<hr class="col-sm-12" />' +
 			'<div class="col-sm-9 col-sm-offset-3">' +
 				'<button type="submit" class="btn btn-primary">Submit</button>' +
 			'</div>');
 		$form.find('button[type=submit]').on('click', function(){
 			$form.submit();
-		});
+		});*/
 
 		// removeAllUselessStuff();
 		log(jsonConf);
@@ -97,7 +97,7 @@
 
 		$form.html('');
 
-		$.each(json_opts, function(_idx){
+		$.each(json_opts || [], function(_idx){
 			var $item = render(this);
 
 			$item.removeClass('base');
@@ -282,11 +282,20 @@
 		            } else {
 		            	$('.textRequired', $this).removeClass('symbol required');
 		            }
-		            // 删掉所有规则，再重新添加的方法，目前未发现能替换的方法
+		        	// 删掉所有规则，再重新添加的方法，目前未发现能替换的方法
 		            if (dropFormValidator) {
 		            	if ($this.find(':input').length > 0) {
 			                $this.find(':input').rules('remove');
-			                $this.find(':input').rules('add', $this.data().rule);
+			                
+			                // 去掉所有undefined和null的规则，不去掉会造成validator报错
+			                var rule = {};
+			                $.each($this.data().rule || [], function(key){
+			                	if (this !== undefined && this !== null) {
+			                		rule[key] = this;
+			                	}
+			                })
+			                
+			                $this.find(':input').rules('add', rule);
 		            	} else {
 		            		log('[WARN] Validate item not found :input.', $this[0].outerHTML);
 		            	}
@@ -441,7 +450,7 @@
 	function setFormValue(values) {
 		var $form = $(this);
 		console.log(values);
-		$.each(values, function(name) {
+		$.each(values || [], function(name) {
 			var value = values[name];
 
 			var targets = $('[name=' + name + ']', $form);
