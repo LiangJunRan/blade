@@ -17,7 +17,7 @@
 					'<span class="textRequired formLabel pull-right"></span>' +
 				'</label>' +
 				'<div class="contentClass">' +
-					'<core></core>' +
+					'<div class="core"></div>' +
 					'<div class="help-block-error"></div>' +
 				'</div>' +
 			'</div>' +

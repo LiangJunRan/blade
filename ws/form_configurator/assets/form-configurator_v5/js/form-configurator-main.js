@@ -521,7 +521,7 @@
 
 		// 加载已存的事件联动(初始化)
 		var ebs = $('#editEventBind').data().ebs;
-		$.each(ebs, function(){
+		$.each(ebs || [], function(){
 			var eb = this;
 			var $eventBind = addEventBind();
 			$('[name=' + 'eventType' + ']', $eventBind).val(eb.eventType).trigger('change');

@@ -169,7 +169,9 @@
 				} else {
 					$content.append('<div class="form-control-static">-- 未配置选项 --</div>');
 				}
-				$('core', $node).replaceWith($content);		// 在非new情况下，这步不起作用
+				if (isNew) {
+					$('.core', $node).replaceWith($content);
+				}
 				break;
 
 			// 下拉框
@@ -204,7 +206,9 @@
 				} else {
 					$select.append('<option value="">--No-Item--</option>');
 				}
-				$('core', $node).replaceWith($select);		// 在非new情况下，这步不起作用
+				if (isNew) {
+					$('.core', $node).replaceWith($select);
+				}
 				break;
 
 			// 文本框
@@ -213,7 +217,9 @@
 			case 'number':
 			case 'datepicker':
 			default:
-				$('core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
+				if (isNew) {
+					$('.core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
+				}
 				$('input', $node).attr('placeholder', opt.placeholder);
 				break;
 
@@ -379,7 +385,7 @@
 
 		// 然后重新绑定事件和样式 ==================================
 		// 遍历绑定联动事件
-		$.each(ebs, function(){
+		$.each(ebs || [], function(){
 			var eb = this;
 
 			switch(eb.eventType) {
