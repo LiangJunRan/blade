@@ -27,3 +27,8 @@ index5
 	解绑事件
 	Checkbox复数选中事件绑定
 	删掉trigger，编辑联动绑定事件的初始化处理
+	jquery降版本
+	解决低版本jq造成的bug
+
+index6
+	TODO: 加入时间控件
