@@ -131,11 +131,11 @@ body {
 	height: 42px;
 	position: absolute;
 	margin: auto;
-	left: 0;
+	left: -50px;
 	text-align: center;
 	top: 0;
 	bottom: 0;
-	right: 0;
+	right: -50px;
 }
 
 

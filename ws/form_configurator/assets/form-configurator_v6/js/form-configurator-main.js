@@ -79,6 +79,10 @@
 		$('.taggleMode').on('click', taggleMode);
 
 		$('#editEventBind').on('click', pop_event_bind);
+
+		$('#isSteam').on('change', function() {
+			steamLayout($('#dropForm'));
+		});
 	});
 
 
@@ -123,12 +127,18 @@
 			render(new_node.data().opts, new_node);
 
 			setFormRules();
+
+			if ($('#isSteam').is(':checked')){
+				steamLayout($('#dropForm'));
+			}
 		});
 	}
 
 	// 组件 - 渲染 (从formb引用)
 	var render = $.formb.render;
 
+	// 流式布局 (从formb引用)
+	var steamLayout = $.formb.steamLayout;
 
 
 	// /////////////////////////////////////////////////////////////////////////////
@@ -364,6 +374,10 @@
 			// 重新渲染指定对象
 			render(opt, $item);
 
+			if ($('#isSteam').is(':checked')){
+				steamLayout($('#dropForm'));
+			}
+
 			// 如果通不过同名校验，则禁止进行修改rule的操作
 			if (!checkSameName()) {
 				return false;
@@ -419,7 +433,16 @@
 					'</div>' +
 				'</div>'
 			);
-			// control_bar.css({'left': info.x + 'px', 'top': info.y + 'px', 'width': info.w + 'px', 'height': info.h + 'px', 'line-height': info.h + 'px'});
+
+			if ($('#isSteam').is(':checked')) {
+				control_bar.css({
+					'position': 'relative',
+					'height': '54px',
+					'top': '-54px',
+					'margin-left': '0px',
+					'margin-bottom': '-54px'
+				});
+			}
 
 			control_bar.find('.remove_btn').on('click', function() {
 				$this.closest('.drag_item').remove();
@@ -719,7 +742,8 @@
 			'items': json_opts,
 			'rules': json_rules,
 			'events': $('#editEventBind').data().ebs,
-			'values': $('#dropForm').serializeJson()};
+			'values': $('#dropForm').serializeJson(),
+			'isSteam': $('#isSteam').is(':checked')};
 		str_json = JSON.stringify(structured_json);
 		str_json = formatCode(str_json);
 		$('#modalContent').html('<textarea cols="30" rows="10" style="width: 100%; height: 280px;">' + str_json + '</textarea>');
@@ -736,6 +760,7 @@
 		var json_opts = jsonConf['items'];
 		var json_rules = jsonConf['rules'];
 		var json_values = jsonConf['values'];
+		var json_isSteam = jsonConf['isSteam'];
 
 		var json_ebs = jsonConf['events'];
 
@@ -777,6 +802,10 @@
 
 		$('#dropForm').setFormValue(json_values);
 		$('#viewForm').setFormValue(json_values);
+
+		if (json_isSteam) {
+			$('#isSteam').prop('checked', true).trigger('change');
+		}
 	}
 
 	// 生成警告框
@@ -939,7 +968,6 @@
 				var order = parseInt(id.split('-')[id.split('-').length - 1]) + 1;
 				new_node.attr('id', 'drag-item-' + order);
 			}
-			
 
 			// 加入新对象
 			if ($('.insert_mark').hasClass('append_holder')) {
@@ -959,6 +987,10 @@
 			render(new_node.data().opts, new_node);
 			log('after render');
 			setFormRules();
+
+			if ($('#isSteam').is(':checked')) {
+				steamLayout($('#dropForm'));
+			}
 		}
 		// 移动模式
 		else {
@@ -1163,6 +1195,7 @@
 	function clearAll() {
 		$('.drop_container').children().remove();
 		$('#editEventBind').data().ebs = [];
+		$('#isSteam').attr('checked', false);
 	}
 
 	// 添加或替换col-sm的class

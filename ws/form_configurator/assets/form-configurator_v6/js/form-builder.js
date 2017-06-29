@@ -84,6 +84,12 @@
 		});*/
 
 		// removeAllUselessStuff();
+
+		// 流式布局
+		if (jsonConf.isSteam) {
+			steamLayout($form);
+		}
+
 		log(jsonConf);
 	}
 
@@ -271,25 +277,25 @@
 	function initValidator($form) {
 		log('[校验] 初始化-前，dropFormValidator =', dropFormValidator);
 		$.validator.setDefaults({  
-		    // 对隐藏域也进行校验  
-		    ignore : [],  
-		        // 手动触发校验  
-		    onsubmit : false,  
-		    highlight : function(element) {  
-		        $(element).closest('.form-group').addClass('has-error');  
-		    },  
-		    unhighlight : function(element) {  
-		        $(element).closest('.form-group').removeClass('has-error');  
-		    },  
-		    errorElement : 'span',  
-		    errorClass : 'help-block',  
-		    errorPlacement : function(error, element) {  
-		        if (element.parent('.input-group').length) {  
-		            error.insertAfter(element.parent());  
-		        } else {  
-		            error.insertAfter(element);  
-		        }  
-		    }  
+			// 对隐藏域也进行校验  
+			ignore : [],  
+				// 手动触发校验  
+			onsubmit : false,  
+			highlight : function(element) {  
+				$(element).closest('.form-group').addClass('has-error');  
+			},  
+			unhighlight : function(element) {  
+				$(element).closest('.form-group').removeClass('has-error');  
+			},  
+			errorElement : 'span',  
+			errorClass : 'help-block',  
+			errorPlacement : function(error, element) {  
+				if (element.parent('.input-group').length) {  
+					error.insertAfter(element.parent());  
+				} else {  
+					error.insertAfter(element);  
+				}  
+			}  
 		});  
 		$.validator.setDefaults({
 			debug: true,
@@ -488,6 +494,47 @@
 			}
 		});
 	}
+
+
+
+	// /////////////////////////////////////////////////////////////////////////////
+	// 指定form改为流式布局（目前单向）
+	// /////////////////////////////////////////////////////////////////////////////
+	function steamLayout($form) {
+		console.log('steamLayout');
+		for (var j = 0; j <= 12; j++) {
+			var _class = ("col-sm-" + j);
+			$form.find('.' + _class).removeClass(_class);
+		}
+		$form.find(':input, .item, .outerClass').css({
+			'display': 'inline-block',
+			'width': 'auto'
+		});
+		$form.find('.contentClass').css({
+			'display': 'inline-block',
+			'width': 'auto',
+			'vertical-align': 'top'
+		});
+		$form.find('input:radio, input:checkbox').css({
+			'display': 'none'
+		});
+		$form.find('.form-control-feedback').css({
+		    'position': 'relative',
+		    'float': 'right',
+		    'display': 'inline-block',
+		    'width': '0px',
+		    'right': '22px'
+		});
+		$form.find('.labelClass').css({
+			'padding': '0.5em'
+		});
+		$form.find('.itemLabel').css({
+			'margin-right': '0px'
+		});
+		$form.find('.pull-right').removeClass('pull-right');
+		$form.find('.row').removeClass('row');
+	}
+	$.formb.steamLayout = steamLayout;
 
 
 
