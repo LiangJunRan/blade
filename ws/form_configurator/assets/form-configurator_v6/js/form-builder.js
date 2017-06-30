@@ -66,24 +66,20 @@
 	$.fn.renderForm = function(jsonConf) {
 		var $form = $(this);
 
+		// 初始化校验器
 		initValidator($form);
 
+		// 渲染生成form
 		renderJson($form, jsonConf);
 
+		// 赋初值
+		setFormValue($form, jsonConf.values);
+
+		// 加校验
 		afterAllAjaxCompleteDo(deferredObjectList, setFormRules, [$form]);
 
+		// 加联动
 		activeEventBinds($form, jsonConf.events);
-
-		/*$form.append(
-			// '<hr class="col-sm-12" />' +
-			'<div class="col-sm-9 col-sm-offset-3">' +
-				'<button type="submit" class="btn btn-primary">Submit</button>' +
-			'</div>');
-		$form.find('button[type=submit]').on('click', function(){
-			$form.submit();
-		});*/
-
-		// removeAllUselessStuff();
 
 		// 流式布局
 		if (jsonConf.isSteam) {
@@ -541,9 +537,7 @@
 	// /////////////////////////////////////////////////////////////////////////////
 	// 表单赋值与取值
 	// /////////////////////////////////////////////////////////////////////////////
-	function setFormValue(values) {
-		var $form = $(this);
-		console.log(values);
+	function setFormValue($form, values) {
 		$.each(values || [], function(name) {
 			var value = values[name];
 
@@ -568,7 +562,10 @@
 		});
 	}
 	// 注册成为jQuery对象方法
-	$.fn.setFormValue = setFormValue;
+	$.fn.setFormValue = function(values) {
+		var $form = $(this);
+		setFormValue($form, values);
+	}
 
 
 

@@ -1,38 +1,38 @@
 index1
-	��������ק
-	�����뷨չʾ
+	基本的拖拽
+	插入想法展示
 
 index2
-	�����ṹ����
-	���ӱ༭����
-	����ȡ��json
+	基本结构成型
+	增加编辑功能
+	可以取得json
 
 index3
-	���ӿ�ݲ���
-	�����༭ģʽ
-	����У��
+	增加快捷操作
+	调整编辑模式
+	增加校验
 
 index4
-	��װ�����
-	������form-builder���
-	���Ե���ʹ��(test_form_builder.html)
-	��from-configurator����ͨ������
-	���������첽����Դ��Ϊ��ѡ��
+	封装插件，
+	独立出form-builder插件
+	可以单独使用(test_form_builder.html)
+	与from-configurator做共通化处理
+	可以配置异步数据源做为待选项
 
 index5
-	�������ð���Ӧ�¼����磺
-	������A Ӱ�� ������B��C����ʾ
-	�¼��������ͨ��FB
-	�������name�ı䣬��ͬ���޸��¼����е�����
-	����¼�
-	Checkbox����ѡ���¼���
-	ɾ��trigger���༭�������¼��ĳ�ʼ������
-	jquery���汾
-	����Ͱ汾jq��ɵ�bug
+	增加配置绑定响应事件，如：
+	输入项A 影响 输入项B、C的显示
+	事件绑定提出共通到FB
+	输入对象name改变，会同步修改事件绑定中的名字
+	解绑事件
+	Checkbox复数选中事件绑定
+	删掉trigger，编辑联动绑定事件的初始化处理
+	jquery降版本
+	解决低版本jq造成的bug
 
 index6
-	����ʱ��ؼ�
-	ǿ��������ʽ���ַ�ʽ�������棩
-	TODO: ��ʽ���ֿ��棨˼·: ʹ��json������Ⱦ��
-	TODO: �Ķ�ģʽ
-	TODO: У�鱨����ɫ
+	加入时间控件
+	强行增加流式布局方式（不可逆）
+	流式布局可逆（思路: 使用json重新渲染）
+	TODO: 阅读模式
+	TODO: 校验报警颜色

@@ -81,7 +81,14 @@
 		$('#editEventBind').on('click', pop_event_bind);
 
 		$('#isSteam').on('change', function() {
-			steamLayout($('#dropForm'));
+			if ($(this).is(':checked')) {
+				console.log('->', 'checked');
+				steamLayout($('#dropForm'));
+				steamLayout($('#viewForm'));
+			} else {
+				console.log('->', 'cancle');
+				renderJson(getJson());
+			}
 		});
 	});
 
@@ -412,6 +419,7 @@
 		var ev = event;
 		close_config();
 		close_detail();
+		close_event_bind();
 		var $this = $(ev.target);
 		if ($this.closest('.drag_item').parent().hasClass('components_container')) {
 			return false;
@@ -755,8 +763,8 @@
 	});
 
 	// 根据当前json配置渲染form
-	function renderJson() {
-		var jsonConf = $.parseJSON($('#modalContent textarea').val());
+	function renderJson(jsonConf) {
+		jsonConf = jsonConf || $.parseJSON($('#modalContent textarea').val());
 		var json_opts = jsonConf['items'];
 		var json_rules = jsonConf['rules'];
 		var json_values = jsonConf['values'];
@@ -851,6 +859,10 @@
 	}
 
 	function taggleMode() {
+		close_config();
+		close_detail();
+		close_event_bind();
+
 		$.each($('.taggleMode'), function(){
 			var $this = $(this);
 			if ($this.attr('disabled') !== undefined) {
@@ -866,7 +878,9 @@
 		if ($('.taggleMode:eq(0)').attr('disabled') === undefined) {
 			$('.bg2').show();
 			$('.bg').hide();
+			console.log(getJson().values);
 			$('#viewForm').renderForm(getJson());
+
 		} else {
 			$('.bg').show();
 			$('.bg2').hide();
@@ -904,6 +918,7 @@
 
 		close_config();
 		close_detail();
+		close_event_bind();
 
 		// 随拖拽准备的数据
 		ev.dataTransfer.setData("id", ev.target.id);
