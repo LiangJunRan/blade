@@ -201,8 +201,10 @@
         "name": "吕阳",
         "gender": "1",
         "status": "neet",
-        "games": ["bh3", "other", "other2"],
+        "games": ["bh3", "other"],
         "otherGame": "梦幻西游",
         "otherGame2": "街头篮球"
-    }
+    },
+    "isSteam": true,
+    "isRead": true
 }

@@ -74,21 +74,18 @@
 		$('#clearAll').on('click', clearAll);
 		$('#getJson').on('click', getJson);
 		$('#checkForm').on('click', checkForm);
-		$('#renderJson').on('click', renderJson);
+		$('#renderJson').on('click', renderByNowSetting);
 
 		$('.taggleMode').on('click', taggleMode);
 
 		$('#editEventBind').on('click', pop_event_bind);
 
 		$('#isSteam').on('change', function() {
-			if ($(this).is(':checked')) {
-				console.log('->', 'checked');
-				steamLayout($('#dropForm'));
-				steamLayout($('#viewForm'));
-			} else {
-				console.log('->', 'cancle');
-				renderJson(getJson());
-			}
+			renderJson(getJson());
+		});
+
+		$('#isRead').on('change', function() {
+			renderJson(getJson());
 		});
 	});
 
@@ -135,7 +132,11 @@
 
 			setFormRules();
 
-			if ($('#isSteam').is(':checked')){
+			if($('#isRead').is(':checked')) {
+				transRead($('#dropForm'));
+			}
+
+			if ($('#isSteam').is(':checked')) {
 				steamLayout($('#dropForm'));
 			}
 		});
@@ -146,6 +147,9 @@
 
 	// 流式布局 (从formb引用)
 	var steamLayout = $.formb.steamLayout;
+
+	// 转换只读模式 (从formb引用)
+	var transRead = $.formb.transRead;
 
 
 	// /////////////////////////////////////////////////////////////////////////////
@@ -381,7 +385,11 @@
 			// 重新渲染指定对象
 			render(opt, $item);
 
-			if ($('#isSteam').is(':checked')){
+			if($('#isRead').is(':checked')) {
+				transRead($('#dropForm'));
+			}
+
+			if ($('#isSteam').is(':checked')) {
 				steamLayout($('#dropForm'));
 			}
 
@@ -707,8 +715,6 @@
 		});
 
 		$eventBind.on('click', '.clickToSelectInputElement', function(){
-			config();		
-			// $(this).attr('disabled', 'disabled');
 			$('.clickToSelectInputElement').attr('disabled', 'disabled');
 			$(this).val('');
 			$(this).attr('placeholder', '请点击要选中的对象');
@@ -746,12 +752,21 @@
 			json_opts.push($(this).data().opts);
 			json_rules[$(this).data().opts.name] = $(this).data().rule;
 		});
+
+		var values = $('#dropForm').serializeJson();
+		if ($('#dropForm').find(':input').length == 0) {
+			values = $('#dropForm').data().values;
+		} else {
+			$('#dropForm').data().values = values;
+		}
+
 		structured_json = {
 			'items': json_opts,
 			'rules': json_rules,
 			'events': $('#editEventBind').data().ebs,
-			'values': $('#dropForm').serializeJson(),
-			'isSteam': $('#isSteam').is(':checked')};
+			'values': values,
+			'isSteam': $('#isSteam').is(':checked'),
+			'isRead': $('#isRead').is(':checked')};
 		str_json = JSON.stringify(structured_json);
 		str_json = formatCode(str_json);
 		$('#modalContent').html('<textarea cols="30" rows="10" style="width: 100%; height: 280px;">' + str_json + '</textarea>');
@@ -763,12 +778,17 @@
 	});
 
 	// 根据当前json配置渲染form
+	function renderByNowSetting() {
+		renderJson($.parseJSON($('#modalContent textarea').val()));
+	}
+
+	//
 	function renderJson(jsonConf) {
-		jsonConf = jsonConf || $.parseJSON($('#modalContent textarea').val());
 		var json_opts = jsonConf['items'];
 		var json_rules = jsonConf['rules'];
 		var json_values = jsonConf['values'];
 		var json_isSteam = jsonConf['isSteam'];
+		var json_isRead = jsonConf['isRead'];
 
 		var json_ebs = jsonConf['events'];
 
@@ -777,7 +797,7 @@
 
 		clearAll();
 
-		$.each(json_opts, function(_idx){
+		$.each(json_opts || [], function(_idx){
 			var $item = render(this);
 
 			$item.attr('id', 'drag-item-' + _idx);
@@ -806,13 +826,25 @@
 		$('#editEventBind').data().ebs = json_ebs;
 		reactiveEventBinds();
 
-		$('#viewForm').renderForm(getJson());
+		$('#viewForm').renderForm(jsonConf);
 
 		$('#dropForm').setFormValue(json_values);
 		$('#viewForm').setFormValue(json_values);
 
 		if (json_isSteam) {
-			$('#isSteam').prop('checked', true).trigger('change');
+			steamLayout($('#dropForm'));
+			steamLayout($('#viewForm'));
+			$('#isSteam').prop('checked', true);
+		} else {
+			$('#isSteam').prop('checked', false);
+		}
+
+		if (json_isRead) {
+			transRead($('#dropForm'));
+			transRead($('#viewForm'));
+			$('#isRead').prop('checked', true);
+		} else {
+			$('#isRead').prop('checked', false);
 		}
 	}
 
@@ -878,7 +910,6 @@
 		if ($('.taggleMode:eq(0)').attr('disabled') === undefined) {
 			$('.bg2').show();
 			$('.bg').hide();
-			console.log(getJson().values);
 			$('#viewForm').renderForm(getJson());
 
 		} else {
@@ -1006,6 +1037,11 @@
 			if ($('#isSteam').is(':checked')) {
 				steamLayout($('#dropForm'));
 			}
+
+			if($('#isRead').is(':checked')) {
+				transRead($('#dropForm'));
+			}
+
 		}
 		// 移动模式
 		else {

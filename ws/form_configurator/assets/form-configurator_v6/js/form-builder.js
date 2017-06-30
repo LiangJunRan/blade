@@ -75,6 +75,12 @@
 		// 赋初值
 		setFormValue($form, jsonConf.values);
 
+		// TODO: 临时只读模式的实现
+		if (jsonConf.isRead) {
+			transRead($form);
+		}
+
+
 		// 加校验
 		afterAllAjaxCompleteDo(deferredObjectList, setFormRules, [$form]);
 
@@ -112,7 +118,7 @@
 	}
 
 	// 每个节点渲染的方法
-	function render(_opt, _$node) {
+	function render(_opt, _$node, isRead) {
 		var default_opt = {
 			"name": "demo_text",
 			"label": "测试文本",
@@ -233,7 +239,6 @@
 				});
 
 				$('.dataCleanBtn', $node).on('click', function() {
-					console.log('del', $('input', $node).length);
 					$(this).parent().find('input').val('');
 				});
 
@@ -263,7 +268,6 @@
 
 		// bind json
 		$node.data().opts = opt;
-
 		return $node;
 	}
 	// 注册成为formb的方法
@@ -497,7 +501,6 @@
 	// 指定form改为流式布局（目前单向）
 	// /////////////////////////////////////////////////////////////////////////////
 	function steamLayout($form) {
-		console.log('steamLayout');
 		for (var j = 0; j <= 12; j++) {
 			var _class = ("col-sm-" + j);
 			$form.find('.' + _class).removeClass(_class);
@@ -535,6 +538,49 @@
 
 
 	// /////////////////////////////////////////////////////////////////////////////
+	// 将已渲染和赋值的对象进行只读转换
+	// /////////////////////////////////////////////////////////////////////////////
+	function transRead($form) {
+		$.each($form.children(), function(){
+			var $node = $(this);
+			var contentList = [];
+			$.each($node.find(':input'), function(){
+				var $this = $(this);
+				if ($this.is('input')){
+					switch ($this.attr('type')) {
+						case 'radio':
+						case 'checkbox':
+							if ($this.is(':checked')) {
+								var label = $form.find('[for=' + $this.attr('id') + ']').html();
+								contentList.push(label);
+							}
+							break;
+						case 'text':
+						default:
+							var label = $this.val();
+							contentList.push(label);
+							break;
+					}
+				} else if ($this.is('select')) {
+					var value = $this.val();
+					var label = $this.find('[value=' + value + ']').html();
+					contentList.push(label);
+				} else if ($this.is('textarea')) {
+					// TODO
+					console.warn('TODO: transRead textarea');
+				}
+			});
+			var contentStr = contentList.join(', ');
+			if (!($node.find('.contentClass').hasClass('form-control-static'))) {
+				$node.find('.contentClass').html(contentStr).addClass('form-control-static');
+			}
+		});
+		$form.find('.textRequired').removeClass('textRequired');
+	}
+	$.formb.transRead = transRead;
+
+
+	// /////////////////////////////////////////////////////////////////////////////
 	// 表单赋值与取值
 	// /////////////////////////////////////////////////////////////////////////////
 	function setFormValue($form, values) {
@@ -543,11 +589,8 @@
 
 			var targets = $('[name=' + name + ']', $form);
 
-			console.log(targets.length, name, value);
-
 			$.each(targets, function() {
 				var $this = $(this);
-				console.log($this.attr('type'), (['radio', 'checkbox'].indexOf($this.attr('type')) != -1));
 				if (['radio', 'checkbox'].indexOf($this.attr('type')) != -1) {
 					if ((!$.isArray(value) && $this.attr('value') == value) || 
 						($.isArray(value) && value.indexOf($this.attr('value')) != -1)) {
