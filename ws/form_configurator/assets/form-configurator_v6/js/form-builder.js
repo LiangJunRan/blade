@@ -244,6 +244,14 @@
 
 				break;
 
+			// 静态文字
+			case 'static':
+				if (isNew) {
+					$('.core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
+				}
+				$('.staticContent', $node).html(opt.placeholder);
+				break;
+
 			// 文本框
 			case 'hidden':
 			case 'text':
@@ -501,10 +509,11 @@
 	// 指定form改为流式布局（目前单向）
 	// /////////////////////////////////////////////////////////////////////////////
 	function steamLayout($form) {
-		for (var j = 0; j <= 12; j++) {
+		for (var j = 1; j <= 12; j++) {
 			var _class = ("col-sm-" + j);
 			$form.find('.' + _class).removeClass(_class);
 		}
+		$form.find('.col-sm-0').removeClass('col-sm-0').css('display', 'none');
 		$form.find(':input, .item, .outerClass').css({
 			'display': 'inline-block',
 			'width': 'auto'
@@ -532,6 +541,17 @@
 		});
 		$form.find('.pull-right').removeClass('pull-right');
 		$form.find('.row').removeClass('row');
+
+		$.each($form.children(), function(){
+			var $node = $(this);
+			if ($node.data().opts.type == 'static') {
+				var $label = $('.labelClass', $node);
+				var $content = $('.contentClass', $node);
+				if ($label.length == 0 || $label.children().length == 0 || $($label.children()[0]).html().trim().length == 0) {
+					$content.css('padding-top', '0px');
+				}
+			}
+		});
 	}
 	$.formb.steamLayout = steamLayout;
 
@@ -570,6 +590,13 @@
 					console.warn('TODO: transRead textarea');
 				}
 			});
+
+			// 静态文字的特殊处理
+			if ($node.data().opts.type == 'static') {
+				var label = $node.find('.staticContent').html();
+				contentList.push(label);
+			}
+
 			var contentStr = contentList.join(', ');
 			if (!($node.find('.contentClass').hasClass('form-control-static'))) {
 				$node.find('.contentClass').html(contentStr).addClass('form-control-static');
@@ -647,17 +674,19 @@
 	// 添加或替换col-sm的class
 	function addOrReplaceClass($obj, new_class) {
 		var notFound = true;
-		var list_class = $obj.attr('class').split(' ');
-		$.each(list_class, function(idx) {
-			if (this.indexOf('col-sm-') >=0) {
-				notFound = false;
-				list_class[idx] = new_class;
+		if ($obj.length != 0) {
+			var list_class = $obj.attr('class').split(' ');
+			$.each(list_class, function(idx) {
+				if (this.indexOf('col-sm-') >= 0) {
+					notFound = false;
+					list_class[idx] = new_class;
+				}
+			});
+			if (notFound) {
+				list_class.push(new_class);
 			}
-		});
-		if (notFound) {
-			list_class.push(new_class);
+			$obj.attr('class', list_class.join(' '));
 		}
-		$obj.attr('class', list_class.join(' '));
 	}
 
 	// 扩展array类型原生方法，添加obj如果是array，就让其元素合并，否则直接加入

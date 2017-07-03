@@ -118,15 +118,6 @@
 			'<i class="fa fa-calendar"></i>' +
 		'</span>' +
 		'<input type="text" class="form-control" />';
-		/*'<div class="input-group">' +
-			'<span class="input-group-addon">' +
-				'<i class="fa fa-calendar"></i>' +
-			'</span>' +
-			'<input type="text" class="form-control" />' +
-			'<span class="input-group-addon btn btn-dan dataCleanBtn">' +
-				'<i class="fa fa-close"></i>' +
-			'</span>' +
-		'</div>';*/
 	opts.date = {
 		"name": "demo_date",
 		"type": "date",						// 基本类型
@@ -137,5 +128,18 @@
 	rule.date = {
 		"required": false,
 		"dateISO": true
+	};
+
+
+
+	core.static = 
+		'<div class="form-control-static staticContent"></div>';
+	opts.static = {
+		"type": "static",						// 基本类型
+		"label": "静态",
+		"placeholder": "静态文字内容",
+		"description": "--静态文字描述--"
+	};
+	rule.static = {
 	};
 }));
