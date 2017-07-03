@@ -276,6 +276,19 @@
 
 		// bind json
 		$node.data().opts = opt;
+
+		// 解决static没有label错乱问题
+		if ($node.data().opts.type == 'static') {
+			var $label = $('.labelClass', $node);
+			var $content = $('.staticContent', $node);
+			if ($label.length == 0 || $label.children().length == 0 || $($label.children()[0]).html().trim().length == 0) {
+				$content.css({
+					'padding-top': '0px',
+					'vertical-align': 'middle'
+				});
+			}
+		}
+
 		return $node;
 	}
 	// 注册成为formb的方法
