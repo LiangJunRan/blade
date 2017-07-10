@@ -123,7 +123,8 @@
 			"label": "测试文本",
 			"outerWidth": 12,
 			"labelWidth": 3,
-			"contentWidth": 9
+			"contentWidth": 9,
+			"widthInSteam": "auto"
 		};
 		var opt = $.extend(true, {}, default_opt, _opt);
 		var isNew = !(_$node);
@@ -572,11 +573,20 @@
 
 		$.each($form.children(), function(){
 			var $node = $(this);
-			if ($node.data().opts !== undefined && $node.data().opts.type == 'static') {
-				var $label = $('.labelClass', $node);
-				var $content = $('.contentClass', $node);
-				if ($label.length == 0 || $label.children().length == 0 || $($label.children()[0]).html().trim().length == 0) {
-					$content.css('padding-top', '0px');
+			if ($node.data().opts !== undefined) {
+				// static处理
+				if ($node.data().opts.type == 'static') {
+					var $label = $('.labelClass', $node);
+					var $content = $('.contentClass', $node);
+					if ($label.length == 0 || $label.children().length == 0 || $($label.children()[0]).html().trim().length == 0) {
+						$content.css('padding-top', '0px');
+					}
+				}
+				// 设置固定宽度
+				if ($node.data().opts.widthInSteam && $node.data().opts.widthInSteam != 'auto') {
+					var widthStr = $node.data().opts.widthInSteam;
+					$(':input', $node).css('width', widthStr);
+					$('.staticContent', $node).css('width', widthStr);
 				}
 			}
 		});

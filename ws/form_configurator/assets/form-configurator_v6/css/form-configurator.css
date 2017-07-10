@@ -419,3 +419,6 @@ label.form-control-static>span.formLabel {
     overflow: hidden;
     white-space: nowrap;
 }
+.item_detail_body label.form-control-static {
+	font-size: 9px;
+}

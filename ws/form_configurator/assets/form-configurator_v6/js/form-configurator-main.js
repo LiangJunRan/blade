@@ -460,10 +460,10 @@
 			if ($('#isSteam').is(':checked')) {
 				control_bar.css({
 					'position': 'relative',
-					'height': '54px',
-					'top': '-54px',
+					'height': $this.closest('.item').outerHeight() + 'px',
+					'top': -($this.closest('.item').outerHeight() + 12) + 'px',
 					'margin-left': '0px',
-					'margin-bottom': '-54px'
+					'margin-bottom': -($this.closest('.item').outerHeight() + 12) + 'px'
 				});
 			}
 
