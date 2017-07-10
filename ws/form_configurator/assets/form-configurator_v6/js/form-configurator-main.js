@@ -1,8 +1,9 @@
 ;(function (factory) {
+
 	'use strict';
     if (typeof define === "function" && define.amd) {
         // AMD模式
-        define('formc', ['jquery', 'formc-templates'], factory);
+        define(['jquery'], factory);
     } else {
         // 全局模式
         factory(jQuery);
@@ -910,6 +911,7 @@
 		if ($('.taggleMode:eq(0)').attr('disabled') === undefined) {
 			$('.bg2').show();
 			$('.bg').hide();
+			$('#viewForm').html('');
 			$('#viewForm').renderForm(getJson());
 
 		} else {

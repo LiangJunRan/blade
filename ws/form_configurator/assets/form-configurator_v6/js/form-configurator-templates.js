@@ -1,7 +1,7 @@
 ;(function (factory) {
 	'use strict';
 	if (typeof define === 'function' && define.amd) {
-		define('formc-templates', ['jquery'], factory);
+		define(['jquery'], factory);
 	} else {
 		factory(window.jQuery);
 	}
@@ -12,7 +12,7 @@
 
 	var shellTemplate = templates.shellTemplate = 
 		'<div class="outerClass drag_item base">' +
-			'<div class="item row formDescription">' +
+			'<div class="item row formDescription form-group">' +
 				'<label class="labelClass form-control-static">' +
 					'<span class="textRequired formLabel pull-right"></span>' +
 				'</label>' +

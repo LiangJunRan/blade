@@ -411,3 +411,6 @@ body {
 .col-sm-0 {
 	display: none;
 }
+label.form-control-static>span.formLabel {
+	font-size: 14px;
+}

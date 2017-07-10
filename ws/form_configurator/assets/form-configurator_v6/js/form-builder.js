@@ -1,12 +1,12 @@
 ;(function (factory) {
 	'use strict';
-	if (typeof define === "function" && define.amd) {
-		// AMD模式
-		define('formb', ['jquery', 'formc-templates'], factory);
-	} else {
-		// 全局模式
-		factory(jQuery);
-	}
+    if (typeof define === "function" && define.amd) {
+        // AMD模式
+        define(['jquery', 'jquery_validate'], factory);
+    } else {
+        // 全局模式
+        factory(jQuery);
+    }
 }(function ($) {
 	// 检查依赖引用
 	function checkEnv() {
@@ -72,20 +72,19 @@
 		// 渲染生成form
 		renderJson($form, jsonConf);
 
-		// 赋初值
-		setFormValue($form, jsonConf.values);
-
 		// TODO: 临时只读模式的实现
 		if (jsonConf.isRead) {
 			transRead($form);
 		}
-
 
 		// 加校验
 		afterAllAjaxCompleteDo(deferredObjectList, setFormRules, [$form]);
 
 		// 加联动
 		activeEventBinds($form, jsonConf.events);
+
+		// 赋初值
+		setFormValue($form, jsonConf.values);
 
 		// 流式布局
 		if (jsonConf.isSteam) {
@@ -103,7 +102,7 @@
 		log('json_opts', json_opts);
 		log('json_rules', json_rules);
 
-		$form.html('');
+//		$form.html('');
 
 		$.each(json_opts || [], function(_idx){
 			var $item = render(this);
@@ -261,6 +260,8 @@
 					$('.core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
 				}
 				$('input', $node).attr('placeholder', opt.placeholder);
+				$('input', $node).attr('onfocus', 'this.placeholder=""');
+				$('input', $node).attr('onblur', 'this.placeholder="' + opt.placeholder + '"');
 				break;
 
 		}
@@ -297,11 +298,11 @@
 	// 初始化form校验器
 	function initValidator($form) {
 		log('[校验] 初始化-前，dropFormValidator =', dropFormValidator);
-		$.validator.setDefaults({  
+		/*$.validator.setDefaults({  
 			// 对隐藏域也进行校验  
 			ignore : [],  
 				// 手动触发校验  
-			onsubmit : false,  
+			onsubmit : true,  
 			highlight : function(element) {  
 				$(element).closest('.form-group').addClass('has-error');  
 			},  
@@ -317,7 +318,7 @@
 					error.insertAfter(element);  
 				}  
 			}  
-		});  
+		});*/  
 		$.validator.setDefaults({
 			debug: true,
 			ignore: '.ignore',
@@ -326,8 +327,12 @@
 				$(label).html($(label).html().replace(/:|：/g, ''));
 				$(element).closest('.contentClass').find('.help-block-error').append(label);
 			},
+			highlight : function(element) {  
+				$(element).closest('.form-group').addClass('has-error');
+			},
 			success: function (label, element) {
 				label.remove();
+				$(element).closest('.has-error').removeClass('has-error');
 			}
 		});
 		dropFormValidator = $form.validate();
@@ -364,11 +369,10 @@
 							// 去掉所有undefined和null的规则，不去掉会造成validator报错
 							var rule = {};
 							$.each($this.data().rule || [], function(key){
-								if (this !== undefined && this !== null) {
-									rule[key] = this;
+								if ($this.data().rule[key] !== undefined && $this.data().rule[key] !== null) {
+									rule[key] = $this.data().rule[key];
 								}
-							})
-							
+							});
 							$this.find(':input').rules('add', rule);
 						} else {
 							log('[WARN] Validate item not found :input.', $this[0].outerHTML);
@@ -408,7 +412,6 @@
 
 		// 加入到事件模板？？
 		// TODO: 加入魔板
-		// TODO: 解决checkbox多选问题>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 		definedFunction['valueChangeShowHide'] = function(event) {
 			var allResp = event.data.allResp;
 			var $form = event.data.$form;
@@ -420,7 +423,7 @@
 			var respNames = [];						// 取得当前值对应的所有响应对象
 
 			if ($(this).attr('type') == 'checkbox') {
-				$.each($('[name=' + $(this).attr('name') + ']:checked'), function(){
+				$.each($('[name=' + $(this).attr('name') + ']:checked', $form), function(){
 					triggerValues.push($(this).val());
 					respNames.add(valueRespMap[$(this).val()]);
 				});
@@ -534,7 +537,7 @@
 		$form.find('.contentClass').css({
 			'display': 'inline-block',
 			'width': 'auto',
-			'vertical-align': 'top'
+			'vertical-align': 'baseline'
 		});
 		$form.find('input:radio, input:checkbox').css({
 			'display': 'none'
@@ -557,7 +560,7 @@
 
 		$.each($form.children(), function(){
 			var $node = $(this);
-			if ($node.data().opts.type == 'static') {
+			if ($node.data().opts !== undefined && $node.data().opts.type == 'static') {
 				var $label = $('.labelClass', $node);
 				var $content = $('.contentClass', $node);
 				if ($label.length == 0 || $label.children().length == 0 || $($label.children()[0]).html().trim().length == 0) {
@@ -596,8 +599,10 @@
 					}
 				} else if ($this.is('select')) {
 					var value = $this.val();
-					var label = $this.find('[value=' + value + ']').html();
-					contentList.push(label);
+					if (value) {
+						var label = $this.find('[value=' + value + ']').html();
+						contentList.push(label);
+					}
 				} else if ($this.is('textarea')) {
 					// TODO
 					console.warn('TODO: transRead textarea');
@@ -605,7 +610,7 @@
 			});
 
 			// 静态文字的特殊处理
-			if ($node.data().opts.type == 'static') {
+			if ($node.data().opts !== undefined && $node.data().opts.type == 'static') {
 				var label = $node.find('.staticContent').html();
 				contentList.push(label);
 			}
@@ -677,7 +682,7 @@
 				} else if (this.value === "true") {
 					o[this.name] = true;
 				} else {
-					o[this.name] = this.value || null;
+					o[this.name] = this.value || '';
 				}
 			}
 		});

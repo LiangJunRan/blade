@@ -34,6 +34,15 @@
 		$(document).ready(function(){
 			$.ajax({
 				url: 'jsonData.json',
+				async: false,
+				success: function(data) {
+					$('#testForm').renderForm(data);
+					$('#testForm').setFormValue(data.values);
+				}
+			});
+			$.ajax({
+				url: 'jsonData2.json',
+				async: false,
 				success: function(data) {
 					$('#testForm').renderForm(data);
 					$('#testForm').setFormValue(data.values);
