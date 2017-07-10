@@ -547,6 +547,7 @@
 			'display': 'inline-block',
 			'width': 'auto'
 		});
+		$form.find('.outerClass').css('vertical-align', 'top');
 		$form.find('.contentClass').css({
 			'display': 'inline-block',
 			'width': 'auto',
