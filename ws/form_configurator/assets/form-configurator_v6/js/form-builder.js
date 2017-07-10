@@ -251,6 +251,18 @@
 				$('.staticContent', $node).html(opt.placeholder);
 				break;
 
+			// 多行文本
+			case 'textarea':
+				if (isNew) {
+					$('.core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
+				}
+				$('textarea', $node).attr('placeholder', opt.placeholder);
+				$('textarea', $node).attr('rows', opt.rows);
+				$('textarea', $node).css('resize', opt.resize);
+				$('textarea', $node).attr('onfocus', 'this.placeholder=""');
+				$('textarea', $node).attr('onblur', 'this.placeholder="' + opt.placeholder + '"');
+				break;
+
 			// 文本框
 			case 'hidden':
 			case 'text':
@@ -537,7 +549,7 @@
 		$form.find('.contentClass').css({
 			'display': 'inline-block',
 			'width': 'auto',
-			'vertical-align': 'baseline'
+			'vertical-align': 'top'
 		});
 		$form.find('input:radio, input:checkbox').css({
 			'display': 'none'
@@ -604,8 +616,8 @@
 						contentList.push(label);
 					}
 				} else if ($this.is('textarea')) {
-					// TODO
-					console.warn('TODO: transRead textarea');
+					var label = $this.val();
+					contentList.push(label);
 				}
 			});
 
@@ -617,7 +629,8 @@
 
 			var contentStr = contentList.join(', ');
 			if (!($node.find('.contentClass').hasClass('form-control-static'))) {
-				$node.find('.contentClass').html(contentStr).addClass('form-control-static');
+				$node.find('.contentClass').html(contentStr)
+						.addClass('form-control-static').attr('title', contentStr);
 			}
 		});
 		$form.find('.textRequired').removeClass('textRequired');

@@ -132,6 +132,25 @@
 
 
 
+	core.textarea = 
+		'<textarea class="form-control"></textarea>';
+	opts.textarea = {
+		"name": "demo_textarea",
+		"type": "textarea",						// 基本类型
+		"label": "多行文本",
+		"rows": 3,
+		"resize": "none",
+		"placeholder": "请输入文本",				// 非必填
+		"description": "请输入英文、数字、下划线"
+	};
+	rule.textarea = {
+		"required": false,
+		"maxlength": 200,
+		"minlength": 0
+	};
+
+
+
 	core.static = 
 		'<div class="form-control-static staticContent"></div>';
 	opts.static = {

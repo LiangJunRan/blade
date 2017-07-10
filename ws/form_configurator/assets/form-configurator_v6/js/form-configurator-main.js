@@ -333,12 +333,18 @@
 		}
 		log('增加detail');
 
-		// 校验规则
+		// 校验规则 =======================================================================
 		var $rule_form = $('.item_rule_form', $detail_window);
 		var rule = $item.data().rule;
 
 		switch($item.data().opts.type) {
 			case 'text':
+				$rule_form.append(booleanItem('必填', 'required', rule['required']));
+				$rule_form.append(numberItem('最大长度', 'maxlength', rule['maxlength']));
+				$rule_form.append(numberItem('最小长度', 'minlength', rule['minlength']));
+				break;
+
+			case 'textarea':
 				$rule_form.append(booleanItem('必填', 'required', rule['required']));
 				$rule_form.append(numberItem('最大长度', 'maxlength', rule['maxlength']));
 				$rule_form.append(numberItem('最小长度', 'minlength', rule['minlength']));
@@ -1246,7 +1252,8 @@
 
 	// 清除全部内容
 	function clearAll() {
-		$('.drop_container').children().remove();
+		$('#dropForm').children().remove();
+		$('#viewForm').children().remove();
 		$('#editEventBind').data().ebs = [];
 		$('#isSteam').attr('checked', false);
 	}

@@ -414,3 +414,8 @@ body {
 label.form-control-static>span.formLabel {
 	font-size: 14px;
 }
+.form-control-static {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
