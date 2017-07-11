@@ -1,0 +1,204 @@
+{
+    "items": [{
+        "name": "name2",
+        "label": "姓名",
+        "outerWidth": "6",
+        "labelWidth": "6",
+        "contentWidth": "6",
+        "type": "text",
+        "placeholder": "请输入文本",
+        "description": "请输入英文、数字、下划线"
+    },
+    {
+        "name": "gender2",
+        "label": "性别",
+        "outerWidth": "6",
+        "labelWidth": "6",
+        "contentWidth": "6",
+        "type": "radio",
+        "description": "单选描述",
+        "dataUrl": "",
+        "options": [{
+            "label": "男",
+            "value": "1"
+        },
+        {
+            "label": "女",
+            "value": "2"
+        }]
+    },
+    {
+        "name": "status2",
+        "label": "身份",
+        "outerWidth": "12",
+        "labelWidth": "3",
+        "contentWidth": "9",
+        "type": "select",
+        "multiple": false,
+        "placeholder": "--请选择--",
+        "description": "请点击选择",
+        "dataUrl": "",
+        "options": [{
+            "label": "在校学生",
+            "value": "inSchool"
+        },
+        {
+            "label": "国内工作",
+            "value": "workInChina"
+        },
+        {
+            "label": "海外工作",
+            "value": "workOutChina"
+        },
+        {
+            "label": "家里蹲",
+            "value": "neet"
+        }]
+    },
+    {
+        "name": "schoolName2",
+        "label": "学校名称",
+        "outerWidth": "12",
+        "labelWidth": "3",
+        "contentWidth": "9",
+        "type": "text",
+        "placeholder": "请输入学校名称",
+        "description": "请输入学校名称"
+    },
+    {
+        "name": "countryName2",
+        "label": "所在国名",
+        "outerWidth": "12",
+        "labelWidth": "3",
+        "contentWidth": "9",
+        "type": "text",
+        "placeholder": "请输入文本",
+        "description": "请输入英文、数字、下划线"
+    },
+    {
+        "name": "companyName2",
+        "label": "公司名称",
+        "outerWidth": "12",
+        "labelWidth": "3",
+        "contentWidth": "9",
+        "type": "text",
+        "placeholder": "请输入公司名称",
+        "description": "请输入公司名称"
+    },
+    {
+        "name": "games2",
+        "label": "喜欢的游戏",
+        "outerWidth": "12",
+        "labelWidth": "3",
+        "contentWidth": "9",
+        "type": "checkbox",
+        "description": "多选描述",
+        "dataUrl": "",
+        "options": [{
+            "label": "崩坏3",
+            "value": "bh3"
+        },
+        {
+            "label": "阴阳师",
+            "value": "yys"
+        },
+        {
+            "label": "王者农药",
+            "value": "wzry"
+        },
+        {
+            "label": "其他",
+            "value": "other"
+        },
+        {
+            "label": "其他2",
+            "value": "other2"
+        }]
+    },
+    {
+        "name": "otherGame2",
+        "label": "其他游戏名",
+        "outerWidth": "12",
+        "labelWidth": "3",
+        "contentWidth": "9",
+        "type": "text",
+        "placeholder": "请输入文本",
+        "description": "请输入英文、数字、下划线"
+    },
+    {
+        "name": "otherGame22",
+        "label": "其他游戏名2",
+        "outerWidth": "12",
+        "labelWidth": "3",
+        "contentWidth": "9",
+        "type": "text",
+        "placeholder": "请输入文本",
+        "description": "请输入英文、数字、下划线"
+    }],
+    "rules": {
+        "name": {
+            "required": true,
+            "maxlength": "10",
+            "minlength": "2"
+        },
+        "gender": {
+            "required": true
+        },
+        "status": {
+            "required": true
+        },
+        "schoolName": {
+            "required": false,
+            "maxlength": "200",
+            "minlength": "2"
+        },
+        "countryName": {
+            "required": false,
+            "maxlength": "50",
+            "minlength": "1"
+        },
+        "companyName": {
+            "required": false,
+            "maxlength": "200",
+            "minlength": "2"
+        },
+        "games": {
+            "required": false
+        },
+        "otherGame": {
+            "required": false,
+            "maxlength": "200",
+            "minlength": "2"
+        },
+        "otherGame2": {
+            "required": false,
+            "maxlength": "10",
+            "minlength": "5"
+        }
+    },
+    "events": [{
+        "eventType": "valueChangeShowHide",
+        "trigger": "status",
+        "valueResps": {
+            "inSchool": "schoolName",
+            "workInChina": "companyName",
+            "workOutChina": ["countryName", "companyName"],
+            "neet": "games"
+        }
+    },
+    {
+        "eventType": "valueChangeShowHide",
+        "trigger": "games",
+        "valueResps": {
+            "bh3": "",
+            "yys": "",
+            "wzry": "",
+            "other": "otherGame",
+            "other2": "otherGame2"
+        }
+    }],
+    "values": {
+    },
+    "isSteam": false,
+    "isRead": false
+}

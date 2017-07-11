@@ -72,11 +72,6 @@
 		// 渲染生成form
 		renderJson($form, jsonConf);
 
-		// TODO: 临时只读模式的实现
-		if (jsonConf.isRead) {
-			transRead($form);
-		}
-
 		// 加校验
 		afterAllAjaxCompleteDo(deferredObjectList, setFormRules, [$form]);
 
@@ -89,6 +84,11 @@
 		// 流式布局
 		if (jsonConf.isSteam) {
 			steamLayout($form);
+		}
+
+		// TODO: 临时只读模式的实现
+		if (jsonConf.isRead) {
+			transRead($form);
 		}
 
 		log(jsonConf);
