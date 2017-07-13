@@ -6,35 +6,38 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<title>Form Builder - kuroikenshi@sina.com</title>
 	<!-- 基本 -->
-	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+	<!-- <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
 	<script src="assets/jquery/jquery.min.js"></script>
 	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+	 -->
+	<link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+	<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+	<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
 
 	<!-- html和json格式化插件 -->
 	<script src="assets/html_formater/htmlformat.js"></script>
 	<script src="assets/html_formater/jsformat.js"></script>
 
 	<!-- 校验 -->
-	<script src="assets/jquery-validation/jquery.validate.js"></script>
+	<!-- <script src="assets/jquery-validation/jquery.validate.js"></script>
 	<script src="assets/jquery-validation/localization/messages_zh.min.js"></script>
-	<script src="assets/jquery-validation/localization/messages_zh_fieldname.js"></script>
+	<script src="assets/jquery-validation/localization/messages_zh_fieldname.js"></script> -->
 
 	<!-- 日期选择控件 -->
-    <link href="assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <!-- <link href="assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
     <script src="assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="assets/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="assets/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script> -->
 
 	<!-- 特殊radio和checkbox样式 -->
-	<link rel="stylesheet" href="assets/styles-radio-checkbox.css">
+	<!-- <link rel="stylesheet" href="assets/styles-radio-checkbox.css"> -->
 
 	<!-- fc页面样式 -->
-	<link rel="stylesheet" href="assets/form-configurator_v6/css/form-configurator.css">
-	<link rel="stylesheet" href="assets/form-configurator_v6/css/mobile-fix.css">
+	<link rel="stylesheet" href="assets/form-configurator_v6/mobile/css/form-configurator.css">
 	<!-- fc模板文件 -->
-	<script src="assets/form-configurator_v6/js/form-configurator-templates.js"></script>
+	<script src="assets/form-configurator_v6/mobile/js/form-configurator-templates.js"></script>
 	<!-- fb本体 -->
-	<script src="assets/form-configurator_v6/js/form-builder.js"></script>
+	<script src="assets/form-configurator_v6/mobile/js/form-builder.js"></script>
 </head>
 <body>
 	<form id="testForm"></form>
@@ -271,10 +274,10 @@
 		    "isRead": false
 		};
 		$(document).ready(function(){
-			// $('#testForm').prepend('<h1 class="text-center" style="background-color: #eee; ">非流式</h1>');
+			$('#testForm').prepend('<h1 class="text-center" style="background-color: #eee; ">非流式</h1>');
 			$('#testForm').renderForm(data);
 
-			/*$('#testForm2').prepend('<h1 class="text-center" style="background-color: #eee; ">流式</h1>');
+			$('#testForm2').prepend('<h1 class="text-center" style="background-color: #eee; ">流式</h1>');
 			data.isRead = false;
 			data.isSteam = true;
 			$('#testForm2').renderForm(data);
@@ -287,14 +290,10 @@
 			$('#testForm4').prepend('<h1 class="text-center" style="background-color: #eee; ">只读流式</h1>');
 			data.isRead = true;
 			data.isSteam = true;
-			$('#testForm4').renderForm(data);*/
+			$('#testForm4').renderForm(data);
 
 
-			$('#testForm').append(
-				'<div class="col-sm-12">'+
-					'<button class="btn btn btn-primary btn-block" type="submit">提交</button>' +
-				'</div>'
-			);
+			$('#testForm').append('<button class="btn btn-primary" type="submit">提交</button>');
 		});
 	</script>
 </body>

@@ -1,9 +1,9 @@
 ;(function (factory) {
 	'use strict';
 	if (typeof define === 'function' && define.amd) {
-		define(['jquery'], factory);
+		define(['zepto'], factory);
 	} else {
-		factory(window.jQuery);
+		factory(window.Zepto);
 	}
 }(function ($, undefined) {
 	$.formc = $.formc || {};
@@ -13,7 +13,7 @@
 	var shellTemplate = templates.shellTemplate = 
 		'<div class="outerClass drag_item base">' +
 			'<div class="item row formDescription form-group">' +
-				'<label class="labelClass form-control-static hidden-xs">' +
+				'<label class="labelClass form-control-static">' +
 					'<span class="textRequired formLabel pull-right"></span>' +
 				'</label>' +
 				'<div class="contentClass">' +
@@ -44,7 +44,7 @@
 
 
 
-	core.select = '<select class="form-control"></select>';
+	/*core.select = '<select class="form-control"></select>';
 	opts.select = {
 		"name": "demo_select",
 		"type": "select",						 // 基本类型
@@ -160,5 +160,5 @@
 		"description": "--静态文字描述--"
 	};
 	rule.static = {
-	};
+	};*/
 }));

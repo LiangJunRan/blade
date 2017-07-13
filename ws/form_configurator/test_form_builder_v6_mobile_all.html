@@ -30,7 +30,6 @@
 
 	<!-- fc页面样式 -->
 	<link rel="stylesheet" href="assets/form-configurator_v6/css/form-configurator.css">
-	<link rel="stylesheet" href="assets/form-configurator_v6/css/mobile-fix.css">
 	<!-- fc模板文件 -->
 	<script src="assets/form-configurator_v6/js/form-configurator-templates.js"></script>
 	<!-- fb本体 -->
@@ -271,10 +270,10 @@
 		    "isRead": false
 		};
 		$(document).ready(function(){
-			// $('#testForm').prepend('<h1 class="text-center" style="background-color: #eee; ">非流式</h1>');
+			$('#testForm').prepend('<h1 class="text-center" style="background-color: #eee; ">非流式</h1>');
 			$('#testForm').renderForm(data);
 
-			/*$('#testForm2').prepend('<h1 class="text-center" style="background-color: #eee; ">流式</h1>');
+			$('#testForm2').prepend('<h1 class="text-center" style="background-color: #eee; ">流式</h1>');
 			data.isRead = false;
 			data.isSteam = true;
 			$('#testForm2').renderForm(data);
@@ -287,14 +286,10 @@
 			$('#testForm4').prepend('<h1 class="text-center" style="background-color: #eee; ">只读流式</h1>');
 			data.isRead = true;
 			data.isSteam = true;
-			$('#testForm4').renderForm(data);*/
+			$('#testForm4').renderForm(data);
 
 
-			$('#testForm').append(
-				'<div class="col-sm-12">'+
-					'<button class="btn btn btn-primary btn-block" type="submit">提交</button>' +
-				'</div>'
-			);
+			$('#testForm').append('<button class="btn btn-primary" type="submit">提交</button>');
 		});
 	</script>
 </body>
