@@ -217,6 +217,17 @@
 				if (isNew) {
 					$('.core', $node).replaceWith($select);
 				}
+				if (opt.multiple) {
+					$select.attr('multiple', true);
+					$select.multiselect({
+			            dropRight: true,
+            			buttonContainer: '<div class="btn-group" style="width: 100%;" />',
+			            templates: {
+							button: '<button type="button" class="multiselect dropdown-toggle btn-block" data-toggle="dropdown"><span class="multiselect-selected-text"></span> <b class="caret"></b></button>',
+							ul: '<ul class="multiselect-container dropdown-menu" style="width: 100%;"></ul>'
+						}
+			        });
+				}
 				break;
 
 			// 日期选择器
@@ -641,10 +652,28 @@
 							break;
 					}
 				} else if ($this.is('select')) {
-					var value = $this.val();
-					if (value) {
-						var label = $this.find('[value=' + value + ']').html();
-						contentList.push(label);
+					// 单选
+					if (!$this[0].hasAttribute("multiple")) {
+						var value = $this.val();
+						if (value) {
+							var label = $this.find('[value=' + value + ']').html();
+							contentList.push(label);
+						}
+					}
+					// 多选
+					else {
+						var values = $this.val() || '';
+						var valueList;
+						if (!$.isArray(values)) {
+							valueList = values.split(',');
+						} else {
+							valueList = values;
+						}
+						// TODO: 去掉多余的选项
+						for (var i = 0; i < valueList.length; i++) {
+							var label = $this.find('[value=' + valueList[i] + ']').html();
+							contentList.push(label);
+						}
 					}
 				} else if ($this.is('textarea')) {
 					var label = $this.val();
