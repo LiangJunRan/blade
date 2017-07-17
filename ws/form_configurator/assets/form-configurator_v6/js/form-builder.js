@@ -2,7 +2,7 @@
 	'use strict';
     if (typeof define === "function" && define.amd) {
         // AMD模式
-        define(['jquery', 'jquery_validate'], factory);
+        define(['jquery', 'jquery_validate_min'], factory);
     } else {
         // 全局模式
         factory(jQuery);
@@ -349,6 +349,26 @@
 			}
 		});
 		dropFormValidator = $form.validate();
+		
+		$form.on('submit', function(){
+			var inputs = $(':input', $form);
+			$.each(inputs, function(idx){
+				try {
+					if ($(inputs[idx]).valid() == false) {
+						var offsetTop = $(inputs[idx]).closest('.item').offset().top + ($(inputs[idx]).closest('.item').height() / 2);
+						var halfAvailHeight = (window.screen.availHeight / 2);
+						$("html, body").animate({
+							scrollTop: (offsetTop - halfAvailHeight)
+						}, 0);
+						return false;
+					}
+				} catch (e) {
+					// do nothing
+				}
+			});
+			
+		})
+		
 		log('[校验] 初始化-后，dropFormValidator =', dropFormValidator);
 	}
 

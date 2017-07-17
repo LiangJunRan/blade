@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+	<!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+	<title>Form Builder - kuroikenshi@sina.com</title>
+	<!-- 基本 -->
+	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
+	<script src="assets/jquery/jquery-3.2.1.min.js"></script>
+	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- Retchet -->
+	<link rel="stylesheet" href="assets/ratchet-v2.0.2/css/ratchet.min.css">
+	<link rel="stylesheet" href="assets/ratchet-v2.0.2/css/ratchet-theme-ios.min.css">
+	<script src="assets/ratchet-v2.0.2/js/retchet.min.js"></script>
+
+	<!-- html和json格式化插件 -->
+	<script src="assets/html_formater/htmlformat.js"></script>
+	<script src="assets/html_formater/jsformat.js"></script>
+
+	<!-- 校验 -->
+	<script src="assets/jquery-validation/jquery.validate.js"></script>
+	<script src="assets/jquery-validation/localization/messages_zh.min.js"></script>
+	<script src="assets/jquery-validation/localization/messages_zh_fieldname.js"></script>
+
+	<!-- 日期选择控件 -->
+    <link href="assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <script src="assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+	<!-- 特殊radio和checkbox样式 -->
+	<link rel="stylesheet" href="assets/styles-radio-checkbox.css">
+
+	<!-- fc页面样式 -->
+	<link rel="stylesheet" href="assets/form-configurator_v6/css/form-configurator.css">
+	<link rel="stylesheet" href="assets/form-configurator_v6/css/mobile-fix.css">
+	<!-- fc模板文件 -->
+	<script src="assets/form-configurator_v6/js/form-configurator-templates.js"></script>
+	<!-- fb本体 -->
+	<script src="assets/form-configurator_v6/js/form-builder.js"></script>
+
+	<style>
+		form#testForm {
+			margin: 10px;
+		}
+		.form-group {
+			margin-bottom: 0px;
+		}
+	</style>
+</head>
+<body>
+	<form id="testForm" class="platform-ios">
+	<div class="content">
+		<h4 class="content-padded">Test form 1</h4>
+
+		<h5 class="content-padded">label</h5>
+		<ul class="table-view">
+			<li class="table-view-cell">option 1</li>
+			<li class="table-view-cell">option 2</li>
+			<li class="table-view-cell">option 3</li>
+			<li class="table-view-cell">option 4</li>
+		</ul>
+		<select name="xxx" id="xxx" multiple style="padding: 0;">
+			<option class="table-view-cell" value="1" style="background-position: 0px 100%;">Option 1</option>
+			<option class="table-view-cell" value="2" style="background-position: 0px 100%;">Option 2</option>
+			<option class="table-view-cell" value="3" style="background-position: 0px 100%;">Option 3</option>
+			<option class="table-view-cell" value="4" style="background-position: 0px 100%;">Option 4</option>
+		</select>
+	</div>
+	</form>
+	<div class="bar bar-standard bar-footer">
+		<button class="btn btn btn-primary btn-block" type="submit">Submit</button>
+	</div>
+	<script>
+		$(document).ready(function(){
+			$('#testForm').append(
+				''
+			);
+
+			// fix retchet
+			$('.col-sm-6').removeClass('col-sm-6');
+			$('.col-sm-12').removeClass('col-sm-12');
+			$('.col-sm-3').removeClass('col-sm-3');
+			$('.col-sm-9').removeClass('col-sm-9');
+			$('.col-sm-4').removeClass('col-sm-4');
+			$('.col-sm-8').removeClass('col-sm-8');
+			$('.row').removeClass('row');
+			$('.form-control').removeClass('form-control');
+			$('.item').removeClass('item');
+		});
+	</script>
+</body>
+</html>
