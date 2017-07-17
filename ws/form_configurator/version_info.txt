@@ -38,4 +38,7 @@ index6
 	增加static组件
 	解决col-sm-0的显示问题
 	解决label为空时，static组件在阅读模式下显示错位的bug
-	TODO: 校验报警颜色
+	校验报警颜色
+	校验报警时滚动到元素
+	报警内容中文
+	添加了mobile测试页面，使用fastclick解决iOS/webView的Click事件300ms延迟问题
