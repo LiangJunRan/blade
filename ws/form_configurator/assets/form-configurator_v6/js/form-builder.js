@@ -505,7 +505,8 @@
 		var definedFunction = {};
 
 		var definedEvents = {
-			'valueChangeShowHide': 'change.valueChangeShowHide'
+			'valueChangeShowHide': 'change.valueChangeShowHide',
+			'valueChangeDisable': 'change.valueChangeDisable'
 		};	// 用来绑定和解绑事件
 
 		// 加入到事件模板？？
@@ -550,6 +551,52 @@
 					} else {
 						$('[name=' + this + ']', $form).closest('.drag_item').show();
 					}
+				}
+			});
+		}
+		// 值改变选中对象的disable状态
+		definedFunction['valueChangeDisable'] = function(event) {
+			var allResp = event.data.allResp;
+			var $form = event.data.$form;
+			var eb = event.data.eb;
+			var configueMode = event.data.configueMode;
+
+			var valueRespMap = eb.valueResps;		// {触发器的value: 响应对象的name}的关系
+			var triggerValues = [];					// 触发器现在的值(为了可读性，实际未使用)
+			var respNames = [];						// 取得当前值对应的所有响应对象
+
+			if ($(this).attr('type') == 'checkbox') {
+				$.each($('[name=' + $(this).attr('name') + ']:checked', $form), function(){
+					triggerValues.push($(this).val());
+					respNames.add(valueRespMap[$(this).val()]);
+				});
+			} else {
+				triggerValues = [$(this).val()];
+				respNames.add(valueRespMap[$(this).val()]);
+			}
+			log('Selected: [' + triggerValues.join(', ') + ']');
+
+			// 初始化，禁用所有响应对象
+			$.each(allResp, function(){
+				if (!!this && this.length > 0) {
+					/*if (configueMode) {
+						$('[name=' + this + ']', $form).closest('.drag_item').addClass('fakeHide');
+					} else {
+						$('[name=' + this + ']', $form).closest('.drag_item').hide();
+					}*/
+					$('[name=' + this + ']', $form).closest('.drag_item').find(':input').attr('disabled', true);
+				}
+			});
+
+			// 遍历前值对应的所有响应对象，取消禁用
+			$.each(respNames, function(){
+				if (!!this && this.length > 0) {
+					/*if (configueMode) {
+						$('[name=' + this + ']', $form).closest('.drag_item').removeClass('fakeHide');
+					} else {
+						$('[name=' + this + ']', $form).closest('.drag_item').show();
+					}*/
+					$('[name=' + this + ']', $form).closest('.drag_item').find(':input').attr('disabled', false);
 				}
 			});
 		}
@@ -610,6 +657,46 @@
 						},
 						definedFunction[eb.eventType]);
 					break;
+
+				case 'valueChangeDisable':
+					var $trigger = $('[name=' + eb.trigger + ']', $form);
+					var $triggerItem = $trigger.closest('.drag_item');
+					if (isConfig) {
+						$triggerItem.addClass('bandTrigger');
+					}
+
+					// 获取所有被联动对象(resp)的name
+					// TODO: 去重allResp
+					var allResp = [];
+					$.each(eb.valueResps, function(value){
+						allResp.add(eb.valueResps[value]);
+					});
+
+					// 禁用所有被联动对象
+					$.each(allResp, function() {
+						if (!!this && this.length > 0) {
+							/*if (!isConfig) {
+								$('[name=' + this + ']', $form).closest('.drag_item').hide();
+							} else {
+								$('[name=' + this + ']', $form).closest('.drag_item').addClass('fakeHide');
+							}*/
+							$('[name=' + this + ']', $form).closest('.drag_item').find(':input').attr('disabled', true);
+						}
+					});
+
+					// 绑定事件
+					$trigger.addClass('band').on(
+						definedEvents[eb.eventType],
+						'',
+						{
+							allResp: allResp, 
+							$form: $form, 
+							eb: eb,
+							configueMode: isConfig
+						},
+						definedFunction[eb.eventType]);
+					break;
+
 				default:
 					log('[WARN] Not support yet.', eb.eventType);
 					break;

@@ -595,6 +595,8 @@
 
 			switch(eb.eventType) {
 				case 'valueChangeShowHide':
+				case 'valueChangeDisable':
+					// 遍历所有响应对象的name
 					$.each(eb.valueResps, function(value){
 						if ($.isArray(eb.valueResps[value])) {
 							var $basicNode = $('[name=_value_' + value + ']:eq(0)', $eventBind);
@@ -633,7 +635,9 @@
 					'<div class="col-sm-8">' +
 						'<select name="' + 'eventType' + '" class="form-control">' +
 							'<option value="">-- 请选择 --</option>' +
+							// TODO: 改成模板加载
 							'<option value="valueChangeShowHide">值改变 -> 显示/隐藏</option>' +
+							'<option value="valueChangeDisable">值改变 -> 启用/禁用</option>' +
 						'</select>' +
 					'</div>' +
 				'</div>' +
@@ -659,9 +663,6 @@
 
 			var $eventBindTriggerContent = '';
 			switch($(this).val()) {
-				case undefined:
-					$eventBindTriggerContent = $('<div>Something is wrong, check it.</div>');
-					break;
 				case 'valueChangeShowHide':
 					$eventBindTriggerContent = $(
 						'<label class="col-sm-4 form-control-static">' + '触发对象' + '</label>' +
@@ -714,6 +715,65 @@
 							}
 						}
 					});
+					break;
+
+				case 'valueChangeDisable':
+					$eventBindTriggerContent = $(
+						'<label class="col-sm-4 form-control-static">' + '触发对象' + '</label>' +
+						'<div class="col-sm-8">' +
+							'<input type="text" name="trigger" class="form-control clickToSelectInputElement" placeholder="点击选择" />' +
+						'</div>');
+					$eventBindTriggerContent.find('[name=trigger]').on('change', function(){
+						var triggerName = $(this).val();
+						var $trigger = $('#dropForm').find('[name=' + triggerName + ']:eq(0)');
+						if ($trigger.length > 0) {
+							var $triggerItem = $trigger.closest('.drag_item');
+
+							var valuesPair = [];
+							if ($triggerItem.data().opts.dataUrl && $triggerItem.data().opts.dataUrl.length != 0) {
+								log('[WARN] Not support dataUrl opitons.', $triggerItem);
+							} else if ($triggerItem.data().opts.options && $triggerItem.data().opts.options.length > 0){
+								valuesPair = $triggerItem.data().opts.options;
+							} else {
+								log('[WARN] Not valid opts.opitons.', $triggerItem);
+							}
+
+							// 添加值-响应对
+							$eventBindDetail.html('');
+							if (valuesPair.length == 0) {
+								$eventBindDetail.append('<div class="col-sm-12 form-control-static">--未发现待选项--</div>');
+							} else {
+								$.each(valuesPair, function() {
+									$eventBindDetail.append(
+										'<label class="col-sm-4 form-control-static text-right">' + this.label + '</label>' +
+										'<div class="col-sm-8 valueRespContainer">' +
+											'<div class="input-group">' +
+												'<span class="input-group-addon btn btn-success addValueRespBtn"><i class="fa fa-plus"></i></span>' +
+												'<input type="text" name="_value_' + this.value + '" class="form-control clickToSelectInputElement" placeholder="点击选择" />' +
+												'<span class="input-group-addon btn btn-danger delValueRespBtn"><i class="fa fa-close"></i></span>' +
+											'</div>' +
+										'</div>');
+
+								});
+								$eventBindDetail.on('click', '.addValueRespBtn', function(){
+									var new_node = $($(this).closest('.input-group')[0].outerHTML);
+									$(this).closest('.input-group').after(new_node);
+								});
+								$eventBindDetail.on('click', '.delValueRespBtn', function(){
+									if ($(this).closest('.valueRespContainer').children().length > 1) {
+										$(this).closest('.input-group').remove();
+									} else {
+										$(this).parent().find('input').val('');
+									}
+								});
+							}
+						}
+					});
+					break;
+
+				case undefined:
+				default:
+					$eventBindTriggerContent = $('<div>Something is wrong, check it.</div>');
 					break;
 			}
 

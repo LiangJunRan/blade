@@ -62,24 +62,6 @@
 		"required": false
 	};
 
-	core.multiselect = '<select class="form-control coreInput" multiple></select>';
-	opts.multiselect = {
-		"name": "demo_select",
-		"type": "multiselect",						 // 基本类型
-		"label": "下拉多选",
-		"placeholder": "--请选择--",				// 非必填
-		"description": "请点击选择",
-		"dataUrl": "",							// 填写使用Url加载待选项，否则使用options
-		"options": [
-			{"label": "选项1", "value": 1},
-			{"label": "选项2", "value": 2},
-			{"label": "选项3", "value": 3}
-		]
-	};
-	rule.multiselect = {
-		"required": false
-	};
-
 
 
 	core.radio = '<div class="formContent"></div>';
@@ -146,6 +128,31 @@
 		"required": false,
 		"dateISO": true
 	};
+
+
+
+
+	core.multiselect = '<select class="form-control coreInput" multiple></select>';
+	opts.multiselect = {
+		"name": "demo_multiselect",
+		"type": "multiselect",						 // 基本类型
+		"label": "下拉多选",
+		"placeholder": "--请选择--",				// 非必填
+		"description": "请点击选择",
+		"dataUrl": "",							// 填写使用Url加载待选项，否则使用options
+		"options": [
+			{"label": "选项1", "value": 1},
+			{"label": "选项2", "value": 2},
+			{"label": "选项3", "value": 3},
+			{"label": "选项4", "value": 4},
+			{"label": "选项5", "value": 5},
+			{"label": "选项6", "value": 6}
+		]
+	};
+	rule.multiselect = {
+		"required": false
+	};
+
 
 
 
