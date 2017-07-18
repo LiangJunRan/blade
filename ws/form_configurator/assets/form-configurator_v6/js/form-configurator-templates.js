@@ -13,7 +13,7 @@
 	var shellTemplate = templates.shellTemplate = 
 		'<div class="outerClass drag_item base">' +
 			'<div class="item row formDescription form-group">' +
-				'<label class="labelClass form-control-static hidden-xs">' +
+				'<label class="labelClass form-control-static">' +
 					'<span class="textRequired formLabel pull-right"></span>' +
 				'</label>' +
 				'<div class="contentClass">' +
@@ -28,7 +28,7 @@
 	var opts = templates.opts = {};
 	var rule = templates.rule = {};
 
-	core.text = '<input type="text" class="form-control" />';
+	core.text = '<input type="text" class="form-control coreInput" />';
 	opts.text = {
 		"name": "demo_text",
 		"type": "text",						 // 基本类型
@@ -44,12 +44,11 @@
 
 
 
-	core.select = '<select class="form-control"></select>';
+	core.select = '<select class="form-control coreInput"></select>';
 	opts.select = {
 		"name": "demo_select",
 		"type": "select",						 // 基本类型
-		"label": "下拉框",
-		"multiple": false,
+		"label": "下拉单选",
 		"placeholder": "--请选择--",				// 非必填
 		"description": "请点击选择",
 		"dataUrl": "",							// 填写使用Url加载待选项，否则使用options
@@ -63,12 +62,30 @@
 		"required": false
 	};
 
+	core.multiselect = '<select class="form-control coreInput" multiple></select>';
+	opts.multiselect = {
+		"name": "demo_select",
+		"type": "multiselect",						 // 基本类型
+		"label": "下拉多选",
+		"placeholder": "--请选择--",				// 非必填
+		"description": "请点击选择",
+		"dataUrl": "",							// 填写使用Url加载待选项，否则使用options
+		"options": [
+			{"label": "选项1", "value": 1},
+			{"label": "选项2", "value": 2},
+			{"label": "选项3", "value": 3}
+		]
+	};
+	rule.multiselect = {
+		"required": false
+	};
+
 
 
 	core.radio = '<div class="formContent"></div>';
 	sub.radio =
 		'<div class="radio clip-radio radio-primary radio-inline">' +
-			'<input type="radio">' +
+			'<input type="radio" class="coreInput">' +
 			'<label class="itemLabel"></label>' +
 		'</div>';
 	opts.radio = {
@@ -92,7 +109,7 @@
 	core.checkbox = '<div class="formContent"></div>';
 	sub.checkbox =
 		'<div class="checkbox clip-check check-primary checkbox-inline">' +
-			'<input type="checkbox">' +
+			'<input type="checkbox" class="coreInput">' +
 			'<label class="itemLabel"></label>' +
 		'</div>';
 	opts.checkbox = {
@@ -117,7 +134,7 @@
 		'<span class="form-control-feedback feedback-fix">' +
 			'<i class="fa fa-calendar"></i>' +
 		'</span>' +
-		'<input type="text" class="form-control" />';
+		'<input type="text" class="form-control coreInput" />';
 	opts.date = {
 		"name": "demo_date",
 		"type": "date",						// 基本类型
@@ -133,7 +150,7 @@
 
 
 	core.textarea = 
-		'<textarea class="form-control"></textarea>';
+		'<textarea class="form-control coreInput"></textarea>';
 	opts.textarea = {
 		"name": "demo_textarea",
 		"type": "textarea",						// 基本类型

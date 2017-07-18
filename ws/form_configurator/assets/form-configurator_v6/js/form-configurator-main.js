@@ -258,7 +258,7 @@
 			$detail_form.append($info);
 		});
 		// 针对选项做特殊处理
-		if (['select', 'radio', 'checkbox'].indexOf($item.data().opts.type) != -1) {
+		if (['select', 'multiselect', 'radio', 'checkbox'].indexOf($item.data().opts.type) != -1) {
 			var options_html = '';
 			$.each($item.data().opts.options, function() {
 				if (!!this.label && !!this.value) {

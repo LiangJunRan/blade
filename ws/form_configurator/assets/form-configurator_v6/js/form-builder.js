@@ -184,7 +184,7 @@
 
 			// 下拉框
 			case 'select':
-				var $select;
+				var $select = undefined;
 				if (isNew) {
 					$select = $(core[opt.type]);
 				} else {
@@ -217,17 +217,65 @@
 				if (isNew) {
 					$('.core', $node).replaceWith($select);
 				}
-				if (opt.multiple) {
-					$select.attr('multiple', true);
-					$select.multiselect({
-			            dropRight: true,
-            			buttonContainer: '<div class="btn-group" style="width: 100%;" />',
-			            templates: {
-							button: '<button type="button" class="multiselect dropdown-toggle btn-block" data-toggle="dropdown"><span class="multiselect-selected-text"></span> <b class="caret"></b></button>',
-							ul: '<ul class="multiselect-container dropdown-menu" style="width: 100%;"></ul>'
-						}
-			        });
+				break;
+
+			// 下拉多选
+			case 'multiselect':
+				var $select = undefined;
+				console.log('isNew>>>', isNew);
+				if (isNew) {
+					$select = $(core[opt.type]);
+				} else {
+					$select = $('select', $node);
+					$select.multiselect('destroy');
+					$('.multiselect-native-select:eq(0)', $node).replaceWith($select);
 				}
+				$select.html('');
+				if (opt.dataUrl) {
+					$.ajax({
+						url: opt.dataUrl,
+						success: function(data) {
+							log('获取选项数据成功:', data);
+							$.each(data.options, function() {
+								$select.append('<option value="' + this.value + '">' + this.label + '</option>');
+							});
+						},
+						error: function(data) {
+							console.error('[ERROR] 获取待选项失败', opt);
+						}
+					});
+				} else if (opt.options !== undefined && opt.options.length > 0){
+					$.each(opt.options, function() {
+						$select.append('<option value="' + this.value + '">' + this.label + '</option>');
+					});
+				} else {
+					$select.append('<option value="">--No-Item--</option>');
+				}
+
+				if (isNew) {
+					$('.core', $node).replaceWith($select);
+				}
+
+				$select.multiselect({
+		            dropRight: true,
+        			buttonContainer: '<div class="btn-group" style="width: 100%;" />',
+        			nonSelectedText: opt.placeholder || '--请选择--',
+		            templates: {
+						button: 
+							'<button type="button" class="multiselect dropdown-toggle btn-block" data-toggle="dropdown" ' +
+									'style="text-align: left; padding-left: 16px; white-space:nowrap; text-overflow:ellipsis; ' +
+									'overflow:hidden;">' +
+								'<span class="multiselect-selected-text"></span>' +
+							'</button>',
+						ul: '<ul class="multiselect-container dropdown-menu" style="width: 100%;"></ul>'
+					}
+		        });
+
+				$select.on('change', function(){
+					$(this).multiselect('refresh');
+				});
+				
+				
 				break;
 
 			// 日期选择器
@@ -292,7 +340,13 @@
 
 		// common
 		$('.formLabel', $node).html(opt.label);
-		$('input, select, textarea', $node).attr('name', opt.name);
+
+		if (opt.type == 'multiselect') {
+			$('select', $node).attr('name', opt.name);
+		} else {
+			$('input, select, textarea', $node).attr('name', opt.name);
+		}
+
 		$('input, select, textarea', $node).attr('readonly', opt.readonly || false);
 		$('.formDescription', $node).attr('title', opt.description);
 		addOrReplaceClass($node, 'col-sm-' + opt.outerWidth);
@@ -566,7 +620,7 @@
 
 
 	// /////////////////////////////////////////////////////////////////////////////
-	// 指定form改为流式布局（目前单向）
+	// 指定form改为流式布局
 	// /////////////////////////////////////////////////////////////////////////////
 	function steamLayout($form) {
 		for (var j = 1; j <= 12; j++) {
@@ -634,7 +688,7 @@
 		$.each($form.children(), function(){
 			var $node = $(this);
 			var contentList = [];
-			$.each($node.find(':input'), function(){
+			$.each($node.find('.coreInput'), function(){
 				var $this = $(this);
 				if ($this.is('input')){
 					switch ($this.attr('type')) {
@@ -669,11 +723,12 @@
 						} else {
 							valueList = values;
 						}
-						// TODO: 去掉多余的选项
-						for (var i = 0; i < valueList.length; i++) {
+						$.each(valueList, function(i){
 							var label = $this.find('[value=' + valueList[i] + ']').html();
-							contentList.push(label);
-						}
+							if (!!valueList[i] && !!label){
+								contentList.push(label);
+							}
+						});
 					}
 				} else if ($this.is('textarea')) {
 					var label = $this.val();

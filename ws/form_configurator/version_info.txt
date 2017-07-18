@@ -42,3 +42,4 @@ index6
 	校验报警时滚动到元素
 	报警内容中文
 	添加了mobile测试页面，使用fastclick解决iOS/webView的Click事件300ms延迟问题
+	添加了下拉复选框
