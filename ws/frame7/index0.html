@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>My App</title>
+    <!-- Path to Framework7 Library CSS-->
+    <link rel="stylesheet" href="assets/fw7/css/framework7.ios.min.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="assets/fw7/css/my-app.css">
+
+    <style>
+      /*.navbar-fixed .page-content, .navbar-through .page-content {
+        padding-top: 0px;
+      }*/
+      .list-block .item-after.item-after-fix {
+        max-width: 70%;
+        white-space: normal;
+        max-height: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 左右出现侧边栏的时候，取消操作用的覆盖层 -->
+    <!-- Status bar overlay for fullscreen mode-->
+    <div class="statusbar-overlay"></div>
+    <!-- Panels overlay-->
+    <div class="panel-overlay"></div>
+
+    <!-- Left panel with reveal effect-->
+    <div class="panel panel-left panel-reveal">
+      <div class="content-block">
+        <p>Left panel content goes here</p>
+      </div>
+    </div>
+    <!-- Right panel with cover effect-->
+    <div class="panel panel-right panel-cover">
+      <div class="content-block">
+        <p>Right panel content goes here</p>
+      </div>
+    </div>
+
+    <!-- Views-->
+    <div class="views">
+      <!-- Your main view, should have "view-main" class-->
+      <div class="view view-main">
+
+        <!-- Top Navbar-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="center sliding">英联邦小班课堂反馈</div>
+            <div class="right">
+              <a href="#" class="link icon-only open-panel">
+                <i class="icon icon-bars"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+        <div class="pages navbar-through toolbar-through">
+          <!-- Page, data-page contains page name-->
+          <div data-page="index" class="page">
+            <!-- Scrollable page content-->
+            <div class="page-content">
+
+              <div class="content-block-title">班级信息</div>
+              <div class="list-block">
+                <ul>
+                  <li class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">课程名称</div>
+                      <div class="item-after item-after-fix">IELTS口语</div>
+                    </div>
+                  </li>
+                  <li class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">教师</div>
+                      <div class="item-after item-after-fix">骆俊成</div>
+                    </div>
+                  </li>
+                  <li class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">课次</div>
+                      <div class="item-after item-after-fix">1</div>
+                    </div>
+                  </li>
+                  <li class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">班级编码</div>
+                      <div class="item-after item-after-fix">VIP6JZYV17172</div>
+                    </div>
+                  </li>
+                  <li class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">学员姓名</div>
+                      <div class="item-after item-after-fix">王一啸、马小峰、梁宗平、赵泽佳、刘铭</div>
+                    </div>
+                  </li>
+                  <li class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">班级描述</div>
+                      <div class="item-after item-after-fix">IELTS 6人班（VIP强化精品住宿班）,IELTS 6人班（VIP强化走读班）</div>
+                    </div>
+                  </li>
+              </div>
+
+              <div class="content-block-title">班级定位</div>
+              <div class="content-block">
+                <div class="content-block-inner">
+                  <p>雅思口语考试介绍，评分标准解析，考试流程中的注意事项，了解学生考试时间安排，模拟考试排查学生的强项弱项；同时给出学生具体的课程计划，（课时分配）。</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div data-page="index2" class="page">
+            <!-- Scrollable page content-->
+            <div class="page-content">
+
+              <div class="content-block-title">班级信息xxxxx</div>
+              <div class="list-block">
+                <ul>
+                  <li class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">课程名称</div>
+                      <div class="item-after item-after-fix">IELTS口语</div>
+                    </div>
+                  </li>
+                  <li class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">教师</div>
+                      <div class="item-after item-after-fix">骆俊成</div>
+                    </div>
+                  </li>
+                  <li class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">课次</div>
+                      <div class="item-after item-after-fix">1</div>
+                    </div>
+                  </li>
+                  <li class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">班级编码</div>
+                      <div class="item-after item-after-fix">VIP6JZYV17172</div>
+                    </div>
+                  </li>
+                  <li class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">学员姓名</div>
+                      <div class="item-after item-after-fix">王一啸、马小峰、梁宗平、赵泽佳、刘铭</div>
+                    </div>
+                  </li>
+                  <li class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">班级描述</div>
+                      <div class="item-after item-after-fix">IELTS 6人班（VIP强化精品住宿班）,IELTS 6人班（VIP强化走读班）</div>
+                    </div>
+                  </li>
+              </div>
+
+              <div class="content-block-title">班级定位</div>
+              <div class="content-block">
+                <div class="content-block-inner">
+                  <p>雅思口语考试介绍，评分标准解析，考试流程中的注意事项，了解学生考试时间安排，模拟考试排查学生的强项弱项；同时给出学生具体的课程计划，（课时分配）。</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Toolbar-->
+        <div class="toolbar">
+          <div class="toolbar-inner">
+            <a href="#" class="link">Link 1</a>
+            <a href="test.html" class="link">Test</a>
+            <a href="index1.html" class="link">Link 2</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Path to Framework7 Library JS-->
+    <script type="text/javascript" src="assets/fw7/js/framework7.min.js"></script>
+    Path to your app js
+    <script type="text/javascript" src="assets/fw7/js/my-app.js"></script>
+
+    <!-- <script>
+      // HTML Content of new page:
+      var newPageContent = '<div class="page" data-page="my-page">' +
+                              '<div class="page-content">' +
+                                '<p>Here comes new page</p>' +
+                              '</div>' +
+                            '</div>';
+       
+      //Load new content as new page
+      mainView.router.loadContent(newPageContent);
+       
+      // OR using .load method if need more options
+      mainView.router.load({
+        content: newPageContent,
+        animatePages: false
+      });
+    </script> -->
+  </body>
+</html>
