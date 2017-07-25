@@ -8,12 +8,22 @@
 
 	<!-- Style Files -->
     <link rel="stylesheet" href="assets/fw7/css/framework7.ios.min.css">
+    <link rel="stylesheet" href="assets/fw7/css/framework7.ios.colors.min.css">
+	<link rel="stylesheet" href="assets/fw7-icons/css/framework7-icons.css">
     <link rel="stylesheet" href="assets/fw7/css/my-app.css">
 	<style>
 		.list-block .item-after.item-after-fix {
 			max-width: 70%;
 			white-space: normal;
 			max-height: none;
+		}
+		.list-block .smart-select .item-after {
+		    width: 100%;
+		    padding-left: 12px;
+		}
+		.list-block input[type=text],
+		.list-block textarea {
+			color: #8e8e93;
 		}
 	</style>
 </head>
@@ -26,6 +36,7 @@
 	<!-- Left panel with reveal effect-->
 	<div class="panel panel-left panel-reveal">
 		<div class="content-block navList">
+			<div class="log"></div>
 			<!-- <p>
 				<a class="close-panel" href="#index">班级信息</a>
 			</p> -->
@@ -128,11 +139,31 @@
 
 		</div>
 	</div>
+
+	<div class="popup popup-submit" style="height: initial; top: initial; bottom: 0px;">
+		<div class="content-block">
+			<p style="text-indent: 2em;">请确认是否提交？</p>
+			<div class="row">
+				<div class="col-50">
+					<a href="#" class="button button-big color-red button-fill close-popup">取消</a>
+				</div>
+				<div class="col-50">
+					<a href="#" class="button button-big color-green button-fill all-form-submit">提交</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+
+	<!-- html和json格式化插件 -->
+	<script src="assets/html_formater/htmlformat.js"></script>
+	<script src="assets/html_formater/jsformat.js"></script>
 	
     <script src="assets/fw7/js/framework7.min.js"></script>
 	<script src="assets/fw7/js/framework7-form-builder-templates.js"></script>
 	<script src="assets/fw7/js/framework7-form-builder.js"></script>
-    <script src="assets/fw7/js/my-app-index2.js"></script>
+    <script src="assets/fw7/js/my-app-form-builder.js"></script>
 	
 </body>
 </html>

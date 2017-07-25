@@ -10,7 +10,7 @@
 	// 全局变量 - Global Parameters
 	// /////////////////////////////////////////////////////////////////////////////
 	$.formb = $.formb || {};
-	var shellTemplate = $.formc.templates.shellTemplate;
+	// var shellTemplate = $.formc.templates.shellTemplate;
 	var core = $.formc.templates.core;
 	var sub = $.formc.templates.sub;
 	var opts = $.formc.templates.opts;
@@ -28,8 +28,34 @@
 	// 调试打印日志方法
 	function log() {
 		if (debug_mode) {
-			log = console.log;
+			// log = console.log;
+			log = rLog;
 		}
+	}
+
+	// 格式化html、js、json
+	function formatCode(code) {
+		js_source = code.replace(/^\s+/, '');
+		tabsize = 4;
+		tabchar = ' ';
+		if (tabsize == 1) {
+			tabchar = '\t';
+		}
+		var fmt_code = '';
+		if (js_source && js_source.charAt(0) === '<') {
+			code = style_html(js_source, tabsize, tabchar, 80);
+		} else {
+			code = js_beautify(js_source, tabsize, tabchar);
+		}
+		return code;
+	}
+
+	function rLog() {
+		var msg = '';
+		for (var i = 0; i < arguments.length; i++) {
+			msg += formatCode(JSON.stringify(arguments[i])) + '\n\n\n';
+		}
+		$('.log').append('<pre>' + msg + '</pre><hr>');
 	}
 
 	/** 
@@ -50,13 +76,17 @@
 		var $form = $(this);
 
 		// 渲染生成form
+		log('renderJson0');
 		renderJson($form, jsonConf);
+		log('renderJson1');
 
 		// 加联动
-		activeEventBinds($form, jsonConf.events);
+		// activeEventBinds($form, jsonConf.events);
 
 		// 赋初值
+		log('renderJson0');
 		setFormValue($form, jsonConf.values);
+		log('renderJson1');
 
 		// 只读模式的实现
 		if (jsonConf.isRead) {
@@ -77,181 +107,112 @@
 //		$form.html('');
 
 		$.each(json_opts || [], function(_idx){
-			var $item = render(this);
+			log('render-' + _idx + '-0');
+			var $item = render(json_opts[_idx]);
+			log('render-' + _idx + '-1');
 
-			$item.removeClass('base');
+
 			// 加入新对象
-			$form.append($item);
+			log('addToForm-' + _idx + '-0');
+			addToForm($item, $form);
+			log('addToForm-' + _idx + '-1');
 
-			$item.data().opts = this;
-			$item.data().rule = json_rules[this.name];
+
+			// $item.data().opts = this;
+			// $item.data().rule = json_rules[this.name];
 		});
 	}
 
+	// 新表单项加入表单的特殊处理
+	function addToForm($item, $form) {
+		var $lastChildNode = $form.find(':last-child');
+		// 可以加入到list-block中的对象
+		if (['text', 'select', 'multiselect', 'textarea'].indexOf($item.data('opts').type) != -1) {
+			// 前节点不存在，或者存在，但不是list-block，新建list-block外壳
+			if (
+				// 上一个子节点不存在 或
+				($lastChildNode.length == 0) || 
+				// 上一个子节点不是list-block
+				(!$lastChildNode.is('.list-block'))
+			) {
+				$lastChildNode = $(
+					'<div class="list-block">' +
+						'<ul></ul>' +
+					'</div>');
+				$form.append($lastChildNode);
+			}
+			var $ul = $lastChildNode.children('ul');
+			var $li = $('<li></li>');
+			$li.append($item);
+			$ul.append($li);
+		}
+		// TODO
+		else {
+			console.warn($item.data('opts').type, 'is NOT support now');
+		}
+	}
+
 	// 每个节点渲染的方法
-	function render(_opt, _$node, isRead) {
-		var default_opt = {
-			"name": "demo_text",
-			"label": "测试文本",
-			"outerWidth": 12,
-			"labelWidth": 3,
-			"contentWidth": 9,
-			"widthInSteam": "auto"
-		};
-		var opt = $.extend(true, {}, default_opt, _opt);
+	function render(opt, _$node, isRead) {
 		var isNew = !(_$node);
-		$node = _$node || $(shellTemplate);		// 指定了，就是用指定点
+		var $node = _$node || $((core[opt.type] || '').format(opt));
 
 		// case by type
 		switch (opt.type) {
 			// 单选、多选
-			case 'radio':
+			/*case 'radio':
 			case 'checkbox':
-				var $content;
-				if (isNew) {
-					$content = $(core[opt.type]);
-				} else {
-					$content = $('.formContent', _$node);
-					$content.html('');
-				}
-				if (opt.dataUrl) {
-					var deferredObj = $.ajax({
-						url: opt.dataUrl,
-						success: function(data) {
-							log('获取选项数据成功:', data);
-							$.each(data.options, function() {
-								var $sub = $(sub[opt.type]);
-								var random_id = randomId();
-								$('.itemLabel', $sub).html(this.label).attr('for', random_id);
-								$('input', $sub).attr('value', this.value).attr('id', random_id);
-
-								$content.append($sub);
-							});
-							$('input, select, textarea', $content).attr('name', opt.name);
-						},
-						error: function(data) {
-							console.error('[ERROR] 获取待选项失败', opt);
-						},
-						complete: function(data) {
-							log('DONE', data);
-						}
-					});
-					deferredObjectList.push(deferredObj);
-				} else if (opt.options !== undefined && opt.options.length > 0){
-					$.each(opt.options, function() {
-						var $sub = $(sub[opt.type]);
-						var random_id = randomId();
-						$('.itemLabel', $sub).html(this.label).attr('for', random_id);
-						$('input', $sub).attr('value', this.value).attr('id', random_id);
-
-						$content.append($sub);
-					});
-				} else {
-					$content.append('<div class="form-control-static">-- 未配置选项 --</div>');
-				}
-				if (isNew) {
-					$('.core', $node).replaceWith($content);
-				}
-				break;
+				break;*/
 
 			// 下拉框
 			case 'select':
-				var $select = undefined;
-				if (isNew) {
-					$select = $(core[opt.type]);
-				} else {
-					$select = $('select', _$node);
-					$select.html('');
+			case 'multiselect':
+				if (opt.type == 'multiselect') {
+					$node = _$node || $(core['select'].format(opt));
+					$node.find('select').prop('multiple', true);
+				}
+				var $select = $node.find('select');
+				if (!isNew) {
+					$select.empty();
 				}
 				if (opt.placeholder) {
-					$select.append('<option value="">' + opt.placeholder + '</option>')
-				}
-				if (opt.dataUrl) {
-					$.ajax({
-						url: opt.dataUrl,
-						success: function(data) {
-							log('获取选项数据成功:', data);
-							$.each(data.options, function() {
-								$select.append('<option value="' + this.value + '">' + this.label + '</option>');
-							});
-						},
-						error: function(data) {
-							console.error('[ERROR] 获取待选项失败', opt);
-						}
-					});
-				} else if (opt.options !== undefined && opt.options.length > 0){
-					$.each(opt.options, function() {
-						$select.append('<option value="' + this.value + '">' + this.label + '</option>');
-					});
-				} else {
-					$select.append('<option value="">--No-Item--</option>');
-				}
-				if (isNew) {
-					$('.core', $node).replaceWith($select);
-				}
-				break;
-
-			// 下拉多选
-			case 'multiselect':
-				var $select = undefined;
-				console.log('isNew>>>', isNew);
-				if (isNew) {
-					$select = $(core[opt.type]);
-				} else {
-					$select = $('select', $node);
-					$select.multiselect('destroy');
-					$('.multiselect-native-select:eq(0)', $node).replaceWith($select);
-				}
-				$select.html('');
-				if (opt.dataUrl) {
-					$.ajax({
-						url: opt.dataUrl,
-						success: function(data) {
-							log('获取选项数据成功:', data);
-							$.each(data.options, function() {
-								$select.append('<option value="' + this.value + '">' + this.label + '</option>');
-							});
-						},
-						error: function(data) {
-							console.error('[ERROR] 获取待选项失败', opt);
-						}
-					});
-				} else if (opt.options !== undefined && opt.options.length > 0){
-					$.each(opt.options, function() {
-						$select.append('<option value="' + this.value + '">' + this.label + '</option>');
-					});
-				} else {
-					$select.append('<option value="">--No-Item--</option>');
-				}
-
-				if (isNew) {
-					$('.core', $node).replaceWith($select);
-				}
-
-				$select.multiselect({
-		            dropRight: true,
-        			buttonContainer: '<div class="btn-group" style="width: 100%;" />',
-        			nonSelectedText: opt.placeholder || '--请选择--',
-		            templates: {
-						button: 
-							'<button type="button" class="multiselect dropdown-toggle btn-block" data-toggle="dropdown" ' +
-									'style="text-align: left; padding-left: 16px; white-space:nowrap; text-overflow:ellipsis; ' +
-									'overflow:hidden;">' +
-								'<span class="multiselect-selected-text"></span>' +
-							'</button>',
-						ul: '<ul class="multiselect-container dropdown-menu" style="width: 100%;"></ul>'
+					if (opt.type == 'multiselect') {
+						$select.on('change', function(e) {
+							if ($select.val().length == 0) {
+								// 利用timeout0将方法滞后执行
+								setTimeout(function(){
+									$node.find('.item-after').html(opt.placeholder);
+								}, 0);
+							}
+						});
+					} else {
+						$select.append(sub.select.format({label: opt.placeholder, value: ''}));
 					}
-		        });
-
-				$select.on('change', function(){
-					$(this).multiselect('refresh');
-				});
-				
-				
+				}
+				if (opt.dataUrl) {
+					$.ajax({
+						url: opt.dataUrl,
+						success: function(data) {
+							log('获取选项数据成功:', data);
+							$.each(data.options, function(idx) {
+								$select.append(sub.select.format(data.options[idx]));
+							});
+						},
+						error: function(data) {
+							console.error('[ERROR] 获取待选项失败', opt);
+						}
+					});
+				} else if (opt.options !== undefined && opt.options.length > 0){
+					$.each(opt.options, function(idx) {
+						$select.append(sub.select.format(opt.options[idx]));
+					});
+				} else {
+					$select.append(sub.select.format({label: '-- NO ITEM --', value: ''}));
+				}
 				break;
 
 			// 日期选择器
-			case 'date':
+			/*case 'date':
 				if (isNew) {
 					$('.core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
 				}
@@ -273,26 +234,26 @@
 					$(this).parent().find('input').val('');
 				});
 
-				break;
+				break;*/
 
 			// 静态文字
-			case 'static':
+			/*case 'static':
 				if (isNew) {
 					$('.core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
 				}
 				$('.staticContent', $node).html(opt.placeholder);
-				break;
+				break;*/
 
 			// 多行文本
 			case 'textarea':
-				if (isNew) {
+				/*if (isNew) {
 					$('.core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
 				}
 				$('textarea', $node).attr('placeholder', opt.placeholder);
 				$('textarea', $node).attr('rows', opt.rows);
-				$('textarea', $node).css('resize', opt.resize);
-				$('textarea', $node).attr('onfocus', 'this.placeholder=""');
-				$('textarea', $node).attr('onblur', 'this.placeholder="' + opt.placeholder + '"');
+				$('textarea', $node).css('resize', opt.resize);*/
+				$node.find('textarea').attr('onfocus', 'this.placeholder=""');
+				$node.find('textarea').attr('onblur', 'this.placeholder="' + opt.placeholder + '"');
 				break;
 
 			// 文本框
@@ -300,36 +261,36 @@
 			case 'text':
 			case 'number':
 			default:
-				if (isNew) {
-					$('.core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
-				}
-				$('input', $node).attr('placeholder', opt.placeholder);
-				$('input', $node).attr('onfocus', 'this.placeholder=""');
-				$('input', $node).attr('onblur', 'this.placeholder="' + opt.placeholder + '"');
+				// if (isNew) {
+				// 	$('.core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
+				// }
+				// $('input', $node).attr('placeholder', opt.placeholder);
+				// $('input', $node).attr('onfocus', 'this.placeholder=""');
+				// $('input', $node).attr('onblur', 'this.placeholder="' + opt.placeholder + '"');
 				break;
 
 		}
 
 		// common
-		$('.formLabel', $node).html(opt.label);
+		/*$('.formLabel', $node).html(opt.label);
 
 		if (opt.type == 'multiselect') {
 			$('select', $node).attr('name', opt.name);
 		} else {
 			$('input, select, textarea', $node).attr('name', opt.name);
 		}
-
-		$('input, select, textarea', $node).attr('readonly', opt.readonly || false);
-		$('.formDescription', $node).attr('title', opt.description);
-		addOrReplaceClass($node, 'col-sm-' + opt.outerWidth);
+*/
+		// $node.find('input, select, textarea').attr('readonly', opt.readonly || false);
+		// $node.find('.formDescription').attr('title', opt.description);
+		/*addOrReplaceClass($node, 'col-sm-' + opt.outerWidth);
 		addOrReplaceClass($('.labelClass', $node), 'col-sm-' + opt.labelWidth);
-		addOrReplaceClass($('.contentClass', $node), 'col-sm-' + opt.contentWidth);
+		addOrReplaceClass($('.contentClass', $node), 'col-sm-' + opt.contentWidth);*/
 
 		// bind json
-		$node.data().opts = opt;
+		$node.data('opts', opt);
 
 		// 解决static没有label错乱问题
-		if ($node.data().opts.type == 'static') {
+		/*if ($node.data().opts.type == 'static') {
 			var $label = $('.labelClass', $node);
 			var $content = $('.staticContent', $node);
 			if ($label.length == 0 || $label.children().length == 0 || $($label.children()[0]).html().trim().length == 0) {
@@ -338,7 +299,7 @@
 					'vertical-align': 'middle'
 				});
 			}
-		}
+		}*/
 
 		return $node;
 	}
@@ -631,29 +592,12 @@
 	// 表单赋值与取值
 	// /////////////////////////////////////////////////////////////////////////////
 	function setFormValue($form, values) {
-		$.each(values || [], function(name) {
-			var value = values[name];
-
-			var targets = $('[name=' + name + ']', $form);
-
-			$.each(targets, function() {
-				var $this = $(this);
-				if (['radio', 'checkbox'].indexOf($this.attr('type')) != -1) {
-					if ((!$.isArray(value) && $this.attr('value') == value) || 
-						($.isArray(value) && value.indexOf($this.attr('value')) != -1)) {
-						$this.prop('checked', true);
-						$this.trigger('change');
-					}
-				} else {
-					$this.val(value);
-					$this.trigger('change');
-				}
-			});
-		});
+		var formId = $form.attr('id');
+		myApp.formFromData('#' + formId, values);
 	}
 	// 注册成为jQuery对象方法
 	$.fn.setFormValue = function(values) {
-		var $form = $(this);
+		var $form = $(this);	// fw7时有可能有错，this的问题？
 		setFormValue($form, values);
 	}
 
@@ -719,6 +663,29 @@
 		} else {
 			arrList.push(obj);
 		}
+	}
+
+	String.prototype.format = function(args) {
+	    var result = this;
+	    if (arguments.length > 0) {    
+	        if (arguments.length == 1 && typeof (args) == "object") {
+	            for (var key in args) {
+	                if(args[key]!=undefined){
+	                    var reg = new RegExp("({" + key + "})", "g");
+	                    result = result.replace(reg, args[key]);
+	                }
+	            }
+	        }
+	        else {
+	            for (var i = 0; i < arguments.length; i++) {
+	                if (arguments[i] != undefined) {
+	                    var reg = new RegExp("({[" + i + "]})", "g");
+	                    result = result.replace(reg, arguments[i]);
+	                }
+	            }
+	        }
+	    }
+	    return result;
 	}
 
 }));

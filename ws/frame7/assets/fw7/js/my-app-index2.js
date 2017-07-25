@@ -58,6 +58,11 @@ $$.each(pageTitles, function(idx){
     });
 });
 
+$$('.form-to-data').on('click', function(){
+  var formData = myApp.formToData('#my-form');
+  alert(JSON.stringify(formData));
+}); 
+
 // 翻页方法
 function bindPagerBtn() {
     $$('.page-prev').on('click', function () {
