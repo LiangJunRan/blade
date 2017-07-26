@@ -17,7 +17,7 @@
 	var rule = $.formc.templates.rule;
 
 	// 调试模式开关
-	var debug_mode = true;
+	var debug_mode = false;
 
 	// form校验器
 	var dropFormValidator = undefined;
@@ -157,11 +157,6 @@
 
 		// case by type
 		switch (opt.type) {
-			// 单选、多选
-			/*case 'radio':
-			case 'checkbox':
-				break;*/
-
 			// 下拉框
 			case 'select':
 			case 'multiselect':
@@ -209,47 +204,8 @@
 				}
 				break;
 
-			// 日期选择器
-			/*case 'date':
-				if (isNew) {
-					$('.core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
-				}
-				$('input', $node).attr('placeholder', opt.placeholder);
-
-				$('input', $node).datetimepicker({
-					language: 'zh-CN',
-					format: 'yyyy-mm-dd',
-					weekStart: 1,
-					todayBtn:  1,
-					autoclose: 1,
-					todayHighlight: 1,
-					startView: 2,
-					minView: 2,
-					forceParse: 0
-				});
-
-				$('.dataCleanBtn', $node).on('click', function() {
-					$(this).parent().find('input').val('');
-				});
-
-				break;*/
-
-			// 静态文字
-			/*case 'static':
-				if (isNew) {
-					$('.core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
-				}
-				$('.staticContent', $node).html(opt.placeholder);
-				break;*/
-
 			// 多行文本
 			case 'textarea':
-				/*if (isNew) {
-					$('.core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
-				}
-				$('textarea', $node).attr('placeholder', opt.placeholder);
-				$('textarea', $node).attr('rows', opt.rows);
-				$('textarea', $node).css('resize', opt.resize);*/
 				$node.find('textarea').attr('onfocus', 'this.placeholder=""');
 				$node.find('textarea').attr('onblur', 'this.placeholder="' + opt.placeholder + '"');
 				break;
@@ -259,45 +215,12 @@
 			case 'text':
 			case 'number':
 			default:
-				// if (isNew) {
-				// 	$('.core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
-				// }
-				// $('input', $node).attr('placeholder', opt.placeholder);
-				// $('input', $node).attr('onfocus', 'this.placeholder=""');
-				// $('input', $node).attr('onblur', 'this.placeholder="' + opt.placeholder + '"');
 				break;
-
 		}
 
-		// common
-		/*$('.formLabel', $node).html(opt.label);
-
-		if (opt.type == 'multiselect') {
-			$('select', $node).attr('name', opt.name);
-		} else {
-			$('input, select, textarea', $node).attr('name', opt.name);
-		}
-*/
-		// $node.find('input, select, textarea').attr('readonly', opt.readonly || false);
-		// $node.find('.formDescription').attr('title', opt.description);
-		/*addOrReplaceClass($node, 'col-sm-' + opt.outerWidth);
-		addOrReplaceClass($('.labelClass', $node), 'col-sm-' + opt.labelWidth);
-		addOrReplaceClass($('.contentClass', $node), 'col-sm-' + opt.contentWidth);*/
 
 		// bind json
 		$node.data('opts', opt);
-
-		// 解决static没有label错乱问题
-		/*if ($node.data().opts.type == 'static') {
-			var $label = $('.labelClass', $node);
-			var $content = $('.staticContent', $node);
-			if ($label.length == 0 || $label.children().length == 0 || $($label.children()[0]).html().trim().length == 0) {
-				$content.css({
-					'padding-top': '0px',
-					'vertical-align': 'middle'
-				});
-			}
-		}*/
 
 		return $node;
 	}
@@ -421,60 +344,22 @@
 		$.each(ebs || [], function(idx){
 			var eb = ebs[idx];
 
-			switch(eb.eventType) {
-				case 'valueChangeShowHide':
-					var $trigger = $form.find('[name=' + eb.trigger + ']');
-					var $triggerItem = $trigger.closest('.listNode');
-
-					// 获取所有被联动对象(resp)的name
-					// TODO: 去重allResp
-					var allResp = [];
-					$.each(eb.valueResps, function(value){
-						allResp.add(eb.valueResps[value]);
-					});
-
-					// 隐藏所有被联动对象
-					$.each(allResp, function(respIdx) {
-						if (!!allResp[respIdx] && allResp[respIdx].length > 0) {
-							$form.find('[name=' + allResp[respIdx] + ']').closest('.listNode').hide();
-						}
-					});
-
-					// 绑定事件
-					$trigger.addClass('band').on(definedEvents[eb.eventType], definedFunction[eb.eventType]);
-					break;
-
-				case 'valueChangeDisable':
-					var $trigger = $form.find('[name=' + eb.trigger + ']');
-					var $triggerItem = $trigger.closest('.listNode');
-
-					// 获取所有被联动对象(resp)的name
-					// TODO: 去重allResp
-					var allResp = [];
-					$.each(eb.valueResps, function(value){
-						allResp.add(eb.valueResps[value]);
-					});
-
-					// 禁用所有被联动对象
-					$.each(allResp, function(idx) {
-						if (!!allResp[idx] && allResp[idx].length > 0) {
-							$form.find('[name=' + allResp[idx] + ']').closest('.listNode').addClass('disabled');
-							$form.find('[name=' + allResp[idx] + ']').closest('.listNode').find('input, select, textarea').prop('disabled', true);
-						}
-					});
-
-					// 绑定事件
-					$trigger.addClass('band').on(definedEvents[eb.eventType], definedFunction[eb.eventType]);
-					break;
-
-				default:
-					log('[WARN] Not support yet.', eb.eventType);
-					break;
+			if ((eb.eventType in definedFunction) && (eb.eventType in definedEvents)) {
+				var $trigger = $form.find('[name=' + eb.trigger + ']');
+				var $triggerItem = $trigger.closest('.listNode');
+				// 绑定联动事件
+				$trigger.addClass('band').on(definedEvents[eb.eventType], definedFunction[eb.eventType]);
+				// 初始化触发
+				$trigger.trigger(definedEvents[eb.eventType]);
+			} else {
+				log('[WARN] Not support yet.', eb.eventType);
 			}
+
 		});
 	}
 
 
+	// NOT USED
 	// /////////////////////////////////////////////////////////////////////////////
 	// 将已渲染和赋值的对象进行只读转换
 	// /////////////////////////////////////////////////////////////////////////////
@@ -624,6 +509,7 @@
 		}
 	}
 
+	// 扩展String类型的原生方法，提供类似java或python的format方法
 	String.prototype.format = function(args) {
 	    var result = this;
 	    if (arguments.length > 0) {    
