@@ -55,17 +55,6 @@ $$.each(pageTitles, function(idx){
 
         $page.find('form').renderForm({
             "items": [{
-                "name": "t1",
-                "label": "文本框",
-                "outerWidth": 12,
-                "labelWidth": 3,
-                "contentWidth": 9,
-                "widthInSteam": "auto",
-                "type": "text",
-                "placeholder": "请输入文本",
-                "description": "请输入英文、数字、下划线"
-            },
-            {
                 "name": "s1",
                 "label": "下拉单选",
                 "outerWidth": 12,
@@ -88,6 +77,17 @@ $$.each(pageTitles, function(idx){
                     "label": "选项3",
                     "value": 3
                 }]
+            },
+            {
+                "name": "t1",
+                "label": "文本框",
+                "outerWidth": 12,
+                "labelWidth": 3,
+                "contentWidth": 9,
+                "widthInSteam": "auto",
+                "type": "text",
+                "placeholder": "请输入文本",
+                "description": "请输入英文、数字、下划线"
             },
             {
                 "name": "s2",
@@ -127,20 +127,38 @@ $$.each(pageTitles, function(idx){
                 "description": "请输入英文、数字、下划线"
             }],
             "rules": {
-                "demo_text_J5IYWIDO_NZ22J6WFVPBM61Q53U1IKVS4I": {
+                "s1": {
+                    "required": false
+                },
+                "t1": {
                     "required": false,
                     "maxlength": 10,
                     "minlength": 5
                 },
-                "demo_select_J5IYWJ5R_A2A7V05OI9A7PJ6TKW66O5HFR": {
+                "s2": {
                     "required": false
+                },
+                "ta1": {
+                    "required": false,
+                    "maxlength": 200,
+                    "minlength": 0
                 }
             },
+            "events": [
+            {
+                "eventType": "valueChangeDisable",
+                "trigger": "s1",
+                "valueResps": {
+                    "1": "t1",
+                    "2": "s2",
+                    "3": "ta1"
+                }
+            }],
             "values": {
-                "t1": "测试文本框初值111111",
-                "ta1": "测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值测试多行文本初值",
                 "s1": "1",
-                "s2": ["2", "3"]
+                "t1": "测试文本",
+                "s2": ["2", "3"],
+                "ta1": "多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行"
             },
             "isSteam": false,
             "isRead": false
@@ -162,7 +180,18 @@ $$('.all-form-submit').on('click', function () {
     $$.each(pageTitles, function(idx){
         var formId = pageTitles[idx].url;
         if($$('form#' + formId).length == 1) {
-            formDatas.push(myApp.formToData('#' + formId));
+            var formData = myApp.formToData('#' + formId);
+            var allDisabled = $$('#' + formId).find(':disabled');
+
+            // 手动删掉禁用的项
+            $$.each(allDisabled, function(idx) {
+                var disabledName = allDisabled[idx].name;
+                if (disabledName in formData) {
+                    delete formData[disabledName];
+                }
+            });
+
+            formDatas.push(formData);
         }
     });
     myApp.alert(JSON.stringify(formDatas));
