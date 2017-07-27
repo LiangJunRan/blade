@@ -304,7 +304,6 @@
 		// 遍历绑定联动事件 初始化绑定
 		$.each(ebs || [], function(idx){
 			var eb = ebs[idx];
-
 			if ((eb.eventType in definedFunction) && (eb.eventType in definedEvents)) {
 				var $trigger = $form.find('[name=' + eb.trigger + ']');
 				var $triggerItem = $trigger.closest('.listNode');
@@ -315,7 +314,6 @@
 			} else {
 				log('[WARN] Not support yet.', eb.eventType);
 			}
-
 		});
 	}
 
@@ -340,16 +338,18 @@
 	}
 
 
-	// NOT USED
+
 	// /////////////////////////////////////////////////////////////////////////////
 	// 将已渲染和赋值的对象进行只读转换
 	// /////////////////////////////////////////////////////////////////////////////
 	function transRead($form) {
-		$.each($form.children(), function(){
-			var $node = $(this);
+		var nodes = $form.find('li.listNode');
+		$.each(nodes, function(idx){
+			var $node = $(nodes[idx]);
 			var contentList = [];
-			$.each($node.find('.coreInput'), function(){
-				var $this = $(this);
+			var inputs = $node.find('input, select, textarea');
+			$.each(inputs, function(_idx){
+				var $this = $(inputs[_idx]);
 				if ($this.is('input')){
 					switch ($this.attr('type')) {
 						case 'radio':
@@ -370,7 +370,7 @@
 					if (!$this[0].hasAttribute("multiple")) {
 						var value = $this.val();
 						if (value) {
-							var label = $this.find('[value=' + value + ']').html();
+							var label = $this.find('[value="' + value + '"]').html();
 							contentList.push(label);
 						}
 					}
@@ -384,7 +384,7 @@
 							valueList = values;
 						}
 						$.each(valueList, function(i){
-							var label = $this.find('[value=' + valueList[i] + ']').html();
+							var label = $this.find('[value="' + valueList[i] + '"]').html();
 							if (!!valueList[i] && !!label){
 								contentList.push(label);
 							}
@@ -396,19 +396,24 @@
 				}
 			});
 
-			// 静态文字的特殊处理
-			if ($node.data().opts !== undefined && $node.data().opts.type == 'static') {
-				var label = $node.find('.staticContent').html();
-				contentList.push(label);
+			var contentJson = {
+				label: $node.find('.item-title.label').html(),
+				value: contentList.join(', ')
 			}
 
-			var contentStr = contentList.join(', ');
-			if (!($node.find('.contentClass').hasClass('form-control-static'))) {
-				$node.find('.contentClass').html(contentStr)
-						.addClass('form-control-static').attr('title', contentStr);
+			var readonlyHtml = 
+				'<div class="item-content">' +
+					'<div class="item-inner">' +
+						'<div class="item-title label">{label}</div>' +
+						'<div class="item-after item-after-fix">{value}</div>' +
+					'</div>' +
+				'</div>';
+
+			$node.html(readonlyHtml.format(contentJson));
+			if ($node.hasClass('disabled')) {
+				$node.remove();
 			}
 		});
-		$form.find('.textRequired').removeClass('textRequired');
 	}
 	$.formb.transRead = transRead;
 

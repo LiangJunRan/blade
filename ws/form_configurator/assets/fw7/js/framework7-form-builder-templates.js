@@ -39,7 +39,7 @@
 
 
 	core.select = 
-		'<a href="#" class="item-link smart-select" data-back-on-select="true" title="aaaa" data-open-in="picker">' +
+		'<a href="#" class="item-link smart-select" data-back-on-select="true" data-open-in="picker">' +
 			'<select name="{name}">' +
 			'</select>' +
 			'<div class="item-content">' +

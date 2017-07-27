@@ -141,7 +141,7 @@ var jsonConfs = {
             "s2": ["2", "3"],
             "ta1": "多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行"},
         "isSteam": false,
-        "isRead": false},
+        "isRead": true},
     'student-2':{
         "items": [
             {
@@ -240,7 +240,7 @@ var jsonConfs = {
                 }
             }],
         "values": {
-            "s1": "asdfasdfas",
+            "s1": "3",
             "t1": "ccccccc",
             "s2": ["1", "3"],
             "ta1": ""},
