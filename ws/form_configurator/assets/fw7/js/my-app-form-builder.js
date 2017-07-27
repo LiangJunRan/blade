@@ -128,18 +128,19 @@ $$.each(pageTitles, function(idx){
             }],
             "rules": {
                 "s1": {
-                    "required": false
+                    "required": true
                 },
                 "t1": {
-                    "required": false,
+                    "required": true,
                     "maxlength": 10,
                     "minlength": 5
                 },
                 "s2": {
-                    "required": false
+                    "required": true,
+                    "maxlength": 2
                 },
                 "ta1": {
-                    "required": false,
+                    "required": true,
                     "maxlength": 200,
                     "minlength": 0
                 }
@@ -174,23 +175,33 @@ $$.each(pageTitles, function(idx){
     });
 });
 
+function getFormData(formId) {
+    if($$('form#' + formId).length == 1) {
+        var formData = myApp.formToData('#' + formId);
+        var allDisabled = $$('#' + formId).find(':disabled');
+
+        // 手动删掉禁用的项
+        $$.each(allDisabled, function(idx) {
+            var disabledName = allDisabled[idx].name;
+            if (disabledName in formData) {
+                delete formData[disabledName];
+            }
+        });
+
+        return formData;
+    } else {
+        return undefined;
+    }
+}
+
 // 提交方法
 $$('.all-form-submit').on('click', function () {
     var formDatas = [];
     $$.each(pageTitles, function(idx){
         var formId = pageTitles[idx].url;
-        if($$('form#' + formId).length == 1) {
-            var formData = myApp.formToData('#' + formId);
-            var allDisabled = $$('#' + formId).find(':disabled');
 
-            // 手动删掉禁用的项
-            $$.each(allDisabled, function(idx) {
-                var disabledName = allDisabled[idx].name;
-                if (disabledName in formData) {
-                    delete formData[disabledName];
-                }
-            });
-
+        var formData = getFormData(formId);
+        if(formData !== undefined) {
             formDatas.push(formData);
         }
     });
@@ -209,6 +220,35 @@ function bindPagerBtn() {
         }
     });
     $$('.page-next').on('click', function () {
+        var foundMissing = false;
+        // 提示必填项、校验
+        var $form = $$('form#' + pageTitles[nowPageIndex].url);
+        if ($form.length == 1) {
+            var formId = $form.attr('id');
+            // 当前form数据
+            var formData = getFormData(formId);
+            // 当前form所有必填name（去重用）
+            var allRequiredNames = [];
+            var allRequiredNode = $form.find(':required:enabled');
+            $$.each(allRequiredNode, function(idx){
+                var requiredName = allRequiredNode[idx].name;
+                if (allRequiredNames.indexOf(requiredName) == -1) {
+                    allRequiredNames.push(requiredName);
+                    // 请求数据没在formdata中有 或者 formdata中对应数据是空的
+                    if (!((requiredName in formData) && formData[requiredName] !== undefined && formData[requiredName].length != 0)) {
+                        foundMissing = true;
+                        var studentMissingLabel = $form.find('[name=' + requiredName + ']').closest('.listNode').children().data('opts').label;
+                        var formTitle = pageTitles[nowPageIndex].label;
+                        myApp.alert('请输入：' /*+ formTitle + '/'*/ + studentMissingLabel, '提示');
+                    }
+                }
+            });
+        }
+
+        if (foundMissing) {
+            return false;
+        }
+
         var nextIndex = nowPageIndex + 1;
         if (nextIndex >= pageTitles.length) {
             // nextIndex = 0;

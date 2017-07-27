@@ -58,67 +58,33 @@
 		$('.log').append('<pre>' + msg + '</pre><hr>');
 	}
 
-	/** 
-	 * 当所有异步步骤都走完以后，再执行绑定校验方法
-	 * @param: deferredObjectList	延迟类的list
-	 * @param: callback				监听的全部延迟类结束后执行的回调方法
-	 * @param: callbackArgsList		list形式的回调方法参数
-	 */
-	function afterAllAjaxCompleteDo(deferredObjectList, callback, callbackArgsList){
-		$.when.apply(this, deferredObjectList).then(function(){
-			log('ALL DONE');
-			callback.apply(this, callbackArgsList);
-		});
-	}
+	
 
 	// TODO: 校验
 	$.fn.renderForm = function(jsonConf) {
 		var $form = $(this);
 
 		// 渲染生成form
-		log('renderJson0');
-		renderJson($form, jsonConf);
-		log('renderJson1');
+		var jsonOpts = jsonConf['items'];
+		$.each(jsonOpts || [], function(_idx){
+			var $item = render(jsonOpts[_idx]);
+			// 加入新对象
+			addToForm($item, $form);
+		});
 
 		// 加联动
 		activeEventBinds($form, jsonConf.events);
 
+		// 加规则
+		setFormRules($form, jsonConf.rules);
+
 		// 赋初值
-		log('renderJson0');
 		setFormValue($form, jsonConf.values);
-		log('renderJson1');
 
 		// 只读模式的实现
 		if (jsonConf.isRead) {
 			transRead($form);
 		}
-
-		log(jsonConf);
-	}
-
-	// 根据json渲染form的内容
-	function renderJson($form, jsonConf) {
-		var json_opts = jsonConf['items'];
-		var json_rules = jsonConf['rules'];
-
-		log('json_opts', json_opts);
-		log('json_rules', json_rules);
-
-		$.each(json_opts || [], function(_idx){
-			log('render-' + _idx + '-0');
-			var $item = render(json_opts[_idx]);
-			log('render-' + _idx + '-1');
-
-
-			// 加入新对象
-			log('addToForm-' + _idx + '-0');
-			addToForm($item, $form);
-			log('addToForm-' + _idx + '-1');
-
-
-			// $item.data().opts = this;
-			// $item.data().rule = json_rules[this.name];
-		});
 	}
 
 	// 新表单项加入表单的特殊处理
@@ -218,16 +184,11 @@
 				break;
 		}
 
-
 		// bind json
 		$node.data('opts', opt);
 
 		return $node;
 	}
-	// 注册成为formb的方法
-	$.formb.render = render;
-	// 注册成为formb的方法
-	$.formb.activeEventBinds = activeEventBinds;
 
 	// 添加联动事件
 	function activeEventBinds($form, ebs) {
@@ -358,6 +319,26 @@
 		});
 	}
 
+	// 加规则
+	function setFormRules($form, rules) {
+		$.each(rules, function(name){
+			var rule = rules[name];
+			var $targets = $form.find('[name=' + name + ']');
+			$.each(rule, function(ruleKey){
+				var ruleValue = rule[ruleKey];
+				var idx = ['true', 'false'].indexOf(ruleValue);
+				if (idx != -1) {
+					ruleValue = [true, false][idx];
+				}
+				if (ruleKey == 'required') {
+					$targets.prop(ruleKey, ruleValue);
+				} else {
+					$targets.attr(ruleKey, ruleValue);
+				}
+			});
+		});
+	}
+
 
 	// NOT USED
 	// /////////////////////////////////////////////////////////////////////////////
@@ -433,7 +414,7 @@
 
 
 	// /////////////////////////////////////////////////////////////////////////////
-	// 表单赋值与取值
+	// 表单赋值
 	// /////////////////////////////////////////////////////////////////////////////
 	function setFormValue($form, values) {
 		var formId = $form.attr('id');
@@ -450,52 +431,6 @@
 	// /////////////////////////////////////////////////////////////////////////////
 	// 工具类方法
 	// /////////////////////////////////////////////////////////////////////////////
-
-	// 随机id(固定前缀)
-	function randomId(prefix){
-		return ( prefix || '' ) + ( new Date().valueOf().toString(36)+Math.random().toString(36) ).split('0.').join('_').toUpperCase();
-	}
-
-	// 序列化表格元素为JSON
-	$.fn.serializeJson = function() {
-		var o = {};
-		var a = this.serializeArray();
-		$.each(a, function() {
-			if (o[this.name] !== undefined) {
-				if (o[this.name] == null || !o[this.name].push) {
-					o[this.name] = [o[this.name]];
-				}
-				o[this.name].push(this.value || null);
-			} else {
-				if (this.value === "false") {
-					o[this.name] = false;
-				} else if (this.value === "true") {
-					o[this.name] = true;
-				} else {
-					o[this.name] = this.value || '';
-				}
-			}
-		});
-		return o;
-	}
-
-	// 添加或替换col-sm的class
-	function addOrReplaceClass($obj, new_class) {
-		var notFound = true;
-		if ($obj.length != 0) {
-			var list_class = $obj.attr('class').split(' ');
-			$.each(list_class, function(idx) {
-				if (this.indexOf('col-sm-') >= 0) {
-					notFound = false;
-					list_class[idx] = new_class;
-				}
-			});
-			if (notFound) {
-				list_class.push(new_class);
-			}
-			$obj.attr('class', list_class.join(' '));
-		}
-	}
 
 	// 扩展array类型原生方法，添加obj如果是array，就让其元素合并，否则直接加入
 	Array.prototype.add = function(obj) {
