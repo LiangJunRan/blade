@@ -7,10 +7,13 @@
 	<script src="assets/localStorageExtend.js"></script>
 </head>
 <body>
-	<label for="localStorage">localStorage:</label>
+	<h1>给想用localStorage的对象加上localStorage属性，值是{绑定key}@{过期时间}，不设过期时间使用默认1天</h1>
+	<h5>设置debugMode=true看log</h1>
+	<hr>
+	<label for="localStorage">localStorage:（0.01小时 = 36秒 过期）</label>
 	<textarea id="localStorage" cols="30" rows="10" localStorage="lvyang@0.01"></textarea>
 	<hr>
-	<label for="localStorage2">localStorage2:</label>
+	<label for="localStorage2">localStorage2:（默认过期时间：1天）</label>
 	<textarea id="localStorage2" cols="30" rows="10" localStorage="lvyang"></textarea>
 </body>
 </html>

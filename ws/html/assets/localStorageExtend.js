@@ -11,7 +11,7 @@
         factory(jQuery);
     }
 }(function ($) {
-	var debugMode = false;	// 设置为true可以在console中看到详细信息
+	var debugMode = true;	// 设置为true可以在console中看到详细信息
 
 	$(document).ready(function(){
 		// localSave绑定
