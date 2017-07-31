@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>Form Builder & Framework 7 - kuroikenshi@sina.com</title>
+
+	<!-- Style Files -->
+    <link class="ios-css" rel="stylesheet" href="assets/fw7/css/framework7.ios.min.css">
+    <link class="ios-css" rel="stylesheet" href="assets/fw7/css/framework7.ios.colors.min.css">
+    <link class="android-css" rel="stylesheet" href="assets/fw7/css/framework7.material.min.css">
+    <link class="android-css" rel="stylesheet" href="assets/fw7/css/framework7.material.colors.min.css">
+	<link rel="stylesheet" href="assets/fw7-icons/css/framework7-icons.css">
+    <link rel="stylesheet" href="assets/fw7/css/my-app.css">
+	<style>
+		.list-block .item-after.item-after-fix {
+			max-width: 70%;
+			white-space: normal;
+			max-height: none;
+		}
+		.list-block .smart-select .item-after {
+		    width: 100%;
+		    padding-left: 12px;
+		}
+		.list-block input[type=text],
+		.list-block textarea {
+			color: #8e8e93;
+		}
+	</style>
+</head>
+<body>
+	<!-- Status bar overlay for fullscreen mode-->
+	<div class="statusbar-overlay"></div>
+	<!-- Panels overlay-->
+	<div class="panel-overlay"></div>
+
+	<!-- Left panel with reveal effect-->
+	<div class="panel panel-left panel-reveal">
+		<div class="content-block navList">
+			<div class="log"></div>
+			<!-- <p>
+				<a class="close-panel" href="#index">班级信息</a>
+			</p> -->
+			<!-- 导航菜单 -->
+		</div>
+	</div>
+	<!-- Right panel with cover effect-->
+	<div class="panel panel-right panel-cover">
+		<div class="content-block">
+			<p>Right panel content goes here</p>
+		</div>
+	</div>
+
+	<!-- Views-->
+	<div class="views">
+		<!-- Your main view, should have "view-main" class-->
+		<div class="view view-main">
+
+			<!-- Top Navbar-->
+			<div class="navbar">
+
+				<div class="navbar-inner">
+					<div class="left">
+						<a href="#" class="link icon-only exit-web-view">
+							<i class="f7-icons">chevron_left</i>
+						</a>
+					</div>
+					<div class="center sliding">英联邦小班课堂反馈</div>
+					<div class="right">
+						<a href="#" class="link icon-only open-panel">
+							<i class="icon icon-bars"></i>
+						</a>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+			<div class="pages navbar-through toolbar-through">
+				<!-- Page, data-page contains page name-->
+				<div data-page="index" class="page" page-index="0">
+					<!-- Scrollable page content-->
+					<div class="page-content">
+
+						<div class="content-block-title">班级信息</div>
+						<div class="list-block">
+							<ul>
+								<li class="item-content">
+									<div class="item-inner">
+										<div class="item-title">课程名称</div>
+										<div class="item-after item-after-fix">IELTS口语</div>
+									</div>
+								</li>
+								<li class="item-content">
+									<div class="item-inner">
+										<div class="item-title">教师</div>
+										<div class="item-after item-after-fix">骆俊成</div>
+									</div>
+								</li>
+								<li class="item-content">
+									<div class="item-inner">
+										<div class="item-title">课次</div>
+										<div class="item-after item-after-fix">1</div>
+									</div>
+								</li>
+								<li class="item-content">
+									<div class="item-inner">
+										<div class="item-title">班级编码</div>
+										<div class="item-after item-after-fix">VIP6JZYV17172</div>
+									</div>
+								</li>
+								<li class="item-content">
+									<div class="item-inner">
+										<div class="item-title">学员姓名</div>
+										<div class="item-after item-after-fix">王一啸、马小峰、梁宗平、赵泽佳、刘铭</div>
+									</div>
+								</li>
+								<li class="item-content">
+									<div class="item-inner">
+										<div class="item-title">班级描述</div>
+										<div class="item-after item-after-fix">IELTS 6人班（VIP强化精品住宿班）,IELTS 6人班（VIP强化走读班）</div>
+									</div>
+								</li>
+						</div>
+
+						<div class="content-block-title">班级定位</div>
+						<div class="content-block">
+							<div class="content-block-inner">
+								<p>雅思口语考试介绍，评分标准解析，考试流程中的注意事项，了解学生考试时间安排，模拟考试排查学生的强项弱项；同时给出学生具体的课程计划，（课时分配）。</p>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Bottom Toolbar-->
+			<div class="toolbar">
+				<div class="toolbar-inner">
+					<a href="#" class="button page-prev">&lt; Prev</a>
+					<a href="#" class="button page-next">Next &gt;</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="popup popup-submit" style="height: initial; top: initial; bottom: 0px;">
+		<div class="content-block group-ready">
+			<p style="text-indent: 2em;">请确认是否提交？</p>
+			<div class="row">
+				<div class="col-33">
+					<a href="#" class="button button-big close-popup">取消</a>
+				</div>
+				<div class="col-33">
+					<a href="#" class="button button-big color-orange button-fill close-popup all-form-save">暂存</a>
+				</div>
+				<div class="col-33">
+					<a href="#" class="button button-big color-green button-fill close-popup all-form-submit">提交</a>
+				</div>
+			</div>
+		</div>
+		<div class="content-block group-done" style="display: none;">
+			<p style="text-align: center;">您已成功提交</p>
+		</div>
+	</div>
+
+	
+
+	<!-- html和json格式化插件 -->
+	<script src="assets/html_formater/htmlformat.js"></script>
+	<script src="assets/html_formater/jsformat.js"></script>
+	
+    <script src="assets/fw7/js/framework7.min.js"></script>
+	<script src="assets/fw7/js/framework7-form-builder-templates.js"></script>
+	<script src="assets/fw7/js/framework7-form-builder.js"></script>
+    <script src="assets/fw7/js/my-app-form-builder_v2.js"></script>
+	
+</body>
+</html>
