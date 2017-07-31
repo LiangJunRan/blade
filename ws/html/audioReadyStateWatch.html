@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<audio id="a" src=""></audio>
+
+	<script>
+		function watchAudio(selectorStr) {
+			var audio = document.querySelector(selectorStr);
+			var timeout = 3000;
+			var tEnd = (new Date()).valueOf() + timeout;
+			function loopWatch() {
+				var tNow = (new Date()).valueOf();
+				console.log(audio.readyState);
+				if (tNow > tEnd) {
+					if (audio.readyState != 4) {
+						console.log('Timeout');
+					}
+				} else {
+					requestAnimationFrame(loopWatch);
+				}
+			};
+			loopWatch();
+		}
+		watchAudio('#a');
+	</script>
+</body>
+</html>
