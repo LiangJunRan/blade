@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<title>My App</title>
+	<!-- Style Files -->
+    <link class="ios-css" rel="stylesheet" href="assets/fw7/css/framework7.ios.min.css">
+    <link class="ios-css" rel="stylesheet" href="assets/fw7/css/framework7.ios.colors.min.css">
+    <link class="android-css" rel="stylesheet" href="assets/fw7/css/framework7.material.min.css">
+    <link class="android-css" rel="stylesheet" href="assets/fw7/css/framework7.material.colors.min.css">
+	<link rel="stylesheet" href="assets/fw7-icons/css/framework7-icons.css">
+    <link rel="stylesheet" href="assets/fw7/css/my-app.css">
+	<style>
+		.list-block .item-after.item-after-fix {
+			max-width: 70%;
+			white-space: normal;
+			max-height: none;
+		}
+	</style>
+</head>
+<body>
+	<!-- 左右出现侧边栏的时候，取消操作用的覆盖层 -->
+	<!-- Status bar overlay for fullscreen mode-->
+	<div class="statusbar-overlay"></div>
+	<!-- Panels overlay-->
+	<div class="panel-overlay"></div>
+
+	<!-- Left panel with reveal effect-->
+	<div class="panel panel-left panel-reveal">
+		<div class="content-block navList">
+			<!-- <p>
+				<a class="close-panel" href="#index">班级信息</a>
+			</p> -->
+			<!-- 导航菜单 -->
+		</div>
+	</div>
+	<!-- Right panel with cover effect-->
+	<div class="panel panel-right panel-cover">
+		<div class="content-block">
+			<p>Right panel content goes here</p>
+		</div>
+	</div>
+
+	<!-- Views-->
+	<div class="views">
+		<!-- Your main view, should have "view-main" class-->
+		<div class="view view-main">
+
+			<!-- Top Navbar-->
+			<div class="navbar">
+
+				<div class="navbar-inner">
+					<div class="left">
+						<a href="#exit-web-view" class="link icon-only exit-web-view">
+							<i class="f7-icons">chevron_left</i>
+						</a>
+					</div>
+					<div class="center sliding">英联邦小班课堂反馈</div>
+				</div>
+
+			</div>
+
+			<!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+			<div class="pages navbar-through toolbar-through">
+				<!-- Page, data-page contains page name-->
+				<div data-page="index" class="page" page-index="0">
+					<!-- Scrollable page content-->
+					<div class="page-content">
+
+						<div class="content-block-title">班级信息</div>
+						<div class="card">
+							<div class="card-content">
+								<div class="card-content-inner">This is simple card with plain text. But card could contain its own header, footer, list view, image, and any elements inside.</div>
+							</div>
+						</div>
+
+						<div class="content-block-title">班级定位</div>
+						<div class="content-block">
+							<div class="content-block-inner">
+								<p>雅思口语考试介绍，评分标准解析，考试流程中的注意事项，了解学生考试时间安排，模拟考试排查学生的强项弱项；同时给出学生具体的课程计划，（课时分配）。</p>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+    <script src="assets/fw7/js/framework7.min.js"></script>
+    <script src="assets/fw7/js/my-app-list.js"></script>
+
+</body>
+</html>
