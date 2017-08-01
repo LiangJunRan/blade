@@ -72,6 +72,11 @@
 			addToForm($item, $form);
 		});
 
+		// 手机端流式实现（其实不是流式……）
+		if (jsonConf.isSteam) {
+			transSteam($form);
+		}
+
 		// 加联动
 		activeEventBinds($form, jsonConf.events);
 
@@ -242,6 +247,7 @@
 			$.each(allResp, function(idx){
 				if (!!allResp[idx] && allResp[idx].length > 0) {
 					$form.find('[name=' + allResp[idx] + ']').closest('.listNode').hide();
+					$form.find('[name=' + allResp[idx] + ']').closest('.listNode').prev('.item-divider').hide();
 				}
 			});
 
@@ -249,6 +255,7 @@
 			$.each(respNames, function(idx){
 				if (!!respNames[idx] && respNames[idx].length > 0) {
 					$form.find('[name=' + respNames[idx] + ']').closest('.listNode').show();
+					$form.find('[name=' + respNames[idx] + ']').closest('.listNode').prev('.item-divider').show();
 				}
 			});
 		}
@@ -287,6 +294,7 @@
 			$.each(allResp, function(idx){
 				if (!!allResp[idx] && allResp[idx].length > 0) {
 					$form.find('[name=' + allResp[idx] + ']').closest('.listNode').addClass('disabled');
+					$form.find('[name=' + allResp[idx] + ']').closest('.listNode').prev('.item-divider').addClass('disabled');
 					$form.find('[name=' + allResp[idx] + ']').closest('.listNode').find('input, select, textarea').prop('disabled', true);
 				}
 			});
@@ -295,6 +303,7 @@
 			$.each(respNames, function(idx){
 				if (!!respNames[idx] && respNames[idx].length > 0) {
 					$form.find('[name=' + respNames[idx] + ']').closest('.listNode').removeClass('disabled');
+					$form.find('[name=' + respNames[idx] + ']').closest('.listNode').prev('.item-divider').removeClass('disabled');
 					$form.find('[name=' + respNames[idx] + ']').closest('.listNode').find('input, select, textarea').prop('disabled', false);
 				}
 			});
@@ -337,11 +346,7 @@
 		});
 	}
 
-
-
-	// /////////////////////////////////////////////////////////////////////////////
 	// 将已渲染和赋值的对象进行只读转换
-	// /////////////////////////////////////////////////////////////////////////////
 	function transRead($form) {
 		var nodes = $form.find('li.listNode');
 		$.each(nodes, function(idx){
@@ -415,8 +420,21 @@
 			}
 		});
 	}
-	$.formb.transRead = transRead;
 
+	// 将正常form对象变换为另一种形式（对应isSteam参数）
+	function transSteam($form) {
+		var listNodes = $form.find('.listNode');
+		var labelRow = '<li class="item-divider">{label}</li>';
+		$.each(listNodes, function(idx){
+			var $node = $($(listNodes[idx]).children()[0]);
+			var opt = $node.data('opts');
+			console.log(idx, opt.label);
+			var label = opt.label;
+			$node.find('.item-title.label').remove();
+			$(labelRow.format({label: label})).insertBefore($(listNodes[idx]));
+			$node.find('.item-after').addClass('steam-select-fix');
+		});
+	}
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// 表单赋值

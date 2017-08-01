@@ -1,22 +1,26 @@
 var device = Framework7.prototype.device;
 
 // Initialize your app
-var myApp = new Framework7();
+var myApp = new Framework7({
+    init: false     // 关闭自动初始化
+});
 
 // Export selectors engine
 var $$ = Dom7;
 var $ = $$;
 
+var iosCss = 
+    '<link class="ios-css" rel="stylesheet" href="assets/fw7/css/framework7.ios.min.css">' + 
+    '<link class="ios-css" rel="stylesheet" href="assets/fw7/css/framework7.ios.colors.min.css">';
+var androidCss = 
+    '<link class="android-css" rel="stylesheet" href="assets/fw7/css/framework7.material.min.css">' +
+    '<link class="android-css" rel="stylesheet" href="assets/fw7/css/framework7.material.colors.min.css">';
+
 // change skin
-if (device.iphone) {
-    console.log('this is iPhone');
-    $$('.android-css').remove();
-} else if (device.android) {
+if (device.android) {
     console.log('This is android');
+    $$(androidCss).insertAfter($$('title'));
     $$('.ios-css').remove();
-} else {
-    console.log('Unknow OS, see:', device);
-    $$('.android-css').remove();
 }
 
 // Add view
@@ -27,6 +31,85 @@ var mainView = myApp.addView('.view-main', {
     swipePanel: 'left',
     animatePages: false
 });
+
+var jsonConf_index = {
+    "items": [{
+        "name": "s1111",
+        "label": "下拉单选",
+        "outerWidth": "12",
+        "labelWidth": "3",
+        "contentWidth": "9",
+        "widthInSteam": "auto",
+        "type": "select",
+        "placeholder": "--请选择--",
+        "description": "请点击选择",
+        "dataUrl": "",
+        "options": [{
+            "label": "选项1",
+            "value": "1"
+        },
+        {
+            "label": "选项2",
+            "value": "2"
+        },
+        {
+            "label": "选项3",
+            "value": "3"
+        }]
+    },
+    {
+        "name": "t1111",
+        "label": "",
+        "outerWidth": "12",
+        "labelWidth": "3",
+        "contentWidth": "9",
+        "widthInSteam": "auto",
+        "type": "text",
+        "placeholder": "请输入文本",
+        "description": "请输入英文、数字、下划线"
+    }],
+    "rules": {
+        "s1111": {
+            "required": true
+        },
+        "t1111": {
+            "required": true,
+            "maxlength": "10",
+            "minlength": "5"
+        }
+    },
+    "events": [{
+        "eventType": "valueChangeShowHide",
+        "trigger": "s1111",
+        "valueResps": {
+            "1": "t1111",
+            "2": "",
+            "3": ""
+        }
+    }, {
+        "eventType": "valueChangeDisable",
+        "trigger": "s1111",
+        "valueResps": {
+            "1": "t1111",
+            "2": "",
+            "3": ""
+        }
+    }],
+    "values": {
+        "s1111": "2",
+        "t1111": "aaaa"
+    },
+    "isSteam": true,
+    "isRead": false
+};
+
+// 定义首页初始化前执行代码
+myApp.onPageBeforeInit('index', function (page) {
+    $$('form#index').renderForm(jsonConf_index);
+});
+
+// 手动触发初始化（否则smart-select显示有问题)
+myApp.init();
 
 // 配置
 var pageTemplate = 
@@ -416,3 +499,8 @@ function bindPagerBtn() {
     });    
 }
 bindPagerBtn();
+
+// iOS退出webView的方法，安卓未测试
+$$('.exit-web-view').on('click', function(){
+    window.location = '/exit-web-view';
+});
