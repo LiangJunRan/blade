@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="with-statusbar-overlay">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
@@ -33,6 +33,11 @@
 			text-align: right;
 			padding-right: 20px;
 		}
+		.item-inner>.item-title+.item-input>input[type=text],
+		.item-inner>.item-title+.item-input>textarea {
+			text-align: left;
+			padding-right: initial;
+		}
 	</style>
 </head>
 <body>
@@ -43,9 +48,13 @@
 
 	<!-- Left panel with reveal effect-->
 	<div class="panel panel-left panel-reveal">
-		<div class="content-block navList">
+		<div class="content-block">
 			<div class="log"></div>
 			<!-- 导航菜单 -->
+			<div class="content-block-title">导航</div>
+			<div class="list-block">
+				<ul class="navList"></ul>
+			</div>
 		</div>
 	</div>
 	<!-- Right panel with cover effect-->
@@ -66,13 +75,13 @@
 				<div class="navbar-inner">
 					<div class="left">
 						<a href="#" class="link icon-only exit-web-view">
-							<i class="f7-icons">chevron_left</i>
+							<i class="f7-icons backBtn">close</i>
 						</a>
 					</div>
 					<div class="center sliding">英联邦小班课堂反馈</div>
 					<div class="right">
 						<a href="#" class="link icon-only open-panel">
-							<i class="icon icon-bars"></i>
+							<i class="f7-icons">menu</i>
 						</a>
 					</div>
 				</div>

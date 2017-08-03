@@ -1,0 +1,35 @@
+.navbar, .subnavbar, .toolbar, .picker-modal .toolbar {
+	background-color: #40BC87;
+	color: #fff;
+}
+.navbar a, .toolbar a {
+	color: #fff;
+	border-color: #fff;
+}
+.panel {
+	background-color: #fff;
+}
+.statusbar-overlay {
+	background: #40BC87;
+	z-index: initial;
+}
+/* 去掉左侧菜单栏顶部带颜色的条 */
+html.with-statusbar-overlay .framework7-root .panel {
+	padding-top: 0px;
+}
+/* 优化左侧菜单滑动效果 - 隐藏静止状态(左侧出界260，滑动时由此开始) */
+.framework7-root .panel.panel-left.panel-reveal {
+	margin-left: -260px;
+}
+/* 优化左侧菜单滑动效果 - 由左滑出(位移状态 0 -> 260) & 保持滑出状态(保持位移状态260，保持因为.active一直在) */
+.framework7-root.with-panel-left-reveal .panel.panel-left.panel-reveal.active {
+	transform: translate3d(260px, 0, 0);
+	transition-duration: 0.4s;
+	transition-property: transform;
+}
+/* 优化左侧菜单滑动效果 - 回收过程(位移状态 260 -> 0) */
+.framework7-root.panel-closing .panel.panel-left.panel-reveal {
+	transform: translate3d(0px, 0, 0);
+	transition-duration: 0.4s;
+	transition-property: transform;
+}

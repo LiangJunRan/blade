@@ -353,7 +353,8 @@ $$.each(pageTitles, function(idx){
     var pt = pageTitles[idx];
 
     // 导航菜单初始化
-    $$('.navList').append('<p><a class="close-panel" href="#' + pt.url + '">' + pt.label + '</a></p>');
+    $$('.navList').append('<li class="item-content"><a class="item-inner close-panel" href="#' + pt.url + '">' + pt.label + '</a></li>');
+
 
     // page初始化
     var $page = $$(pageTemplate.format({formId: pt.url})).attr('data-page', pt.url)
@@ -376,6 +377,10 @@ $$.each(pageTitles, function(idx){
         nowPageIndex = parseInt($$(pageData.container).attr('page-index'));
         // 临时解决multiselect的placeholder初始化问题
         $$(pageData.container).find('select[multiple]').change();
+
+        console.log('pageData:', pageData);
+        // TODO
+        // addHistory(pt.url);
     });
 });
 
@@ -446,6 +451,12 @@ $$('.all-form-submit, .all-form-save').on('click', function () {
         });
     }
 });
+
+var historyList = [];
+function addHistory(url) {
+    
+}
+
 
 // 翻页方法
 function bindPagerBtn() {
