@@ -1,6 +1,9 @@
-.navbar, .subnavbar, .toolbar, .picker-modal .toolbar {
+.navbar, .subnavbar, .toolbar {
 	background-color: #40BC87;
 	color: #fff;
+}
+.ios .smart-select-picker .toolbar a {
+	color: #007aff;
 }
 .navbar a, .toolbar a {
 	color: #fff;

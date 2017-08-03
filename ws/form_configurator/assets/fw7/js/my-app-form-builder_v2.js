@@ -158,7 +158,19 @@ var jsonConfs = {
                     "label": "选项3",
                     "value": 3
                 }]
-            }, {
+            },
+    {
+        "name": "x",
+        "label": "",
+        "outerWidth": "12",
+        "labelWidth": "3",
+        "contentWidth": "9",
+        "widthInSteam": "auto",
+        "type": "static",
+        "placeholder": "静态文字内容静态文字内容静态文字内容静态文字内容静态文字内容静态文字内容静态文字内容",
+        "description": "--静态文字描述--"
+    },
+            {
                 "name": "t1",
                 "label": "文本框",
                 "outerWidth": 12,
@@ -379,8 +391,8 @@ $$.each(pageTitles, function(idx){
         $$(pageData.container).find('select[multiple]').change();
 
         console.log('pageData:', pageData);
-        // TODO
-        // addHistory(pt.url);
+
+        addHistory(pt.url);
     });
 });
 
@@ -454,9 +466,20 @@ $$('.all-form-submit, .all-form-save').on('click', function () {
 
 var historyList = [];
 function addHistory(url) {
-    
+    historyList.push(url);
 }
-
+function backHisory() {
+    return historyList.pop();
+}
+// 给安卓机械后退按键使用的方法
+function androidBackBtn() {
+    var backUrl = backHisory();
+    if (backUrl) {
+        mainView.router.back();
+    } else {
+        window.location = '/exit-web-view';
+    }
+}
 
 // 翻页方法
 function bindPagerBtn() {

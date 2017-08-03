@@ -96,7 +96,7 @@
 	function addToForm($item, $form) {
 		var $lastChildNode = $form.find(':last-child');
 		// 可以加入到list-block中的对象
-		if (['text', 'select', 'multiselect', 'textarea'].indexOf($item.data('opts').type) != -1) {
+		if (['text', 'select', 'multiselect', 'textarea', 'static'].indexOf($item.data('opts').type) != -1) {
 			// 前节点不存在，或者存在，但不是list-block，新建list-block外壳
 			if (
 				// 上一个子节点不存在 或
@@ -110,14 +110,37 @@
 					'</div>');
 				$form.append($lastChildNode);
 			}
-			var $ul = $lastChildNode.children('ul');
-			var $li = $('<li class="listNode"></li>');
-			$li.append($item);
-			$ul.append($li);
+			if (['text', 'select', 'multiselect', 'textarea'].indexOf($item.data('opts').type) != -1) {
+				var $ul = $lastChildNode.children('ul');
+				var $li = $('<li class="listNode"></li>');
+				$li.append($item);
+				$ul.append($li);	
+			}
+			else if (['static'].indexOf($item.data('opts').type) != -1) {
+				var $ul = $lastChildNode.children('ul');
+				var $liLabel = $('<li class="item-divider skipTransRead">{label}</li>'.format($item.data('opts')));
+				if ($liLabel.html().trim().length == 0) {
+					$liLabel.hide();
+				}
+				console.log('placeholder', $item.data('opts').placeholder);
+				var $liPlaceHolder = $(
+					('<li class="listNode skipTransRead">' +
+						'<div class="item-content">' +
+							'<div class="item-inner">' +
+								'<div class="item-after item-after-fix" ' +
+										'style="max-width: 100%; text-indent: 2em;">{placeholder}</div>' +
+							'</div>' +
+						'</div>' +
+					'</li>').format($item.data('opts')));
+				$ul.append($liLabel);
+				$ul.append($liPlaceHolder);
+			}
+			else {
+				console.error($item.data('opts').type, 'is NOT handle now');
+			}
 		}
-		// TODO
 		else {
-			console.warn($item.data('opts').type, 'is NOT support now');
+			console.error($item.data('opts').type, 'is NOT support now');
 		}
 	}
 
@@ -348,9 +371,10 @@
 
 	// 将已渲染和赋值的对象进行只读转换
 	function transRead($form) {
-		var nodes = $form.find('li.listNode');
+		var nodes = $form.find('li.listNode:not(.skipTransRead)');
 		$.each(nodes, function(idx){
 			var $node = $(nodes[idx]);
+			console.log($node.find('item-content').data('opts'));
 			var contentList = [];
 			var inputs = $node.find('input, select, textarea');
 			$.each(inputs, function(_idx){
