@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Screen Shot</title>
+	<style>
+		* {
+			padding: none;
+			margin: none;
+		}
+		.toolbar {
+			background-color: #aaa;
+			position: absolute;
+			display: flex;
+			height: 30px;
+			line-height: 30px;
+			width: 100%;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+		}
+		iframe {
+			background-color: #ddd;
+			position: absolute;
+			height: calc(100% - 30px);
+			width: 100%;
+			top: 30px;
+			right: 0;
+			bottom: 0;
+			left: 0;
+		}
+	</style>
+</head>
+<body>
+	<div class="toolbar">
+		<button type="button" id="startBtn">start</button>
+	</div>
+	<iframe id="mainFrame" src="http://192.168.10.123:9293/bs_demo/page_3.html" frameborder="0"></iframe>
+	<!-- <iframe id="mainFrame" src="http://www.baidu.com" frameborder="0"></iframe> -->
+
+	<script src="assets/plugins/html2canvas/html2canvas.js"></script>
+	<script src="assets/plugins/jquery/jquery.min.js"></script>
+	<script>
+		var innerWindow = document.getElementById('mainFrame').contentWindow;
+		var toInjectHtml = 
+			'<script src="http://192.168.10.123:9293/canvas_demo/assets/plugins/html2canvas/html2canvas.js"><\/script>\n' +
+			'<script src="http://192.168.10.123:9293/canvas_demo/assets/plugins/jquery/jquery.min.js"><\/script>\n' +
+			'<script>\n' +
+				'$(document).ready(function() {\n' +
+					'setTimeout(function() {\n' +
+						'screenShot();\n' +
+					'}, 2000);\n' +
+				'});\n' +
+				'function screenShot() {\n' +
+					'html2canvas($("#mainFrame"), {\n' +
+						'async: false,\n' +
+						'onrendered: function (canvas) {\n' +
+							'var url = canvas.toDataURL();\n' +
+							'alert(url);\n' +
+							'//以下代码为下载此图片功能\n' +
+							'var triggerDownload = $("<a>").attr("href", url).attr("download", "aaa.png").appendTo("body");\n' +
+							'triggerDownload[0].click();\n' +
+							'triggerDownload.remove();\n' +
+						'}\n' +
+					'});\n' +
+				'}\n' +
+			'<\/script>';
+		
+
+		$('#mainFrame').ready(function() {
+			console.log('aaaaaaaa');
+			$(innerWindow.document).find('body').append(toInjectHtml);
+		});
+		// function screenShot() {
+		// 	html2canvas($("html"), {
+		// 		onrendered: function (canvas) {
+		// 			var url = canvas.toDataURL();
+		// 			//以下代码为下载此图片功能
+		// 			var triggerDownload = $("<a>").attr("href", url).attr("download", "aaa.png").appendTo("body");
+		// 			triggerDownload[0].click();
+		// 			triggerDownload.remove();
+		// 		}
+		// 	});
+		// }
+	</script>
+</body>
+</html>

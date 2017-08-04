@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript"> 
+		iframe = document.createElement('iframe');
+		iframe.style.display = 'none';
+		var state = 0;
+		
+		iframe.onload = function() {
+			if(state === 1) {
+				var data = JSON.parse(iframe.contentWindow.name);
+				console.log(data);
+				iframe.contentWindow.document.write('');
+				iframe.contentWindow.close();
+				document.body.removeChild(iframe);
+			} else if(state === 0) {
+				state = 1;
+				iframe.contentWindow.location = 'http://www.kaolawu.com/';
+			}
+		};
+
+		iframe.src = 'http://localhost:9998/canvas-ring2.html';
+		document.body.appendChild(iframe);
+	</script>
+</body>
+</html>
