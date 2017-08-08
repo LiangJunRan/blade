@@ -1,204 +1,200 @@
 {
     "items": [{
-        "name": "name2",
-        "label": "姓名",
-        "outerWidth": "6",
-        "labelWidth": "6",
-        "contentWidth": "6",
-        "type": "text",
-        "placeholder": "请输入文本",
-        "description": "请输入英文、数字、下划线"
-    },
-    {
-        "name": "gender2",
-        "label": "性别",
-        "outerWidth": "6",
-        "labelWidth": "6",
-        "contentWidth": "6",
-        "type": "radio",
-        "description": "单选描述",
-        "dataUrl": "",
-        "options": [{
-            "label": "男",
-            "value": "1"
-        },
-        {
-            "label": "女",
-            "value": "2"
-        }]
-    },
-    {
-        "name": "status2",
-        "label": "身份",
-        "outerWidth": "12",
-        "labelWidth": "3",
-        "contentWidth": "9",
+        "name": "demo_select_J62Y2QTS_39T00Z7TQYHK3MO7PPIC1K0529",
+        "label": "下拉单选",
+        "outerWidth": 12,
+        "labelWidth": 3,
+        "contentWidth": 9,
+        "widthInSteam": "auto",
         "type": "select",
-        "multiple": false,
         "placeholder": "--请选择--",
         "description": "请点击选择",
         "dataUrl": "",
         "options": [{
-            "label": "在校学生",
-            "value": "inSchool"
+            "label": "选项1",
+            "value": 1
         },
         {
-            "label": "国内工作",
-            "value": "workInChina"
+            "label": "选项2",
+            "value": 2
         },
         {
-            "label": "海外工作",
-            "value": "workOutChina"
-        },
-        {
-            "label": "家里蹲",
-            "value": "neet"
+            "label": "选项3",
+            "value": 3
         }]
     },
     {
-        "name": "schoolName2",
-        "label": "学校名称",
+        "name": "demo_text_J62Y2SN2_91E5XXE996A60E0X6CW86KO6R",
+        "label": "",
         "outerWidth": "12",
         "labelWidth": "3",
         "contentWidth": "9",
-        "type": "text",
-        "placeholder": "请输入学校名称",
-        "description": "请输入学校名称"
-    },
-    {
-        "name": "countryName2",
-        "label": "所在国名",
-        "outerWidth": "12",
-        "labelWidth": "3",
-        "contentWidth": "9",
+        "widthInSteam": "auto",
         "type": "text",
         "placeholder": "请输入文本",
         "description": "请输入英文、数字、下划线"
     },
     {
-        "name": "companyName2",
-        "label": "公司名称",
-        "outerWidth": "12",
-        "labelWidth": "3",
-        "contentWidth": "9",
-        "type": "text",
-        "placeholder": "请输入公司名称",
-        "description": "请输入公司名称"
+        "name": "demo_radio_J62Y2S5B_P0U55DLD6VJTD4MQ8EU2NVCXR",
+        "label": "单选",
+        "outerWidth": 12,
+        "labelWidth": 3,
+        "contentWidth": 9,
+        "widthInSteam": "auto",
+        "type": "radio",
+        "description": "单选描述",
+        "dataUrl": "",
+        "options": [{
+            "label": "选项1",
+            "value": 1
+        },
+        {
+            "label": "选项2",
+            "value": 2
+        },
+        {
+            "label": "选项3",
+            "value": 3
+        }]
     },
     {
-        "name": "games2",
-        "label": "喜欢的游戏",
-        "outerWidth": "12",
-        "labelWidth": "3",
-        "contentWidth": "9",
+        "name": "demo_checkbox_J62Y2T7Z_ODY7SI2YWE5YN29NKR9GAM7VI",
+        "label": "多选",
+        "outerWidth": 12,
+        "labelWidth": 3,
+        "contentWidth": 9,
+        "widthInSteam": "auto",
         "type": "checkbox",
         "description": "多选描述",
         "dataUrl": "",
         "options": [{
-            "label": "崩坏3",
-            "value": "bh3"
+            "label": "选项1",
+            "value": 1
         },
         {
-            "label": "阴阳师",
-            "value": "yys"
+            "label": "选项2",
+            "value": 2
         },
         {
-            "label": "王者农药",
-            "value": "wzry"
-        },
-        {
-            "label": "其他",
-            "value": "other"
-        },
-        {
-            "label": "其他2",
-            "value": "other2"
+            "label": "选项3",
+            "value": 3
         }]
     },
     {
-        "name": "otherGame2",
-        "label": "其他游戏名",
-        "outerWidth": "12",
-        "labelWidth": "3",
-        "contentWidth": "9",
-        "type": "text",
+        "name": "demo_date_J62Y2TNR_EIBI8XNN39QGONWM3OM9UOW29",
+        "label": "日期",
+        "outerWidth": 12,
+        "labelWidth": 3,
+        "contentWidth": 9,
+        "widthInSteam": "auto",
+        "type": "date",
+        "placeholder": "请点击以选择日期",
+        "description": "请点击以选择日期"
+    },
+    {
+        "name": "demo_multiselect_J62Y2U3I_MG7ALYEQZ40ZL4D91UX47VI",
+        "label": "下拉多选",
+        "outerWidth": 12,
+        "labelWidth": 3,
+        "contentWidth": 9,
+        "widthInSteam": "auto",
+        "type": "multiselect",
+        "placeholder": "--请选择--",
+        "description": "请点击选择",
+        "dataUrl": "",
+        "options": [{
+            "label": "选项1",
+            "value": 1
+        },
+        {
+            "label": "选项2",
+            "value": 2
+        },
+        {
+            "label": "选项3",
+            "value": 3
+        },
+        {
+            "label": "选项4",
+            "value": 4
+        },
+        {
+            "label": "选项5",
+            "value": 5
+        },
+        {
+            "label": "选项6",
+            "value": 6
+        }]
+    },
+    {
+        "name": "demo_textarea_J62Y2UM5_UG0L7G5CW6SKPWGA3B3UWHFR",
+        "label": "多行文本",
+        "outerWidth": 12,
+        "labelWidth": 3,
+        "contentWidth": 9,
+        "widthInSteam": "auto",
+        "type": "textarea",
+        "rows": 3,
+        "resize": "none",
         "placeholder": "请输入文本",
         "description": "请输入英文、数字、下划线"
     },
     {
-        "name": "otherGame22",
-        "label": "其他游戏名2",
-        "outerWidth": "12",
-        "labelWidth": "3",
-        "contentWidth": "9",
-        "type": "text",
-        "placeholder": "请输入文本",
-        "description": "请输入英文、数字、下划线"
+        "name": "demo_text_J62Y2V5S_3EA5X146AD7SXB9BG38D2W3IK9",
+        "label": "静态",
+        "outerWidth": 12,
+        "labelWidth": 3,
+        "contentWidth": 9,
+        "widthInSteam": "auto",
+        "type": "static",
+        "placeholder": "静态文字内容",
+        "description": "--静态文字描述--"
     }],
     "rules": {
-        "name": {
-            "required": true,
-            "maxlength": "10",
-            "minlength": "2"
-        },
-        "gender": {
-            "required": true
-        },
-        "status": {
-            "required": true
-        },
-        "schoolName": {
-            "required": false,
-            "maxlength": "200",
-            "minlength": "2"
-        },
-        "countryName": {
-            "required": false,
-            "maxlength": "50",
-            "minlength": "1"
-        },
-        "companyName": {
-            "required": false,
-            "maxlength": "200",
-            "minlength": "2"
-        },
-        "games": {
+        "demo_select_J62Y2QTS_39T00Z7TQYHK3MO7PPIC1K0529": {
             "required": false
         },
-        "otherGame": {
-            "required": false,
-            "maxlength": "200",
-            "minlength": "2"
-        },
-        "otherGame2": {
+        "demo_text_J62Y2SN2_91E5XXE996A60E0X6CW86KO6R": {
             "required": false,
             "maxlength": "10",
             "minlength": "5"
-        }
+        },
+        "demo_radio_J62Y2S5B_P0U55DLD6VJTD4MQ8EU2NVCXR": {
+            "required": false
+        },
+        "demo_checkbox_J62Y2T7Z_ODY7SI2YWE5YN29NKR9GAM7VI": {
+            "required": false
+        },
+        "demo_date_J62Y2TNR_EIBI8XNN39QGONWM3OM9UOW29": {
+            "required": false,
+            "dateISO": true
+        },
+        "demo_multiselect_J62Y2U3I_MG7ALYEQZ40ZL4D91UX47VI": {
+            "required": false
+        },
+        "demo_textarea_J62Y2UM5_UG0L7G5CW6SKPWGA3B3UWHFR": {
+            "required": false,
+            "maxlength": 200,
+            "minlength": 0
+        },
+        "demo_text_J62Y2V5S_3EA5X146AD7SXB9BG38D2W3IK9": {}
     },
     "events": [{
         "eventType": "valueChangeShowHide",
-        "trigger": "status",
+        "trigger": "demo_select_J62Y2QTS_39T00Z7TQYHK3MO7PPIC1K0529",
         "valueResps": {
-            "inSchool": "schoolName",
-            "workInChina": "companyName",
-            "workOutChina": ["countryName", "companyName"],
-            "neet": "games"
-        }
-    },
-    {
-        "eventType": "valueChangeShowHide",
-        "trigger": "games",
-        "valueResps": {
-            "bh3": "",
-            "yys": "",
-            "wzry": "",
-            "other": "otherGame",
-            "other2": "otherGame2"
+            "1": "demo_radio_J62Y2S5B_P0U55DLD6VJTD4MQ8EU2NVCXR",
+            "2": "demo_text_J62Y2SN2_91E5XXE996A60E0X6CW86KO6R",
+            "3": "demo_checkbox_J62Y2T7Z_ODY7SI2YWE5YN29NKR9GAM7VI"
         }
     }],
     "values": {
+        "demo_select_J62Y2QTS_39T00Z7TQYHK3MO7PPIC1K0529": "",
+        "demo_text_J62Y2SN2_91E5XXE996A60E0X6CW86KO6R": "",
+        "demo_date_J62Y2TNR_EIBI8XNN39QGONWM3OM9UOW29": "",
+        "demo_textarea_J62Y2UM5_UG0L7G5CW6SKPWGA3B3UWHFR": ""
     },
-    "isSteam": false,
+    "isSteam": true,
     "isRead": false
 }

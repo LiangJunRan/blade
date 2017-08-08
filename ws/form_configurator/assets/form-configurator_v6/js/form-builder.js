@@ -715,7 +715,23 @@
 			$form.find('.' + _class).removeClass(_class);
 		}
 		$form.find('.col-sm-0').removeClass('col-sm-0').css('display', 'none');
-		$form.find(':input, .item, .outerClass').css({
+		// 流式布局保持联动初始状态的修正方法
+		var $outers = $form.find('.outerClass');
+		$.each($outers, function(idx){
+			var $outer = $($outers[idx]);
+			var hide = false;
+			if ($outer.css('display') == 'none') {
+				hide = true;
+			}
+			$outer.css({
+				'display': 'inline-block',
+				'width': 'auto'
+			});
+			if (hide) {
+				$outer.hide();
+			}
+		});
+		$form.find(':input, .item').css({
 			'display': 'inline-block',
 			'width': 'auto'
 		});

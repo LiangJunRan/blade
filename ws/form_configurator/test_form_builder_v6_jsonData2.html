@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Form Builder - kuroikenshi@sina.com</title>
+	<!-- 基本 -->
+	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
+	<script src="assets/jquery/jquery.min.js"></script>
+	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- html和json格式化插件 -->
+	<script src="assets/html_formater/htmlformat.js"></script>
+	<script src="assets/html_formater/jsformat.js"></script>
+
+	<!-- 校验 -->
+	<script src="assets/jquery-validation/jquery.validate.js"></script>
+	<script src="assets/jquery-validation/localization/messages_zh.min.js"></script>
+	<script src="assets/jquery-validation/localization/messages_zh_fieldname.js"></script>
+
+	<!-- 日期选择控件 -->
+    <link href="assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <script src="assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+	<!-- 特殊radio和checkbox样式 -->
+	<link rel="stylesheet" href="assets/styles-radio-checkbox.css">
+
+	<!-- 下拉复选插件 -->
+	<link href="assets/bootstrap-multiselect/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css"/>
+	<script src="assets/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
+
+	<!-- fc页面样式 -->
+	<link rel="stylesheet" href="assets/form-configurator_v6/css/form-configurator.css">
+	<!-- fc模板文件 -->
+	<script src="assets/form-configurator_v6/js/form-configurator-templates.js"></script>
+	<!-- fb本体 -->
+	<script src="assets/form-configurator_v6/js/form-builder.js"></script>
+</head>
+<body>
+	<form id="testForm"></form>
+	<script>
+		$(document).ready(function(){
+			// $.ajax({
+			// 	url: 'jsonData.json',
+			// 	async: false,
+			// 	success: function(data) {
+			// 		$('#testForm').renderForm(data);
+			// 		$('#testForm').setFormValue(data.values);
+			// 	}
+			// });
+			$.ajax({
+				url: 'jsonData2.json',
+				async: false,
+				success: function(data) {
+					$('#testForm').renderForm(data);
+					// $('#testForm').setFormValue(data.values);
+				}
+			});
+		});
+	</script>
+</body>
+</html>
