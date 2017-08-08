@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Sender</title>
+	<style>
+		* {
+			margin: 10px;
+		}
+		.thumbnail {
+			display: inline-block;
+			width: 200px;
+			border: solid 5px lightgreen;
+			margin: 0 10px 0 10px;
+		}
+	</style>
+</head>
+<body>
+	<!-- <label for="msg">要送出的值：</label>
+	<input type="text" id="msg"> -->
+	<button type="button" onclick="send();">打开新页并传送</button>
+	<hr>
+	<!-- <div>
+		<label for="receive">通过window.open打开页面，新页面回传的值：</label>
+		<textarea id="receive" rows="1" style="width: 100%;"></textarea>
+	</div> -->
+	<div id="thumbnails">
+		
+	</div>
+	<!-- <img id="thumbnail" src="" alt="" style="width: 200px; border: solid 5px lightgreen;"> -->
+	<!-- <input type="text" id="receive"> -->
+	<script src="/_commons/jquery/jquery.min.js"></script>
+
+	<script>
+		var replier = null;
+		var targetList = [
+			'http://192.168.10.123:9293/bs_demo/page_3_fullPath.html',
+			'http://192.168.10.123:9293/dev_test/index3.html',
+			'http://192.168.10.123:9293/bs_demo/page_3_fullPath.html',
+			'http://192.168.10.123:9293/dev_test/index3.html'
+		];
+		
+		var pause = false;
+
+
+		window.createThumbnails = function (data) {
+			$('#thumbnails').append('<img class="thumbnail" src="' + data + '" alt="" />');
+			pause = false;
+		}
+
+		var toInjectHtml = 
+            '<script src="http://192.168.10.123:9293/canvas_demo/assets/plugins/html2canvas/html2canvas.js"><\/script>\n' +
+            '<script src="http://192.168.10.123:9293/canvas_demo/assets/plugins/jquery/jquery.min.js"><\/script>\n' +
+            '<script>\n' +
+            	'var thisIndex = {thisIndex}\n' +
+                '$(window.document).ready(function() {\n' +
+                	'console.log("ready");\n' +
+                    'setTimeout(function() {\n' +
+                        'screenShot();\n' +
+                    '}, 0);\n' +
+                '});\n' +
+                'function screenShot() {\n' +
+                	'console.log("screenShot", window.openedPages);\n' +
+                	'var replier = window.openedPages[thisIndex];\n' +
+                    'html2canvas($(replier.document).find("html"), {\n' +
+                        'onrendered: function (canvas) {\n' +
+                            'var url = canvas.toDataURL();\n' +
+                			'console.log("rendered");\n' +
+                            'if (window) {\n' +
+                            	'window.createThumbnails(url);\n' +
+                            '} else {\n' +
+                            	'console.log("Not found opener");\n' +
+                            '}\n' +
+                        '}\n' +
+                    '});\n' +
+                '}\n' +
+            '<\/script>';
+
+        // window.openedPages = [];
+
+        /*function send() {
+        	$.each(targetList, function(idx) {
+        		(function(_idx, window) {
+					var replier = window.open(targetList[_idx], '_blank');
+					console.log(_idx, replier);
+					window.openedPages.push(replier);
+				    $(replier.document).find('body').append(toInjectHtml.format({thisIndex: _idx}));
+        		})(idx, window);
+        	});
+        }*/
+
+        var replier = null;
+        function send() {
+        	if (!replier) {
+				replier = window.open(targetList[_idx], '_blank');
+        	} else {
+
+        	}
+					console.log(_idx, replier);
+					window.openedPages.push(replier);
+				    $(replier.document).find('body').append(toInjectHtml.format({thisIndex: _idx}));
+        		}
+        	
+        }
+
+        // 扩展String类型的原生方法，提供类似java或python的format方法
+		String.prototype.format = function(args) {
+		    var result = this;
+		    if (arguments.length > 0) {    
+		        if (arguments.length == 1 && typeof (args) == "object") {
+		            for (var key in args) {
+		                if(args[key]!=undefined){
+		                    var reg = new RegExp("({" + key + "})", "g");
+		                    result = result.replace(reg, args[key]);
+		                }
+		            }
+		        }
+		        else {
+		            for (var i = 0; i < arguments.length; i++) {
+		                if (arguments[i] != undefined) {
+		                    var reg = new RegExp("({[" + i + "]})", "g");
+		                    result = result.replace(reg, arguments[i]);
+		                }
+		            }
+		        }
+		    }
+		    return result;
+		}
+		
+	</script>
+</body>
+</html>

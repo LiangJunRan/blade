@@ -1,0 +1,20 @@
+
+var a = 'In the 2,000-year period immediately before European contact, many native groups of the Northern Plains of North America specialized in big-game hunting, subsisting primarily on bison. Bison routinely became fat-depleted in the spring, reducing their nutritional value, yet these groups did not supplement their diets with the nutritious, fat-rich fish that were abundantly available. Malainey <i class="italic">et al.</i> find a possible explanation in late-eighteenth- and early-nineteenth century accounts from three frontiersmen who had adapted to lean-meat diets during extended periods in the plains. Each had an opportunity to consume fish after extended meat dependence and upon eating it, became weak and ill. Malainey notes that prolonged lean meat dependence renders the body incapable of digesting lipids (fats), perhaps explaining native hunters’ fish avoidance.';
+
+头部：
+[A-Z][a-z]+[\s]|[\d][\s]
+
+中部：
+[^\s\.\!\?\:]+[\s]*
+
+尾部：
+[\.\!\?\:]([\s]*$|[\s]*[A-Z][a-z]+|[\d]+)
+
+自然句：
+(([A-Z][a-z]+[\s]|[\d][\s]){1}([^\s\.\!\?\:]+[\s]*)*[\.\!\?\:])([\s]*$|[\s]*[A-Z][a-z]+|[\d]+){1}
+
+自然句（可以有.?!:）
+(([A-Z][a-z]+[\s]|[\d][\s]){1}([\S]+[\s]*)*[\.\!\?\:])([\s]*$|[\s]*[A-Z][a-z]+|[\d]+){1}
+
+替换特征
+[\.\!\?\:][\s]*$|[\.\!\?\:][\s]*[A-Z][a-z]+|[\!\?\:][\s]*[\d]+
