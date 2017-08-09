@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Snap a Picture of Preview</title>
+	<meta charset='utf-8'>
+	<meta name='viewport' content='initial-scale=1.0'>
+	<!-- <meta http-equiv='X-UA-Compatible' content='IE=9' /> -->
+	<script type='text/javascript' src='http://code.jquery.com/jquery-latest.min.js'></script>
+	<script src='http://192.168.10.123:9293/canvas_demo/assets/plugins/html2canvas/html2canvas.js'></script>
+	<style type='text/css'>
+		body {
+			overflow-x: hidden;
+		}
+
+		#code {
+			width: 100%;
+			height: 200px;
+			padding: 0px;
+			margin: 0px;
+		}
+
+		.preview {
+			width: 100%;
+			/*height: 0px;*/
+			border-width: 0px;
+		}
+
+		#thumbnails img {
+			border: solid 5px lightgreen;
+			width: 200px;
+			margin: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<button class='snapFrame' id="snapBtn">Snap</button>
+	</div>
+
+	<div style="display: none;">
+		<textarea id='code' name='code'></textarea>
+	</div>
+
+	<iframe class='preview'></iframe>
+
+	<div id='imgprev'></div>
+	<div id="thumbnails"></div>
+
+	<script>
+		/*$.ajax({
+			url: 'http://192.168.10.123:9293/bs_demo/page_3_fullPath.html',
+			async: false,
+			success: function(data) {
+				$('#code').val(data);
+			}
+		});*/
+
+		var idx = 0;
+		var urlList = [
+			'http://192.168.10.123:9293/bs_demo/page_3_fullPath.html',
+			'http://192.168.10.123:9293/bs_demo/page_3_fullPath.html',
+			'http://192.168.10.123:9293/dev_test/index3.html'
+		]
+
+		loadPageContent();
+
+		// Append JS library to HTML <head>
+		function appendJSLib(txt) {
+			var textArea = $('#code').val();
+
+			var searchText = textArea.search('<head>');
+			if(searchText > 0) {
+				txt = '<head>' + '\n' + txt;
+				var updatedTextArea = textArea.replace('<head>', txt);
+				$('#code').val(updatedTextArea);
+			}
+			else {
+				reset();
+				alert('WARNING! The &lt;head&gt tag seems to be missing in your HTML. Although your code may still work, we highly recommened that you have a valid HTML syntax. Please refer to the new document of correct formatted');
+				txt = txt + textArea;
+				// htmlEditor.setLine(0, txt);
+				return false;
+			}
+		}
+
+		// Append script to HTML <body>
+		function appendScript(txt) {
+			var textArea = $('#code').val();
+
+			var searchText = textArea.search('<body>');
+			if(searchText > 0) {
+				txt = '<body>' + '\n' + txt;
+				var updatedTextArea = textArea.replace('<body>', txt);
+				$('#code').val(updatedTextArea);
+			}
+			else {
+				reset();
+				alert('WARNING! The <body> tag seems to be missing in your HTML. Although your code may still work, we highly recommened that you have a valid HTML syntax. Please refer to the new document of correct formatted');
+				txt = txt + textArea;
+				// htmlEditor.setLine(0, txt);
+				return false;
+			}
+		}
+
+		$('#snapBtn').on('click', function() {
+			console.log('Clicked snapBtn');
+
+			txt = 
+				'<script src="http://code.jquery.com/jquery-latest.min.js"><\/script>';
+			appendJSLib(txt);
+			
+			txt = 
+				'<script src="http://192.168.10.123:9293/canvas_demo/assets/plugins/html2canvas/html2canvas.js"><\/script>';
+			appendJSLib(txt);
+			
+			txt = 
+				'<script type="text/javascript">\n' +
+				'	console.log("Code is Injected.");\n' +
+				'	$(document).ready(function() {\n' +
+				'		setTimeout(function(){\n' +
+				'			html2canvas($("body"), {\n' +
+				'				onrendered: function(canvas) {\n' +
+				'					console.log("Html2canvas onrendered.");\n' +
+				'					var myImage = canvas.toDataURL("image/png");\n' +
+				'					$(parent.document).find("#thumbnails").append(\'<img src=\' + myImage + \' alt="" />\');\n' +
+				'				}\n' +
+				'			});\n' +
+				'		}, 1000);\n' +
+				'	});\n' +
+				'<\/script>';
+			appendScript(txt);
+				
+
+			// loadPageContent();
+			setTimeout(function(){
+				updateIframe();
+			}, 0);
+		});
+
+		function loadPageContent() {
+			console.log('loadPageContent>>>', idx);
+			$.ajax({
+				url: urlList[idx],
+				async: false,
+				success: function(data) {
+					$('#code').val(data);
+				}
+			});
+
+			idx ++;
+			if (idx >= urlList.length) {
+				$('#snapBtn').prop('disabled', true);
+			}
+		}
+
+
+		var previewFrame = document.querySelector('.preview');
+		var preview = previewFrame.contentDocument || previewFrame.contentWindow.document;
+
+		function updateIframe() {
+			console.log('updateIframe');
+			// loadPageContent();
+
+			console.log(preview);
+			console.log(preview.open);
+			preview.open();
+			preview.write($('#code').val());
+			preview.close();
+		}
+
+		setTimeout(updateIframe, 0);
+	</script>
+</body>
+</html>
