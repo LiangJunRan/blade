@@ -67,7 +67,15 @@
 		// 渲染生成form
 		var jsonOpts = jsonConf['items'];
 		$.each(jsonOpts || [], function(_idx){
-			var $item = render(jsonOpts[_idx]);
+            // TODO 将checkbox和radio强转成下拉框
+			var hackedJsonOpts = jsonOpts[_idx];
+            if (hackedJsonOpts.type == 'checkbox') {
+                hackedJsonOpts.type = 'multiselect';
+            }
+            if (hackedJsonOpts.type == 'radio') {
+                hackedJsonOpts.type = 'select';
+            }
+			var $item = render(hackedJsonOpts);
 			// 加入新对象
 			addToForm($item, $form);
 		});
@@ -95,6 +103,7 @@
 	// 新表单项加入表单的特殊处理
 	function addToForm($item, $form) {
 		var $lastChildNode = $form.find(':last-child');
+
 		// 可以加入到list-block中的对象
 		if (['text', 'select', 'multiselect', 'textarea', 'static'].indexOf($item.data('opts').type) != -1) {
 			// 前节点不存在，或者存在，但不是list-block，新建list-block外壳
@@ -118,16 +127,15 @@
 			}
 			else if (['static'].indexOf($item.data('opts').type) != -1) {
 				var $ul = $lastChildNode.children('ul');
-				var $liLabel = $('<li class="item-divider skipTransRead">{label}</li>'.format($item.data('opts')));
+				var $liLabel = $('<li class="item-divider skipTransRead skipTransSteam">{label}</li>'.format($item.data('opts')));
 				if ($liLabel.html().trim().length == 0) {
 					$liLabel.hide();
 				}
-				console.log('placeholder', $item.data('opts').placeholder);
 				var $liPlaceHolder = $(
-					('<li class="listNode skipTransRead">' +
+					('<li class="listNode skipTransRead skipTransSteam">' +
 						'<div class="item-content">' +
 							'<div class="item-inner">' +
-								'<div class="item-after item-after-fix" ' +
+								'<div class="item-after" ' +
 										'style="max-width: 100%; text-indent: 2em;">{placeholder}</div>' +
 							'</div>' +
 						'</div>' +
@@ -374,8 +382,8 @@
 		var nodes = $form.find('li.listNode:not(.skipTransRead)');
 		$.each(nodes, function(idx){
 			var $node = $(nodes[idx]);
-			console.log($node.find('item-content').data('opts'));
-			var contentList = [];
+            var opts = $node.children().data('opts');
+            var contentList = [];
 			var inputs = $node.find('input, select, textarea');
 			$.each(inputs, function(_idx){
 				var $this = $(inputs[_idx]);
@@ -426,7 +434,7 @@
 			});
 
 			var contentJson = {
-				label: $node.find('.item-title.label').html(),
+				label: $node.find('.item-title.label').html() || '',
 				value: contentList.join(', ')
 			}
 
@@ -434,11 +442,24 @@
 				'<div class="item-content">' +
 					'<div class="item-inner">' +
 						'<div class="item-title label">{label}</div>' +
-						'<div class="item-after item-after-fix">{value}</div>' +
+						'<div class="item-after">{value}</div>' +
 					'</div>' +
 				'</div>';
 
-			$node.html(readonlyHtml.format(contentJson));
+			var $renderNode = $(readonlyHtml.format(contentJson));
+            var $label = $renderNode.find('.item-content>.item-inner>.item-title.label');
+            if ($label.html() == '') {
+                $label.hide();
+			}
+            
+    		// 值为空不显示
+    		var $contents = $renderNode.find('.item-after');
+    		if ($contents.html().trim().length == 0) {
+    			$node.hide();
+    		};
+
+			$node.html($renderNode[0].outerHTML);
+			$node.children().data('opts', opts);
 			if ($node.hasClass('disabled')) {
 				$node.remove();
 			}
@@ -447,14 +468,14 @@
 
 	// 将正常form对象变换为另一种形式（对应isSteam参数）
 	function transSteam($form) {
-		var listNodes = $form.find('.listNode');
+		var listNodes = $form.find('.listNode:not(.skipTransSteam)');
 		var labelRow = '<li class="item-divider">{label}</li>';
 		$.each(listNodes, function(idx){
 			var $node = $($(listNodes[idx]).children()[0]);
 			var opt = $node.data('opts');
-			console.log(idx, opt.label);
-			var label = opt.label;
+			var label = opt.label || '';
 			$node.find('.item-title.label').remove();
+            $(listNodes[idx]).addClass('fullRow');
 			$(labelRow.format({label: label})).insertBefore($(listNodes[idx]));
 			$node.find('.item-after').addClass('steam-select-fix');
 		});
@@ -465,7 +486,7 @@
 	// /////////////////////////////////////////////////////////////////////////////
 	function setFormValue($form, values) {
 		var formId = $form.attr('id');
-		myApp.formFromData('#' + formId, values);
+		myApp.formFromData('#' + formId, values || []);
 	}
 	// 注册成为jQuery对象方法
 	$.fn.setFormValue = function(values) {

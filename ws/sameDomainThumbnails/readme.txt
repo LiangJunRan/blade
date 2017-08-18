@@ -1,0 +1,1 @@
+启动blade/ws/start-server.bat，访问截图页面和被截图页面必须在同一domain下

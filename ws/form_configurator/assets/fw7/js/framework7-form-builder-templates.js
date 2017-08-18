@@ -92,6 +92,8 @@
 		"minlength": 0
 	};
 
+
+
 	core.static = 
 		'<div class="item-content">' +
 			'<div class="item-inner">' +
@@ -107,8 +109,7 @@
 	};
 	rule.static = {
 	};
-
-
+	
 	// core.multiselect = 
 	// 	'<a href="#" class="item-link smart-select" data-open-in="picker">' +
 	// 		'<select name="{name}">' +
@@ -205,27 +206,4 @@
 		"required": false,
 		"dateISO": true
 	};
-
-
-
-
-	
-
-
-
-
-	
-
-
-
-	/*core.static = 
-		'<div class="form-control-static staticContent"></div>';
-	opts.static = {
-		"type": "static",						// 基本类型
-		"label": "静态",
-		"placeholder": "静态文字内容",
-		"description": "--静态文字描述--"
-	};
-	rule.static = {
-	};*/
 }));
