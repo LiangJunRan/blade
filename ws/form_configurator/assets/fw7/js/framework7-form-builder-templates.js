@@ -109,7 +109,50 @@
 	};
 	rule.static = {
 	};
-	
+
+
+
+	core.image = 
+		'<div class="item-content">' +
+			'<div class="item-inner">' +
+				'<div class="item-title label">{label}</div>' +
+				'<div class="item-input item-input-image">' +
+					'<input type="hidden" name="{name}">' +
+					'<div class="thumbnails-container">' +
+					'</div>' +
+					'<div class="thumbnails-description">{description}</div>'
+				'</div>' +
+			'</div>' +
+		'</div>';
+	sub.image = {};
+	sub.image.item =
+		'<div class="thumbnail">' +
+			'<div class="delete-button">' +
+				'<i class="f7-icons">close</i>' +
+			'</div>' +
+			'<img src="{url}" />' +
+		'</div>';
+	sub.image.add =
+		'<button type="button" class="button thumbnail add">' +
+			'<i class="f7-icons">add</i>' +
+		'</button>';
+	sub.image.waiting =
+		'<div class="thumbnail waiting">' +
+			'<div class="delete-button">' +
+				'<i class="f7-icons">close</i>' +
+			'</div>' +
+			'<div class="preloader"></div>' +
+		'</div>';
+	opts.image = {
+        "type": "image",
+		"name": "demo_image",
+		"label": "测试图片",
+        "description": "请点击上传",
+        "maxNumber": 5,
+        "minNumber": 1
+	};
+	rule.image = {
+	};
 	// core.multiselect = 
 	// 	'<a href="#" class="item-link smart-select" data-open-in="picker">' +
 	// 		'<select name="{name}">' +

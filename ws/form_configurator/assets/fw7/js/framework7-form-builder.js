@@ -105,7 +105,8 @@
 		var $lastChildNode = $form.find(':last-child');
 
 		// 可以加入到list-block中的对象
-		if (['text', 'select', 'multiselect', 'textarea', 'static'].indexOf($item.data('opts').type) != -1) {
+		if (['text', 'select', 'multiselect', 'textarea', 'static',
+				'image'].indexOf($item.data('opts').type) != -1) {
 			// 前节点不存在，或者存在，但不是list-block，新建list-block外壳
 			if (
 				// 上一个子节点不存在 或
@@ -119,7 +120,7 @@
 					'</div>');
 				$form.append($lastChildNode);
 			}
-			if (['text', 'select', 'multiselect', 'textarea'].indexOf($item.data('opts').type) != -1) {
+			if (['text', 'select', 'multiselect', 'textarea', 'image'].indexOf($item.data('opts').type) != -1) {
 				var $ul = $lastChildNode.children('ul');
 				var $li = $('<li class="listNode"></li>');
 				$li.append($item);
@@ -153,7 +154,7 @@
 	}
 
 	// 每个节点渲染的方法
-	function render(opt, _$node, isRead) {
+	function render (opt, _$node, isRead) {
 		var isNew = !(_$node);
 		var $node = _$node || $((core[opt.type] || '').format(opt));
 
@@ -204,6 +205,17 @@
 				} else {
 					$select.append(sub.select.format({label: '-- NO ITEM --', value: ''}));
 				}
+				break;
+
+			// 图片
+			case 'image':
+				if ($node.find('.thumbnails-description').html().trim() == '') {
+					$node.find('.thumbnails-description').hide();
+				}
+				var $imageUrls = $node.find('input');
+				var $container = $node.find('.thumbnails-container');
+				var $addBtn = $(sub.image.add);
+				$container.append($addBtn);
 				break;
 
 			// 多行文本

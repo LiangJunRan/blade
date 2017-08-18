@@ -1,6 +1,21 @@
 {
     "student_1": {
         "items": [
+        	{
+        		"name": "homework",
+        		"label": "作业",
+                "type": "image",
+
+                "outerWidth": 12,
+                "labelWidth": 3,
+                "contentWidth": 9,
+                "widthInSteam": "auto",
+
+                "description": "请点击上传",
+                "maxNumber": 5,
+                "minNumber": 1
+
+        	},
             {
                 "name": "s1",
                 "label": "下拉单选",
@@ -80,32 +95,23 @@
             }],
         "rules": {
             "s1": {
-                "required": true
+                "required": false
             },
             "t1": {
-                "required": true,
+                "required": false,
                 "maxlength": 10,
                 "minlength": 5
             },
             "s2": {
-                "required": true,
+                "required": false,
                 "maxlength": 2
             },
             "ta1": {
-                "required": true,
+                "required": false,
                 "maxlength": 200,
                 "minlength": 0
             }},
-        "events": [
-            {
-                "eventType": "valueChangeDisable",
-                "trigger": "s1",
-                "valueResps": {
-                    "1": "t1",
-                    "2": "s2",
-                    "3": "ta1"
-                }
-            }],
+        "events": [],
         "values": {},
         "isSteam": false,
         "isRead": false
