@@ -1,10 +1,10 @@
 var device = Framework7.prototype.device;
 
+// TODO:[static] 上线还原
 // var url_studentList = "/bpmapp/form/studentList";
 // var url_getformvaluebyid = "/bpmapp/form/getformvaluebyid";
 // var url_getbyid = "/bpmapp/form/getbyid";
 // var url_saveformData = "/bpmapp/form/saveformData";
-
 var url_studentList = "data/studentList.json";
 var url_getformvaluebyid = "data/getformvaluebyid.json";
 var url_getbyid = "data/getbyid.json";
@@ -573,3 +573,13 @@ $$('.share-btn').on('click', function(){
     
     window.location = url;
 });
+
+// 预上传回调
+function preUploadCallback(data) {
+    $$('form#{formId} [name={name}]'.format(data)).closest('.item-content').data('preUpload')(data);
+}
+
+// 上传完毕回调
+function uploadedCallback(data) {
+    $$('form#{formId} [name={name}]'.format(data)).closest('.item-content').data('uploaded')(data);
+}

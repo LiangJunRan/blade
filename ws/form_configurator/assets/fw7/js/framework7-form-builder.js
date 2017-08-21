@@ -153,6 +153,18 @@
 		}
 	}
 
+	// 更新指定的表单项的值
+	function _updateUrls(data) {
+		var $input = $('form#{formId} input[name={name}]'.format(data));
+		var $node = $input.closest('.item-content');
+		var urlList = [];
+		var $imgs = $node.find('img');
+		$.each($imgs, function(idx) {
+			urlList.push($imgs[idx].getAttribute('src'));
+		});
+		$input.val(urlList.join(','));
+	}
+
 	// 每个节点渲染的方法
 	function render (opt, _$node, isRead) {
 		var isNew = !(_$node);
@@ -233,7 +245,7 @@
 					window.location = '/upload?' + urlParam;
 				});
 				// 预上传回调
-				$addBtn.data('preUpload', function(data) {
+				$node.data('preUpload', function(data) {
 					var groupId = data.groupId;
 					var count = data.count;
 					for (var i = 0; i < count; i++) {
@@ -257,22 +269,16 @@
 					}
 				});
 				// 上传完毕回调
-				$addBtn.data('uploaded', function(imageData) {
-					/*
-					imageData = {
-						formId
-						name
-						groupId
-						index
-						url
-					}
-					*/
+				$node.data('uploaded', function(imageData) {
 					var $item = $(sub.image.item.format(imageData));
 					// 绑定删除当前图片的方法
 					$item.find('.delete').on('click', function(e) {
 						$delBtn = $(e.target).closest('.delete');
-						// TODO: 删掉对应表单中的数据
 						$delBtn.closest('.thumbnail').remove();
+
+						// 更新urls表单数据
+						_updateUrls(imageData);
+
 						// 判断总thumbnail数量是否小于了max
 						if ($addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length < $node.data('opts').maxNumber) {
 							$addBtn.closest('.thumbnails-container').find('.thumbnail.add').css('display', 'inline-block');
@@ -283,12 +289,50 @@
 							'.thumbnail.waiting.groupId_' + imageData.groupId + '.index_' + imageData.index);
 					$item.insertBefore($waiting);
 					$waiting.remove();
-					// TODO: 增加对应表单数据
+
+					// 更新urls表单数据
+					_updateUrls(imageData);
 
 					// 判断总thumbnail数量是否超过了max
 					if ($addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length >= $node.data('opts').maxNumber) {
 						$addBtn.closest('.thumbnails-container').find('.thumbnail.add').hide();
 					}
+				});
+				// 赋值并加载预览图的方法
+				$node.data('setValue', function(urls) {
+					var urlList = urls.split(',');
+					$.each(urlList, function(idx) {
+						var $item = $(sub.image.item.format({url: urlList[idx]}));
+						// 绑定删除当前图片的方法
+						$item.find('.delete').on('click', function(e) {
+							$delBtn = $(e.target).closest('.delete');
+							$delBtn.closest('.thumbnail').remove();
+
+							var imageData = {
+								formId: $node.closest('form').attr('id'),
+								name: $node.data('opts').name
+							};
+
+							// 更新urls表单数据
+							_updateUrls(imageData);
+
+							// 判断总thumbnail数量是否小于了max
+							if ($addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length < $node.data('opts').maxNumber) {
+								$addBtn.closest('.thumbnails-container').find('.thumbnail.add').css('display', 'inline-block');
+							}
+						});
+						// 放置
+						$item.insertBefore($addBtn);
+					});
+						
+					// 判断总thumbnail数量是否超过了max
+					if ($addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length >= $node.data('opts').maxNumber) {
+						$addBtn.closest('.thumbnails-container').find('.thumbnail.add').hide();
+					}
+				});
+				// 初始化赋值时会触发此方法
+				$node.find('input').on('change', function(e) {
+					$node.data('setValue')($(e.target).val());
 				});
 				break;
 
@@ -482,6 +526,10 @@
 								contentList.push(label);
 							}
 							break;
+						case 'hidden':
+							$this.closest('.item-content').find('.thumbnail.add').hide();
+							$this.closest('.item-content').find('.thumbnails-description').remove();
+							break;
 						case 'text':
 						default:
 							var label = $this.val();
@@ -572,7 +620,7 @@
 	// /////////////////////////////////////////////////////////////////////////////
 	function setFormValue($form, values) {
 		var formId = $form.attr('id');
-		myApp.formFromData('#' + formId, values || []);
+		myApp.formFromData('#' + formId, values || {});
 	}
 	// 注册成为jQuery对象方法
 	$.fn.setFormValue = function(values) {

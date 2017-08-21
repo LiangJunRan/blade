@@ -127,7 +127,9 @@
                 "minlength": 0
             }},
         "events": [],
-        "values": {},
+        "values": {
+            "exam": "http://127.0.0.1:9999/assets/fw7/img/i-f7-ios.png,http://127.0.0.1:9999/assets/fw7/img/i-f7-ios.png,http://127.0.0.1:9999/assets/fw7/img/i-f7-ios.png"
+        },
         "isSteam": false,
         "isRead": false
     },
