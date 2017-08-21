@@ -589,7 +589,7 @@ $$('body').on('click', '.openPhotoBrowser', function(e) {
     console.log('open photo');
     var urlList = $$(e.target).closest('.item-content').find('input').val().split(',');
     var myPhotoBrowser = myApp.photoBrowser({
-        zoom: 400,
+        // zoom: 400,
         // theme: 'dark',
         photos: urlList,
         onOpen: function(photobrowser) {

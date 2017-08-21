@@ -165,7 +165,7 @@
 		$.each($imgs, function(idx) {
 			urlList.push($imgs[idx].getAttribute('src'));
 		});
-		$input.val(urlList.join(','));
+		$input.val('images:[' + urlList.join(',') + ']');
 	}
 
 	// 每个节点渲染的方法
@@ -303,7 +303,8 @@
 				});
 				// 赋值并加载预览图的方法
 				$node.data('setValue', function(urls) {
-					var urlList = urls.split(',');
+					console.log(urls);
+					var urlList = urls.match(/images:\[(.*)\]/)[1].split(',');
 					$.each(urlList, function(idx) {
 						var $item = $(sub.image.item.format({url: urlList[idx]}));
 						// 绑定删除当前图片的方法
