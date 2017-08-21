@@ -245,7 +245,7 @@
             "t1": "测试文本",
             "s2": ["2", "3"],
             "ta1": "多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行多行"},
-        "isSteam": false,
-        "isRead": false
+        "isSteam": true,
+        "isRead": true
     }
 }

@@ -130,9 +130,11 @@
 			'<div class="delete">' +
 				'<i class="f7-icons">close</i>' +
 			'</div>' +
-			'<div class="image-container">' +
-				'<img src="{url}" />' +
-			'</div>' +
+			'<a class="openPhotoBrowser" href="javascript:void(0);">' +
+				'<div class="image-container">' +
+					'<img src="{url}" />' +
+				'</div>' +
+			'</a>' +
 		'</div>';
 	sub.image.add =
 		'<button type="button" class="button thumbnail add">' +

@@ -123,6 +123,9 @@
 			if (['text', 'select', 'multiselect', 'textarea', 'image'].indexOf($item.data('opts').type) != -1) {
 				var $ul = $lastChildNode.children('ul');
 				var $li = $('<li class="listNode"></li>');
+				if ($item.data('opts').type == 'image') {
+					$li.addClass('isImage');
+				}
 				$li.append($item);
 				$ul.append($li);	
 			}
@@ -526,10 +529,6 @@
 								contentList.push(label);
 							}
 							break;
-						case 'hidden':
-							$this.closest('.item-content').find('.thumbnail.add').hide();
-							$this.closest('.item-content').find('.thumbnails-description').remove();
-							break;
 						case 'text':
 						default:
 							var label = $this.val();
@@ -567,13 +566,23 @@
 				}
 			});
 
-			var contentJson = {
-				label: $node.find('.item-title.label').html() || '',
-				value: contentList.join(', ')
+			var contentJson = {};
+
+			// 图片只读模式处理
+			if ($node.is('.isImage')) {
+				contentJson = {
+					label: $node.find('.item-title.label').html() || '',
+					value: $node.find('.thumbnails-container')[0].outerHTML
+				}
+			} else {
+				contentJson = {
+					label: $node.find('.item-title.label').html() || '',
+					value: contentList.join(', ')
+				}
 			}
 
 			var readonlyHtml = 
-				'<div class="item-content">' +
+				'<div class="item-content readonly-layout">' +
 					'<div class="item-inner">' +
 						'<div class="item-title label">{label}</div>' +
 						'<div class="item-after">{value}</div>' +
@@ -591,6 +600,15 @@
     		if ($contents.html().trim().length == 0) {
     			$node.hide();
     		};
+
+			// 图片特殊处理
+			if ($node.is('.isImage')) {
+				$renderNode.find('.thumbnail .delete, .thumbnail.add').remove();
+				// 没有图片则不显示
+				if ($renderNode.find('.thumbnails-container').html().trim().length == 0) {
+					$node.hide();
+				}
+			}
 
 			$node.html($renderNode[0].outerHTML);
 			$node.children().data('opts', opts);
@@ -610,6 +628,7 @@
 			var label = opt.label || '';
 			$node.find('.item-title.label').remove();
             $(listNodes[idx]).addClass('fullRow');
+			$(listNodes[idx]).find('.item-content').addClass('steam-layout');
 			$(labelRow.format({label: label})).insertBefore($(listNodes[idx]));
 			$node.find('.item-after').addClass('steam-select-fix');
 		});

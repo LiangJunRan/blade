@@ -9,6 +9,11 @@
     word-wrap: break-word;
     display: inline;
 }
+.readonly-layout.steam-layout .item-after {
+	width: 100%;
+	max-width: 100%;
+    text-indent: 2em;
+}
 /* 解决android端页面内容被toolbar盖住的bug */
 .android .navbar-through .page-content {
     padding-bottom: 48px;
@@ -33,6 +38,7 @@
 	text-overflow: ellipsis;
 }
 .list-block .fullRow .item-after {
+    width: 100%;
     max-width: 100%;
     text-indent: 2em;
 }
@@ -62,14 +68,14 @@
 }
 
 /* 主题样式 */
-.navbar, .subnavbar, .toolbar {
+.navbar, .subnavbar, .toolbar, .photo-browser .navbar, .photo-browser .toolbar {
 	background-color: #40BC87;
 	color: #fff;
 }
 .ios .smart-select-picker .toolbar a {
 	color: #007aff;
 }
-.navbar a, .toolbar a {
+.navbar a, .toolbar a, .photo-browser .navbar a {
 	color: #fff;
 	border-color: #fff;
 }
@@ -117,8 +123,9 @@ html.ios.with-statusbar-overlay .framework7-root .panel {
 	text-align: center;
 	vertical-align: middle;
 	display: inline-block;
+	margin-top: 5px;
 	margin-right: 10px;
-	margin-bottom: 10px;
+	margin-bottom: 5px;
     box-sizing: border-box;
     border-radius: 0;
 }
@@ -167,4 +174,5 @@ html.ios.with-statusbar-overlay .framework7-root .panel {
 }
 .thumbnail .image-container img {
 	width: 100%;
+    display: block;
 }
