@@ -1,9 +1,9 @@
 {
     "student_1": {
         "items": [
-        	{
-        		"name": "homework",
-        		"label": "作业",
+            {
+                "name": "homework",
+                "label": "作业",
                 "type": "image",
 
                 "outerWidth": 12,
@@ -11,11 +11,26 @@
                 "contentWidth": 9,
                 "widthInSteam": "auto",
 
-                "description": "请点击上传",
+                "description": "请点击上传，最多5张",
                 "maxNumber": 5,
                 "minNumber": 1
 
-        	},
+            },
+            {
+                "name": "exam",
+                "label": "考试",
+                "type": "image",
+
+                "outerWidth": 12,
+                "labelWidth": 3,
+                "contentWidth": 9,
+                "widthInSteam": "auto",
+
+                "description": "请点击上传，最多3张",
+                "maxNumber": 3,
+                "minNumber": 1
+
+            },
             {
                 "name": "s1",
                 "label": "下拉单选",

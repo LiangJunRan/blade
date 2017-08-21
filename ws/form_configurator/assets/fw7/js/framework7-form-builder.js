@@ -216,6 +216,80 @@
 				var $container = $node.find('.thumbnails-container');
 				var $addBtn = $(sub.image.add);
 				$container.append($addBtn);
+				// 调用原生相册方法
+				$addBtn.on('click', function(e) {
+					$btn = $(e.target).closest('button.add');
+					$btn.data('groupId', $btn.data('groupId') || 0);
+					var data = {
+				        type: 'image',
+				        formId: $btn.closest('form').attr('id'),
+				        name: opt.name,
+				        max: opt.maxNumber,
+				        min: opt.minNumber,
+				        groupId: $btn.data('groupId')
+				    };
+				    $btn.data('groupId', $btn.data('groupId') + 1);
+				    var urlParam = $$.param(data);
+					window.location = '/upload?' + urlParam;
+				});
+				// 预上传回调
+				$addBtn.data('preUpload', function(data) {
+					var groupId = data.groupId;
+					var count = data.count;
+					for (var i = 0; i < count; i++) {
+						var $waiting = $(sub.image.waiting);
+						// 绑定删除上传中的方法
+						$waiting.find('.delete').on('click', function(e){
+							$delBtn = $(e.target).closest('.delete');
+							$delBtn.closest('.thumbnail').remove();
+							// 判断总thumbnail数量是否小于了max
+							if ($addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length < $node.data('opts').maxNumber) {
+								$addBtn.closest('.thumbnails-container').find('.thumbnail.add').css('display', 'inline-block');
+							}
+						});
+						$waiting.addClass('groupId_' + groupId);
+						$waiting.addClass('index_' + i);
+						$waiting.insertBefore($addBtn);
+					}
+					// 判断总thumbnail数量是否超过了max
+					if ($addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length >= $node.data('opts').maxNumber) {
+						$addBtn.closest('.thumbnails-container').find('.thumbnail.add').hide();
+					}
+				});
+				// 上传完毕回调
+				$addBtn.data('uploaded', function(imageData) {
+					/*
+					imageData = {
+						formId
+						name
+						groupId
+						index
+						url
+					}
+					*/
+					var $item = $(sub.image.item.format(imageData));
+					// 绑定删除当前图片的方法
+					$item.find('.delete').on('click', function(e) {
+						$delBtn = $(e.target).closest('.delete');
+						// TODO: 删掉对应表单中的数据
+						$delBtn.closest('.thumbnail').remove();
+						// 判断总thumbnail数量是否小于了max
+						if ($addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length < $node.data('opts').maxNumber) {
+							$addBtn.closest('.thumbnails-container').find('.thumbnail.add').css('display', 'inline-block');
+						}
+					});
+					// 替换对应的等待对象
+					$waiting = $addBtn.closest('.thumbnails-container').find(
+							'.thumbnail.waiting.groupId_' + imageData.groupId + '.index_' + imageData.index);
+					$item.insertBefore($waiting);
+					$waiting.remove();
+					// TODO: 增加对应表单数据
+
+					// 判断总thumbnail数量是否超过了max
+					if ($addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length >= $node.data('opts').maxNumber) {
+						$addBtn.closest('.thumbnails-container').find('.thumbnail.add').hide();
+					}
+				});
 				break;
 
 			// 多行文本

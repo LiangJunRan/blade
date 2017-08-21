@@ -127,10 +127,12 @@
 	sub.image = {};
 	sub.image.item =
 		'<div class="thumbnail">' +
-			'<div class="delete-button">' +
+			'<div class="delete">' +
 				'<i class="f7-icons">close</i>' +
 			'</div>' +
-			'<img src="{url}" />' +
+			'<div class="image-container">' +
+				'<img src="{url}" />' +
+			'</div>' +
 		'</div>';
 	sub.image.add =
 		'<button type="button" class="button thumbnail add">' +
@@ -138,7 +140,7 @@
 		'</button>';
 	sub.image.waiting =
 		'<div class="thumbnail waiting">' +
-			'<div class="delete-button">' +
+			'<div class="delete">' +
 				'<i class="f7-icons">close</i>' +
 			'</div>' +
 			'<div class="preloader"></div>' +

@@ -109,7 +109,6 @@ html.ios.with-statusbar-overlay .framework7-root .panel {
 }
 .thumbnails-description {
 	color: #999;
-    margin-top: 6px;
 }
 .thumbnail {
 	width: 50px;
@@ -118,8 +117,10 @@ html.ios.with-statusbar-overlay .framework7-root .panel {
 	text-align: center;
 	vertical-align: middle;
 	display: inline-block;
-	margin-right: 8px;
+	margin-right: 10px;
+	margin-bottom: 10px;
     box-sizing: border-box;
+    border-radius: 0;
 }
 .thumbnail.add {
 	border: dashed 2px #bbb;
@@ -128,4 +129,42 @@ html.ios.with-statusbar-overlay .framework7-root .panel {
 	color: #bbb;
 	line-height: 48px;
 	font-size: 26px;
+}
+.thumbnail.waiting {
+	border: solid 2px #bbb;
+	background-color: #bbb;
+}
+.thumbnail.waiting .preloader{
+    margin: 13px;
+    display: block;
+}
+.thumbnail .delete {
+	position: relative;
+	float: right;
+	z-index: 2;
+	height: 16px;
+	width: 16px;
+    line-height: 16px;
+	right: -9px;
+	top: -9px;
+    border: solid 2px #fff;
+	border-radius: 12px;
+    text-align: center;
+	font-size: 14px;
+	color: #fff;
+	background-color: #f00;
+}
+.thumbnail .delete i {
+	font-size: 14px;
+	width: 17px;
+}
+.thumbnail .image-container {
+	display: block;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    position: absolute;
+}
+.thumbnail .image-container img {
+	width: 100%;
 }
