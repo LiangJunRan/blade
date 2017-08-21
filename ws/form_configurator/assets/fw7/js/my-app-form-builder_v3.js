@@ -587,7 +587,7 @@ function uploadedCallback(data) {
 // 查看已上传图片的方法
 $$('body').on('click', '.openPhotoBrowser', function(e) {
     console.log('open photo');
-    var urlList = $$(e.target).closest('.item-content').find('input').val().split(',');
+    var urlList = $$(e.target).closest('.item-content').find('input').val().match(/images:\[(.*)\]/)[1].split(',');
     var myPhotoBrowser = myApp.photoBrowser({
         // zoom: 400,
         // theme: 'dark',
