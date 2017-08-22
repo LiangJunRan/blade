@@ -615,9 +615,7 @@ $$('body').on('click', '.openPhotoBrowser', function(e) {
 	var urlList = $$(e.target).closest('.item-content').find('input').val().match(/images:\[(.*)\]/)[1].split(',');
 	var nowIndex = urlList.indexOf(nowUrl) || 0;
 	
-	if (myPhotoBrowser !== undefined && myPhotoBrowser.close) {
-		myPhotoBrowser.close();
-	}
+	// myPhotoBrowser.close();
 
 	myPhotoBrowser = myApp.photoBrowser({
 		photos: urlList,
