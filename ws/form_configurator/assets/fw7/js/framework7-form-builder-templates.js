@@ -132,7 +132,7 @@
 			'</div>' +
 			'<a class="openPhotoBrowser" href="javascript:void(0);">' +
 				'<div class="image-container">' +
-					'<img src="{url}" />' +
+					'<img src="{url}" onerror="onerror=null; src=\'/assets/fw7/img/error.jpg\'"/>' +
 				'</div>' +
 			'</a>' +
 		'</div>';

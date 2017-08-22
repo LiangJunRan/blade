@@ -606,18 +606,25 @@ function uploadedCallback(data) {
 	$$('form#{formId} [name={name}]'.format(data)).closest('.item-content').data('uploaded')(data);
 }
 
+var myPhotoBrowser = undefined;
+
 // 查看已上传图片的方法
 $$('body').on('click', '.openPhotoBrowser', function(e) {
 	console.log('open photo');
+	var nowUrl = e.target.getAttribute('src');
 	var urlList = $$(e.target).closest('.item-content').find('input').val().match(/images:\[(.*)\]/)[1].split(',');
-	var myPhotoBrowser = myApp.photoBrowser({
-		// zoom: 400,
-		// theme: 'dark',
+	var nowIndex = urlList.indexOf(nowUrl) || 0;
+	
+	if (myPhotoBrowser !== undefined && myPhotoBrowser.close) {
+		myPhotoBrowser.close();
+	}
+
+	myPhotoBrowser = myApp.photoBrowser({
 		photos: urlList,
 		onOpen: function(photobrowser) {
 			console.log('opened', photobrowser);
 			$$('.photo-browser').find('i.icon').addClass('color-white').addClass('icon-white');
 		}
-	});   
-	myPhotoBrowser.open(); // open photo browser
+	});
+	myPhotoBrowser.open(nowIndex); // open photo browser
 });
