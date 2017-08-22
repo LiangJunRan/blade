@@ -128,7 +128,7 @@
             }},
         "events": [],
         "values": {
-            "exam": "images:[http://192.168.10.123:9999/assets/fw7/img/i-f7-iosw.png,http://192.168.10.123:9999/assets/fw7/img/i-f7-ios.png,http://192.168.10.123:9999/assets/fw7/img/i-f7-material.png]"
+            "exam": "images:[http://192.168.10.123:9999/data/a.jpg,http://192.168.10.123:9999/data/b.png,http://192.168.10.123:9999/you-cant-find-me.png]"
         },
         "isSteam": false,
         "isRead": false
