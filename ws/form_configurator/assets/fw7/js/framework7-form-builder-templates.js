@@ -148,12 +148,12 @@
 			'<div class="preloader"></div>' +
 		'</div>';
 	opts.image = {
-        "type": "image",
+		"type": "image",
 		"name": "demo_image",
 		"label": "测试图片",
-        "description": "请点击上传",
-        "maxNumber": 5,
-        "minNumber": 1
+		"description": "请点击上传",
+		"maxNumber": 5,
+		"minNumber": 1
 	};
 	rule.image = {
 	};

@@ -67,14 +67,14 @@
 		// 渲染生成form
 		var jsonOpts = jsonConf['items'];
 		$.each(jsonOpts || [], function(_idx){
-            // TODO 将checkbox和radio强转成下拉框
+			// TODO 将checkbox和radio强转成下拉框
 			var hackedJsonOpts = jsonOpts[_idx];
-            if (hackedJsonOpts.type == 'checkbox') {
-                hackedJsonOpts.type = 'multiselect';
-            }
-            if (hackedJsonOpts.type == 'radio') {
-                hackedJsonOpts.type = 'select';
-            }
+			if (hackedJsonOpts.type == 'checkbox') {
+				hackedJsonOpts.type = 'multiselect';
+			}
+			if (hackedJsonOpts.type == 'radio') {
+				hackedJsonOpts.type = 'select';
+			}
 			var $item = render(hackedJsonOpts);
 			// 加入新对象
 			addToForm($item, $form);
@@ -236,15 +236,15 @@
 					$btn = $(e.target).closest('button.add');
 					$btn.data('groupId', $btn.data('groupId') || 0);
 					var data = {
-				        type: 'image',
-				        formId: $btn.closest('form').attr('id'),
-				        name: opt.name,
-				        max: opt.maxNumber,
-				        min: opt.minNumber,
-				        groupId: $btn.data('groupId')
-				    };
-				    $btn.data('groupId', $btn.data('groupId') + 1);
-				    var urlParam = $$.param(data);
+						type: 'image',
+						formId: $btn.closest('form').attr('id'),
+						name: opt.name,
+						max: opt.maxNumber,
+						min: opt.minNumber,
+						groupId: $btn.data('groupId')
+					};
+					$btn.data('groupId', $btn.data('groupId') + 1);
+					var urlParam = $$.param(data);
 					window.location = '/upload?' + urlParam;
 				});
 				// 预上传回调
@@ -303,7 +303,6 @@
 				});
 				// 赋值并加载预览图的方法
 				$node.data('setValue', function(urls) {
-					console.log(urls);
 					var urlList = urls.match(/images:\[(.*)\]/)[1].split(',');
 					$.each(urlList, function(idx) {
 						var $item = $(sub.image.item.format({url: urlList[idx]}));
@@ -516,8 +515,8 @@
 		var nodes = $form.find('li.listNode:not(.skipTransRead)');
 		$.each(nodes, function(idx){
 			var $node = $(nodes[idx]);
-            var opts = $node.children().data('opts');
-            var contentList = [];
+			var opts = $node.children().data('opts');
+			var contentList = [];
 			var inputs = $node.find('input, select, textarea');
 			$.each(inputs, function(_idx){
 				var $this = $(inputs[_idx]);
@@ -591,16 +590,16 @@
 				'</div>';
 
 			var $renderNode = $(readonlyHtml.format(contentJson));
-            var $label = $renderNode.find('.item-content>.item-inner>.item-title.label');
-            if ($label.html() == '') {
-                $label.hide();
+			var $label = $renderNode.find('.item-content>.item-inner>.item-title.label');
+			if ($label.html() == '') {
+				$label.hide();
 			}
-            
-    		// 值为空不显示
-    		var $contents = $renderNode.find('.item-after');
-    		if ($contents.html().trim().length == 0) {
-    			$node.hide();
-    		};
+			
+			// 值为空不显示
+			var $contents = $renderNode.find('.item-after');
+			if ($contents.html().trim().length == 0) {
+				$node.hide();
+			};
 
 			// 图片特殊处理
 			if ($node.is('.isImage')) {
@@ -628,7 +627,7 @@
 			var opt = $node.data('opts');
 			var label = opt.label || '';
 			$node.find('.item-title.label').remove();
-            $(listNodes[idx]).addClass('fullRow');
+			$(listNodes[idx]).addClass('fullRow');
 			$(listNodes[idx]).find('.item-content').addClass('steam-layout');
 			$(labelRow.format({label: label})).insertBefore($(listNodes[idx]));
 			$node.find('.item-after').addClass('steam-select-fix');
@@ -668,26 +667,26 @@
 
 	// 扩展String类型的原生方法，提供类似java或python的format方法
 	String.prototype.format = function(args) {
-	    var result = this;
-	    if (arguments.length > 0) {    
-	        if (arguments.length == 1 && typeof (args) == "object") {
-	            for (var key in args) {
-	                if(args[key]!=undefined){
-	                    var reg = new RegExp("({" + key + "})", "g");
-	                    result = result.replace(reg, args[key]);
-	                }
-	            }
-	        }
-	        else {
-	            for (var i = 0; i < arguments.length; i++) {
-	                if (arguments[i] != undefined) {
-	                    var reg = new RegExp("({[" + i + "]})", "g");
-	                    result = result.replace(reg, arguments[i]);
-	                }
-	            }
-	        }
-	    }
-	    return result;
+		var result = this;
+		if (arguments.length > 0) {	
+			if (arguments.length == 1 && typeof (args) == "object") {
+				for (var key in args) {
+					if(args[key]!=undefined){
+						var reg = new RegExp("({" + key + "})", "g");
+						result = result.replace(reg, args[key]);
+					}
+				}
+			}
+			else {
+				for (var i = 0; i < arguments.length; i++) {
+					if (arguments[i] != undefined) {
+						var reg = new RegExp("({[" + i + "]})", "g");
+						result = result.replace(reg, arguments[i]);
+					}
+				}
+			}
+		}
+		return result;
 	}
 
 }));
