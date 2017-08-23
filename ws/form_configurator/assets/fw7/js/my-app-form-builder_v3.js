@@ -610,12 +610,9 @@ var myPhotoBrowser = undefined;
 
 // 查看已上传图片的方法
 $$('body').on('click', '.openPhotoBrowser', function(e) {
-	console.log('open photo');
 	var nowUrl = e.target.getAttribute('src');
 	var urlList = $$(e.target).closest('.item-content').find('input').val().match(/images:\[(.*)\]/)[1].split(',');
-	var nowIndex = urlList.indexOf(nowUrl) || 0;
-	
-	// myPhotoBrowser.close();
+	var nowIndex = urlList.indexOf(nowUrl);
 
 	myPhotoBrowser = myApp.photoBrowser({
 		photos: urlList,
@@ -624,5 +621,9 @@ $$('body').on('click', '.openPhotoBrowser', function(e) {
 			$$('.photo-browser').find('i.icon').addClass('color-white').addClass('icon-white');
 		}
 	});
-	myPhotoBrowser.open(nowIndex); // open photo browser
+
+	// 加载失败的图片不响应打开相册操作
+	if (nowIndex != -1) {
+		myPhotoBrowser.open(nowIndex); // open photo browser
+	}
 });

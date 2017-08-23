@@ -235,12 +235,18 @@
 				$addBtn.on('click', function(e) {
 					$btn = $(e.target).closest('button.add');
 					$btn.data('groupId', $btn.data('groupId') || 0);
+
+					// 根据当前已存在的缩略图，调整max和min
+					var nowCount = $btn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length;
+					var max = opt.maxNumber - nowCount;
+					var min = (((opt.minNumber - nowCount) >= 0) ? (opt.minNumber - nowCount) : 0);
+
 					var data = {
 						type: 'image',
 						formId: $btn.closest('form').attr('id'),
 						name: opt.name,
-						max: opt.maxNumber,
-						min: opt.minNumber,
+						max: max,
+						min: min,
 						groupId: $btn.data('groupId')
 					};
 					$btn.data('groupId', $btn.data('groupId') + 1);
