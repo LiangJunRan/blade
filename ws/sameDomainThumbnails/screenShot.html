@@ -4,7 +4,6 @@
 	<title>Snap a Picture of Preview</title>
 	<meta charset='utf-8'>
 	<meta name='viewport' content='initial-scale=1.0'>
-	<!-- <meta http-equiv='X-UA-Compatible' content='IE=9' /> -->
 	<script type='text/javascript' src='http://code.jquery.com/jquery-latest.min.js'></script>
 	<script src='http://192.168.10.123:9293/canvas_demo/assets/plugins/html2canvas/html2canvas.js'></script>
 	<style type='text/css'>
@@ -60,6 +59,7 @@
 
 	<script>
 		var idx = 0;
+		// 要截图的页面地址
 		var urlList = [
 			'http://192.168.10.123:9293/bs_demo/page_3_fullPath.html',
 			'http://192.168.10.123:9293/dev_test/index3.html'
@@ -95,6 +95,7 @@
 							'					$(parent.document).find("#thumbnails").append(\'<div class="image-container"><img src=\' + myImage + \' alt="" /></div>\');\n' +
 							'				}\n' +
 							'			});\n' +
+							// 这里等待1秒是为了等待canvas的图表的动态效果执行完毕再截图，如果页面没有动画效果，可以设置为0
 							'		}, 1000);\n' +
 							'	});\n' +
 							'<\/script>';
@@ -145,30 +146,6 @@
 				content = content + pageContent;
 				return false;
 			}
-		}
-
-		// 扩展String类型的原生方法，提供类似java或python的format方法
-		String.prototype.format = function(args) {
-			var result = this;
-			if (arguments.length > 0) {
-				if (arguments.length == 1 && typeof (args) == "object") {
-					for (var key in args) {
-						if(args[key]!=undefined){
-							var reg = new RegExp("({" + key + "})", "g");
-							result = result.replace(reg, args[key]);
-						}
-					}
-				}
-				else {
-					for (var i = 0; i < arguments.length; i++) {
-						if (arguments[i] != undefined) {
-							var reg = new RegExp("({[" + i + "]})", "g");
-							result = result.replace(reg, arguments[i]);
-						}
-					}
-				}
-			}
-			return result;
 		}
 	</script>
 </body>
