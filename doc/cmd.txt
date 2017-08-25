@@ -2,3 +2,16 @@
 echo F | xcopy D:\aa\bb\a.txt D:\gg\aa\bb\a.txt
 echo F | xcopy D:\aa\cc\b.txt D:\gg\aa\cc\b.txt
 echo F | xcopy D:\dd\ee\ff\c.txt D:\gg\dd\ee\ff\c.txt
+
+
+
+# 使用指定dns解析域名
+nslookup -qt=A mp3.kaolawu.com 172.16.147.254
+
+
+
+# 跃点跟踪
+tracert mp3.kaolawu.com
+
+
+
