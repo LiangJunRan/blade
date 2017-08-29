@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Sidebar</title>
+	<!-- 调试用的多余代码 START -->
+ 	<link rel="stylesheet" href="../_commons/bootstrap/css/bootstrap.min.css">
+ 	<link rel="stylesheet" href="../_commons/font-awesome/css/font-awesome.min.css">
+	<script src="../_commons/jquery/jquery.min.js"></script>
+	<script src="../_commons/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- 功能代码 -->
+ 	<link rel="stylesheet" href="assets/plugins/bootstrap-sidebar/css/bootstrap-sidebar.css">
+	<script src="assets/plugins/bootstrap-sidebar/js/bootstrap-sidebar.js"></script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-7 col-sm-3 col-md-3 sidebar sidebar-left sidebar-animate sidebar-md-show" id="sideme">
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		$('#sideme').sidebar({
+			"data": [
+				{
+					"text": "快速办公asdfasdfasdfas",
+					"href": "#",
+					"children": [
+						{
+							"text": "快速办公 1",
+							"href": "http://www.baidu.com"
+						}, {
+							"text": "快速办公 2",
+							"href": "#"
+						}
+					]
+				}, {
+					"text": "点我回到首页",
+					"href": "#"
+				}
+			],
+		});
+	</script>
+</body>
+</html>
