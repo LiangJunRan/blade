@@ -478,6 +478,7 @@ label.form-control-static>span.formLabel {
 .thumbnail .delete i {
 	font-size: 14px;
 	width: 17px;
+	line-height: 16px;
 }
 .thumbnail .image-container {
 	display: block;

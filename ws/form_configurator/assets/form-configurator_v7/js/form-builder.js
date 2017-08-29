@@ -281,7 +281,7 @@
 			// 日期选择器
 			case 'date':
 				if (isNew) {
-					$('.core', $node).replaceWith(core[opt.type]);		// 在非new情况下，这步不起作用
+					$('.core', $node).replaceWith(core[opt.type]);
 				}
 				$('input', $node).attr('placeholder', opt.placeholder);
 
@@ -325,17 +325,59 @@
 
 			// 图片
 			case 'image':
-				var $content = $(core[opt.type].format(opt));
+				var $content;
+				if (isNew) {
+					$content = $(core[opt.type].format(opt));
+				} else {
+					$content = $('.item-input-image', $node);
+				}
 				if ($content.find('.thumbnails-description').html().trim() == '') {
 					$content.find('.thumbnails-description').hide();
 				}
 				var $imageUrls = $content.find('input');
 				var $container = $content.find('.thumbnails-container');
-				var $addBtn = $(sub.image.add);
+				var $addBtn;
+				if (isNew) {
+					$addBtn = $(sub.image.add);	
+				} else {
+					$addBtn = $('.thumbnail.add', $node);
+				}
 				$container.append($addBtn);
 				// 打开本地图片，选择上传文件
 				$addBtn.on('click', function(e) {
-					$.ajax({
+					// TODO: 增加图片预览虚位
+					$btn = $(e.target).closest('button.add');
+					$btn.data('groupId', $btn.data('groupId') || 0);
+
+					var groupId = $btn.data('groupId');
+
+					var $waiting = $(sub.image.waiting);
+					// 绑定删除上传中的方法
+					$waiting.find('.delete').on('click', function(e){
+						$delBtn = $(e.target).closest('.delete');
+						$delBtn.closest('.thumbnail').remove();
+						// 判断总thumbnail数量是否小于了max
+						if ($addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length < $node.data('opts').maxNumber) {
+							$addBtn.closest('.thumbnails-container').find('.thumbnail.add').css('display', 'inline-block');
+						}
+					});
+					$waiting.addClass('groupId_' + groupId);
+					$waiting.addClass('index_0');
+					$waiting.insertBefore($addBtn);
+
+					// 判断总thumbnail数量是否超过了max
+					var nowCount = $btn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length;
+					console.log($node, $node.data());
+					if (nowCount >= $node.data('opts').maxNumber) {
+						$addBtn.closest('.thumbnails-container').find('.thumbnail.add').hide();
+					}
+
+					// TODO: 开始选择图片，上传
+
+					// TODO: 开放回调接口，更新图片预览的src
+
+					// 增加
+					/*$.ajax({
 						cache: true,
 						type: "POST",
 						url: "${contextPath}/workflow/lessonSummary/finishClassSummary",
@@ -354,7 +396,7 @@
 								history.go(-1);
 							}
 						}
-					});
+					});*/
 
 					/*$btn = $(e.target).closest('button.add');
 					$btn.data('groupId', $btn.data('groupId') || 0);
@@ -378,7 +420,7 @@
 					//window.location = '/upload?' + urlParam;
 				});
 				// 预上传回调
-				$content.data('preUpload', function(data) {
+				/*$content.data('preUpload', function(data) {
 					var groupId = data.groupId;
 					var count = data.count;
 					for (var i = 0; i < count; i++) {
@@ -400,9 +442,9 @@
 					if ($addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length >= $content.data('opts').maxNumber) {
 						$addBtn.closest('.thumbnails-container').find('.thumbnail.add').hide();
 					}
-				});
+				});*/
 				// 上传完毕回调
-				$content.data('uploaded', function(imageData) {
+				/*$content.data('uploaded', function(imageData) {
 					var $item = $(sub.image.item.format(imageData));
 					// 绑定删除当前图片的方法
 					$item.find('.delete').on('click', function(e) {
@@ -430,9 +472,9 @@
 					if ($addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length >= $content.data('opts').maxNumber) {
 						$addBtn.closest('.thumbnails-container').find('.thumbnail.add').hide();
 					}
-				});
+				});*/
 				// 赋值并加载预览图的方法
-				$content.data('setValue', function(urls) {
+				/*$content.data('setValue', function(urls) {
 					var urlList = urls.match(/images:\[(.*)\]/)[1].split(',');
 					$.each(urlList, function(idx) {
 						var $item = $(sub.image.item.format({url: urlList[idx]}));
@@ -462,13 +504,15 @@
 					if ($addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length >= $content.data('opts').maxNumber) {
 						$addBtn.closest('.thumbnails-container').find('.thumbnail.add').hide();
 					}
-				});
+				});*/
 				// 初始化赋值时会触发此方法
-				$content.find('input').on('change', function(e) {
+				/*$content.find('input').on('change', function(e) {
 					$content.data('setValue')($(e.target).val());
-				});
+				});*/
 
-				$('.core', $node).replaceWith($content);
+				if (isNew) {
+					$('.core', $node).replaceWith($content);
+				}
 				break;
 
 			// 文本框
@@ -854,11 +898,11 @@
 
 
 	function upload(index, subject,id) {
-			var f = $(id).val(); 
-			if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(f) ){
-				alert("图片类型必须是 gif, jpeg, jpg, png中的一种");
-				return true;
-			}
+		var f = $(id).val(); 
+		if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(f) ){
+			alert("图片类型必须是 gif, jpeg, jpg, png中的一种");
+			return true;
+		}
 		  
 	   $.ajaxFileUpload({
 			url : "${contextPath}/workflow/attachment/uploadImg", //需要链接到服务器地址

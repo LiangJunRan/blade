@@ -199,7 +199,7 @@
 	sub.image.item =
 		'<div class="thumbnail">' +
 			'<div class="delete">' +
-				'<i class="f7-icons">close</i>' +
+				'<i>&times;</i>' +
 			'</div>' +
 			'<a class="openPhotoBrowser" href="javascript:void(0);">' +
 				'<div class="image-container">' +
@@ -214,7 +214,7 @@
 	sub.image.waiting =
 		'<div class="thumbnail waiting">' +
 			'<div class="delete">' +
-				'<i class="f7-icons">close</i>' +
+				'&times;' +
 			'</div>' +
 			'<div class="preloader"></div>' +
 		'</div>';
