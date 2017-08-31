@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Multi file upload</title>
+	<script src="../_commons/jquery/jquery.min.js"></script>
+	<!-- <script src="assets/ajaxfileupload.js"></script> -->
+	<style>
+		.fake-file-btn {
+			position: relative;
+			display: inline-block;
+			background: #D0EEFF;
+			border: 1px solid #99D3F5;
+			border-radius: 4px;
+			padding: 4px 12px;
+			overflow: hidden;
+			color: #1E88C7;
+			text-decoration: none;
+			text-indent: 0;
+			line-height: 20px;
+		}
+		.fake-file-btn input[type=file] {
+			position: absolute;
+			font-size: 100px;
+			right: 0;
+			top: 0;
+			opacity: 0;
+			filter: alpha(opacity=0);
+			cursor: pointer
+		}
+	</style>
+</head>
+<body>
+	<!-- <form id="f"> -->
+		<!-- 正常方式实现 start -->
+		<!-- <input type="file" name="files" id="file" multiple="true" accept="image/x-png, image/gif, image/jpeg, image/bmp"> -->
+		<!-- <button type="button" onclick="xhr2();">多文件上传</button> -->
+		<!-- 正常方式实现 end -->
+
+		<!-- 伪装按钮实现，点击后选中文件立刻上传 start -->
+		<span class="fake-file-btn">
+			文件上传伪装按钮
+			<input type="file" name="files" id="file" multiple="true" accept="image/x-png, image/gif, image/jpeg, image/bmp">
+		</span>
+		<!-- 伪装按钮实现，点击后选中文件立刻上传 end -->
+	<!-- </form> -->
+	<script>
+		function xhr2(){
+			//定义表单变量	
+			var file = document.getElementById('file').files;	
+			//console.log(file.length);	
+			//新建一个FormData对象	
+			var formData = new FormData(); //++++++++++	
+			//追加文件数据	
+			for (i = 0; i < file.length; i++) {	  
+				 formData.append("file[" + i + "]", file[i]); //++++++++++	
+			}	 
+			formData.append("file", file[0]); //++++++++++	
+			
+			$.ajax({
+				type: 'POST',
+				url: "test",
+				timeout: 30 * 1000,
+				data: formData,
+				processData: false,
+				contentType: false,
+				success: function(r) {
+
+				},
+				error: function(r) {
+
+				},
+				complete: function() {
+
+				}
+			});
+
+			/*//post方式	
+			xhr.open('POST', 'xhr2.php'); //第二步骤	
+			//发送请求	
+			xhr.send(formData);  //第三步骤	
+			//ajax返回	
+			xhr.onreadystatechange = function(){ //第四步	
+		　　　　if ( xhr.readyState == 4 && xhr.status == 200 ) {	
+		　　　　　　console.log( xhr.responseText );	
+		　　　　}	
+		　　};	
+			//设置超时时间	
+			xhr.timeout = 100000;	
+			xhr.ontimeout = function(event){	
+		　　　　alert('请求超时！');	
+		　　}  */
+		}
+
+		$(".fake-file-btn").on("change", "input[type='file']", function() {
+			
+			console.log('changed');
+			xhr2();
+		});
+	</script>
+</body>
+</html>
