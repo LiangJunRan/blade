@@ -343,17 +343,106 @@
 					$addBtn = $('.thumbnail.add', $node);
 				}
 				$container.append($addBtn);
+
+				// 给添加图片按钮绑定上传方法
+				var $files = $addBtn.find('input[type=file]');
+				$files.on('change', function(){
+					var groupId = $addBtn.data('groupId') || 0;
+					// 定义表单变量	
+					var files = $(this)[0].files;	
+					console.log('Selected files count = ' + files.length);	
+					// 新建一个FormData对象	
+					var formData = new FormData();
+					// 追加文件数据	
+					for (var i = 0; i < files.length; i++) {	  
+						 formData.append("file[" + i + "]", files[i]);
+					}
+					formData.append("groupId", groupId);
+					// formData.append("file", files[0]);
+
+					// 计算现在可上传文件的个数
+					var nowCount = $addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length;
+					var maxNow = opt.maxNumber - nowCount;
+					
+					// 判断符合条件，立刻上传
+					if (files.length <= maxNow && files.length >= opt.minNumber) {
+						// TODO: 放置占位图
+						$.ajax({
+							// type: 'POST',	// TODO: 上线还原
+							url: "data/multipleUploadReturn.json",
+							timeout: 30 * 1000,
+							data: formData,
+							processData: false,
+							contentType: false,
+							dataType: "json",
+							success: function(r) {
+								console.log(r);
+								// TODO: 替换占位图
+								$.each(r.urls, function(idx) {
+									var url = r.urls[idx];
+									var $item = $(sub.image.item.format({url: url}));
+
+									// 绑定删除上传中的方法
+									$item.find('.delete').on('click', function(e) {
+										$delBtn = $(e.target).closest('.delete');
+										$delBtn.closest('.thumbnail').remove();
+										// 判断总thumbnail数量是否小于了max，小于则显示上传按钮
+										if ($addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length < $node.data('opts').maxNumber) {
+											$addBtn.closest('.thumbnails-container').find('.thumbnail.add').css('display', 'inline-block');
+										}
+									});
+
+									$addBtn.before($item);
+								});
+
+								// 判断总thumbnail数量是否超过了max，超过就隐藏
+								var nowCount = $addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length;
+								console.log($node, $node.data());
+								if (nowCount >= $node.data('opts').maxNumber) {
+									$addBtn.closest('.thumbnails-container').find('.thumbnail.add').hide();
+								}
+							},
+							error: function(r) {
+
+							},
+							complete: function() {
+
+							}
+						});
+					} else {
+						if (files.length > maxNow) {
+							alert('应选择不超过{maxNow}个，现选择{count}个，超过最大个数限制！'.format({
+								maxNow: maxNow,
+								count: files.length
+							}));
+						} else if (files.length < opt.minNumber) {
+							alert('应选择不少于{min}个，现选择{count}个，少于最小个数限制！'.format({
+								min: opt.minNumber,
+								count: files.length
+							}));
+						} else {
+							alert('未知错误，现选择{count}个！'.format({
+								count: files.length
+							}));
+						}
+					}
+
+					$addBtn.data('groupId', groupId + 1);
+				});
+
 				// 打开本地图片，选择上传文件
 				$addBtn.on('click', function(e) {
-					// TODO: 增加图片预览虚位
+					// 增加图片预览虚位
 					$btn = $(e.target).closest('button.add');
 					$btn.data('groupId', $btn.data('groupId') || 0);
 
 					var groupId = $btn.data('groupId');
 
-					var $waiting = $(sub.image.waiting);
+
+
+					/*var $waiting = $(sub.image.waiting);
 					// 绑定删除上传中的方法
-					$waiting.find('.delete').on('click', function(e){
+					$waiting.find('.delete').on('click', function(e) {
 						$delBtn = $(e.target).closest('.delete');
 						$delBtn.closest('.thumbnail').remove();
 						// 判断总thumbnail数量是否小于了max
@@ -361,16 +450,20 @@
 							$addBtn.closest('.thumbnails-container').find('.thumbnail.add').css('display', 'inline-block');
 						}
 					});
+					// 绑定上传图片的方法
+					$waiting.on('click', function(e) {
+						
+					});
 					$waiting.addClass('groupId_' + groupId);
 					$waiting.addClass('index_0');
-					$waiting.insertBefore($addBtn);
+					$waiting.insertBefore($addBtn);*/
 
 					// 判断总thumbnail数量是否超过了max
-					var nowCount = $btn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length;
+					/*var nowCount = $btn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length;
 					console.log($node, $node.data());
 					if (nowCount >= $node.data('opts').maxNumber) {
 						$addBtn.closest('.thumbnails-container').find('.thumbnail.add').hide();
-					}
+					}*/
 
 					// TODO: 开始选择图片，上传
 

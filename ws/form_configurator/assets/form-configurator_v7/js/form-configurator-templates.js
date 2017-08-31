@@ -207,16 +207,23 @@
 				'</div>' +
 			'</a>' +
 		'</div>';
-	sub.image.add =
+	/*sub.image.add =
 		'<button type="button" class="button thumbnail add">' +
 			'<i class="fa fa-plus"></i>' +
-		'</button>';
+		'</button>';*/
+	sub.image.add =
+		'<span class="button thumbnail add fake-file-btn">' +
+			'<i class="fa fa-plus"></i>' +
+			'<input type="file" multiple="true" ' +
+					'accept="image/x-png, image/gif, image/jpeg, image/bmp">' +
+		'</span>';
 	sub.image.waiting =
 		'<div class="thumbnail waiting">' +
 			'<div class="delete">' +
-				'&times;' +
+				'<i>&times;</i>' +
 			'</div>' +
-			'<div class="preloader"></div>' +
+			'<div class="help">请点我开始上传</div>' +
+			// '<div class="preloader"></div>' +
 		'</div>';
 	opts.image = {
 		"type": "image",
