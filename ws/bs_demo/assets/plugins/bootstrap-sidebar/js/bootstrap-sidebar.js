@@ -1,3 +1,7 @@
+/*
+	Author: kuroikenshi@sina.com
+	根据数据，将制定容器填充成侧边栏菜单，带缩进可折叠
+*/
 ;(function (factory) {
 	'use strict';
 	if (typeof define === 'function' && define.amd) {
