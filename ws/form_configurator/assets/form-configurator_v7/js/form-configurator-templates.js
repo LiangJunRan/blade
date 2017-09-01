@@ -222,7 +222,9 @@
 			'<div class="delete">' +
 				'<i>&times;</i>' +
 			'</div>' +
-			'<div class="help">请点我开始上传</div>' +
+			'<div class="help">' +
+				'<i class="fa fa-spinner fa-spin fa-pulse fa-3x fa-fw"></i>' +
+			'</div>' +
 			// '<div class="preloader"></div>' +
 		'</div>';
 	opts.image = {
