@@ -330,6 +330,7 @@
 				} else {
 					$content = $('.item-input-image', $node);
 				}
+
 				if ($content.find('.thumbnails-description').html().trim() == '') {
 					$content.find('.thumbnails-description').hide();
 				}
@@ -337,7 +338,7 @@
 				var $container = $content.find('.thumbnails-container');
 				var $addBtn;
 				if (isNew) {
-					$addBtn = $(sub.image.add);	
+					$addBtn = $(sub.image.add);
 				} else {
 					$addBtn = $('.thumbnail.add', $node);
 				}
@@ -346,9 +347,10 @@
 				function _bindDelete($obj) {
 					$obj.find('.delete').on('click', function(e) {
 						var $delBtn = $(e.target).closest('.delete');
+						// 先定位到addBtn，然后再删掉delBtn对应的缩略图
+						var $addBtn = $delBtn.closest('.item-input-image').find('.add');
 						$delBtn.closest('.thumbnail').remove();
 
-						var $addBtn = $delBtn.closest('.item-input-image').find('.add');
 						var $node = $addBtn.closest('.drag_item');
 						// 判断总thumbnail数量是否小于了max，小于则显示上传按钮
 						if ($addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length < $node.data('opts').maxNumber) {
@@ -360,15 +362,24 @@
 							formId: $node.closest('form').attr('id'),
 							name: $node.data('opts').name
 						};
-						console.log('>>>', imageData);
 						_updateImageItemUrls(imageData);
 					});
 				}
 
 				// 给添加图片按钮绑定上传方法
 				var $files = $addBtn.find('input[type=file]');
-				$files.on('change', function(){
-					console.log('files CHANGE', 'isNew>',isNew);
+
+				$files.on('change', function() {
+					var formId = $(this).closest('form').attr('id');
+					var name = $(this).closest('.item-input-image').find('input[type=hidden]').attr('name');
+
+
+					// 更新已存值
+					var imageData = {
+						formId: formId,
+						name: name
+					};
+
 					var groupId = $addBtn.data('groupId') || 0;
 					// 定义表单变量	
 					var files = $(this)[0].files;
@@ -409,6 +420,9 @@
 							contentType: false,
 							dataType: "json",
 							success: function(r) {
+								var $addBtn = $('form#{formId} input[name={name}]'.format(imageData)).closest('.item-input-image').find('.thumbnail.add');
+								var $node = $addBtn.closest('.drag_item');
+
 								$.each(r.urls, function(idx) {
 									var url = r.urls[idx];
 									var $item = $(sub.image.item.format({url: url}));
@@ -431,12 +445,6 @@
 									$addBtn.closest('.thumbnails-container').find('.thumbnail.add').hide();
 								}
 
-								// 更新已存值
-								var imageData = {
-									formId: $node.closest('form').attr('id'),
-									name: $node.data('opts').name
-								};
-								console.log('上传成功 更新url');
 								_updateImageItemUrls(imageData);
 							},
 							error: function(r) {
@@ -476,6 +484,10 @@
 
 				// 赋值并加载预览图的方法
 				$content.data('setValue', function(urls) {
+					// 清空当前所有缩略图
+					$content.find('.thumbnail:not(.add)').remove();
+
+					// 从表单中筛出urlList
 					var urlList = urls.match(/images:\[(.*)\]/)[1].split(',');
 					$.each(urlList, function(idx) {
 						var $item = $(sub.image.item.format({url: urlList[idx]}));
@@ -492,7 +504,7 @@
 						formId: $node.closest('form').attr('id'),
 						name: $node.data('opts').name
 					};
-					console.log('直接赋值 更新url');
+
 					_updateImageItemUrls(imageData);
 						
 					// 判断总thumbnail数量是否超过了max
@@ -502,7 +514,6 @@
 				});
 				// 初始化赋值时会触发此方法
 				$content.find('input[type=hidden]').on('change', function(e) {
-					console.log('image hidden change value=', $(e.target).val());
 					if (!!$(e.target).val()) {
 						$content.data('setValue')($(e.target).val());
 					}
@@ -565,7 +576,6 @@
 
 	// 更新指定的表单项的值
 	function _updateImageItemUrls(data) {
-		console.log('    ' + $('form#{formId} input[name={name}]'.format(data)).length, '个');
 		var $input = $('form#{formId} input[name={name}]'.format(data));
 		var $node = $input.closest('.drag_item');
 		var urlList = [];
@@ -574,7 +584,6 @@
 			urlList.push($imgs[idx].getAttribute('src'));
 		});
 		$input.val('images:[' + urlList.join(',') + ']');
-		console.log('changeTo:', urlList);
 	}
 
 	// 初始化form校验器
@@ -888,40 +897,6 @@
 	}
 
 
-	function upload(index, subject,id) {
-		var f = $(id).val(); 
-		if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(f) ){
-			alert("图片类型必须是 gif, jpeg, jpg, png中的一种");
-			return true;
-		}
-		  
-	   $.ajaxFileUpload({
-			url : "${contextPath}/workflow/attachment/uploadImg", //需要链接到服务器地址
-			type : 'post',
-			secureuri : false, //一般设置为false
-			fileElementId : 'mFile'+index, // 上传文件的id、name属性名
-			dataType : 'json', //返回值类型，一般设置为json、application/json
-			
-			success : function(data, status) {
-			   	 var path = escape2Html(data.filePath)
-			   	 var inputHtml = '<input name="attachList['+imgIndex+'].fileUrl" value="'+path+'" hidden="true"/>';
-			   		 inputHtml += '<input name="attachList['+imgIndex+'].filePath" value="'+data.fileYunPan+'" hidden="true"/>';
-			   	 	 inputHtml += '<input name="attachList['+imgIndex+'].fileName" value="'+data.fileName+'" hidden="true"/>';
-			   	 	 inputHtml += '<input name="attachList['+imgIndex+'].subject" value="'+subject+'" hidden="true"/>';
-			   	 //添加input文本框
-			   	var img_html = "<div class='isImg'>"+inputHtml+"<img src='" + path + "' style='height: 100%; width: 100%;' /><button class='removeBtn' onclick='javascript:removeImg(this)'><a class= 'Delete' >删除</a></button></div>";
-			   	
-				 $("#img_div"+index).append(img_html);
-				 imgIndex++;
-				
-			},
-			error : function(data, status, e) {
-				alert(data);
-			}
-		});
-	}
-
-
 	// /////////////////////////////////////////////////////////////////////////////
 	// 指定form改为流式布局
 	// /////////////////////////////////////////////////////////////////////////////
@@ -1007,6 +982,7 @@
 		$.each($form.children(), function(){
 			var $node = $(this);
 			var contentList = [];
+			var hasComma = true;
 			$.each($node.find('.coreInput'), function(){
 				var $this = $(this);
 				if ($this.is('input')){
@@ -1052,6 +1028,10 @@
 				} else if ($this.is('textarea')) {
 					var label = $this.val();
 					contentList.push(label);
+				} else if ($this.is('div.thumbnail:not(.add)')) {
+					$this.find('.delete').hide();
+					contentList.push($this[0].outerHTML);
+					hasComma = false;
 				}
 			});
 
@@ -1061,7 +1041,7 @@
 				contentList.push(label);
 			}
 
-			var contentStr = contentList.join(', ');
+			var contentStr = contentList.join(hasComma ? ', ' : '');
 			if (!($node.find('.contentClass').hasClass('form-control-static'))) {
 				$node.find('.contentClass').html(contentStr)
 						.addClass('form-control-static').attr('title', contentStr);

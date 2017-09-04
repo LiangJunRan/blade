@@ -197,7 +197,7 @@
 		'</div>';
 	sub.image = {};
 	sub.image.item =
-		'<div class="thumbnail">' +
+		'<div class="thumbnail coreInput">' +
 			'<div class="delete">' +
 				'<i>&times;</i>' +
 			'</div>' +
