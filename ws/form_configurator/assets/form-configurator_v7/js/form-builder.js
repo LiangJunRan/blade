@@ -370,9 +370,11 @@
 				var $files = $addBtn.find('input[type=file]');
 
 				$files.on('change', function() {
+					if ($(this).val() == '') {
+						return;
+					}
 					var formId = $(this).closest('form').attr('id');
 					var name = $(this).closest('.item-input-image').find('input[type=hidden]').attr('name');
-
 
 					// 更新已存值
 					var imageData = {
