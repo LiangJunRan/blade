@@ -583,7 +583,11 @@
 		$.each($imgs, function(idx) {
 			urlList.push($imgs[idx].getAttribute('src'));
 		});
-		$input.val('images:[' + urlList.join(',') + ']');
+		if (urlList.length > 0) {
+			$input.val('images:[' + urlList.join(',') + ']');
+		} else {
+			$input.val('');
+		}
 	}
 
 	// 初始化form校验器
@@ -605,7 +609,7 @@
 				$(element).closest('.has-error').removeClass('has-error');
 			}
 		});
-		dropFormValidator = $form.validate();
+		dropFormValidator = $form.validate({ignore: '.ignore'});
 		
 		$form.on('submit', function(){
 			var inputs = $(':input', $form);
