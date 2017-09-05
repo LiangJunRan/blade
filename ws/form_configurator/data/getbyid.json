@@ -109,8 +109,11 @@
                 "description": "请输入英文、数字、下划线"
             }],
         "rules": {
+            "homework": {
+                "required": true
+            },
             "s1": {
-                "required": false
+                "required": true
             },
             "t1": {
                 "required": false,
