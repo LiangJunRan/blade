@@ -647,7 +647,7 @@
 					if ($this.data().opts !== undefined) {
 						$this.data().rule = rule[$this.data().opts.type];
 					} else {
-						console.warn('[WARN] Not found data().opts.', $this[0].outerHTML);
+						// console.warn('[WARN] Not found data().opts.', $this[0].outerHTML);
 					}
 				}
 				if ($this.data().rule !== undefined) {
@@ -678,7 +678,7 @@
 						log('XXXdropFormValidator is', dropFormValidator);
 					};
 				} else {
-					console.warn('[WARN] Not found data().rule.', $this[0].outerHTML);
+					// console.warn('[WARN] Not found data().rule.', $this[0].outerHTML);
 				}
 			}
 		});
