@@ -3,9 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Multi file upload</title>
-	<script src="../_commons/jquery/jquery.min.js"></script>
-	<!-- <script src="assets/ajaxfileupload.js"></script> -->
+	<script src="http://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 	<style>
+		.container {
+			height: 50px;
+			line-height: 50px;
+			vertical-align: bottom;
+		}
 		.fake-file-btn {
 			position: relative;
 			display: inline-block;
@@ -19,6 +23,9 @@
 			text-indent: 0;
 			line-height: 20px;
 		}
+		.fake-file-btn:active {
+			box-shadow: 0 1px 5px 1px rgba(0, 255, 255, 0.3) inset;
+		}
 		.fake-file-btn input[type=file] {
 			position: absolute;
 			font-size: 100px;
@@ -31,31 +38,37 @@
 	</style>
 </head>
 <body>
-	<!-- <form id="f"> -->
-		<!-- 正常方式实现 start -->
-		<!-- <input type="file" name="files" id="file" multiple="true" accept="image/x-png, image/gif, image/jpeg, image/bmp"> -->
-		<!-- <button type="button" onclick="xhr2();">多文件上传</button> -->
-		<!-- 正常方式实现 end -->
+	<!-- 正常方式实现 start -->
+	<h1>提交form的方式</h1>
+	<form id="f" action="testUrl" enctype="multipart/form-data" method="post">
+		<input type="file" name="files" multiple="true" accept="image/x-png, image/gif, image/jpeg, image/bmp">
+		<button type="button" onclick="formSubmit();">多文件上传</button>
+	</form>
+	<hr>
+	<script>
+		function formSubmit() {
+			$('#f').submit();
+		}
+	</script>
+	<!-- 正常方式实现 end -->
 
-		<!-- 伪装按钮实现，点击后选中文件立刻上传 start -->
+	<!-- 伪装按钮实现，点击后选中文件后使用ajax立刻上传 start -->
+	<h1>ajax方式</h1>
+	<div class="container">
 		<span class="fake-file-btn">
 			文件上传伪装按钮
-			<input type="file" name="files" id="file" multiple="true" accept="image/x-png, image/gif, image/jpeg, image/bmp">
+			<input type="file" id="file" multiple="true" accept="image/x-png, image/gif, image/jpeg, image/bmp">
 		</span>
-		<!-- 伪装按钮实现，点击后选中文件立刻上传 end -->
-	<!-- </form> -->
+	</div>
 	<script>
-		function xhr2(){
-			//定义表单变量	
-			var file = document.getElementById('file').files;	
-			//console.log(file.length);	
+		function uploadFiles() {
+			var file = document.getElementById('file').files;
 			//新建一个FormData对象	
-			var formData = new FormData(); //++++++++++	
-			//追加文件数据	
-			for (i = 0; i < file.length; i++) {	  
-				 formData.append("file[" + i + "]", file[i]); //++++++++++	
-			}	 
-			formData.append("file", file[0]); //++++++++++	
+			var formData = new FormData();
+			//追加文件数据
+			for (i = 0; i < file.length; i++) {
+				 formData.append("file[" + i + "]", file[i]);
+			}
 			
 			$.ajax({
 				type: 'POST',
@@ -65,38 +78,21 @@
 				processData: false,
 				contentType: false,
 				success: function(r) {
-
+					alert('success');
 				},
 				error: function(r) {
-
+					alert('error');
 				},
 				complete: function() {
-
+					alert('complete');
 				}
 			});
-
-			/*//post方式	
-			xhr.open('POST', 'xhr2.php'); //第二步骤	
-			//发送请求	
-			xhr.send(formData);  //第三步骤	
-			//ajax返回	
-			xhr.onreadystatechange = function(){ //第四步	
-		　　　　if ( xhr.readyState == 4 && xhr.status == 200 ) {	
-		　　　　　　console.log( xhr.responseText );	
-		　　　　}	
-		　　};	
-			//设置超时时间	
-			xhr.timeout = 100000;	
-			xhr.ontimeout = function(event){	
-		　　　　alert('请求超时！');	
-		　　}  */
 		}
 
 		$(".fake-file-btn").on("change", "input[type='file']", function() {
-			
-			console.log('changed');
-			xhr2();
+			uploadFiles();
 		});
 	</script>
+	<!-- 伪装按钮实现，点击后选中文件后使用ajax立刻上传 end -->
 </body>
 </html>
