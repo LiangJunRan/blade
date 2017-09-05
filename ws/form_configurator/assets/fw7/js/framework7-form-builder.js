@@ -165,7 +165,11 @@
 		$.each($imgs, function(idx) {
 			urlList.push($imgs[idx].getAttribute('src'));
 		});
-		$input.val('images:[' + urlList.join(',') + ']');
+		if (urlList.length > 0) {
+			$input.val('images:[' + urlList.join(',') + ']');
+		} else {
+			$input.val('');
+		}
 	}
 
 	// 每个节点渲染的方法
