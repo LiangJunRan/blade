@@ -444,6 +444,10 @@ label.form-control-static>span.formLabel {
 	box-sizing: border-box;
 	border-radius: 0;
 }
+.form-control-static .thumbnail {
+	margin-top: 0px;
+	margin-bottom: 10px;
+}
 .thumbnail.add {
 	border: dashed 2px #bbb;
 	padding: 0;

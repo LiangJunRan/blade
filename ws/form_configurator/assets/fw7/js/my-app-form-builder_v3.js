@@ -493,13 +493,25 @@ function validateForm(formId, skipAlert) {
 		var formData = getFormData(formId);
 		// 当前form所有必填name（去重用）
 		var allRequiredNames = [];
-		var allRequiredNode = $form.find(':required:enabled');
+		var allRequiredNode = $form.find('[required]:enabled');
 		$$.each(allRequiredNode, function(idx){
 			var requiredName = allRequiredNode[idx].name;
 			if (allRequiredNames.indexOf(requiredName) == -1) {
 				allRequiredNames.push(requiredName);
+				// 发现图片特征，特殊处理
+				if ((requiredName in formData) && formData[requiredName] !== undefined && !!formData[requiredName].match(/images:\[(.*)\]/)) {
+					var urlString = formData[requiredName].match(/images:\[(.*)\]/)[1];
+					if (urlString.length == 0) {
+						foundMissing = true;
+						var studentMissingLabel = $form.find('[name=' + requiredName + ']').closest('.listNode').children().data('opts').label;
+						var formTitle = pageTitles[nowPageIndex].label;
+						if (!skipAlert) {
+						myApp.alert('请输入：' /*+ formTitle + '/'*/ + studentMissingLabel, '提示');
+						}
+					}
+				}
 				// 请求数据没在formdata中有 或者 formdata中对应数据是空的
-				if (!((requiredName in formData) && formData[requiredName] !== undefined && formData[requiredName].length != 0)) {
+				else if (!((requiredName in formData) && formData[requiredName] !== undefined && formData[requiredName].length != 0)) {
 					foundMissing = true;
 					var studentMissingLabel = $form.find('[name=' + requiredName + ']').closest('.listNode').children().data('opts').label;
 					var formTitle = pageTitles[nowPageIndex].label;

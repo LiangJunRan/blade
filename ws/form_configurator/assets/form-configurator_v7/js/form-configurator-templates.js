@@ -197,7 +197,7 @@
 		'</div>';
 	sub.image = {};
 	sub.image.item =
-		'<div class="thumbnail">' +
+		'<div class="thumbnail coreInput">' +
 			'<div class="delete">' +
 				'<i>&times;</i>' +
 			'</div>' +
@@ -214,7 +214,7 @@
 	sub.image.add =
 		'<span class="button thumbnail add fake-file-btn">' +
 			'<i class="fa fa-plus"></i>' +
-			'<input type="file" multiple="true" ' +
+			'<input class="ignore" type="file" multiple="true" ' +
 					'accept="image/x-png, image/gif, image/jpeg, image/bmp">' +
 		'</span>';
 	sub.image.waiting =
