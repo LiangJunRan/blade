@@ -1,13 +1,13 @@
 ;(function (factory) {
 
 	'use strict';
-    if (typeof define === "function" && define.amd) {
-        // AMD模式
-        define(['jquery'], factory);
-    } else {
-        // 全局模式
-        factory(jQuery);
-    }
+	if (typeof define === "function" && define.amd) {
+		// AMD模式
+		define(['jquery'], factory);
+	} else {
+		// 全局模式
+		factory(jQuery);
+	}
 }(function ($) {
 	// 检查依赖引用
 	function checkEnv() {
@@ -1184,22 +1184,22 @@
 				}
 				formRules[$this.data().opts.name] = $this.data().rule;
 				if ($this.data().rule.required) {
-	                $('.textRequired', $this).addClass('symbol required');
-	            } else {
-	            	$('.textRequired', $this).removeClass('symbol required');
-	            }
-	            // 删掉所有规则，再重新添加的方法，目前未发现能替换的方法
-	            if (dropFormValidator) {
-	            	if ($this.find(':input').length > 0) {
-		                $this.find(':input').rules('remove');
-		                $this.find(':input').rules('add', $this.data().rule);
-	            	} else {
-	            		log('[WARN] Validate item not found :input.', $this[0].outerHTML);
-	            	}
-	            } else {
-	            	// 貌似永远都不会进来？？
-	            	log('XXXdropFormValidator is', dropFormValidator);
-	            };
+					$('.textRequired', $this).addClass('symbol required');
+				} else {
+					$('.textRequired', $this).removeClass('symbol required');
+				}
+				// 删掉所有规则，再重新添加的方法，目前未发现能替换的方法
+				if (dropFormValidator) {
+					if ($this.find(':input').length > 0) {
+						$this.find(':input').rules('remove');
+						$this.find(':input').rules('add', $this.data().rule);
+					} else {
+						log('[WARN] Validate item not found :input.', $this[0].outerHTML);
+					}
+				} else {
+					// 貌似永远都不会进来？？
+					log('XXXdropFormValidator is', dropFormValidator);
+				};
 			}
 		});
 

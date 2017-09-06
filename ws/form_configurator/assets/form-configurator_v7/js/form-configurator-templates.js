@@ -207,10 +207,6 @@
 				'</div>' +
 			'</a>' +
 		'</div>';
-	/*sub.image.add =
-		'<button type="button" class="button thumbnail add">' +
-			'<i class="fa fa-plus"></i>' +
-		'</button>';*/
 	sub.image.add =
 		'<span class="button thumbnail add fake-file-btn">' +
 			'<i class="fa fa-plus"></i>' +
@@ -225,7 +221,6 @@
 			'<div class="help">' +
 				'<i class="fa fa-spinner fa-spin fa-pulse fa-3x fa-fw"></i>' +
 			'</div>' +
-			// '<div class="preloader"></div>' +
 		'</div>';
 	opts.image = {
 		"type": "image",
