@@ -11,11 +11,11 @@
 	// 检查依赖引用
 	function checkEnv() {
 		if ($.validator === undefined) {
-			console.error('[ERROR] Must import jquery.validator first.');
+			error('[ERROR] Must import jquery.validator first.');
 			return false;
 		}
 		if ($.formc === undefined || $.formc.templates === undefined) {
-			console.error('[ERROR] Must import formc.templates first.');
+			error('[ERROR] Must import formc.templates first.');
 			return false;
 		}
 		return true;
@@ -48,6 +48,14 @@
 		if (debug_mode) {
 			log = console.log;
 		}
+	}
+	if (window.console && console.log) {
+		warn = console.log;
+	}
+	if (window.console && console.error) {
+		error = console.error;
+	} else {
+		error = alert;
 	}
 
 	/** 
@@ -158,7 +166,7 @@
 							$('input, select, textarea', $content).attr('name', opt.name);
 						},
 						error: function(data) {
-							console.error('[ERROR] 获取待选项失败', opt);
+							error('[ERROR] 获取待选项失败', opt);
 						},
 						complete: function(data) {
 							log('DONE', data);
@@ -204,7 +212,7 @@
 							});
 						},
 						error: function(data) {
-							console.error('[ERROR] 获取待选项失败', opt);
+							error('[ERROR] 获取待选项失败', opt);
 						}
 					});
 				} else if (opt.options !== undefined && opt.options.length > 0){
@@ -240,7 +248,7 @@
 							});
 						},
 						error: function(data) {
-							console.error('[ERROR] 获取待选项失败', opt);
+							error('[ERROR] 获取待选项失败', opt);
 						}
 					});
 				} else if (opt.options !== undefined && opt.options.length > 0){
@@ -414,7 +422,7 @@
 
 						// 上传
 						$.ajax({
-							// type: 'POST',	// TODO: 上线还原
+							type: 'POST',
 							url: "data/multipleUploadReturn.json",
 							timeout: 30 * 1000,
 							data: formData,
@@ -647,7 +655,7 @@
 					if ($this.data().opts !== undefined) {
 						$this.data().rule = rule[$this.data().opts.type];
 					} else {
-						console.warn('[WARN] Not found data().opts.', $this[0].outerHTML);
+						// warn('[WARN] Not found data().opts.', $this[0].outerHTML);
 					}
 				}
 				if ($this.data().rule !== undefined) {
@@ -661,7 +669,7 @@
 					if (dropFormValidator) {
 						if ($this.find(':input').length > 0) {
 							$this.find(':input').rules('remove');
-							
+
 							// 去掉所有undefined和null的规则，不去掉会造成validator报错
 							var rule = {};
 							$.each($this.data().rule || [], function(key){
@@ -671,14 +679,14 @@
 							});
 							$this.find(':input').rules('add', rule);
 						} else {
-							log('[WARN] Validate item not found :input.', $this[0].outerHTML);
+							// log('[WARN] Validate item not found :input.', $this[0].outerHTML);
 						}
 					} else {
 						// 貌似永远都不会进来？？
-						log('XXXdropFormValidator is', dropFormValidator);
+						// log('XXXdropFormValidator is', dropFormValidator);
 					};
 				} else {
-					console.warn('[WARN] Not found data().rule.', $this[0].outerHTML);
+					// warn('[WARN] Not found data().rule.', $this[0].outerHTML);
 				}
 			}
 		});
@@ -688,7 +696,7 @@
 			dropFormValidator.resetForm();
 		}*/
 
-		log('[校验] 设置（重设）表单校验规则-后');
+		// log('[校验] 设置（重设）表单校验规则-后');
 	}
 
 
@@ -728,7 +736,7 @@
 				triggerValues = [$(this).val()];
 				respNames.add(valueRespMap[$(this).val()]);
 			}
-			log('Selected: [' + triggerValues.join(', ') + ']');
+			// log('Selected: [' + triggerValues.join(', ') + ']');
 
 			// 初始化，隐藏所有响应对象
 			$.each(allResp, function(){
@@ -772,7 +780,7 @@
 				triggerValues = [$(this).val()];
 				respNames.add(valueRespMap[$(this).val()]);
 			}
-			log('Selected: [' + triggerValues.join(', ') + ']');
+			// log('Selected: [' + triggerValues.join(', ') + ']');
 
 			// 初始化，禁用所有响应对象
 			$.each(allResp, function(){
@@ -896,11 +904,12 @@
 					break;
 
 				default:
-					log('[WARN] Not support yet.', eb.eventType);
+					// log('[WARN] Not support yet.', eb.eventType);
 					break;
 			}
 		});
 	}
+
 
 
 	// /////////////////////////////////////////////////////////////////////////////
@@ -1077,9 +1086,7 @@
 					}
 				} else {
 					$this.val(value);
-					// if ($this.attr('type') != 'hidden') {
-						$this.trigger('change');
-					// }
+					$this.trigger('change');
 				}
 			});
 		});
