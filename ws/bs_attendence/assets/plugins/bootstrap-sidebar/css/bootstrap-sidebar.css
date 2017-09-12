@@ -1,19 +1,38 @@
 .sidebar {
-	border-right: solid 1px #ddd;
-	border-bottom: solid 1px #ddd;
+	/*border-right: solid 1px transparent;
+	border-bottom: solid 1px transparent;*/
 	display: inline-block;
 	float: left;
 }
 .sidebar ul.nav {
 	padding-left: 20px;
 	line-height: 30px;
+	overflow-y: hidden;
+}
+.sidebar ul.nav li{
+	animation: up-down 0.3s;
+}
+@keyframes up-down {
+	0% {
+		margin-top: -100%;
+	}
 }
 .sidebar ul.nav:first-child {
 	padding-left: 0px;
 }
 .sidebar li {
-	border-bottom: solid 1px #ddd;
 }
 .sidebar a {
 	color: #555;
+	border-top: solid 1px transparent;
+	margin-top: -1px;
+	border-bottom: solid 1px transparent;
+}
+.sidebar li a.active {
+	background-color: #0099FF;
+	color: #fff;
+}
+.sidebar ul a.active {
+	background-color: #0099FF;
+	color: #fff;
 }

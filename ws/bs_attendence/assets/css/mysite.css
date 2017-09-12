@@ -19,6 +19,73 @@ body, button, input, select, textarea, h1, h2, h3, h4, h5, h6
     border-top: none;
     border-right: none;
     border-left: none;
+    border-bottom: none;
+    background: #eee;
+}
+
+.title-block {
+    padding: 0;
+    border-right: solid 1px transparent;
+    box-sizing: content-box;
+    line-height: 50px;
+    width: 100%;
+}
+a.title-block:link,
+a.title-block:hover,
+a.title-block:visited,
+a.title-block:active {
+    background: #0b9f89!important;
+}
+.title-block span {
+    display: inline-block;
+    padding-left: 14px;
+    line-height: 50px;
+    height: 50px;
+    margin-top: -7px;
+    color: #fff;
+    font-weight: 600;
+    vertical-align: middle;
+}
+.sidebar {
+    background: rgba(0, 0, 0, 0.2);
+    width: 230px;
+    position: absolute;
+    float: left;
+}
+.sidebar ul a:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+.sidebar ul a.active {
+    background: #3bcfb9;
+    animation: fade-in 0.5s forwards;
+    outline: solid 4px rgba(59, 207, 185, 0.5);
+}
+.sidebar ul a.cancel {
+    background: #3bcfb9;
+    animation: fade-out 0.3s forwards;
+    /*outline: solid 15px rgba(255, 255, 255, 0.5);*/
+}
+@keyframes fade-in {
+    0% {
+        background: transparent;
+        outline-offset: -5px;
+    }
+    100% {
+        background: #3bcfb9;
+        outline: solid 4px rgba(59, 207, 185, 0);
+        outline-offset: -10px;
+    }
+}
+@keyframes fade-out {
+    0% {
+        background: #3bcfb9;
+        /* outline: solid 10px rgba(255, 255, 255, 0);
+        outline-offset: 20px; */
+    }
+    100% {
+        background: transparent;
+        /*outline-offset: -10px;*/
+    }
 }
 
 @media (min-width: 768px) {
@@ -27,7 +94,10 @@ body, button, input, select, textarea, h1, h2, h3, h4, h5, h6
     }
     .sidebar {
         width: 230px;
-        border-right: solid 1px #ddd;
+        float: left;
+        position: initial;
+        /*float: initial;*/
+        /*border-right: solid 1px transparent;*/
         height: calc(100% - 51px);
     }
     .sidebar+div {

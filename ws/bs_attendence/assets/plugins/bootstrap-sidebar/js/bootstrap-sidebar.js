@@ -35,6 +35,7 @@
 	}
 
 	$.fn.sidebar = function(_opt) {
+		$baseNode = $(this);
 		var default_opt = {
 			"iframeId": "",
 			"data": [
@@ -60,7 +61,7 @@
 
 		var ul = '<ul class="nav"></ul>';
 		var li = '<li><a href="{href}">{text}</a></li>';
-		var dropMark = '<span>&gt;&gt;</span>';
+		var dropMark = '<span class="caret"></span>';
 
 		var $iframe = $('#' + opt.iframeId);
 
@@ -70,6 +71,12 @@
 				var $li = $(li.format(d));
 				if ($iframe.length == 1) {
 					$li.on('click', 'a', function() {
+						$baseNode.find('.active').removeClass('active');
+						// $baseNode.find('.active').removeClass('active').addClass('cancel');
+						// setTimeout(function() {
+						// 	$baseNode.find('.cancel').removeClass('cancel');
+						// }, 300);
+						$(this).addClass('active');
 						var url = $(this).attr('href') || '#';
 						if (url != '#') {
 							console.log('url=', url);
