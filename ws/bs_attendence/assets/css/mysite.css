@@ -52,6 +52,9 @@ a.title-block:active {
     position: absolute;
     float: left;
 }
+.sidebar ul {
+    background: #eee;
+}
 .sidebar ul a:hover {
     background: rgba(255, 255, 255, 0.3);
 }
