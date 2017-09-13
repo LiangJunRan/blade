@@ -20,7 +20,7 @@ body, button, input, select, textarea, h1, h2, h3, h4, h5, h6
     border-right: none;
     border-left: none;
     border-bottom: none;
-    background: rgba(0, 180, 150, 0.2);
+    background: #03a9f4;
 }
 
 .title-block {
@@ -34,7 +34,9 @@ a.title-block:link,
 a.title-block:hover,
 a.title-block:visited,
 a.title-block:active {
-    background: #0b9f89!important;
+    background: #03a9f4!important;
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 0 1px #000;
 }
 .title-block span {
     display: inline-block;
@@ -47,10 +49,14 @@ a.title-block:active {
     vertical-align: middle;
 }
 .sidebar {
-    background: rgba(0, 180, 150, 0.2);
+    background: #040029;
     width: 230px;
     position: absolute;
     float: left;
+}
+.sidebar a {
+    color: #ddd;
+    text-shadow: 0 5px 1px rgba(0, 0, 0, 0.2);
 }
 .sidebar ul {
     background: rgba(0, 180, 150, 0.1);
@@ -59,9 +65,9 @@ a.title-block:active {
     background: rgba(255, 255, 255, 0.3);
 }
 .sidebar ul a.active {
-    background: #3bcfb9;
+    background: #FFC107;
     animation: fade-in 0.5s forwards;
-    outline: solid 4px rgba(59, 207, 185, 0.5);
+    /*outline: solid 4px rgba(59, 207, 185, 0.5);*/
 }
 .sidebar ul a.cancel {
     background: #3bcfb9;
@@ -71,17 +77,19 @@ a.title-block:active {
 @keyframes fade-in {
     0% {
         background: transparent;
-        outline-offset: -5px;
+        /*outline-offset: -5px;*/
     }
     100% {
-        background: #3bcfb9;
-        outline: solid 4px rgba(59, 207, 185, 0);
-        outline-offset: -10px;
+        background: #FFC107;
+        box-shadow: 0 10px 15px 1px rgba(0, 0, 0, 0.1) inset;
+        /*outline: solid 4px rgba(59, 207, 185, 0);
+        outline-offset: -10px;*/
     }
 }
 @keyframes fade-out {
     0% {
-        background: #3bcfb9;
+        background: #FFC107;
+        box-shadow: 0 10px 15px 1px rgba(0, 0, 0, 0.1) inset;
         /* outline: solid 10px rgba(255, 255, 255, 0);
         outline-offset: 20px; */
     }

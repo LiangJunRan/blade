@@ -24,9 +24,9 @@
 }
 .sidebar a {
 	color: #555;
-	border-top: solid 1px transparent;
-	margin-top: -1px;
-	border-bottom: solid 1px transparent;
+	/*border-top: solid 1px transparent;*/
+	/*margin-top: -1px;*/
+	/*border-bottom: solid 1px transparent;*/
 }
 .sidebar li a.active {
 	background-color: #0099FF;
