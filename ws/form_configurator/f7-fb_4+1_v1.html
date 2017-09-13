@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	
+	<!-- Color theme for statusbar -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="theme-color" content="#40BC87">
+	
+	<title>4+1课堂反馈-吴诗文</title>
+
+	<!-- Style Files -->
+	<link class="ios-css" rel="stylesheet" href="assets/fw7/css/framework7.ios.min.css">
+	<link class="ios-css" rel="stylesheet" href="assets/fw7/css/framework7.ios.colors.min.css">
+	<link class="android-css" rel="stylesheet" href="assets/fw7/css/framework7.material.min.css">
+	<link class="android-css" rel="stylesheet" href="assets/fw7/css/framework7.material.colors.min.css">
+	<link rel="stylesheet" href="assets/fw7-icons/css/framework7-icons.css">
+	<link rel="stylesheet" href="assets/fw7/css/my-app_4+1.css">
+</head>
+<body>
+	<!-- Status bar overlay for fullscreen mode-->
+	<div class="statusbar-overlay"></div>
+	<!-- Panels overlay-->
+	<div class="panel-overlay"></div>
+
+	<!-- Left panel with reveal effect-->
+	<!-- <div class="panel panel-left panel-reveal">
+		<div class="content-block">
+			<div class="log"></div>
+			导航菜单
+			<div class="content-block-title">导航</div>
+			<div class="list-block">
+				<ul class="navList"></ul>
+			</div>
+		</div>
+	</div> -->
+	<!-- Right panel with cover effect-->
+	<!-- <div class="panel panel-right panel-cover">
+		<div class="content-block">
+			<p>Right panel content goes here</p>
+		</div>
+	</div> -->
+
+	<!-- Views-->
+	<div class="views">
+		<!-- Your main view, should have "view-main" class-->
+		<div class="view view-main">
+
+			<!-- Top Navbar-->
+			<div class="navbar">
+
+				<div class="navbar-inner">
+					<div class="left">
+						<a href="#" class="link icon-only exit-web-view">
+							<i class="f7-icons">left</i>
+						</a>
+					</div>
+					<div class="center sliding lessonTitle">4+1课堂反馈-吴诗文</div>
+					<div class="right">
+						<a href="#" class="link icon-only open-panel">
+							<i class="f7-icons"></i>
+						</a>
+					</div>
+					<!-- Sub navbar -->
+					<div class="subnavbar custom-height">
+						<div class="class-info">
+							<p>
+							<span>授课教师</span>：<span>刘少锋</span><br>
+							<span>上课时间</span>：<span>2月26日 09:30-11:30</span><br>
+							<span>当前/总课次</span>：<span>50/90次课</span>
+							</p>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+			<div class="pages navbar-through toolbar-through pagesContainer">
+				<!-- Page, data-page contains page name-->
+				<div data-page="testForm" class="page with-subnavbar custom-height" page-index="0">
+					<!-- Scrollable page content-->
+					<div class="page-content">
+
+						<div class="list-block">
+							<ul>
+								<li>
+									<a href="#" class="item-with-addon">
+										<div class="item-content">
+											<div class="item-inner">
+												<div class="item-title">
+													特殊情况记录
+												</div>
+												<div class="addon">
+													<i class="f7-icons size-smaller">right</i>
+												</div>
+											</div>
+										</div>
+									</a>
+								</li>
+								<li>
+									<div class="item-content">
+										<div class="item-inner">
+											<div class="item-after">
+												特殊情况1，特殊情况2，特殊情况3
+											</div>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+
+						<div class="list-block">
+							<ul>
+								<li>
+									<a href="#" class="item-with-addon">
+										<div class="item-content">
+											<div class="item-inner">
+												<div class="item-title">
+													作业布置及拍照
+												</div>
+												<div class="addon">
+													<i class="f7-icons size-smaller">add_round</i>
+												</div>
+											</div>
+										</div>
+									</a>
+								</li>
+								<li>
+									<div class="item-content">
+										<div class="item-inner">
+											<div class="item-after">
+												图像在设计中拥有强大的力量。无论是什么主题，我们很自然地会被图片所吸引。从美丽清晰的照片，到精心设计的图形，总能第一时间捕获我们的眼球。
+											</div>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="item-content">
+										<div class="item-inner">
+											<div class="item-after">
+												<div class="item-input item-input-image">
+													<input type="hidden" name="exam" value="images:[http://192.168.10.123:9999/data/a.jpg,http://192.168.10.123:9999/data/b.png,http://192.168.10.123:9999/you-cant-find-me.png]">
+													<div class="thumbnails-container">
+														<div class="thumbnail">
+															<div class="delete">
+																<i class="f7-icons">delete_round_fill</i>
+															</div>
+															<a class="openPhotoBrowser" href="javascript:void(0);">
+																<div class="image-container">
+																	<img src="http://192.168.10.123:9999/data/a.jpg" onerror="onerror=null; src='/assets/fw7/img/error.jpg'">
+																</div>
+															</a>
+														</div>
+														<div class="thumbnail">
+															<div class="delete">
+																<i class="f7-icons">delete_round_fill</i>
+															</div>
+															<a class="openPhotoBrowser" href="javascript:void(0);">
+																<div class="image-container">
+																	<img src="http://192.168.10.123:9999/data/a.jpg" onerror="onerror=null; src='/assets/fw7/img/error.jpg'">
+																</div>
+															</a>
+														</div>
+														<div class="thumbnail">
+															<div class="delete">
+																<i class="f7-icons">delete_round_fill</i>
+															</div>
+															<a class="openPhotoBrowser" href="javascript:void(0);">
+																<div class="image-container">
+																	<img src="http://192.168.10.123:9999/data/a.jpg" onerror="onerror=null; src='/assets/fw7/img/error.jpg'">
+																</div>
+															</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+
+								<li>
+									<div class="item-content">
+										<div class="item-inner">
+											<div class="item-after" style="height: 34px;">
+												<audio src="data/556_Butterfly Kiss.mp3"></audio>
+												<div class="audio-player">
+													<div class="progress-bar">
+														<div class="played-part"></div>
+														<i class="play f7-icons"></i>
+													</div>
+													<div class="time">15:06</div>
+													<div class="decorate">
+														<img src="data/wave.png" alt="">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="item-content">
+										<div class="item-inner" style="padding-top: 0px; padding-bottom: 0px; min-height: 0px;">
+											<div class="item-after">
+												<span class="description">预计作业用时：</span><span>2小时</span>
+											</div>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="list-block">
+							<ul>
+								<li class="item-content">
+									<div class="item-inner">
+										<div class="item-title">课次</div>
+										<div class="item-after lessonNo">${lessonNo}</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="list-block">
+							<ul>
+								<li class="item-content">
+									<div class="item-inner">
+										<div class="item-title">班级编码</div>
+										<div class="item-after">${classCode}</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="list-block">
+							<ul>
+								<li class="item-content">
+									<div class="item-inner">
+										<div class="item-title">学员姓名</div>
+										<div class="item-after">${studentName}</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="list-block">
+							<ul>
+								<li class="item-content">
+									<div class="item-inner">
+										<div class="item-title">班级描述</div>
+										<div class="item-after">${className}</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+
+						<!-- 首页form -->
+						<!-- <form id="testForm">
+							<div class="content-block-title" style="text-align: center;">加载中...</div>
+						</form> -->
+
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Bottom Toolbar-->
+			<!-- <div class="toolbar">
+				<div class="toolbar-inner">
+					<a href="javascript:void(0);" class="button border-none page-prev" style="display: none;">&lt; Prev</a>
+					<a href="javascript:void(0);" class="button border-none save-bar"><i class="f7-icons">compose</i></a>
+					<a href="javascript:void(0);" class="button border-none share-btn" style="display: none;"><i class="f7-icons">share</i></a>
+					<a href="javascript:void(0);" class="button border-none page-next" style="display: none;">Next &gt;</a>
+				</div>
+			</div> -->
+
+		</div>
+	</div>
+
+	<div class="popup popup-submit" style="height: initial; top: initial; bottom: 0px;">
+		<div class="content-block group-ready">
+			<p style="text-indent: 2em;">请确认是否提交？</p>
+			<div class="row">
+				<div class="col-33">
+					<a href="#" class="button button-big color-red close-popup">取消</a>
+				</div>
+				<div class="col-33">
+					<a href="#" class="button button-big color-orange button-fill close-popup all-form-save">暂存</a>
+				</div>
+				<div class="col-33">
+					<a href="#" class="button button-big color-green button-fill close-popup all-form-submit">提交</a>
+				</div>
+			</div>
+		</div>
+		<div class="content-block group-done" style="display: none;">
+			<p style="text-align: center;">您已成功提交</p>
+		</div>
+	</div>
+	<!-- <input type="hidden" id="serviceType" value="${serviceType}" />
+	<input type="hidden" id="formInsideId" value="${formInsideId}" />
+	<input type="hidden" id="workflowNumber" value="${workflowNumber}" />
+	<input type="hidden" id="groupId" value="${groupId}" />
+	<input type="hidden" id="hasValue" value="${hasValue}" /> -->
+	
+	<!-- <div class="modal-overlay modal-overlay-visible"></div>
+	<div class="modal modal-no-buttons modal-preloader modal-in" style="display: block; margin-top: -50px;">
+		<div class="modal-inner">
+			<div class="modal-title">Loading... </div>
+			<div class="modal-text">
+				<div class="preloader"></div>
+			</div>
+		</div>
+	</div> -->
+
+	<!-- html和json格式化插件 -->
+	<!-- <script src="assets/html_formater/htmlformat.js"></script>
+	<script src="assets/html_formater/jsformat.js"></script> -->
+	
+	<script src="assets/fw7/js/framework7.min.js"></script>
+	<!-- <script src="assets/fw7/js/framework7-form-builder-templates.js"></script>
+	<script src="assets/fw7/js/framework7-form-builder.js"></script> -->
+	<script src="assets/fw7/js/my-app_4+1.js"></script>
+
+</body>
+</html>

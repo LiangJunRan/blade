@@ -20,7 +20,7 @@ body, button, input, select, textarea, h1, h2, h3, h4, h5, h6
     border-right: none;
     border-left: none;
     border-bottom: none;
-    background: #eee;
+    background: rgba(0, 180, 150, 0.2);
 }
 
 .title-block {
@@ -47,13 +47,13 @@ a.title-block:active {
     vertical-align: middle;
 }
 .sidebar {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 180, 150, 0.2);
     width: 230px;
     position: absolute;
     float: left;
 }
 .sidebar ul {
-    background: #eee;
+    background: rgba(0, 180, 150, 0.1);
 }
 .sidebar ul a:hover {
     background: rgba(255, 255, 255, 0.3);
