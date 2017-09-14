@@ -183,23 +183,32 @@
 .audio-player .played-part {
 	display: inline-block;
 	height: 0px;
-	width: 50%;
+	width: 0px;
 	border: solid 16px #40BC87;
 	border-radius: 40px;
 	margin-left: -16px;
 	margin-top: -16px;
 }
-.audio-player .play.f7-icons {
+.audio-player .bar-control {
+	display: inline-block;
+	height: 0px;
+	width: 0px;
+	border: solid 16px #40BC87;
+	border-color: rgba(255, 255, 255, 0.5);
+	border-radius: 40px;
+	margin-right: -16px;
+	margin-top: -16px;
+	position: relative;
+	float: right;
+}
+.audio-player .ppBtn.f7-icons {
 	width: 0px;
 	height: 0px;
 	float: left;
 	position: relative;
-	left: -10px;
+	left: -11px;
 	top: -11px;
 	font-size: 22px;
-}
-.audio-player .play.f7-icons:after {
-	content: "play_round";
 	background: transparent;
 	border: none;
 	color: #fff;
@@ -213,11 +222,12 @@
 	color: #fff;
 }
 .audio-player .decorate {
-	width: 76%;
+	width: calc(100% - 84px);
 	height: 32px;
 	overflow-x: hidden;
 	float: left;
 	position: relative;
 	left: 33px;
 	top: -31px;
+	background: url(/data/wave.png) no-repeat 0 center;
 }
