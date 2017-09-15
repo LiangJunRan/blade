@@ -35,6 +35,10 @@
 .f7-icons.size-smaller {
 	font-size: 18px;
 }
+/* 改变部分符号大小 */
+.f7-icons.size-smallest {
+	font-size: 16px;
+}
 
 /* 输入项-附加项 */
 .item-with-addon {
@@ -95,6 +99,47 @@
 	margin: 0;
 	line-height: 1.9em;
 }
+
+/* addon按钮 */
+.addon-popover {
+	width: 139px;
+	border-radius: 20px;
+	margin-top: 8px;
+}
+.addon-popover .popover-angle:after {
+	width: 20px;
+	height: 20px;
+	margin-left: 6px;
+}
+.addon-popover .icons-container {
+	height: 28px;
+	line-height: 28px;
+	border-radius: 20px;
+	overflow: hidden;
+}
+.addon-popover .icons-container a {
+	display: inline-block;
+	width: 30px;
+	line-height: 28px;
+	text-align: center;
+	box-sizing: content-box;
+	border-right: solid 1px #ddd;
+	color: #40BC87;
+}
+.addon-popover .icons-container a.active-state {
+	background: #40BC87;
+	color: #fff;
+}
+.addon-popover .icons-container a:first-child {
+	width: 34px;
+	padding-left: 4px;
+}
+.addon-popover .icons-container a:last-child{
+	width: 34px;
+	padding-right: 4px;
+	border-right: none;
+}
+
 
 /* 图片上传 */
 .item-input-image {
@@ -181,7 +226,7 @@
 	border-radius: 40px;
 }
 .audio-player .played-part {
-	display: inline-block;
+	display: block;
 	height: 0px;
 	width: 0px;
 	border: solid 16px #40BC87;
@@ -194,7 +239,7 @@
 	height: 0px;
 	width: 0px;
 	border: solid 16px #40BC87;
-	border-color: rgba(255, 255, 255, 0.5);
+	/*border-color: rgba(255, 255, 255, 0.5);*/
 	border-radius: 40px;
 	margin-right: -16px;
 	margin-top: -16px;
@@ -206,8 +251,8 @@
 	height: 0px;
 	float: left;
 	position: relative;
-	left: -11px;
-	top: -11px;
+	left: 5px;
+	top: -27px;
 	font-size: 22px;
 	background: transparent;
 	border: none;
