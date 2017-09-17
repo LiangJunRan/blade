@@ -72,6 +72,28 @@
 	background: #40BC87;
 	z-index: initial;
 }
+.navbar-btn {
+	background: rgba(0,0,0,0.25);
+    display: block;
+    padding: 0 12px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 13px;
+    border-radius: 20px;
+    position: relative;
+}
+.navbar-btn.nbg {
+	background: transparent;
+}
+.left .navbar-btn {
+	left: 10px;
+}
+.left .navbar-btn.nbg{
+	left: 0px;
+}
+.right .navbar-btn {
+	right: 10px;
+}
 
 /* 副标题自定义高度 */
 .ios .subnavbar.custom-height {

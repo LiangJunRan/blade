@@ -40,63 +40,166 @@ function customizedHistoryBack() {
 
 
 // 给加号添加popover
-$('.addon').on('click', function(e) {
+$('.addon.multimedia').on('click', function(e) {
 	var clickedLink = this;
 	var popoverHTML = 
 			'<div class="popover addon-popover">' +
 				'<div class="popover-inner">' +
 					'<div class="icons-container">' +
 						'<a class="addon-text" href="javascript:void(0);"><i class="f7-icons size-smallest">compose</i></a>' +
-						'<a href="javascript:void(0);"><i class="f7-icons size-smallest">camera</i></a>' +
-						'<a href="javascript:void(0);"><i class="f7-icons size-smallest">mic</i></a>' +
-						'<a href="javascript:void(0);"><i class="f7-icons size-smallest">time</i></a>' +
+						'<a class="addon-images" href="javascript:void(0);"><i class="f7-icons size-smallest">camera</i></a>' +
+						'<a class="addon-audio" href="javascript:void(0);"><i class="f7-icons size-smallest">mic</i></a>' +
+						'<a class="addon-time" href="javascript:void(0);"><i class="f7-icons size-smallest">time</i></a>' +
 					'</div>' +
 				'</div>' +
 			'</div>';
 	myApp.popover(popoverHTML, clickedLink);
+	$('.addon-popover').data('$source', $(e.target).closest('.list-block'));
 });
-$('body').on('click', '.addon-text', function(e) {
-	console.log('clicked');
-	var popupHTML =
-			'<div class="navbar">' +
-				'<div class="navbar-inner" data-page="dynamic-page">' +
-					'<div class="left">' +
-						'<a href="#" class="link icon-only exit-web-view">' +
-							'取消' +
-						'</a>' +
-					'</div>' +
-					'<div class="center sliding lessonTitle">作业布置</div>' +
-					'<div class="right">' +
-						'<a href="#" class="link icon-only open-panel">' +
-							'完成' +
-						'</a>' +
-					'</div>' +
-				'</div>' +
-			'</div>' +
-			'<div class="page" data-page="dynamic-page">' +
-				'<div class="page-content">' +
-					'<p>Here comes new page</p>' +
-				'</div>' +
-			'</div>';
-	mainView.router.load({
-		content: popupHTML,
-		animatePages: true
-	});
 
+
+// 绑定编辑文本的事件
+$('body').on('click', '.addon-text', function(e) {
 	myApp.closeModal();
 
-	initPageBindEvent();
-});	
+	var $source = $(e.target).closest('.addon-popover').data('$source');
+	$source.editText();
+});
+/**
+ * 文本编辑的实现方法
+ *     使用$obj.editText(initValue, $nodeToReplace)
+ *     this:           $obj[0]
+ *     initValue:      初始的文本框中的值，修改模式使用
+ *     $nodeToReplace: 修改完毕后替换的对象，修改模式使用
+ */
+$.fn.editText = function(initValue, $nodeToReplace) {
+	myApp.closeModal();
+
+	var $source = this;
+	// TODO: 获取opt
+	var opt = $source.data('opt');
+	opt = {
+		title: '作业批改'
+	};
+	var popupTemplate =
+			'<div class="popup textarea-popup">'+
+				'<div class="navbar">' +
+					'<div class="navbar-inner">' +
+						'<div class="left">' +
+							'<a href="#" class="close-popup">' +
+								'<span>' +
+									'<div class="navbar-btn nbg">取消</div>' +
+								'</span>' +
+							'</a>' +
+						'</div>' +
+						'<div class="center sliding lessonTitle">{title}</div>' +
+						'<div class="right submitBtn disabled">' +
+							'<a href="#" class="link close-popup textarea-popup-submit">' +
+								'<span>' +
+									'<div class="navbar-btn">完成</div>' +
+								'</span>' +
+							'</a>' +
+						'</div>' +
+					'</div>' +
+				'</div>' +
+				
+				'<div class="page-content">' +
+					'<div class="list-block">' +
+						'<ul>' +
+							'<li class="align-top">' +
+								'<div class="item-content">' +
+									'<div class="item-inner">' +
+										'<div class="item-input">' +
+											'<textarea id="textEdit"></textarea>' +
+										'</div>' +
+									'</div>' +
+								'</div>' +
+							'</li>' +
+						'</ul>' +
+					'</div>' +
+				'</div>' +
+			'</div>';
+
+	myApp.popup(popupTemplate.format(opt));
+
+	// 联动事件绑定
+	$('#textEdit').on('input', function(e) {
+		console.log('input');
+		if ($(e.target).val().trim().length > 0) {
+			$(e.target).closest('.textarea-popup').find('.submitBtn').removeClass('disabled');
+		} else {
+			$(e.target).closest('.textarea-popup').find('.submitBtn').addClass('disabled');
+		}
+	});
+
+	if (initValue !== undefined) {
+		$('#textEdit').val(initValue);
+	}
+
+	// 提交事件绑定
+	$('.textarea-popup-submit').on('click', function() {
+		var value = $('#textEdit').val();
+		var textViewTemplate = 
+				'<li class="swipeout">' +
+					'<div class="swipeout-content item-content">' +
+						'<div class="item-inner">' +
+							'<div class="item-after textValue">' +
+								'{value}' +
+							'</div>' +
+						'</div>' +
+					'</div>' +
+					'<div class="swipeout-actions-right">' +
+						'<a href="#" class="edit-text bg-lightblue">Edit</a>' +
+						'<a href="#" class="swipeout-delete">Delete</a>' +
+					'</div>' +
+				'</li>';
+		var $viewNode = $(textViewTemplate.format({value: value}));
+
+		$viewNode.find('.edit-text').on('click', function(e) {
+			console.log('edit text');
+			$source.editText($viewNode.find('.textValue').html().trim() || undefined, $(e.target).closest('li.swipeout'));
+		});
 
 
-$(document).on('page:afteranimation', function(e) {
+		if ($nodeToReplace === undefined) {
+			$viewNode.insertAfter($source.find('ul li:last-child'));
+		} else {
+			$viewNode.insertAfter($nodeToReplace);
+			$nodeToReplace.remove();
+		}
+		console.log('Submit');
+	});
+}
+
+
+
+// 编辑图片的事件
+$('body').on('click', '.addon-images', function(e) {
+	myApp.closeModal();
+
+	var $source = $(e.target).closest('.addon-popover').data('$source');
+	$source.editImages();
+});
+$.fn.editText = function(initValue, $nodeToReplace) {
+	myApp.closeModal();
+
+	var $source = this;
+	// TODO: 获取opt
+	var opt = $source.data('opt');
+	opt = {
+		title: '作业批改'
+	};
+	
+}
+
+/*$(document).on('page:afteranimation', function(e) {
 	console.log('page:afteranimation');
 	var page = e.detail.page;
 	console.log('page:', page);
 	if (page.name == 'testForm' && page.fromPage.name == 'dynamic-page') {
 		$('[data-page=dynamic-page]').remove();
 	}
-})
+})*/
 
 
 // 自制播放器-播放/暂停事件绑定
@@ -150,7 +253,6 @@ $('.audio-player .progress-bar, .audio-player .decorate, .audio-player .time').o
 	$audio[0].currentTime = $audio[0].duration * 0.01 * endPer;
 	// 绑定更新事件
 	$audio.on('timeupdate', __audioTimeUpdateCallback);
-	// TODO: 解决click和touchend多重触发问题
 	$audio[0].play();
 	$ppBtn.html('pause_round');
 });
@@ -187,6 +289,31 @@ Array.prototype.add = function(obj) {
 	} else {
 		arrList.push(obj);
 	}
+}
+
+
+// 扩展String类型的原生方法，提供类似java或python的format方法
+String.prototype.format = function(args) {
+	var result = this;
+	if (arguments.length > 0) {	
+		if (arguments.length == 1 && typeof (args) == "object") {
+			for (var key in args) {
+				if(args[key]!=undefined){
+					var reg = new RegExp("({" + key + "})", "g");
+					result = result.replace(reg, args[key]);
+				}
+			}
+		}
+		else {
+			for (var i = 0; i < arguments.length; i++) {
+				if (arguments[i] != undefined) {
+					var reg = new RegExp("({[" + i + "]})", "g");
+					result = result.replace(reg, arguments[i]);
+				}
+			}
+		}
+	}
+	return result;
 }
 
 function GetQueryString(name) {
