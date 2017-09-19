@@ -8,11 +8,12 @@
 }(function ($, undefined) {
 	$.formc = $.formc || {};
 
-	var templates = $.formc.templates = {};
+	var templates = $.formc.templates = {};	// 模板集合
 	var core = templates.core = {};
 	var sub = templates.sub = {};
 	var opts = templates.opts = {};
 	var rule = templates.rule = {};
+	var media = templates.media = {};		// 用来存储media中控件的模板
 
 	core.text = 
 		'<div class="item-content">' +
@@ -157,100 +158,18 @@
 	};
 	rule.image = {
 	};
-	// core.multiselect = 
-	// 	'<a href="#" class="item-link smart-select" data-open-in="picker">' +
-	// 		'<select name="{name}">' +
-	// 		'</select>' +
-	// 		'<div class="item-content">' +
-	// 			'<div class="item-inner">' +
-	// 				'<div class="item-title label">{label}</div>' +
-	// 			'</div>' +
-	// 		'</div>' +
-	// 	'</a>';
-	// opts.multiselect = {
-	// 	"name": "demo_multiselect",
-	// 	"type": "multiselect",						 // 基本类型
-	// 	"label": "下拉多选",
-	// 	"placeholder": "--请选择--",				// 非必填
-	// 	"description": "请点击选择",
-	// 	"dataUrl": "",							// 填写使用Url加载待选项，否则使用options
-	// 	"options": [
-	// 		{"label": "选项1", "value": 1},
-	// 		{"label": "选项2", "value": 2},
-	// 		{"label": "选项3", "value": 3},
-	// 		{"label": "选项4", "value": 4},
-	// 		{"label": "选项5", "value": 5},
-	// 		{"label": "选项6", "value": 6}
-	// 	]
-	// };
-	// rule.multiselect = {
-	// 	"required": false
-	// };
 
 
 
-	core.radio = '<div class="formContent"></div>';
-	sub.radio =
-		'<div class="radio clip-radio radio-primary radio-inline">' +
-			'<input type="radio" class="coreInput">' +
-			'<label class="itemLabel"></label>' +
+	core.multimedia = 
+		'<div class="item-content">' +
+			'<div class="item-inner">' +
+				'<div class="item-title">' +
+					'{label}' +
+				'</div>' +
+				'<div class="addon multimedia">' +
+					'<i class="f7-icons size-smaller">add_round</i>' +
+				'</div>' +
+			'</div>' +
 		'</div>';
-	opts.radio = {
-		"name": "demo_radio",
-		"type": "radio",						 // 基本类型
-		"label": "单选",
-		"description": "单选描述",
-		"dataUrl": "",							// 填写使用Url加载待选项，否则使用options
-		"options": [
-			{"label": "选项1", "value": 1},
-			{"label": "选项2", "value": 2},
-			{"label": "选项3", "value": 3}
-		]
-	};
-	rule.radio = {
-		"required": false
-	};
-
-
-
-	core.checkbox = '<div class="formContent"></div>';
-	sub.checkbox =
-		'<div class="checkbox clip-check check-primary checkbox-inline">' +
-			'<input type="checkbox" class="coreInput">' +
-			'<label class="itemLabel"></label>' +
-		'</div>';
-	opts.checkbox = {
-		"name": "demo_checkbox",
-		"type": "checkbox",						 // 基本类型
-		"label": "多选",
-		"description": "多选描述",
-		"dataUrl": "",							// 填写使用Url加载待选项，否则使用options
-		"options": [
-			{"label": "选项1", "value": 1},
-			{"label": "选项2", "value": 2},
-			{"label": "选项3", "value": 3}
-		]
-	};
-	rule.checkbox = {
-		"required": false
-	};
-
-
-
-	core.date = 
-		'<span class="form-control-feedback feedback-fix">' +
-			'<i class="fa fa-calendar"></i>' +
-		'</span>' +
-		'<input type="text" class="form-control coreInput" />';
-	opts.date = {
-		"name": "demo_date",
-		"type": "date",						// 基本类型
-		"label": "日期",
-		"placeholder": "请点击以选择日期",	// 非必填
-		"description": "请点击以选择日期"
-	};
-	rule.date = {
-		"required": false,
-		"dateISO": true
-	};
 }));

@@ -25,24 +25,6 @@
 	<!-- Panels overlay-->
 	<div class="panel-overlay"></div>
 
-	<!-- Left panel with reveal effect-->
-	<!-- <div class="panel panel-left panel-reveal">
-		<div class="content-block">
-			<div class="log"></div>
-			导航菜单
-			<div class="content-block-title">导航</div>
-			<div class="list-block">
-				<ul class="navList"></ul>
-			</div>
-		</div>
-	</div> -->
-	<!-- Right panel with cover effect-->
-	<!-- <div class="panel panel-right panel-cover">
-		<div class="content-block">
-			<p>Right panel content goes here</p>
-		</div>
-	</div> -->
-
 	<!-- Views-->
 	<div class="views">
 		<!-- Your main view, should have "view-main" class-->
@@ -75,22 +57,6 @@
 					</div>
 				</div>
 				
-				<!-- 文本编辑页面的导航栏 -->
-				<!-- <div class="navbar-inner cached" data-page="textEditPage">
-					<div class="left">
-						<a href="#" class="link icon-only exit-web-view">
-							<i class="f7-icons">left</i>
-						</a>
-					</div>
-					<div class="center sliding lessonTitle">作业布置</div>
-					<div class="right disabled">
-						<a href="#" class="link icon-only open-panel">
-							<span>
-								<div class="navbar-btn">完成</div>
-							</span>
-						</a>
-					</div>
-				</div> -->
 			</div>
 
 			<!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
@@ -100,6 +66,7 @@
 					<!-- Scrollable page content-->
 					<div class="page-content">
 
+						<!-- 
 						<div class="list-block">
 							<ul>
 								<li>
@@ -127,7 +94,6 @@
 								</li>
 							</ul>
 						</div>
-
 						<div class="list-block">
 							<ul>
 								<li>
@@ -196,7 +162,6 @@
 										</div>
 									</div>
 								</li>
-
 								<li>
 									<div class="item-content">
 										<div class="item-inner">
@@ -225,7 +190,6 @@
 								</li>
 							</ul>
 						</div>
-
 						<div class="list-block">
 							<ul>
 								<li>
@@ -242,166 +206,19 @@
 										</div>
 									</a>
 								</li>
-								<!-- <li>
-									<div class="item-content">
-										<div class="item-inner">
-											<div class="item-after">
-												图像在设计中拥有强大的力量。无论是什么主题，我们很自然地会被图片所吸引。从美丽清晰的照片，到精心设计的图形，总能第一时间捕获我们的眼球。
-											</div>
-										</div>
-									</div>
-								</li> -->
-								<!-- <li>
-									<div class="item-content">
-										<div class="item-inner">
-											<div class="item-after">
-												<div class="item-input item-input-image">
-													<input type="hidden" name="exam" value="images:[http://192.168.10.123:9999/data/a.jpg,http://192.168.10.123:9999/data/b.png,http://192.168.10.123:9999/you-cant-find-me.png]">
-													<div class="thumbnails-container">
-														<div class="thumbnail">
-															<div class="delete">
-																<i class="f7-icons">delete_round_fill</i>
-															</div>
-															<a class="openPhotoBrowser" href="javascript:void(0);">
-																<div class="image-container">
-																	<img src="http://192.168.10.123:9999/data/a.jpg" onerror="onerror=null; src='/assets/fw7/img/error.jpg'">
-																</div>
-															</a>
-														</div>
-														<div class="thumbnail">
-															<div class="delete">
-																<i class="f7-icons">delete_round_fill</i>
-															</div>
-															<a class="openPhotoBrowser" href="javascript:void(0);">
-																<div class="image-container">
-																	<img src="http://192.168.10.123:9999/data/a.jpg" onerror="onerror=null; src='/assets/fw7/img/error.jpg'">
-																</div>
-															</a>
-														</div>
-														<div class="thumbnail">
-															<div class="delete">
-																<i class="f7-icons">delete_round_fill</i>
-															</div>
-															<a class="openPhotoBrowser" href="javascript:void(0);">
-																<div class="image-container">
-																	<img src="http://192.168.10.123:9999/data/a.jpg" onerror="onerror=null; src='/assets/fw7/img/error.jpg'">
-																</div>
-															</a>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</li> -->
-
-								<!-- <li>
-									<div class="item-content">
-										<div class="item-inner">
-											<div class="item-after" style="height: 34px;">
-												<div class="audio-player">
-													<audio src="data/556_Butterfly Kiss.mp3"></audio>
-													<div class="progress-bar">
-														<div class="played-part"></div>
-													</div>
-													<i class="ppBtn f7-icons">play_round</i>
-													<div class="time">--:--</div>
-													<div class="decorate"></div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</li> -->
-								<!-- <li>
-									<div class="item-content">
-										<div class="item-inner" style="padding-top: 0px; padding-bottom: 0px; min-height: 0px;">
-											<div class="item-after">
-												<span class="description">预计作业用时：</span><span>2小时</span>
-											</div>
-										</div>
-									</div>
-								</li> -->
 							</ul>
 						</div>
-
-						<div class="list-block">
-							<ul>
-								<li class="item-content">
-									<div class="item-inner">
-										<div class="item-title">课次</div>
-										<div class="item-after lessonNo">${lessonNo}</div>
-									</div>
-								</li>
-							</ul>
-						</div>
-						<div class="list-block">
-							<ul>
-								<li class="item-content">
-									<div class="item-inner">
-										<div class="item-title">班级编码</div>
-										<div class="item-after">${classCode}</div>
-									</div>
-								</li>
-							</ul>
-						</div>
-						<div class="list-block">
-							<ul>
-								<li class="item-content">
-									<div class="item-inner">
-										<div class="item-title">学员姓名</div>
-										<div class="item-after">${studentName}</div>
-									</div>
-								</li>
-							</ul>
-						</div>
-						<div class="list-block">
-							<ul>
-								<li class="item-content">
-									<div class="item-inner">
-										<div class="item-title">班级描述</div>
-										<div class="item-after">${className}</div>
-									</div>
-								</li>
-							</ul>
-						</div>
+						-->
 
 						<!-- 首页form -->
-						<!-- <form id="mainPage">
+						<form id="testForm">
 							<div class="content-block-title" style="text-align: center;">加载中...</div>
-						</form> -->
+						</form>
 
 					</div>
 				</div>
 
-				<!-- 文本编辑页面 -->
-				<!-- <div class="page cached" data-page="textEditPage">
-					<div class="page-content">
-						<div class="list-block">
-							<ul>
-								<li class="align-top">
-									<div class="item-content">
-										<div class="item-inner">
-											<div class="item-input">
-												<textarea></textarea>
-											</div>
-										</div>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div> -->
 			</div>
-
-			<!-- Bottom Toolbar-->
-			<!-- <div class="toolbar">
-				<div class="toolbar-inner">
-					<a href="javascript:void(0);" class="button border-none page-prev" style="display: none;">&lt; Prev</a>
-					<a href="javascript:void(0);" class="button border-none save-bar"><i class="f7-icons">compose</i></a>
-					<a href="javascript:void(0);" class="button border-none share-btn" style="display: none;"><i class="f7-icons">share</i></a>
-					<a href="javascript:void(0);" class="button border-none page-next" style="display: none;">Next &gt;</a>
-				</div>
-			</div> -->
 
 		</div>
 	</div>

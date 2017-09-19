@@ -1,0 +1,93 @@
+{
+    "items": [
+        {
+            "name": "mm",
+            "label": "多媒体组合",
+            "type": "multimedia",
+
+            "outerWidth": 12,
+            "labelWidth": 3,
+            "contentWidth": 9,
+            "widthInSteam": "auto",
+
+            "items": [
+                {
+                    "type": "textarea",
+                    "widthInSteam": "auto",
+                    "placeholder": "placeholder",
+                    "description": "description"
+                },
+                {
+                    "type": "image",
+                    "widthInSteam": "auto",
+                    "placeholder": "placeholder",
+                    "description": "description"
+                },
+                {
+                    "type": "sound",
+                    "widthInSteam": "auto",
+                    "placeholder": "placeholder",
+                    "description": "description"
+                },
+                {
+                    "type": "select",
+                    "widthInSteam": "auto",
+                    "placeholder": "placeholder",
+                    "description": "description"
+                }
+            ]
+
+        },
+        {
+            "name": "mm2",
+            "label": "多媒体组合2",
+            "type": "multimedia",
+
+            "outerWidth": 12,
+            "labelWidth": 3,
+            "contentWidth": 9,
+            "widthInSteam": "auto",
+
+            "items": [
+                {
+                    "type": "textarea",
+                    "widthInSteam": "auto",
+                    "placeholder": "placeholder",
+                    "description": "description"
+                },
+                {
+                    "type": "image",
+                    "widthInSteam": "auto",
+                    "placeholder": "placeholder",
+                    "description": "description",
+                    "maxNumber": 3,
+                    "minNumber": 1
+                },
+                {
+                    "type": "sound",
+                    "widthInSteam": "auto",
+                    "placeholder": "placeholder",
+                    "description": "description"
+                },
+                {
+                    "type": "select",
+                    "widthInSteam": "auto",
+                    "placeholder": "placeholder",
+                    "description": "description"
+                }
+            ]
+        }
+    ],
+    "rules": {
+        "mm": {
+            "required": false
+        }, 
+        "mm2": {
+            "required": false
+        }
+    },
+    "events": [],
+    "values": {},
+    "isSteam": false,
+    "isRead": false
+}
