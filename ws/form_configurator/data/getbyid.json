@@ -15,6 +15,36 @@
                 "maxNumber": 5,
                 "minNumber": 1
 
+            }, 
+            {
+                "name": "rec",
+                "label": "录音",
+                "type": "audio",
+
+                "outerWidth": 12,
+                "labelWidth": 3,
+                "contentWidth": 9,
+                "widthInSteam": "auto",
+
+                "description": "点击开始录音",
+                "maxNumber": 1,
+                "minNumber": 1
+
+            },
+            {
+                "name": "rec2",
+                "label": "录音2",
+                "type": "audio",
+
+                "outerWidth": 12,
+                "labelWidth": 3,
+                "contentWidth": 9,
+                "widthInSteam": "auto",
+
+                "description": "",
+                "maxNumber": 1,
+                "minNumber": 1
+
             },
             {
                 "name": "exam",
@@ -131,10 +161,12 @@
             }},
         "events": [],
         "values": {
-            "exam": "images:[http://192.168.10.123:9999/data/a.jpg,http://192.168.10.123:9999/data/b.png,http://192.168.10.123:9999/you-cant-find-me.png]"
+            "exam": "images:[http://192.168.10.123:9999/data/a.jpg,http://192.168.10.123:9999/data/b.png,http://192.168.10.123:9999/you-cant-find-me.png]",
+
+            "rec2": "audios:[http://192.168.10.123:9999/data/556_Butterfly%20Kiss.mp3]"
         },
         "isSteam": false,
-        "isRead": false
+        "isRead": true
     },
     "testForm":{
         "items": [

@@ -639,3 +639,12 @@ $$('body').on('click', '.openPhotoBrowser', function(e) {
 		myPhotoBrowser.open(nowIndex); // open photo browser
 	}
 });
+
+// TODEL
+/*setTimeout(function() {
+	preUploadCallback({formId: 'student_1', name: 'rec', groupId:  0, count: 1});
+}, 4000);
+
+setTimeout(function() {
+	uploadedCallback({formId: 'student_1', name: 'rec', groupId:  0, index: 0, url: "http://192.168.10.123:9999/data/556_Butterfly%20Kiss.mp3"});
+}, 7000);*/

@@ -40,6 +40,7 @@
 		}
 		this.render = function() {
 			// TODO
+			console.error('Must be rewritten.')
 		}
 		this.afterRender = function() {
 			// do nothing, not necessary
@@ -51,19 +52,21 @@
 		}
 		this.setRule = function() {
 			// TODO
+			console.error('Must be rewritten.')
 		}
 		this.afterSetRule = function() {
 			// do nothing, not necessary
 		}
 
 		// 赋值的实现
-		this.beforeSetRule = function() {
+		this.beforeSetValue = function() {
 			// do nothing, not necessary
 		}
-		this.setRule = function() {
+		this.setValue = function() {
 			// TODO
+			console.error('Must be rewritten.')
 		}
-		this.afterSetRule = function() {
+		this.afterSetValue = function() {
 			// do nothing, not necessary
 		}
 	}
@@ -71,18 +74,32 @@
 	$.formb.baseComponent = baseComponent;
 
 
-	var ParentClass = function(lastName) {
-		this.lastName = lastName;
-	}
+	(function($) {
 
-	var ChildClass = function(lastName, firstName) {
-		this.firstName = firstName;
-	}
+		var Animal = function() {
+			this.__self__ = this;
+			this.type = "animal";
+			this.showSelf = function() {
+				for (var x in this.__self__) {
+					console.log('  ', x, ':', this.__self__[x]);
+				}
+			}
+		}
 
-	ChildClass.prototype = new ParentClass();
+		var Dog = function() {
+			this.subType = "dog";
+			this.bark = function() {
+				console.log('汪汪汪');
+				this.showSelf();
+			}
+		}
 
-	var child = new ChildClass('Lv', 'Yang');
+		Dog.prototype = new Animal();
+		Dog.prototype.constructor = Dog;
 
-	console.log(child.lastName + ' ' + child.firstName);
+		var xiaobai = new Dog();
+
+		xiaobai.bark();
+	})(window.jQuery);
 
 }));

@@ -113,7 +113,7 @@ html.ios.with-statusbar-overlay .framework7-root .panel {
 .item-input-image {
 	padding: 10px 0px;
 }
-.thumbnails-description {
+.thumbnails-description, .audioItems-description {
 	color: #999;
 	font-size: 14px;
 }
@@ -182,4 +182,122 @@ html.ios.with-statusbar-overlay .framework7-root .panel {
 	line-height: 50px;
 	vertical-align: middle;
 	display: inline-block;
+}
+
+
+
+
+
+/* 音乐播放器 */
+.audio-player {
+	height: 32px;
+	margin-bottom: 5px;
+}
+.audio-player .progress-bar {
+	display: inline-block;
+	width: calc(100% - 60px);
+	height: 0px;
+	border: solid 16px #ccc;
+	border-radius: 40px;
+}
+.audio-player.waiting .progress-bar {
+    line-height: 0px;
+}
+.audio-player.waiting .delete {
+	position: initial;
+	top: initial;
+}
+.audio-player .delete {
+	display: inline-block;
+	position: relative;
+	/*float: right;*/
+	z-index: 2;
+	height: 16px;
+	width: 16px;
+	line-height: 16px;
+	/*right: -9px;*/
+	top: -11px;
+	border: solid 4px #fff;
+	border-radius: 12px;
+	text-align: center;
+	font-size: 14px;
+	color: #fff;
+	background-color: #f00;
+}
+.audio-player .delete i {
+	font-size: 14px;
+	width: 17px;
+}
+.audio-player .played-part {
+	display: block;
+	height: 0px;
+	width: 0px;
+	border: solid 16px #40BC87;
+	border-radius: 40px;
+	margin-left: -16px;
+	margin-top: -16px;
+}
+.audio-player .bar-control {
+	display: inline-block;
+	height: 0px;
+	width: 0px;
+	border: solid 16px #40BC87;
+	/*border-color: rgba(255, 255, 255, 0.5);*/
+	border-radius: 40px;
+	margin-right: -16px;
+	margin-top: -16px;
+	position: relative;
+	float: right;
+}
+.audio-player .ppBtn.f7-icons {
+	width: 0px;
+	height: 0px;
+	float: left;
+	position: relative;
+	left: 5px;
+	/*top: -27px;*/
+	top: 5px;
+	font-size: 22px;
+	background: transparent;
+	border: none;
+	color: #fff;
+}
+.audio-player .time {
+	float: right;
+	position: relative;
+	/* right: 10px;
+	top: -27px; */
+	right: 36px;
+	top: -33px;
+	height: 0px;
+	color: #fff;
+}
+.audio-player .decorate {
+	width: calc(100% - 58px);
+	height: 32px;
+	line-height: 32px;
+	overflow-x: hidden;
+	float: left;
+	position: relative;
+	left: 20px;
+	top: -31px;
+	color: #fff;
+	background: url(/data/wave.png) no-repeat 0 center;
+}
+
+.audioItem.add {
+	height: 30px;
+	line-height: 30px;
+	width: calc(100% - 26px);
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 20px;
+}
+.audioItem.add i.f7-icons{
+	height: 30px;
+	line-height: 30px;
+}
+
+.isAudio .readonly-layout .item-inner .item-after {
+	width: 100%;
 }

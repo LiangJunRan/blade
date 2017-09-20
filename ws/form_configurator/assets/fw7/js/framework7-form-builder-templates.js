@@ -161,6 +161,77 @@
 
 
 
+	core.audio = 
+		'<div class="item-content">' +
+			'<div class="item-inner">' +
+				'<div class="item-title label">{label}</div>' +
+				'<div class="item-input item-input-image">' +
+					'<input type="hidden" name="{name}">' +
+					'<div class="audioItems-container">' +
+					'</div>' +
+					'<div class="audioItems-description">{description}</div>'
+				'</div>' +
+			'</div>' +
+		'</div>';
+	sub.audio = {};
+	sub.audio.item =
+		/*'<div class="audioItem">' +
+			'<div class="delete">' +
+				'<i class="f7-icons">close</i>' +
+			'</div>' +
+			'<a class="openPhotoBrowser" href="javascript:void(0);">' +
+				'<div class="image-container">' +
+					'<img src="{url}" onerror="onerror=null; src=\'/assets/fw7/img/error.jpg\'"/>' +
+				'</div>' +
+			'</a>' +
+		'</div>';*/
+		'<div class="audio-player audioItem">' +
+			'<audio src="{url}" onerror="onerror=null; $(this)' +
+					'.next().css(\'border-color\', \'red\')' +
+					'.find(\'.decorate\').css(\'background\', \'transparent\').html(\'ERROR\');"></audio>' +
+			'<div class="progress-bar">' +
+				'<div class="played-part"></div>' +
+
+				'<div class="decorate"></div>' +
+			'</div>' +
+			'<i class="ppBtn f7-icons">play_round</i>' +
+			'<div class="time">00:00</div>' +
+			'<div class="delete">' +
+				'<i class="f7-icons">close</i>' +
+			'</div>' +
+		'</div>';
+	sub.audio.add =
+		'<button type="button" class="button audioItem add">' +
+			'<i class="f7-icons">mic</i>' +
+		'</button>';
+	sub.audio.waiting =
+		/*'<div class="audioItem waiting">' +
+			'<div class="delete">' +
+				'<i class="f7-icons">close</i>' +
+			'</div>' +
+			'<div class="preloader"></div>' +
+		'</div>';*/
+		'<div class="audio-player audioItem waiting">' +
+			'<div class="progress-bar">' +
+				'uploading ...' +
+			'</div>' +
+			'<div class="delete">' +
+				'<i class="f7-icons">close</i>' +
+			'</div>' +
+		'</div>';
+	opts.audio = {
+		"type": "audio",
+		"name": "demo_audio",
+		"label": "测试录音",
+		"description": "请点击上传",
+		"maxNumber": 1,
+		"minNumber": 1
+	};
+	rule.audio = {
+	};
+
+
+
 	core.multimedia = 
 		'<div class="item-content">' +
 			'<div class="item-inner">' +

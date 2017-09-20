@@ -106,7 +106,7 @@
 
 		// 可以加入到list-block中的对象
 		if (['text', 'select', 'multiselect', 'textarea', 'static',
-				'image'].indexOf($item.data('opts').type) != -1) {
+				'image', 'audio'].indexOf($item.data('opts').type) != -1) {
 			// 前节点不存在，或者存在，但不是list-block，新建list-block外壳
 			if (
 				// 上一个子节点不存在 或
@@ -120,11 +120,14 @@
 					'</div>');
 				$form.append($lastChildNode);
 			}
-			if (['text', 'select', 'multiselect', 'textarea', 'image'].indexOf($item.data('opts').type) != -1) {
+			if (['text', 'select', 'multiselect', 'textarea', 'image', 'audio'].indexOf($item.data('opts').type) != -1) {
 				var $ul = $lastChildNode.children('ul');
 				var $li = $('<li class="listNode"></li>');
 				if ($item.data('opts').type == 'image') {
 					$li.addClass('isImage');
+				}
+				if ($item.data('opts').type == 'audio') {
+					$li.addClass('isAudio');
 				}
 				$li.append($item);
 				$ul.append($li);	
@@ -157,7 +160,7 @@
 	}
 
 	// 更新指定的表单项的值
-	function _updateUrls(data) {
+	function _updateImgUrls(data) {
 		var $input = $('form#{formId} input[name={name}]'.format(data));
 		var $node = $input.closest('.item-content');
 		var urlList = [];
@@ -167,6 +170,21 @@
 		});
 		if (urlList.length > 0) {
 			$input.val('images:[' + urlList.join(',') + ']');
+		} else {
+			$input.val('');
+		}
+	}
+	// 更新指定的表单项的值
+	function _updateAudioUrls(data) {
+		var $input = $('form#{formId} input[name={name}]'.format(data));
+		var $node = $input.closest('.item-content');
+		var urlList = [];
+		var $audios = $node.find('audio');
+		$.each($audios, function(idx) {
+			urlList.push($audios[idx].getAttribute('src'));
+		});
+		if (urlList.length > 0) {
+			$input.val('audios:[' + urlList.join(',') + ']');
 		} else {
 			$input.val('');
 		}
@@ -290,7 +308,7 @@
 						$delBtn.closest('.thumbnail').remove();
 
 						// 更新urls表单数据
-						_updateUrls(imageData);
+						_updateImgUrls(imageData);
 
 						// 判断总thumbnail数量是否小于了max
 						if ($addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length < $node.data('opts').maxNumber) {
@@ -304,7 +322,7 @@
 					$waiting.remove();
 
 					// 更新urls表单数据
-					_updateUrls(imageData);
+					_updateImgUrls(imageData);
 
 					// 判断总thumbnail数量是否超过了max
 					if ($addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length >= $node.data('opts').maxNumber) {
@@ -327,7 +345,7 @@
 							};
 
 							// 更新urls表单数据
-							_updateUrls(imageData);
+							_updateImgUrls(imageData);
 
 							// 判断总thumbnail数量是否小于了max
 							if ($addBtn.closest('.thumbnails-container').find('.thumbnail:not(.add)').length < $node.data('opts').maxNumber) {
@@ -346,6 +364,236 @@
 				// 初始化赋值时会触发此方法
 				$node.find('input').on('change', function(e) {
 					$node.data('setValue')($(e.target).val());
+				});
+				break;
+
+			// 音频
+			case 'audio':
+				// 绑定播放器事件 TODO: 封装成插件
+				function audioPlayer_bindEvents($item) {
+					// 自制播放器-播放/暂停事件绑定
+					$item.find('.audio-player i.ppBtn').on('click', function(e) {
+						var $audio = $(e.target).closest('.audio-player').find('audio');
+						var $this = $(e.target);
+						if ($this.html() == 'play_round') {
+							$audio[0].play();
+							$this.html('pause_round');
+						} else {
+							$audio[0].pause();
+							$this.html('play_round');
+						}
+					});
+					// 自制播放器-播放进度条-开始拖拽
+					$item.find('.audio-player .progress-bar, .audio-player .decorate, .audio-player .time').on('touchstart', function(e) {
+						var $processBar = $(e.target).closest('.audio-player').find('.progress-bar');
+						var $playedPart = $processBar.find('.played-part');
+						var $audio = $(e.target).closest('.audio-player').find('audio');
+						var $time = $(e.target).closest('.audio-player').find('.time');
+						console.log($processBar);
+						// var leftX = $processBar.offset().left + $processBar.parent().offset().left + 16;
+						// var leftX = $item.data('leftX');
+						var leftX = e.touches[0].clientX;
+						var barWidth = $processBar.width() + 32;
+						// var per = 0;
+						var basePer = parseFloat($playedPart.css('width').replace('%', ''));
+						console.log('basePer', basePer);
+						// 去掉更新进度条的事件绑定
+						$audio.off('timeupdate');
+						$(document).on('touchmove', function(e) {
+							// per = (((e.touches[0].clientX - leftX) / barWidth) * 100).toFixed(2);
+							console.log(e.touches[0].clientX, leftX);
+							var per = basePer + parseFloat((((e.touches[0].clientX - leftX) / barWidth) * 100).toFixed(2));
+							console.log('per2', per);
+							if (per < 0) {
+								per = 0;
+							} else if (per > 100) {
+								per = 100;
+							}
+							// 更新已播放的进度条长度
+							$playedPart.css('width', per + '%');
+							// 更新剩余时间
+							var leftSeconds = parseInt($audio[0].duration * (1 - per / 100));
+							$time.html(__formatTime(leftSeconds));
+						});
+					});
+					// 自制播放器-播放进度条-释放
+					$item.find('.audio-player .progress-bar, .audio-player .decorate, .audio-player .time').on('touchend', function(e) {
+						console.log('touch-end');
+						$(document).off('touchmove');
+						var $processBar = $(e.target).closest('.audio-player').find('.progress-bar');
+						var $playedPart = $processBar.find('.played-part');
+						var $ppBtn = $(e.target).closest('.audio-player').find('.ppBtn');
+						var endPer = ($playedPart.width() / $processBar.width() * 100).toFixed(2);
+						// console.log('end at', endPer + '%');
+						// 跳转到指定位置播放
+						var $audio = $(e.target).closest('.audio-player').find('audio');
+						$audio[0].currentTime = $audio[0].duration * 0.01 * endPer;
+						// 绑定更新事件
+						$audio.on('timeupdate', __audioTimeUpdateCallback);
+						$audio[0].play();
+						$ppBtn.html('pause_round');
+					});
+					// 自制播放器-更新进度条和剩余时间
+					$item.find('.audio-player audio').on('timeupdate', __audioTimeUpdateCallback);
+					// 更新时间的回调
+					function __audioTimeUpdateCallback(e) {
+						var $this = $(e.target);
+						var scales = $this[0].currentTime / $this[0].duration;
+						var leftSeconds = parseInt($this[0].duration - $this[0].currentTime);
+						var persentNum = (scales * 100).toFixed(2);
+						var $bar = $this.parent().find('.played-part');
+						var $time = $this.parent().find('.time');
+						
+						// 更新已播放的进度条长度
+						$bar.css('width',  persentNum + '%');
+						// 更新剩余时间
+						$time.html(__formatTime(leftSeconds));
+					}
+					// 秒数转“分:秒”
+					function __formatTime(second) {
+						return [/*parseInt(second / 60 / 60), */parseInt(second / 60 % 60), parseInt(second % 60)].join(":")
+							.replace(/\b(\d)\b/g, "0$1");
+					}
+				}
+
+				if ($node.find('.audioItems-description').html().trim() == '') {
+					$node.find('.audioItems-description').hide();
+				}
+				var $audioUrls = $node.find('input');
+				var $container = $node.find('.audioItems-container');
+				var $addBtn = $(sub.audio.add);
+				$container.append($addBtn);
+				// 调用原生文件库方法
+				$addBtn.on('click', function(e) {
+					$btn = $(e.target).closest('button.add');
+					$btn.data('groupId', $btn.data('groupId') || 0);
+
+					// 根据当前已存在的缩略图，调整max和min
+					var nowCount = $btn.closest('.audioItems-container').find('.audioItem:not(.add)').length;
+					var max = opt.maxNumber - nowCount;
+					var min = (((opt.minNumber - nowCount) >= 0) ? (opt.minNumber - nowCount) : 0);
+
+					var data = {
+						type: 'audio',
+						formId: $btn.closest('form').attr('id'),
+						name: opt.name,
+						max: max,
+						min: min,
+						groupId: $btn.data('groupId')
+					};
+					$btn.data('groupId', $btn.data('groupId') + 1);
+					var urlParam = $$.param(data);
+					window.location = '/upload?' + urlParam;
+				});
+				// 预上传回调
+				$node.data('preUpload', function(data) {
+					var groupId = data.groupId;
+					var count = data.count;
+					for (var i = 0; i < count; i++) {
+						var $waiting = $(sub.audio.waiting);
+						// 绑定删除上传中的方法
+						$waiting.find('.delete').on('click', function(e){
+							$delBtn = $(e.target).closest('.delete');
+							$delBtn.closest('.audioItem').remove();
+							// 判断总audioItem数量是否小于了max
+							if ($addBtn.closest('.audioItems-container').find('.audioItem:not(.add)').length < $node.data('opts').maxNumber) {
+								$addBtn.closest('.audioItems-container').find('.audioItem.add').css('display', 'inline-block');
+							}
+						});
+						$waiting.addClass('groupId_' + groupId);
+						$waiting.addClass('index_' + i);
+						$waiting.insertBefore($addBtn);
+					}
+					// 判断总audioItem数量是否超过了max
+					if ($addBtn.closest('.audioItems-container').find('.audioItem:not(.add)').length >= $node.data('opts').maxNumber) {
+						$addBtn.closest('.audioItems-container').find('.audioItem.add').hide();
+					}
+				});
+				// 上传完毕回调
+				$node.data('uploaded', function(audioData) {
+					var $item = $(sub.audio.item.format(audioData));
+					// 绑定删除当前图片的方法
+					$item.find('.delete').on('click', function(e) {
+						$delBtn = $(e.target).closest('.delete');
+						$delBtn.closest('.audioItem').remove();
+
+						// 更新urls表单数据
+						_updateAudioUrls(audioData);
+
+						// 判断总audioItem数量是否小于了max
+						if ($addBtn.closest('.audioItems-container').find('.audioItem:not(.add)').length < $node.data('opts').maxNumber) {
+							$addBtn.closest('.audioItems-container').find('.audioItem.add').css('display', 'inline-block');
+						}
+					});
+					// 替换对应的等待对象
+					console.log('$addBtn.length', $addBtn.length);
+					console.log('$addBtn.closest(".audioItems-container").length', $addBtn.closest(".audioItems-container").length);
+					$waiting = $addBtn.closest('.audioItems-container').find(
+							'.audioItem.waiting.groupId_' + audioData.groupId + '.index_' + audioData.index);
+					console.log('$waiting.length', $waiting.length);
+					$item.insertBefore($waiting);
+					$waiting.remove();
+
+					// 更新urls表单数据
+					_updateAudioUrls(audioData);
+
+					// 判断总audioItem数量是否超过了max
+					if ($addBtn.closest('.audioItems-container').find('.audioItem:not(.add)').length >= $node.data('opts').maxNumber) {
+						$addBtn.closest('.audioItems-container').find('.audioItem.add').hide();
+					}
+
+					// 获取绝对偏移量的方法
+					// function getAllLeft($obj) {
+					// 	var sum = 0;
+					// 	var limit = 4;
+					// 	var count = 0;
+					// 	while(count++ < limit && $obj.parent().length != 0) {
+					// 		sum += $obj.offset().left;
+					// 		$obj = $obj.parent();
+					// 	}
+					// 	console.log(count + '/' + limit, 'sum=' + sum);
+					// 	return sum;
+					// }
+
+					
+					audioPlayer_bindEvents($item);
+				});
+				// 赋值并加载预览图的方法
+				$node.data('setValue', function(urls) {
+					var urlList = urls.match(/audios:\[(.*)\]/)[1].split(',');
+					$.each(urlList, function(idx) {
+						var $item = $(sub.audio.item.format({url: urlList[idx]}));
+						// 绑定删除当前图片的方法
+						$item.find('.delete').on('click', function(e) {
+							$delBtn = $(e.target).closest('.delete');
+							$delBtn.closest('.audioItem').remove();
+
+							var audioData = {
+								formId: $node.closest('form').attr('id'),
+								name: $node.data('opts').name
+							};
+
+							// 更新urls表单数据
+							_updateAudioUrls(audioData);
+
+							// 判断总audioItem数量是否小于了max
+							if ($addBtn.closest('.audioItems-container').find('.audioItem:not(.add)').length < $node.data('opts').maxNumber) {
+								$addBtn.closest('.audioItems-container').find('.audioItem.add').css('display', 'inline-block');
+							}
+						});
+						// 放置
+						$item.insertBefore($addBtn);
+					});
+						
+					// 判断总audioItem数量是否超过了max
+					if ($addBtn.closest('.audioItems-container').find('.audioItem:not(.add)').length >= $node.data('opts').maxNumber) {
+						$addBtn.closest('.audioItems-container').find('.audioItem.add').hide();
+					}
+				});
+				// 初始化赋值时会触发此方法
+				$node.find('input').on('change', function(e) {
+					$node.data('setValue')($(e.target).val());
+					audioPlayer_bindEvents($(e.target).closest('.item-content'));
 				});
 				break;
 
@@ -584,6 +832,11 @@
 					label: $node.find('.item-title.label').html() || '',
 					value: $node.find('.thumbnails-container')[0].outerHTML
 				}
+			} else if ($node.is('.isAudio')) {
+				contentJson = {
+					label: $node.find('.item-title.label').html() || '',
+					value: $node.find('.audioItems-container')[0].outerHTML
+				}
 			} else {
 				contentJson = {
 					label: $node.find('.item-title.label').html() || '',
@@ -619,8 +872,17 @@
 					$node.hide();
 				}
 			}
+			if ($node.is('.isAudio')) {
+				$renderNode.find('.audioItem .delete, .audioItem.add').remove();
+				// 没有图片则不显示
+				if ($renderNode.find('.audioItems-container').html().trim().length == 0) {
+					$node.hide();
+				}
+			}
 
-			$node.html($renderNode[0].outerHTML);
+			if (!$node.is('.isAudio')) {
+				$node.html($renderNode[0].outerHTML);
+			}
 			$node.children().data('opts', opts);
 			if ($node.hasClass('disabled')) {
 				$node.remove();
