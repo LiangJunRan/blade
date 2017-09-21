@@ -390,20 +390,18 @@
 						var $audio = $(e.target).closest('.audio-player').find('audio');
 						var $time = $(e.target).closest('.audio-player').find('.time');
 						console.log($processBar);
-						// var leftX = $processBar.offset().left + $processBar.parent().offset().left + 16;
-						// var leftX = $item.data('leftX');
 						var leftX = e.touches[0].clientX;
-						var barWidth = $processBar.width() + 32;
-						// var per = 0;
-						var basePer = parseFloat($playedPart.css('width').replace('%', ''));
-						console.log('basePer', basePer);
+						var barWidth = $processBar.width();
+
+						console.log("$playedPart.css('width')", $playedPart.css('width'));
+						var basePer = parseFloat(((parseFloat($playedPart.css('width').replace('px', '')) / barWidth) * 100).toFixed(2));
+						console.log('---- basePer', basePer);
 						// 去掉更新进度条的事件绑定
 						$audio.off('timeupdate');
 						$(document).on('touchmove', function(e) {
-							// per = (((e.touches[0].clientX - leftX) / barWidth) * 100).toFixed(2);
-							console.log(e.touches[0].clientX, leftX);
+							console.log('  --', parseFloat((((e.touches[0].clientX - leftX) / barWidth) * 100).toFixed(2)));
 							var per = basePer + parseFloat((((e.touches[0].clientX - leftX) / barWidth) * 100).toFixed(2));
-							console.log('per2', per);
+							console.log('    >> per2', per);
 							if (per < 0) {
 								per = 0;
 							} else if (per > 100) {

@@ -165,8 +165,8 @@
 
             "rec2": "audios:[http://192.168.10.123:9999/data/556_Butterfly%20Kiss.mp3]"
         },
-        "isSteam": false,
-        "isRead": false
+        "isSteam": true,
+        "isRead": true
     },
     "testForm":{
         "items": [

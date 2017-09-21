@@ -17,7 +17,7 @@ if (project == 'bpmApp') {
 	// blade用
 	url_studentList = "data/studentList.json";
 	url_getformvaluebyid = "data/getformvaluebyid.json";
-	url_getbyid = "data/getbyid.json";
+	url_getbyid = "data/getbyid_2.json";
 	url_saveformData = "data/saveformData.json";
 }
 
@@ -643,8 +643,8 @@ $$('body').on('click', '.openPhotoBrowser', function(e) {
 // TODEL
 /*setTimeout(function() {
 	preUploadCallback({formId: 'student_1', name: 'rec', groupId:  0, count: 1});
-}, 3000);
+}, 4000);
 
 setTimeout(function() {
 	uploadedCallback({formId: 'student_1', name: 'rec', groupId:  0, index: 0, url: "http://192.168.10.123:9999/data/556_Butterfly%20Kiss.mp3"});
-}, 5000);*/
+}, 7000);*/
