@@ -74,11 +74,12 @@
 	$.formb.baseComponent = baseComponent;
 
 
-	(function($) {
+	/*(function($) {
 
-		var Animal = function() {
+		var Animal = function(data) {
 			this.__self__ = this;
 			this.type = "animal";
+			this.data = data;
 			this.showSelf = function() {
 				for (var x in this.__self__) {
 					console.log('  ', x, ':', this.__self__[x]);
@@ -86,20 +87,22 @@
 			}
 		}
 
-		var Dog = function() {
+		var Dog = function(data, name) {
+			Animal.apply(this, arguments);
 			this.subType = "dog";
+			this.name = name;
 			this.bark = function() {
-				console.log('汪汪汪');
+				console.log('汪汪汪 我是' + this.name);
+				console.log('汪汪汪 我是' + this.subType + '属于' + this.type);
+				console.log('data=', data);
 				this.showSelf();
 			}
 		}
 
-		Dog.prototype = new Animal();
-		Dog.prototype.constructor = Dog;
-
-		var xiaobai = new Dog();
+		var xiaobai = new Dog('一个神奇的值', '小白');
 
 		xiaobai.bark();
-	})(window.jQuery);
+
+	})(window.jQuery);*/
 
 }));

@@ -20,9 +20,9 @@
 	<script src="vendors/jquery-validation/localization/messages_zh_fieldname.js"></script>
 
 	<!-- 日期选择控件 -->
-    <link href="vendors/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
-    <script src="vendors/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="vendors/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+	<link href="vendors/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+	<script src="vendors/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="vendors/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 
 	<!-- 特殊radio和checkbox样式 -->
 	<link rel="stylesheet" href="vendors/styles-radio-checkbox.css">
@@ -31,15 +31,38 @@
 	<link href="vendors/bootstrap-multiselect/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css"/>
 	<script src="vendors/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
 
+	<!-- ==================== 以下为自己的东西 ==================== -->
+	<style>
+		* {
+			font-family: '微软雅黑'!important;
+		}
+	</style>
+
 	<!-- fb 组件 -->
 	<script src="assets/fb-bs/src/js/fb.baseComponents.js"></script>
-	<script src="assets/fb-bs/src/js/components/fb.baseComponents.js"></script>
+	<script src="assets/fb-bs/src/js/components/input.js"></script>
 
 	<!-- fb 核心文件 -->
 	<script src="assets/fb-bs/src/js/fb.core.js"></script>
 
 </head>
 <body>
-	
+	<h1>测试自动表单2.0 - Bootstrap</h1>
+	<hr>
+	<form id="testForm"></form>
+	<script>
+		$(document).ready(function() {
+			$.ajax({
+				url: '/data/jsonConf.json',
+				dataType: 'JSON',
+				success: function(jsonConf) {
+					$('#testForm').renderForm(jsonConf);
+				},
+				error: function(r) {
+					$('#testForm').html('Ops... Something must be wrong, check it');
+				}
+			});
+		});
+	</script>
 </body>
 </html>

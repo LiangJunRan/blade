@@ -1117,7 +1117,7 @@
 				if (o[this.name] == null || !o[this.name].push) {
 					o[this.name] = [o[this.name]];
 				}
-				o[this.name].push(this.value || null);
+				o[this.name].push(this.value || '');
 			} else {
 				if (this.value === "false") {
 					o[this.name] = false;

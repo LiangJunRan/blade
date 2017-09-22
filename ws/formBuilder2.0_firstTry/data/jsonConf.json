@@ -1,0 +1,27 @@
+{
+    "items": [
+        {
+            "name": "t1",
+            "label": "文本框",
+            "outerWidth": 12,
+            "labelWidth": 3,
+            "contentWidth": 9,
+            "widthInSteam": "auto",
+            "type": "text",
+            "placeholder": "请输入文本",
+            "description": "请输入英文、数字、下划线"
+        }
+    ],
+    "rules": {
+        "t1": {
+            "required": false,
+            "maxlength": 10,
+            "minlength": 5
+        }
+    },
+    "events": [],
+    "values": {
+    },
+    "isSteam": false,
+    "isRead": false
+}
