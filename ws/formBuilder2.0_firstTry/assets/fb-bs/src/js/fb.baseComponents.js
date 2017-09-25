@@ -12,39 +12,66 @@
 	$.formb = $.formb || {};
 
 	// 基本组件类
-	var baseComponent = function(_opts) {
+	var baseComponent = function(kargs) {
 		// params
 		this.$node = undefined;
-		this.$form = undefined;
-		this.defaultOpts = {};
+		this.$container = undefined;	// 容器对象，是否用到还不清楚……
+		this.defaultOpts = {
+			'opts': {},
+			'rule': {}
+		};
 		this.template = '<div>THIS IS BASE-COMPONENT TEMPLATE</div>';
 		this.opts = undefined;
+		this.rule = undefined;
+
+
 
 		// 初始化(实例化默认调用)
-		this.beforeInit = function(self, _opts) {
+		this.__beforeInit = function(kargs) {
 			// do nothing, not necessary
+			console.log('before init');
 		}
-		this.beforeInit(this);
-		this.__init = function(_opts) {
-			this.opts = $.extend({}, this.defaultOpts, _opts);
+		this.__init = function(kargs) {
+			// 合并配置参数
+			this.opts = $.extend({}, this.defaultOpts, 
+					kargs.opts, {readonly: kargs.global_isRead}, {steamLayout: kargs.global_isSteam});
+			// 合并规则
+			this.rule = $.extend({}, kargs.rule);
 		}
-		this.__init(_opts);
-		this.afterInit = function(self) {
+		this.__afterInit = function() {
 			// do nothing, not necessary
+			console.log('after init');
 		}
-		this.beforeInit(this);
+		this.init = function(kargs) {
+			this.__beforeInit(kargs);
+			this.__init(kargs);
+			this.__afterInit(kargs);
+		}
+		// 自动实例化
+		this.init(kargs);
+
+
 
 		// 渲染元素的方法
-		this.beforeRender = function() {
+		this.__beforeRender = function() {
 			// do nothing, not necessary
+			console.log('before render');
+		}
+		this.__render = function() {
+			// TODO
+			console.error('Must be rewritten.');
+		}
+		this.__afterRender = function() {
+			// do nothing, not necessary
+			console.log('after render');
 		}
 		this.render = function() {
-			// TODO
-			console.error('Must be rewritten.')
+			this.__beforeRender();
+			this.__render();
+			this.__afterRender();
 		}
-		this.afterRender = function() {
-			// do nothing, not necessary
-		}
+
+
 
 		// 配置校验规则
 		this.beforeSetRule = function() {
@@ -57,6 +84,8 @@
 		this.afterSetRule = function() {
 			// do nothing, not necessary
 		}
+
+		
 
 		// 赋值的实现
 		this.beforeSetValue = function() {
