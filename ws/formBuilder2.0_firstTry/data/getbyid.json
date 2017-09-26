@@ -1,0 +1,46 @@
+{
+	"items": [
+		{
+	        "name": "ta1",
+	        "label": "多行文本",
+	        "outerWidth": 12,
+	        "labelWidth": 3,
+	        "contentWidth": 9,
+	        "widthInSteam": "auto",
+	        "type": "textarea",
+	        "rows": 3,
+	        "resize": "none",
+	        "placeholder": "请输入文本",
+	        "description": "请输入英文、数字、下划线"
+	    }, {
+	        "name": "ta2",
+	        "label": "多行2222",
+	        "outerWidth": 12,
+	        "labelWidth": 3,
+	        "contentWidth": 9,
+	        "widthInSteam": "auto",
+	        "type": "textarea",
+	        "rows": 3,
+	        "resize": "none",
+	        "placeholder": "请输入文本",
+	        "description": "请输入英文、数字、下划线"
+	    }
+	],
+	"rules": {
+		"ta1": {
+			"required": false,
+			"maxlength": 200,
+			"minlength": 0
+		}, 
+		"ta2": {
+			"required": false,
+			"maxlength": 200,
+			"minlength": 0
+		}
+	},
+	"events": [],
+	"values": {
+	},
+	"isSteam": false,
+	"isRead": false
+}

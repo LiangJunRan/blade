@@ -1,0 +1,303 @@
+/* 特殊样式优化 */
+.list-block .item-after {
+	max-width: 65%;
+	white-space: normal;
+	max-height: none;
+	position: relative;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-wrap: break-word;
+	display: inline;
+}
+.readonly-layout.steam-layout .item-after {
+	width: 100%;
+	max-width: 100%;
+	text-indent: 2em;
+}
+/* 解决android端页面内容被toolbar盖住的bug */
+.android .navbar-through .page-content {
+	padding-bottom: 48px;
+}
+/* 每行label多行显示 */
+.list-block .item-title {
+	word-wrap: break-word;
+	display: inline;
+	white-space: normal;
+	max-height: none;
+	position: relative;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+/* 流式只读模式样式修正 */
+.list-block .item-divider {
+	word-wrap: break-word;
+	white-space: normal;
+	max-height: none;
+	position: relative;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.list-block .fullRow .item-after {
+	width: 100%;
+	max-width: 100%;
+	text-indent: 2em;
+}
+.list-block .smart-select .item-title+.item-after {
+	width: 100%;
+	padding-left: 12px;
+}
+.list-block input[type=text],
+.list-block textarea {
+	color: #8e8e93;
+}
+.item-inner>.item-after {
+	width: initial;
+}
+.item-inner>.item-input>input[type=text],
+.item-inner>.item-input>textarea {
+	text-align: right;
+	padding-right: 20px;
+}
+.item-inner>.item-title+.item-input>input[type=text],
+.item-inner>.item-title+.item-input>textarea {
+	text-align: left;
+	padding-right: initial;
+}
+.border-none {
+	border: none;
+}
+
+/* 主题样式 */
+.navbar, .subnavbar, .toolbar, .photo-browser .navbar, .photo-browser .toolbar {
+	background-color: #40BC87;
+	color: #fff;
+}
+.ios .smart-select-picker .toolbar a {
+	color: #007aff;
+}
+.navbar a, .toolbar a, .photo-browser .navbar a {
+	color: #fff;
+	border-color: #fff;
+}
+.panel {
+	background-color: #fff;
+}
+.statusbar-overlay {
+	background: #40BC87;
+	z-index: initial;
+}
+
+
+/* 去掉左侧菜单栏顶部带颜色的条 */
+html.ios.with-statusbar-overlay .framework7-root .panel {
+	padding-top: 0px;
+}
+/* 优化左侧菜单滑动效果 - 隐藏静止状态(左侧出界260，滑动时由此开始) */
+.ios .framework7-root .panel.panel-left.panel-reveal {
+	margin-left: -260px;
+}
+/* 优化左侧菜单滑动效果 - 由左滑出(位移状态 0 -> 260) & 保持滑出状态(保持位移状态260，保持因为.active一直在) */
+.ios .framework7-root.with-panel-left-reveal .panel.panel-left.panel-reveal.active {
+	transform: translate3d(260px, 0, 0);
+	transition-duration: 0.4s;
+	transition-property: transform;
+}
+/* 优化左侧菜单滑动效果 - 回收过程(位移状态 260 -> 0) */
+.ios .framework7-root.panel-closing .panel.panel-left.panel-reveal {
+	transform: translate3d(0px, 0, 0);
+	transition-duration: 0.4s;
+	transition-property: transform;
+}
+
+/* 图片上传 */
+.item-input-image {
+	padding: 10px 0px;
+}
+.thumbnails-description, .audioItems-description {
+	color: #999;
+	font-size: 14px;
+}
+.thumbnail {
+	width: 50px;
+	height: 50px;
+	min-width: 50px;
+	line-height: 48px;
+	text-align: center;
+	vertical-align: middle;
+	display: inline-block;
+	margin-top: 5px;
+	margin-right: 10px;
+	margin-bottom: 5px;
+	box-sizing: border-box;
+	border-radius: 0;
+}
+.thumbnail.add {
+	border: dashed 2px #bbb;
+}
+.thumbnail.add i.f7-icons {
+	color: #bbb;
+	line-height: 48px;
+	font-size: 26px;
+}
+.thumbnail.waiting {
+	border: solid 2px #bbb;
+	background-color: #bbb;
+}
+.thumbnail.waiting .preloader{
+	margin: 13px;
+	display: block;
+}
+.thumbnail .delete {
+	position: relative;
+	float: right;
+	z-index: 2;
+	height: 16px;
+	width: 16px;
+	line-height: 16px;
+	right: -9px;
+	top: -9px;
+	border: solid 2px #fff;
+	border-radius: 12px;
+	text-align: center;
+	font-size: 14px;
+	color: #fff;
+	background-color: #f00;
+}
+.thumbnail .delete i {
+	font-size: 14px;
+	width: 17px;
+}
+.thumbnail .image-container {
+	display: block;
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	vertical-align: middle;
+	overflow: hidden;
+	position: absolute;
+	background-color: #000;
+}
+.thumbnail .image-container img {
+	width: 100%;
+	line-height: 50px;
+	vertical-align: middle;
+	display: inline-block;
+}
+
+
+
+
+
+/* 音乐播放器 */
+.audio-player {
+	height: 32px;
+	margin-bottom: 5px;
+}
+.audio-player .progress-bar {
+	display: inline-block;
+	width: calc(100% - 60px);
+	height: 0px;
+	border: solid 16px #ccc;
+	border-radius: 40px;
+}
+.audio-player.waiting .progress-bar {
+    line-height: 0px;
+}
+.audio-player.waiting .delete {
+	position: initial;
+	top: initial;
+}
+.audio-player .delete {
+	display: inline-block;
+	position: relative;
+	/*float: right;*/
+	z-index: 2;
+	height: 16px;
+	width: 16px;
+	line-height: 16px;
+	/*right: -9px;*/
+	top: -11px;
+	border: solid 4px #fff;
+	border-radius: 12px;
+	text-align: center;
+	font-size: 14px;
+	color: #fff;
+	background-color: #f00;
+}
+.audio-player .delete i {
+	font-size: 14px;
+	width: 17px;
+}
+.audio-player .played-part {
+	display: block;
+	height: 0px;
+	width: 0px;
+	border: solid 16px #40BC87;
+	border-radius: 40px;
+	margin-left: -16px;
+	margin-top: -16px;
+}
+.audio-player .bar-control {
+	display: inline-block;
+	height: 0px;
+	width: 0px;
+	border: solid 16px #40BC87;
+	/*border-color: rgba(255, 255, 255, 0.5);*/
+	border-radius: 40px;
+	margin-right: -16px;
+	margin-top: -16px;
+	position: relative;
+	float: right;
+}
+.audio-player .ppBtn.f7-icons {
+	width: 0px;
+	height: 0px;
+	float: left;
+	position: relative;
+	left: 5px;
+	/*top: -27px;*/
+	top: 5px;
+	font-size: 22px;
+	background: transparent;
+	border: none;
+	color: #fff;
+}
+.audio-player .time {
+	float: right;
+	position: relative;
+	/* right: 10px;
+	top: -27px; */
+	right: 36px;
+	top: -33px;
+	height: 0px;
+	color: #fff;
+}
+.audio-player .decorate {
+	width: calc(100% - 58px);
+	height: 32px;
+	line-height: 32px;
+	overflow-x: hidden;
+	float: left;
+	position: relative;
+	left: 20px;
+	top: -31px;
+	color: #fff;
+	background: url(/data/wave.png) no-repeat 0 center;
+}
+
+.audioItem.add {
+	height: 30px;
+	line-height: 30px;
+	width: calc(100% - 26px);
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 20px;
+}
+.audioItem.add i.f7-icons{
+	height: 30px;
+	line-height: 30px;
+}
+
+.isAudio .readonly-layout .item-inner .item-after {
+	width: 100%;
+}
