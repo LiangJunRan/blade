@@ -21,6 +21,7 @@
 		this.template = '<div>THIS IS BASE-COMPONENT TEMPLATE</div>';
 		this.opts = undefined;
 		this.rule = undefined;
+		this.value = undefined;
 
 
 
@@ -35,10 +36,15 @@
 					kargs.opts, {readonly: kargs.global_isRead}, {steamLayout: kargs.global_isSteam});
 			// 合并规则
 			this.rule = $.extend({}, kargs.rule);
+			// 赋初值
+			this.value = kargs.value || undefined;
 		}
 		this.__afterInit = function() {
 			// do nothing, not necessary
 			console.log('after init');
+			console.log('opts', this.opts);
+			console.log('rule', this.rule);
+			console.log('value', this.value);
 		}
 		this.init = function(kargs) {
 			this.__beforeInit(kargs);
@@ -86,20 +92,34 @@
 		
 
 		// 赋值的实现
-		this.beforeSetValue = function() {
+		this.__beforeSetValue = function() {
 			// do nothing, not necessary
 		}
-		this.setValue = function() {
+		this.__setValue = function(value) {
 			// TODO
-			console.error('Must be rewritten.')
+			console.error('Must be rewritten.');
 		}
-		this.afterSetValue = function() {
+		this.__afterSetValue = function() {
 			// do nothing, not necessary
+		}
+		this.setValue = function(value) {
+			this.__beforeSetValue();
+			this.__setValue(value);
+			this.value = value;
+			this.__afterSetValue();
+			if (this.value === undefined ||
+				this.value === null ||
+				this.value === '' ||
+				this.value.length == 0) {
+				this.$node.closest('li.swipeout').css('height', '0px');
+			} else {
+				this.$node.closest('li.swipeout').css('height', 'initial');
+			}
 		}
 
 		// 编辑当前对象的回调
 		this.editCallback = function(e) {
-			console.log('now activing EDIT ->', that.opts.name);
+			console.log('Need be rewritten.');
 		}
 	}
 
@@ -124,9 +144,9 @@
 			this.subType = "dog";
 			this.name = name;
 			this.bark = function() {
-				console.log('汪汪汪 我是' + this.name);
-				console.log('汪汪汪 我是' + this.subType + '属于' + this.type);
-				console.log('data=', data);
+				// console.log('汪汪汪 我是' + this.name);
+				// console.log('汪汪汪 我是' + this.subType + '属于' + this.type);
+				// console.log('data=', data);
 				this.showSelf();
 			}
 		}

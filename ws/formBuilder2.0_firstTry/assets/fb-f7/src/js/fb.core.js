@@ -26,7 +26,7 @@
 		// activeEventBinds($form, jsonConf.events);
 
 		// 赋初值
-		// setFormValue($form, jsonConf.values);
+		setFormValue($form, jsonConf.values);
 	}
 
 
@@ -45,15 +45,20 @@
 				'</a>' +
 			'</li>';
 	var contentTemplate =
-			'<li>' +
-				'<div class="item-content">' +
+			'<li class="swipeout">' +
+				'<div class="swipeout-content item-content">' +
 					'<div class="item-inner">' +
 						'<div class="item-after"></div>' +
 					'</div>' +
 				'</div>' +
+				'<div class="swipeout-actions-right">' +
+					// '<a href="#" class="edit-text bg-lightblue">Edit</a>' +
+					'<a href="#" class="swipeout-clean bg-red">删除</a>' +
+					// '<a href="#" class="swipeout-delete">删除</a>' +
+				'</div>' +
 			'</li>';
 	var formGroupTemplate =
-			'<div class="list-block">' +
+			'<div class="list-block formGroupItem">' +
 				'<ul>' +
 				'</ul>' +
 			'</div>';
@@ -69,9 +74,30 @@
 		// 渲染label
 		var $label = $(labelTemplate.format(opts));
 		$label.find('.addon-edit').on('click', component.editCallback);
+
 		// 渲染content
 		var $content = $(contentTemplate.format(opts));
 		$content.find('.item-after').append(component.$node);
+		// 清空当前对象的按钮
+		$content.find('.swipeout-clean').on('click', function(e) {
+			var el = $(e.target).closest('.swipeout');
+			// 模仿swipe删除操作
+			if (el.length === 0)
+				return;
+            if (el.length > 1)
+            	el = $(el[0]);
+            el.css({height: el.outerHeight() + 'px'});
+            var clientLeft = el[0].clientLeft;
+			el.css({height: 0 + 'px'}).addClass('deleting transitioning').transitionEnd(function () {
+            	// 删除完毕操作
+                el.removeClass('deleting transitioning swipeout-opened');
+                el.find('.swipeout-content').css('transform', 'initial');
+                el.find('.swipeout-actions-opened').removeClass('swipeout-actions-opened').children().css('transform', 'initial');
+            	
+            });
+			// 清空数据
+			$(e.target).closest('.formGroupItem').data('component').setValue('');
+		});
 
 		$formGroupItem.find('ul').append($label);
 		$formGroupItem.find('ul').append($content);
@@ -88,6 +114,7 @@
 	function renderJson($form, jsonConf) {
 		var json_opts = jsonConf['items'];
 		var json_rules = jsonConf['rules'];
+		var json_values = jsonConf['values'];
 		var global_isRead = jsonConf['isRead'];
 		var global_isSteam = jsonConf['isSteam'];
 
@@ -97,9 +124,11 @@
 			if (componentClass === undefined) {
 				console.error('组件[{type}]未找到对应的class定义'.format({type: json_opts[_idx].type}));
 			} else {
+				var name = json_opts[_idx].name;
 				var component = new componentClass({
 					'opts': json_opts[_idx],
-					'rule': json_rules[_idx],
+					'rule': json_rules[name],
+					'value': json_values[name],
 					'global_isRead': global_isRead,
 					'global_isSteam': global_isSteam
 				});
@@ -110,6 +139,13 @@
 			}
 			
 		});
+	}
+
+
+	// 给表单赋值的方法
+	function setFormValue($form, values) {
+		var formId = $form.attr('id');
+		myApp.formFromData('#' + formId, values || {});
 	}
 
 

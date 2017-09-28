@@ -311,3 +311,28 @@
 	top: -31px;
 	background: url(/data/wave.png) no-repeat 0 center;
 }
+
+
+/* .anime_alert {
+	height: calc(100%);
+	animation: anime_alert_border 1s infinite ease-in-out;
+	animation-fill-mode: both;
+}
+@keyframes anime_alert_border{
+	50% {
+		background: rgba(255, 255, 0, 0.3);
+	}
+} */
+
+.hide-item {
+	animation: hide_item 1s 1 ease-in-out;
+	animation-fill-mode: both;
+}
+@keyframes hide_li {
+	0% {
+		height: inherit;
+	}
+	100% {
+		height: 0px;
+	}
+}
