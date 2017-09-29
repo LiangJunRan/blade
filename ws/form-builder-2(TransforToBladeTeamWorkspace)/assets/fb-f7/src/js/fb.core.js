@@ -66,17 +66,47 @@
 	function appendTo(component, $container) {
 		
 		// TODO: 考虑下group的事儿
+		var $lastChildNode = $container.find('.list-block.formGroupItem:last-child');
+		console.log('----   ', ($lastChildNode.length > 0) ? $lastChildNode[0].outerHTML : ('xxx'));
+		var $formGroupItem = undefined;
+		console.log('-------', component.opts.name, (
+			// 上一个子节点不存在 或
+			($lastChildNode.length == 0) || 
+			// 上一个子节点不是list-block 或
+			(!$lastChildNode.is('.list-block.formGroupItem')) ||
+			// 上一个子节点的groupId与当前component的groupId不同
+			($lastChildNode.attr('groupid') != component.groupId) ||
+			// 上一个子节点的groupId是split(=$p1it)
+			($lastChildNode.attr('groupid') === '$p1it')
+		), '>', ($lastChildNode.length == 0), (!$lastChildNode.is('.list-block.formGroupItem')), ($lastChildNode.attr('groupid') != component.groupId), ($lastChildNode.attr('groupid') === '$p1it'));
+		if (
+			// 上一个子节点不存在 或
+			($lastChildNode.length == 0) || 
+			// 上一个子节点不是list-block 或
+			(!$lastChildNode.is('.list-block.formGroupItem')) ||
+			// 上一个子节点的groupId与当前component的groupId不同
+			($lastChildNode.attr('groupid') != component.groupId) ||
+			// 上一个子节点的groupId是split(=$p1it)
+			($lastChildNode.attr('groupid') === '$p1it')
+		) {
+			$formGroupItem = $(formGroupTemplate);
+			$formGroupItem.attr('groupid', component.groupId);
+			$container.append($formGroupItem);
+		} else {
+			$formGroupItem = $lastChildNode;
+		}
 
-		var $formGroupItem = $(formGroupTemplate);
-
+		// 渲染formGroupItem >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 		var opts = component.opts;
 
-		// 渲染label
+		// 渲染label >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 		var $label = $(labelTemplate.format(opts));
 		$label.find('.addon-edit').on('click', component.editCallback);
 
-		// 渲染content
+		// 渲染content >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 		var $content = $(contentTemplate.format(opts));
+		// 给当前content暴露component对象，方便以后操作
+		$content.data('component', component);
 		$content.find('.item-after').append(component.$node);
 		// 清空当前对象的按钮
 		$content.find('.swipeout-clean').on('click', function(e) {
@@ -96,27 +126,24 @@
             	
             });
 			// 清空数据
-			$(e.target).closest('.formGroupItem').data('component').setValue('');
+			el.data('component').setValue('');
 		});
 
 		$formGroupItem.find('ul').append($label);
 		$formGroupItem.find('ul').append($content);
-
-		// 给当前groupItem暴露component对象，方便以后操作
-		$formGroupItem.data('component', component);
-
-		$container.append($formGroupItem);
 	}
 
 
 
 	// 根据json渲染form的内容
 	function renderJson($form, jsonConf) {
-		var json_opts = jsonConf['items'];
-		var json_rules = jsonConf['rules'];
-		var json_values = jsonConf['values'];
-		var global_isRead = jsonConf['isRead'];
-		var global_isSteam = jsonConf['isSteam'];
+		var json_opts = jsonConf['items'] || [];
+		var json_rules = jsonConf['rules'] || {};
+		var json_values = jsonConf['values'] || {};
+		var global_isRead = jsonConf['isRead'] || false;
+		var global_isSteam = jsonConf['isSteam'] || false;
+		var global_groupDefaultSplit = jsonConf['groupDefaultSplit'] || false;
+		var global_groupId = jsonConf['globalGroupIdMap'] || {};
 
 		$.each(json_opts || [], function(_idx){
 			// 渲染出组件，只是组件自己，没有label之类的
@@ -125,17 +152,30 @@
 				console.error('组件[{type}]未找到对应的class定义'.format({type: json_opts[_idx].type}));
 			} else {
 				var name = json_opts[_idx].name;
-				var component = new componentClass({
+				var initData = {
 					'opts': json_opts[_idx],
 					'rule': json_rules[name],
 					'value': json_values[name],
 					'global_isRead': global_isRead,
 					'global_isSteam': global_isSteam
-				});
+				};
+				if (global_groupDefaultSplit == false) {
+					initData['groupId'] = global_groupId[name] || json_opts[_idx].groupId || 'default'
+				} else {
+					initData['groupId'] = global_groupId[name] || json_opts[_idx].groupId || '$p1it'
+				}
+				console.log('>>> ', initData['opts']['name'], initData['groupId']);
+
+				var component = new componentClass(initData);
 				component.render();
 
 				// 加入新对象
-				appendTo(component, $form);
+				if (component.appendTo !== undefined) {
+					// 只有类似multiMedia具有容器性质的组件才有appendTo方法
+					component.appendTo($form);
+				} else {
+					appendTo(component, $form);
+				}
 			}
 			
 		});

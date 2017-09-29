@@ -13,7 +13,7 @@
 		var that = this;
 		// params
 		this.$node = undefined;
-		this.$container = undefined;	// 容器对象，是否用到还不清楚……
+		this.$container = undefined;	// 容器对象，是否用到还不清楚……联动时使用？？
 		this.defaultOpts = {
 			'opts': {},
 			'rule': {}
@@ -22,7 +22,7 @@
 		this.opts = undefined;
 		this.rule = undefined;
 		this.value = undefined;
-
+		this.groupId = undefined;
 
 
 		// 初始化(实例化默认调用)
@@ -32,12 +32,14 @@
 		}
 		this.__init = function(kargs) {
 			// 合并配置参数
-			this.opts = $.extend({}, this.defaultOpts, 
-					kargs.opts, {readonly: kargs.global_isRead}, {steamLayout: kargs.global_isSteam});
+			this.opts = $.extend({}, this.defaultOpts, kargs.opts,
+				{readonly: kargs.global_isRead}, {steamLayout: kargs.global_isSteam});
 			// 合并规则
 			this.rule = $.extend({}, kargs.rule);
 			// 赋初值
 			this.value = kargs.value || undefined;
+			// 取groupId
+			this.groupId = kargs.groupId || 'default';
 		}
 		this.__afterInit = function() {
 			// do nothing, not necessary

@@ -1,0 +1,118 @@
+{
+	"items": [
+		{
+			"name": "ta1",
+			"label": "多行文本",
+			"outerWidth": 12,
+			"labelWidth": 3,
+			"contentWidth": 9,
+			"widthInSteam": "auto",
+			"type": "textarea",
+			"rows": 3,
+			"resize": "none",
+			"placeholder": "请输入文本",
+			"description": "请输入英文、数字、下划线"
+		}, {
+			"name": "ta2",
+			"label": "多行2222",
+			"outerWidth": 12,
+			"labelWidth": 3,
+			"contentWidth": 9,
+			"widthInSteam": "auto",
+			"type": "textarea",
+			"rows": 3,
+			"resize": "none",
+			"placeholder": "请输入文本",
+			"description": "请输入英文、数字、下划线"
+		}, {
+			"name": "ta5",
+			"label": "多行555",
+			"outerWidth": 12,
+			"labelWidth": 3,
+			"contentWidth": 9,
+			"widthInSteam": "auto",
+			"type": "textarea",
+			"rows": 3,
+			"resize": "none",
+			"placeholder": "请输入文本",
+			"description": "请输入英文、数字、下划线"
+		}, {
+			"name": "ta6",
+			"label": "多行666",
+			"outerWidth": 12,
+			"labelWidth": 3,
+			"contentWidth": 9,
+			"widthInSteam": "auto",
+			"type": "textarea",
+			"rows": 3,
+			"resize": "none",
+			"placeholder": "请输入文本",
+			"description": "请输入英文、数字、下划线"
+		}, {
+			"name": "mm",
+			"label": "多媒体容器",
+			"type": "multimedia",
+
+			"outerWidth": 12,
+			"labelWidth": 3,
+			"contentWidth": 9,
+			"widthInSteam": "auto",
+
+			"items": [
+				{
+					"name": "ta3",
+					"label": "媒体-文本框3",
+					"outerWidth": 12,
+					"labelWidth": 3,
+					"contentWidth": 9,
+					"widthInSteam": "auto",
+					"type": "textarea",
+					"rows": 3,
+					"resize": "none",
+					"placeholder": "请输入文本",
+					"description": "请输入英文、数字、下划线"
+				}, {
+					"name": "ta4",
+					"label": "媒体-文本框4",
+					"outerWidth": 12,
+					"labelWidth": 3,
+					"contentWidth": 9,
+					"widthInSteam": "auto",
+					"type": "textarea",
+					"rows": 3,
+					"resize": "none",
+					"placeholder": "请输入文本",
+					"description": "请输入英文、数字、下划线"
+				}
+			]
+		}
+	],
+	"rules": {
+		"ta1": {
+			"required": false,
+			"maxlength": 200,
+			"minlength": 0
+		}, 
+		"ta2": {
+			"required": false,
+			"maxlength": 200,
+			"minlength": 0
+		}
+	},
+	"events": [],
+	"values": {
+		"ta1": "",
+		"ta2": "图像在设计中拥有强大的力量。无论是什么主题，我们很自然地会被图片所吸引。从美丽清晰的照片，到精心设计的图形，总能第一时间捕获我们的眼球。",
+		"ta3": "",
+		"ta4": "图像在设计中拥有强大的力量。无论是什么主题，我们很自然地会被图片所吸引。从美丽清晰的照片，到精心设计的图形，总能第一时间捕获我们的眼球。",
+		"ta5": "图像在设计中拥有强大的力量。无论是什么主题，我们很自然地会被图片所吸引。从美丽清晰的照片，到精心设计的图形，总能第一时间捕获我们的眼球。",
+		"ta6": "图像在设计中拥有强大的力量。无论是什么主题，我们很自然地会被图片所吸引。从美丽清晰的照片，到精心设计的图形，总能第一时间捕获我们的眼球。"
+	},
+	"globalGroupIdMap": {
+		"ta5": "group",
+		"ta6": "group"
+	},
+	"isSteam": false,
+	"isRead": false,
+	"groupDefaultSplit": true
+}
