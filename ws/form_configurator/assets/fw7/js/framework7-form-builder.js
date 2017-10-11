@@ -870,14 +870,15 @@
 					$node.hide();
 				}
 			}
+			// 音频特殊处理(注：这里是在原节点改)
 			if ($node.is('.isAudio')) {
-				$renderNode.find('.audioItem .delete, .audioItem.add').remove();
-				// 没有图片则不显示
-				if ($renderNode.find('.audioItems-container').html().trim().length == 0) {
+				$node.find('.audioItem .delete, .audioItem.add').remove();
+				// 没有音频则不显示
+				if ($node.find('.audioItems-container').html().trim().length == 0) {
 					$node.hide();
 				}
 			}
-
+			// 音频绑定了事件，不能单纯替换html，所以在这里排除掉audio
 			if (!$node.is('.isAudio')) {
 				$node.html($renderNode[0].outerHTML);
 			}
