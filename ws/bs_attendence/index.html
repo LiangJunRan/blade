@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<title>Document</title>
 	<link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="assets/plugins/bootstrap-sidebar/css/bootstrap-sidebar.css">
@@ -13,12 +14,15 @@
 		<nav class="navbar navbar-default no-radius no-margin" role="navigation">
 	        <div class="navbar-header">
 	        	<!-- 小屏幕按钮 -->
-	            <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
-	                <span class="sr-only">切换导航</span>
-	                <span class="icon-bar"></span>
-	                <span class="icon-bar"></span>
-	                <span class="icon-bar"></span>
-	            </button> -->
+	        	<div class="pull-left menu-container">
+	        		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sideme">
+		                <!-- <span class="sr-only">切换导航</span> -->
+		                <span class="bar"></span>
+		                <span class="bar"></span>
+		                <span class="bar"></span>
+		            </button>
+		        </div>
+	            
 	            <a class="navbar-brand v-middle title-block" href="#">
 	                <span class="fa fa-codepen fa-2x">
 	                    <!-- <img src="assets/img/logo2.gif" style="height: 50px; width: 50px"/> -->
@@ -61,8 +65,13 @@
 	        </div>
 	    </nav>
 
-		<div class="sidebar sidebar-left sidebar-animate sidebar-md-show" id="sideme">
+		
+		<div class="sidebar sidebar-left sidebar-animate sidebar-md-show side-menu collapse hide-out-xs" id="sideme">
 		</div>
+		<div class="sidebar sidebar-left sidebar-animate sidebar-md-show side-menu hide-in-xs">
+		</div>
+
+		
 
 		<div class="frame-container">
 			<iframe src="" frameborder="0" id="mainFrame"></iframe>
@@ -75,22 +84,27 @@
 	<script src="assets/plugins/bootstrap-sidebar/js/bootstrap-sidebar.js"></script>
 
 	<script>
-		$('#sideme').sidebar({
+		$('.side-menu').sidebar({
 			"iframeId": "mainFrame",
 			"data": [
+				{
+					"text": "着陆页",
+					"href": "landpage.html"
+				},
 				{
 					"text": "可展开菜单",
 					"href": "#",
 					"children": [
 						{
 							"text": "百度",
-							"href": "page-a.html"
+							"href": "http://www.baidu.com"
 						}, {
 							"text": "新浪",
-							"href": "page-a.html"
+							"href": "http://www.sina.com"
 						}
 					]
-				}, {
+				},
+				{
 					"text": "谷歌",
 					"href": "page-a.html"
 				}
