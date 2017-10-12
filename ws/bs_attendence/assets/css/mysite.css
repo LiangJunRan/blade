@@ -48,6 +48,65 @@ a.title-block:active {
     font-weight: 600;
     vertical-align: middle;
 }
+.menu-container .navbar-toggle {
+    border-radius: 0px;
+    border-width: 0px;
+    height: 32px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.menu-container .navbar-toggle:hover,
+.menu-container .navbar-toggle:focus {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+.menu-container .navbar-toggle.collapsed .bar {
+    display: block;
+    width: 15px;
+    height: 2px;
+    border-radius: 1px;
+    margin: 2px 0px;
+    background-color: #fff;
+    transition-duration: 0.3s;
+}
+.menu-container .navbar-toggle .bar {
+    display: block;
+    width: 15px;
+    height: 2px;
+    border-radius: 1px;
+    margin: 5px 0px;
+    background-color: #fff;
+    transition-duration: 0.3s;
+}
+
+
+@media (max-width:768px) {
+    .title-block {
+        text-align: center;
+        /*width: calc(100% - 74px);*/
+    }
+    .menu-container {
+        padding-left: 5px;
+        position: absolute;
+    }
+    .hide-in-xs {
+        display: none;
+    }
+
+    .frame-container {
+        width: 100%;
+        height: calc(100% - 52px);
+    }
+}
+@media (min-width:769px) {
+    .hide-out-xs {
+        display: none!important;
+    }
+    .frame-container {
+        width: calc(100% - 230px);
+        height: calc(100% - 52px);
+    }
+}
+
 .sidebar {
     background: #040029;
     width: 230px;
@@ -61,7 +120,8 @@ a.title-block:active {
 .sidebar ul {
     background: rgba(0, 180, 150, 0.1);
 }
-.sidebar ul a:hover {
+.sidebar ul a:hover,
+.sidebar ul a:focus {
     background: rgba(255, 255, 255, 0.3);
 }
 .sidebar ul a.active {
@@ -112,7 +172,7 @@ a.title-block:active {
         height: calc(100% - 51px);
     }
     .sidebar+div {
-        width: calc(100% - 231px);
+        /*width: calc(100% - 231px);*/
         height: calc(100% - 52px);
         float: left;
     }
@@ -155,338 +215,13 @@ a.title-block:active {
     margin-bottom: 8px;
 }
 
-/* 设定图标颜色 */
-i {
-    color: #777;
-}
-
-/* 关闭panel的按钮样式 */
-.panel i.fa-close {
-    width: 18px;
-    height: 18px;
-    text-align: center;
-    border-radius: 10px;
-    border: 1px solid transparent;
-}
-.panel i.fa-close:hover {
-    color: #fff;
-    background-color: #f00;
-}
-.panel i.fa-close:active {
-    color: #ddd;
-    background-color: #d00;
-}
-
-
-.dropdown-preview > .dropdown-menu {
-    display: block;
-    position: static;
-    margin-bottom: 5px;
-    float: initial;
-    border: none;
-    box-shadow: none;
-}
-
-/* 左布局 */
-.tabs-left>.nav-tabs {
-    top: auto;
-    margin-bottom: 0;
-    border-color: #c5d0dc;
-    border-right: 1px solid #c5d0dc;
-    float: left;
-    border-bottom-color: transparent;
-}
-.nav-tabs {
-    border-color: #c5d0dc;
-    margin-bottom: 0;
-    margin-left: 0;
-    position: relative;
-    top: 1px;
-}
-.tabs-left>.nav-tabs>li {
-    float: none;
-}
-.tabs-left>.nav-tabs>li.active>a,
-.tabs-left>.nav-tabs>li.active>a:focus,
-.tabs-left>.nav-tabs>li.active>a:hover {
-    color: #555;
-    cursor: default;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    /* border-right-color: transparent;*/
-    border-radius: 5px;
-}
-
-
-/* 高斯模糊 */
-.blur {
-    -webkit-filter: blur(3px); /* Chrome, Opera */
-    -moz-filter: blur(3px);
-    -ms-filter: blur(3px);
-    filter: blur(3px);
-
-}
-/* 半透明 */
-.opacity {
-    -webkit-filter: opacity(.7);
-    -moz-filter: opacity(.7); 
-    -ms-filter: opacity(.7); 
-    filter: opacity(.7); 
-}
-
-.masthead {
-    overflow: hidden;
-    height: 300px;
-    position: relative;
-    padding: 40px 0;
-    color: #fff;
-    text-align: center;
-    /* text-shadow: 0 1px 3px rgba(0,0,0,.4),0 0 30px rgba(0,0,0,.075); */
-    text-shadow: 0 1px 5px rgba(0,0,0,.9),0 0 30px rgba(0,0,0,.5);
-    background: #5bc0de;
-    background: -moz-linear-gradient(45deg,#5bc0de 0,#5cb85c 100%);
-    background: -webkit-gradient(linear,left bottom,right top,color-stop(0%,#5bc0de),color-stop(100%,#5cb85c));
-    background: -webkit-linear-gradient(45deg,#5bc0de 0,#5cb85c 100%);
-    background: -o-linear-gradient(45deg,#5bc0de 0,#5cb85c 100%);
-    background: -ms-linear-gradient(45deg,#5bc0de 0,#5cb85c 100%);
-    background: linear-gradient(45deg,#5bc0de 0,#5cb85c 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#5bc0de', endColorstr='#5cb85c', GradientType=1);
-    /* -webkit-box-shadow: inset 0 3px 7px rgba(0,0,0,.2),inset 0 -3px 7px rgba(0,0,0,.2);
-    -moz-box-shadow: inset 0 3px 7px rgba(0,0,0,.2),inset 0 -3px 7px rgba(0,0,0,.2);
-    box-shadow: inset 0 3px 7px rgba(0,0,0,.2),inset 0 -3px 7px rgba(0,0,0,.2); */
-
-    background: url(../img/bg4.jpg) round;
-}
-/* .masthead:after {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: url(../img/bs-docs-masthead-pattern.png) repeat center center;
-    opacity: .4;
-} */
-
-/* 主标题底下的联系方式 */
-.bc-social {
-    padding: 15px 0;
-    text-align: center;
-    background-color: #f5f5f5;
-    border-top: 1px solid #fff;
-    border-bottom: 1px solid #ddd;
-}
-.bc-social-buttons {
-    margin-left: 0;
-    margin-bottom: 0;
-    padding-left: 0;
-    list-style: none;
-}
-.bc-social-buttons li {
-    display: inline-block;
-    line-height: 1;
-    color: #555;
-}
-.bc-social-buttons>li+li:before {
-    padding: 0 10px;
-    color: #ccc;
-    content: "|";
-}
-
-.thumbnail>.caption {
-    text-align: center;
-}
-
-/* @media screen and (max-width: 768px){
-    .thumbnail {
-        height: 192px;
-    }
-    .thumbnail>img {
-        width: 274px;
-        margin: 0;
-        float: left;
-    }
-    .thumbnail>.caption {
-        text-align: left;
-        float: left;
-    }
-} */
-
-
-h1 {
-    font-size: 50px;
-}
-
-p {
-    text-indent:2em;
-}
-
-.chartjs {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-.chartjs.pull-left {
-    margin-left: 10px;
-    margin-right: 20px;
-}
-.chartjs.pull-right {
-    margin-left: 20px;
-    margin-right: 10px;
-}
-.chartjs-6 {
-    width: 61.8%;
-}
-.chartjs-3 {
-    width: 30%;
-}
-.chartjs-3>canvas{
-    height: 30%;
-    width: 30%;
-}
-
-/* 
-.chartjs>canvas {
-    min-width: 400px;
-}
- */
-/* 轮换图 */
-.carousel
-{
-    height: 100%;
-}
-
-/* 轮换图翻页 */
-.carousel-control
-{
-    font-size: 60px;
-    font-weight: 100;
-    line-height: 22px;
-
-    position: absolute;
-    top: 48%;
-    left: 15px;
-
-    width: 40px;
-    height: 40px;
-    margin-top: -20px;
-
-    text-align: center;
-
-    opacity: .5;
-    color: #fff;
-    border: 3px solid #fff;
-    -webkit-border-radius: 23px;
-       -moz-border-radius: 23px;
-            border-radius: 23px;
-    background: #222;
-
-    filter: alpha(opacity=50);
-}
-.carousel-control.right
-{
-    right: 15px;
-    left: auto;
-}
-.carousel-control:hover,
-.carousel-control:focus
-{
-    text-decoration: none;
-
-    opacity: .9;
-    color: #fff;
-
-    filter: alpha(opacity=90);
-}
-
-/* 轮换图下描述 */
-.carousel-caption
-{
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    padding: 15px;
-
-    background: #333;
-    background: rgba(0,  0,  0,  .75);
-}
-.carousel-caption h4,
-.carousel-caption p
-{
-    line-height: 20px;
-
-    text-align: left;
-
-    color: #fff;
-}
-.carousel-caption h4
-{
-    margin: 0 0 5px;
-}
-.carousel-caption p
-{
-    margin-bottom: 0;
-}
-
-/* 轮换图指示灯 */
-.carousel-indicators
-{
-    position: absolute;
-    z-index: 5;
-    top: 15px;
-    right: 15px;
-    left: initial;
-
-    width: 60px;
-    height: 15px;
-    margin: 0;
-
-    list-style: none;
-}
-.carousel-indicators li
-{
-    display: block;
-    float: left;
-
-    width: 10px;
-    height: 10px;
-    margin-left: 5px;
-
-    text-indent: -999px;
-
-    border-radius: 5px;
-    background-color: #ccc;
-    background-color: rgba(255,  255,  255,  .25);
-}
-.carousel-indicators li
-{
-    display: block;
-    float: left;
-
-    width: 10px;
-    height: 10px;
-    margin-left: 5px;
-
-    text-indent: -999px;
-
-    border-radius: 5px;
-    background-color: #ccc;
-    background-color: rgba(255,  255,  255,  .25);
-}
-.carousel-indicators .active
-{
-    width: 10px;
-    height: 10px;
-    margin: 1px 1px 1px 5px;
-
-    background-color: #fff;
-}
-
 .footer {
     color: #777;
     padding: 30px 0;
     border-top: 1px solid #e5e5e5;
     margin-top: 20px;
+}
+.frame-container iframe {
+    height: 100%;
+    width: 100%;
 }
