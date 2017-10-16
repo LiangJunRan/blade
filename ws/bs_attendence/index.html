@@ -4,13 +4,20 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<title>Document</title>
+	
+	<!-- 插件css部分 -->
 	<link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="assets/plugins/bootstrap-sidebar/css/bootstrap-sidebar.css">
 	<link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.min.css">
+
+	<!-- 本站自用css -->
 	<link rel="stylesheet" href="assets/css/mysite.css">
+
 </head>
 <body>
 	<div class="base-container">
+
+		<!-- 上方导航条部分 -->
 		<nav class="navbar navbar-default no-radius no-margin" role="navigation">
 	        <div class="navbar-header">
 	        	<!-- 小屏幕按钮 -->
@@ -30,59 +37,30 @@
 	                <span>XXXX管理平台</span>
 	            </a>
 	        </div>
-			<div>
-				<!-- navbar导航菜单 -->
-	            <!-- <ul class="nav navbar-nav collapse navbar-collapse" id="navbar-collapse">
-	                <li class="active"><a href="#">欢迎</a></li>
-	                <li><a href="#">荣誉资质</a></li>
-	                <li class="dropdown">
-	                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-	                        帮扶案例
-	                        <b class="caret"></b>
-	                    </a>
-	                    <ul class="dropdown-menu">
-	                        <li><a href="#">jmeter</a></li>
-	                        <li><a href="#">EJB</a></li>
-	                        <li><a href="#">Jasper Report</a></li>
-	                        <li class="divider"></li>
-	                        <li><a href="#">Android</a></li>
-	                        <li class="divider"></li>
-	                        <li><a href="#">iOS</a></li>
-	                    </ul>
-	                </li>
-	            </ul> -->
-	            <!-- navbar右侧全站搜索 -->
-	            <!-- <div class="nav collapse navbar-collapse pull-right" style="width: 190px;">
-	                <div class="input-group v-middle">
-	                    <input type="text" class="form-control v-middle" placeholder="站内查找">
-	                    <span class="input-group-btn">
-	                        <button class="btn btn-default" type="button">
-	                            <i class="fa fa-search"></i>
-	                        </button>
-	                    </span>
-	                </div>
-	            </div> -->
-	        </div>
 	    </nav>
-
 		
+		<!-- 左侧小屏用菜单 -->
 		<div class="sidebar sidebar-left sidebar-animate sidebar-md-show side-menu collapse hide-out-xs" id="sideme">
 		</div>
+
+		<!-- 左侧大屏用菜单 -->
 		<div class="sidebar sidebar-left sidebar-animate sidebar-md-show side-menu hide-in-xs">
 		</div>
 
-		
-
+		<!-- 右侧内容区域 -->
 		<div class="frame-container">
 			<iframe src="" frameborder="0" id="mainFrame"></iframe>
 		</div>
 	</div>
 
-
+	<!-- 插件js部分 -->
 	<script src="assets/plugins/jquery/jquery.min.js"></script>
 	<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- 基于bootstrap的菜单，自制 -->
 	<script src="assets/plugins/bootstrap-sidebar/js/bootstrap-sidebar.js"></script>
 
+	<!-- 渲染菜单方法 -->
 	<script>
 		$('.side-menu').sidebar({
 			"iframeId": "mainFrame",
