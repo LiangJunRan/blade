@@ -828,7 +828,7 @@
 			if ($node.is('.isImage')) {
 				contentJson = {
 					label: $node.find('.item-title.label').html() || '',
-					value: $node.find('.thumbnails-container')[0].outerHTML
+					value: $node.find('.item-input')[0].outerHTML/* + $node.find('.thumbnails-container')[0].outerHTML*/
 				}
 			} else if ($node.is('.isAudio')) {
 				contentJson = {

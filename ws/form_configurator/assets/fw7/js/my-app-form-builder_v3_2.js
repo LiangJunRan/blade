@@ -50,13 +50,18 @@ var mainView = myApp.addView('.view-main', {
 
 // 给安卓机械后退按键使用的方法
 function androidBackBtn() {
-	mainView.history.pop()
-	var backUrl = mainView.history.pop();
-	if (backUrl) {
-		backUrl = backUrl.substring(1);
-		mainView.router.load({pageName: backUrl});
+	// 给相册加安卓返回键绑定
+	if ($('.photo-browser').length > 0) {
+		$('.photo-browser').find('.photo-browser-close-link').click();
 	} else {
-		window.location = '/exit-web-view';
+		mainView.history.pop();
+		var backUrl = mainView.history.pop();
+		if (backUrl) {
+			backUrl = backUrl.substring(1);
+			mainView.router.load({pageName: backUrl});
+		} else {
+			window.location = '/exit-web-view';
+		}
 	}
 }
 
@@ -443,9 +448,12 @@ $$('.all-form-submit, .all-form-save').on('click', function () {
 			url: url_saveformData,
 			type: 'post',
 			dataType: 'json',
-			data: 'formValue=' + JSON.stringify(formDatas) + '&workflowNumber=' + workflowNumber + '&isSubmit=1',
+			data: 'formValue=' + encodeURI(JSON.stringify(formDatas)) + '&workflowNumber=' + workflowNumber + '&isSubmit=1',
 			success: function(result){
-				myApp.alert('提交成功', '提示');
+				myApp.alert('提交成功', '提示', function() {
+					// 点击OK后的操作
+					window.location = '/submit-success';
+				});
 				$$('.popup-submit .group-ready').hide();
 				$$('.popup-submit .group-done').show();
 			},
@@ -465,7 +473,7 @@ $$('.all-form-submit, .all-form-save').on('click', function () {
 			url: url_saveformData,
 			type: 'post',
 			dataType: 'json',
-			data: 'formValue=' + JSON.stringify(formDatas) + '&workflowNumber=' +workflowNumber + '&isSubmit=0',
+			data: 'formValue=' + encodeURI(JSON.stringify(formDatas)) + '&workflowNumber=' +workflowNumber + '&isSubmit=0',
 			success: function(result){
 				myApp.alert('暂存成功', '提示');
 			},
@@ -499,19 +507,19 @@ function validateForm(formId, skipAlert) {
 			if (allRequiredNames.indexOf(requiredName) == -1) {
 				allRequiredNames.push(requiredName);
 				// 发现图片特征，特殊处理
-				if ((requiredName in formData) && formData[requiredName] !== undefined && !!formData[requiredName].match(/images:\[(.*)\]/)) {
+				/*if ((requiredName in formData) && formData[requiredName] !== undefined && typeof(formData[requiredName]) == 'string' && formData[requiredName].match(/images:\[(.*)\]/)) {
 					var urlString = formData[requiredName].match(/images:\[(.*)\]/)[1];
 					if (urlString.length == 0) {
 						foundMissing = true;
 						var studentMissingLabel = $form.find('[name=' + requiredName + ']').closest('.listNode').children().data('opts').label;
 						var formTitle = pageTitles[nowPageIndex].label;
 						if (!skipAlert) {
-						myApp.alert('请输入：' /*+ formTitle + '/'*/ + studentMissingLabel, '提示');
+						myApp.alert('请输入：' + formTitle + '/' + studentMissingLabel, '提示');
 						}
 					}
-				}
+				}*/
 				// 请求数据没在formdata中有 或者 formdata中对应数据是空的
-				else if (!((requiredName in formData) && formData[requiredName] !== undefined && formData[requiredName].length != 0)) {
+				/*else */if (!((requiredName in formData) && formData[requiredName] !== undefined && formData[requiredName].length != 0)) {
 					foundMissing = true;
 					var studentMissingLabel = $form.find('[name=' + requiredName + ']').closest('.listNode').children().data('opts').label;
 					var formTitle = pageTitles[nowPageIndex].label;

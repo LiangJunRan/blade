@@ -186,9 +186,11 @@
 			'</a>' +
 		'</div>';*/
 		'<div class="audio-player audioItem">' +
-			'<audio src="{url}" onerror="onerror=null; $(this)' +
+			'<audio onerror="onerror=null; $(this)' +
 					'.next().css(\'border-color\', \'red\')' +
-					'.find(\'.decorate\').css(\'background\', \'transparent\').html(\'ERROR\');"></audio>' +
+					'.find(\'.decorate\').css(\'background\', \'transparent\').html(\'ERROR\');">' +
+				'<source src="{url}">' +
+			'</audio>' +
 			'<div class="progress-bar">' +
 				'<div class="played-part"></div>' +
 
