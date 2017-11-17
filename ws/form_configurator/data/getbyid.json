@@ -1,6 +1,44 @@
 {
     "student_1": {
-        "items": [
+        "items": [{
+                "name": "ta2",
+                "label": "多行文本2",
+                "outerWidth": 12,
+                "labelWidth": 3,
+                "contentWidth": 9,
+                "widthInSteam": "auto",
+                "type": "textarea",
+                "rows": 3,
+                "resize": "none",
+                "placeholder": "请输入文本",
+                "description": "请输入英文、数字、下划线"
+            },
+            {
+                "name": "ta3",
+                "label": "多行文本3",
+                "outerWidth": 12,
+                "labelWidth": 3,
+                "contentWidth": 9,
+                "widthInSteam": "auto",
+                "type": "textarea",
+                "rows": 3,
+                "resize": "none",
+                "placeholder": "请输入文本",
+                "description": "请输入英文、数字、下划线"
+            },
+            {
+                "name": "ta4",
+                "label": "多行文本4",
+                "outerWidth": 12,
+                "labelWidth": 3,
+                "contentWidth": 9,
+                "widthInSteam": "auto",
+                "type": "textarea",
+                "rows": 3,
+                "resize": "none",
+                "placeholder": "请输入文本",
+                "description": "请输入英文、数字、下划线"
+            },
             {
                 "name": "homework",
                 "label": "作业",

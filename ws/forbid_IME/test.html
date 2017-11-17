@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		label {
+    		vertical-align: top;
+		}
+	</style>
+</head>
+<body>
+	<br>
+	<div>
+		<label>textarea</label>
+		<textarea id="t" rows="5" style="width: 300px;"></textarea>
+	</div>
+	<script src="http://192.168.10.123:9293/_commons/jquery/jquery.min.js"></script>
+	<script>
+		$(function() {
+			// 禁用IME
+			$.fn.fuckIME = function() {
+				var $this = $(this);
+				var $p = undefined;
+
+				$this.on('input', function(event) {
+					if (event.originalEvent.inputType == "insertCompositionText") {
+						
+						$p = $('<input type="password" />');
+						$this.after($p);
+
+						$p.on('focus', function(event) {
+							requestAnimationFrame(function() {
+								$this.focus();
+								$p.remove();
+							});
+						});
+
+						$p.focus();
+					}
+				});
+			};
+
+			$('#t').fuckIME();	
+		});
+		
+	</script>
+</body>
+</html>
