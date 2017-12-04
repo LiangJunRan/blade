@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		input{
+			width:300px;
+			height:17px;
+		}
+		.IMEControl{
+			font:normal 14px "Courier New", Courier, monospace;
+			border:1px solid #cccccc;
+			padding:2px;
+			width:300px;
+			height:17px;
+			outline: none;
+		}
+		.IMEControl_Others {
+			position:absolute;
+			color: transparent;
+			margin:0;
+			line-height:50px;
+			outline:none;
+			filter:alpha(opacity=0);
+			-moz-opacity:0;
+			opacity: 0;
+			z-index:999;
+			background:none;
+			overflow:hidden;
+			vertical-align:bottom;
+		}
+		.IMEControl_IE {
+			ime-mode:disabled;
+			width:300px;
+			height:17px;
+		}
+		.IMEControl_Viewer {
+			font:normal 14px "Courier New", Courier, monospace;
+			border:1px solid #ccc;
+			position:absolute;
+			padding:2px;
+			margin:0;
+			z-index:998;
+			overflow:hidden;
+			width:300px;
+			height:17px;
+		}
+		#IMEControlor{
+			margin:0;
+			overflow:hidden;
+			width:306px;
+			height:23px;
+		}
+
+	</style>
+</head>
+<body>
+	<br>
+	半角文字：	
+	<div id = "IMEControlor">
+		<input name="" type="text" id="inputGhost" maxlength="30" class="IMEControl" />
+	</div>
+	<script src="http://192.168.10.123:9293/_commons/jquery/jquery.min.js"></script>
+	<script>
+	    var IMEControl = {
+			IOS : function() {
+			var u = navigator.userAgent.toLowerCase();
+			return (u.indexOf('iphone') > 0 || u.indexOf('ipod') > 0|| u.indexOf('ipad') > 0 || u.indexOf('ipad') > 0)? true : false },
+			InputObject : null,
+			InputID : "inputGhost",
+			ViewerTag : "IMEViewer",
+			ViewerTagClass: "IMEControl_Viewer",
+			Viewer :null,
+	        interval : 24,
+	        timer : null,
+			ImeKeyFun:function(){
+				IMEControl.Viewer = IMEControl.$(IMEControl.ViewerTag);
+				if(IMEControl.Viewer != null && IMEControl.Viewer.nextSibling != null) 
+					IMEControl.Viewer.innerHTML = IMEControl.Viewer.nextSibling.value;
+			}
+			,init:function(){
+				var obj=IMEControl.$(IMEControl.InputID);
+				IMEControl.InputObject = obj;
+				if(IMEControl.IOS()){
+					obj.type= "password";
+					IMEControl.addClass(obj,"IMEControl_Others");
+					IMEControl.Bindkey(obj);
+					IMEControl.ImeKeyFun();
+				}else{obj.className = "IMEControl_IE";}
+			}
+			,Bindkey:function(obj) {
+				var _IMEViewObj=IMEControl.$(IMEControl.ViewerTag);
+				if( _IMEViewObj == null ) {
+					var _IMEViewObj = document.createElement("div");
+					_IMEViewObj.id = IMEControl.ViewerTag;
+					_IMEViewObj.className= IMEControl.ViewerTagClass;
+					obj.parentNode.insertBefore(_IMEViewObj,obj);
+					obj.focus();
+				}
+				if (document.addEventListener) {
+					obj.addEventListener("keyup", IMEControl.ImeKeyFun, true);
+				} else if (document.attachEvent) {
+					obj.attachEvent("onkeyup", IMEControl.ImeKeyFun);
+				} else {
+					if (obj.onkeyup) obj.onkeyup = function () {IMEControl.ImeKeyFun();}
+				}
+			}
+			,$:function (id) { return (typeof (id)=='object')?id:document.getElementById(id); }
+			,hasClass : function(element, className){
+				var reg = new RegExp('(\\s|^)'+className+'(\\s|$)');
+				return element.className.match(reg);
+			}
+			,addClass : function(element, className) {
+				if (!IMEControl.hasClass(element, className)){
+				element.className = (element.className == "" ? className :element.className + " " + className);
+				}
+			}
+			,removeClass : function (element, className) {
+				if (IMEControl.hasClass(element, className)) {
+				var reg = new RegExp('(\\s|^)'+className+'(\\s|$)');
+				element.className = element.className.replace(reg,' ');
+				}
+			}
+
+		}
+		IMEControl.init();
+		
+	</script>
+</body>
+</html>

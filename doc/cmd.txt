@@ -15,3 +15,8 @@ tracert mp3.kaolawu.com
 
 
 
+# 杀掉指定名字的进程(以nginx作为示例)
+taskkill /f /t /im nginx.exe
+
+
+

@@ -7,12 +7,18 @@
 		label {
     		vertical-align: top;
 		}
+		textarea {
+			-webkit-ime-mode: disabled;
+			-ms-ime-mode: disabled;
+			ime-mode: disabled;
+		}
 	</style>
 </head>
 <body>
 	<br>
 	<div>
 		<label>textarea</label>
+		<input type="password">
 		<textarea id="t" rows="5" style="width: 300px;"></textarea>
 	</div>
 	<script src="http://192.168.10.123:9293/_commons/jquery/jquery.min.js"></script>
@@ -24,6 +30,9 @@
 				var $p = undefined;
 
 				$this.on('input', function(event) {
+					console.log('<- EVENT INPUT ->');
+					console.log('event >>>', event);
+					console.log('event.originalEvent.inputType >>>', event.originalEvent.inputType);
 					if (event.originalEvent.inputType == "insertCompositionText") {
 						
 						$p = $('<input type="password" />');
