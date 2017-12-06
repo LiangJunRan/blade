@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>尝试使用预加载加载js、css、image</title>
+	<style>
+		/* 简易进度条 */
+		.process-bar {
+			margin: 10px;
+			width: 200px;
+			height: 20px;
+			background-color: #aaa;
+		}
+		.process-bar .done {
+			background-color: #0f0;
+			height: 20px;
+			width: 0px;
+		}
+	</style>
+</head>
+<body>
+	<div class="process-bar" id="pb">
+		<div class="done"></div>
+	</div>
+	<script>
+		// 参照方法
+		/*function loadScript(url, callback) {
+			var script = document.createElement("script");
+			script.type = "text/javascript";
+			if(typeof(callback) != "undefined"){
+				if (script.readyState) {
+					script.onreadystatechange = function () {
+						if (script.readyState == "loaded" || script.readyState == "complete") {
+							script.onreadystatechange = null;
+							callback();
+						}
+					};
+				} else {
+					script.onload = function () {
+						callback();
+					};
+				}
+			}
+			script.src = url;
+			document.body.appendChild(script);
+		}*/
+
+		var resList = [
+			'../_commons/jquery/jquery.min.js',
+			'../_commons/bootstrap/js/bootstrap.min.js',
+			'../_commons/bootstrap/css/bootstrap.min.css'
+		];
+
+
+
+		// 加载单个资源的方法
+		function loadResource(url, callback) {
+			var suffixSearch = url.match(/[^\.\\\/]*[\.]{1}([^\.\\\/]*)$/);
+			if (suffixSearch === null) {
+				console.log('NOT FOUND suffix');
+				return false;
+			}
+			var suffix = suffixSearch[1];
+
+			switch (suffix) {
+				case 'js':
+					var script = document.createElement("script");
+					script.type = "text/javascript";
+					if(typeof(callback) != "undefined"){
+						if (script.readyState) {
+							script.onreadystatechange = function () {
+								if (script.readyState == "loaded" || script.readyState == "complete") {
+									script.onreadystatechange = null;
+									callback();
+								}
+							};
+						} else {
+							script.onload = function () {
+								callback();
+							};
+						}
+					}
+					script.src = url;
+					document.body.appendChild(script);
+					break;
+				case 'css':
+					var domNode = document.createElement("link");
+					domNode.rel = "stylesheet";
+					if(typeof(callback) != "undefined"){
+						if (domNode.readyState) {
+							domNode.onreadystatechange = function () {
+								if (domNode.readyState == "loaded" || domNode.readyState == "complete") {
+									domNode.onreadystatechange = null;
+									callback();
+								}
+							};
+						} else {
+							domNode.onload = function () {
+								callback();
+							};
+						}
+					}
+					domNode.href = url;
+					document.body.appendChild(domNode);
+					break;
+				default:
+					console.log('NOT SUPPORT yet. Now suffix is "' + suffix + '"');
+					break;
+			}
+		}
+
+		// 顺序加载资源列表的方法
+		function loadResourceList(resList/*, beforeStepLoad, afterStepLoad*/) {
+			var len = resList.length;
+			var doneCount = 0;
+
+			var d = new Date();
+			// console.log('Thread <loadResourceList> starting ...');
+			function nextStep(cb) {
+				if (cb) {
+					cb();
+				}
+				var url = resList.splice(0, 1).pop();
+				if (url !== undefined) {
+					return (function(){
+						console.log('     ^ Done');		// TODO: 这里改成上一步执行完提示done
+						console.log('    ->', url);
+						// beforeStepLoad(this);
+						function _cb() {
+							doneCount++;
+							pb.querySelector('.process-bar .done').style.width = (200 * (doneCount / len)).toFixed(2) + 'px';
+						}
+
+						loadResource(url, nextStep(_cb));
+						// afterStepLoad(this);	// TODO: 改造成调用上一步的参数的方法
+					});
+				} else {
+					return (function() {
+						console.log('     ^ Done');
+						console.log('    -x Have NO nextStep');
+						console.log('       Total cost:', (new Date() - d), 'ms');
+					});
+				}
+			}
+			nextStep()();
+			// console.log('Thread <loadResourceList> started');
+		}
+
+		// load单个资源开始前
+		// function beforeSL(self) {
+		// 	self.startTime = new Date();
+		// }
+		// load单个资源结束后
+		// function afterSL(self) {
+		// 	console.log('       Cost:', (new Date() - self.startTime), 'ms');
+		// }
+
+		loadResourceList(resList/*, beforeSL, afterSL*/);
+
+	</script>
+</body>
+</html>
