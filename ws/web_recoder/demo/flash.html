@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Demo of flash recorder</title>
+	<script src="vendor/jquery/jquery.min.js"></script>
+
+	<script src="vendor/FlashWavRecord/recorder.js"></script>
+	<script src="vendor/FlashWavRecord/swfobject.js"></script>
+</head>
+<body>
+	<label>使用播放器类型</label>
+	<select name="playerType">
+		<option value="html5" disabled>html5</option>
+		<option value="flash">flash</option>
+	</select>
+
+	<hr>
+
+	<input id="recordswf" type="hidden" data-url="vendor/FlashWavRecord/recorder.swf">
+	<audio></audio>
+	<button id="start" onclick="startRecording()">start</button>
+	<button id="stop" onclick="stopRecording()">stop</button>
+	<button id="play" onclick="play()">play</button>
+	<button id="playStop" onclick="stopPlay()">pause</button>
+
+	<script>
+		var recorder;
+
+		var audio = document.querySelector('audio');
+
+		function initializeRecording() {
+			// Embedding flash object
+			var appWidth = 400;
+			var appHeight = 300;
+			var flashvars = {
+				'upload_image': '/static/toefl/img/upload.png'
+			};
+			var params = {};
+			var attributes = {
+				'id': "recorderApp",
+				'name': "recorderApp"
+			};
+			swfobject.embedSWF($('#recordswf').data('url'),"flashcontent", appWidth,appHeight, "11.0.0", "",flashvars, params, attributes);
+			var $flashApp = $("#recorderApp");
+			var levelStop = 0;
+		   // Handling FWR events
+			$("#no-flashplayer").css("display","block");
+			window.fwr_event_handler = function fwr_event_handler() {
+				$(".text-loading").css("display","none");
+				$(".speakContent").css("display","block");
+				$('#no-flashplayer').remove();
+				var name;
+				switch (arguments[0]) {
+					case "no_microphone_found":
+						var dialog = new Dialog({ok: '确定', title: '录音提醒', message: '找不到麦克风，请检查设备是否可用！修复后重启浏览器！'});
+						dialog.show();
+						break;
+					case "microphone_not_connected":
+						var dialog = new Dialog({ok: '确定', title: '录音提醒', message: '找不到麦克风，请检查设备！修复后重启浏览器！'});
+						dialog.show();
+						break;
+					case "ready":
+						FWRecorder.isReady = true;
+						FWRecorder.uploadFormId = "#uploadForm";
+						FWRecorder.uploadFieldName = "audio1.wav";
+						$("#recording").removeClass("butInvalid");
+						FWRecorder.connect("recorderApp", 0);
+						break;
+					case "microphone_user_request":
+						FWRecorder.showPermissionWindow({
+							permanent: true
+						});
+						$flashApp.addClass("floating");
+						break;
+					case "microphone_connected":
+						FWRecorder.isConnected = true;
+						break;
+					case "permission_panel_closed":
+						FWRecorder.defaultSize();
+						$flashApp.removeClass("floating");
+						break;
+					case "recording":
+						levelStop = 0;
+						FWRecorder.observeLevel();
+						break;
+					case "recording_stopped":
+						levelStop = 1;
+						break;
+					case "observing_level":
+						break;
+					case "microphone_level":
+						var $volumeBar = $(".record-volume-bar");
+						if (!levelStop) {
+							$volumeBar.css({width: arguments[1] * 100+ '%'});
+						} else {
+							$volumeBar.css({width: '0px'});
+						}
+						break;
+					case "observing_level_stopped":
+						$volumeBar.css({width: 0});
+						break;
+					case "save_pressed":
+						FWRecorder.updateForm();
+						break;
+					case "saving":
+						name = arguments[1];
+						break;
+					case "saved":
+						name = arguments[1];
+						var response = arguments[2];
+						// saveRecord(response);
+						break;
+					case "save_failed":
+						name = arguments[1];
+						var errorMessage = arguments[2];
+						break;
+					case "save_progress":
+						name = arguments[1];
+						var bytesLoaded = arguments[2];
+						var bytesTotal = arguments[3];
+						break;
+					case "returnMp3Base64":
+						post_flag=false;
+						name = arguments[1];
+						recordPost(name);
+						break;
+					default:
+						break;
+				}
+			};
+		}
+
+		function startRecording() {
+			FWRecorder.record('audio',"audio.wav");
+			/*if (FWRecorder.isConnected) {*/
+				// FWRecorder.record('audio', 'audio.wav');
+			/*}*/
+		}
+
+		function stopRecording() {
+			FWRecorder.stopRecording("audio");
+		}
+
+		function play() {
+			FWRecorder.playBack('audio');
+		}
+
+		function stopPlay() {
+			FWRecorder.pausePlayBack('audio');
+		}
+
+		$(document).ready(function() {
+			initializeRecording();
+		});
+	</script>
+
+</body>
+</html>
