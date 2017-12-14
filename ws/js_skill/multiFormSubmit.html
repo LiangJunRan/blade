@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../_commons/jquery/jquery.min.js"></script>
+	<script src="../_commons/jquery-validation/jquery.validate.min.js"></script>
+</head>
+<body>
+	<form id="aaa">
+		<label>NAME:</label><input type="text" name="name">
+		<label>AGE:</label><input type="text" name="age">
+		<button class="submitBtn" type="button" onclick="submitBtn(this);">btn</button>
+	</form>
+
+	<hr>
+
+	<form id="bbb">
+		<label>NAME:</label><input type="text" name="name">
+		<label>AGE:</label><input type="text" name="age">
+		<button class="submitBtn" type="button" onclick="submitBtn(this);">btn</button>
+	</form>
+	
+	<script>
+		$(document).ready(function() {
+			$('form').each(function() {
+				initValidator($(this));
+			});
+		});
+
+		function submitBtn(that) {
+			var $form = $(that).closest('form');
+			console.log($form.submit());
+			var data = $form.serialize();
+
+			console.log(data);
+		};
+
+		function initValidator($form) {
+			$.validator.setDefaults({
+				
+				/*errorPlacement: function (label, element) {
+					$(label).html($(label).html().replace(/:|：/g, ''));
+					console.log('>>>', element);
+					console.log($(element).closest('form').attr('id'), $(element).prev().html(), label.html());
+				},*/
+
+			    submitHandler: function() {
+			      alert("提交事件!");
+			    }
+			});
+			$().ready(function() {
+			    $form.validate({
+			    	rules: {
+			    		name: {
+			    			required: true,
+			    			minlength: 2
+			    		},
+			    		age: {
+			    			number: true,
+			    			required: true,
+			    			max: 100,
+			    			min: 0
+			    		}
+			    	}
+			    });
+			});
+		}
+	</script>
+</body>
+</html>
