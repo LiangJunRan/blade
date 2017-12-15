@@ -266,7 +266,7 @@
 				$select.multiselect({
 					dropRight: true,
 					buttonContainer: '<div class="btn-group" style="width: 100%;" />',
-					nonSelectedText: opt.placeholder || '--请选择--',
+					// nonSelectedText: opt.placeholder || '--请选择--',
 					templates: {
 						button: 
 							'<button type="button" class="multiselect dropdown-toggle btn-block" data-toggle="dropdown" ' +
@@ -279,6 +279,7 @@
 				});
 
 				$select.on('change', function(){
+					debugger;
 					$(this).multiselect('refresh');
 				});
 				

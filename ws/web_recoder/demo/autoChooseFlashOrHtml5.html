@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Demo of flash recorder</title>
+	<script src="vendor/jquery/jquery.min.js"></script>
+
+	<script src="vendor/FlashWavRecord/recorder.js"></script>
+	<script src="vendor/FlashWavRecord/swfobject.js"></script>
+</head>
+<body>
+	<label>使用播放器类型</label>
+	<select name="playerType">
+		<option value="html5" disabled>html5</option>
+		<option value="flash">flash</option>
+	</select>
+
+	<hr>
+
+	<input id="recordswf" type="hidden" data-url="vendor/FlashWavRecord/recorder.swf">
+
+	<button id="start" onclick="startRecording()">start</button>
+	<button id="stop" onclick="stopRecording()">stop</button>
+	<button id="play" onclick="play()">play</button>
+	<button id="playStop" onclick="stopPlay()">pause</button>
+
+
+	<span id="flashcontent">
+		<p>Your browser must have JavaScript enabled and the Adobe Flash Player installed.</p>
+	</span>
+
+</body>
+</html>

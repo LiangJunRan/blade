@@ -7,22 +7,26 @@
 
 	<script src="vendor/FlashWavRecord/recorder.js"></script>
 	<script src="vendor/FlashWavRecord/swfobject.js"></script>
+
+	<script src="vendor/HZRecorder/HZRecorder.js"></script>
 </head>
 <body>
 	<label>使用播放器类型</label>
 	<select name="playerType">
-		<option value="html5" disabled>html5</option>
+		<option value="html5">html5</option>
 		<option value="flash">flash</option>
 	</select>
 
 	<hr>
 
-	<input id="recordswf" type="hidden" data-url="vendor/FlashWavRecord/recorder.swf">
+	<input type="hidden" name="freestyle" >
 
+	<!-- <input id="recordswf" type="hidden" data-url="vendor/FlashWavRecord/recorder.swf">
+	
 	<button id="start" onclick="startRecording()">start</button>
 	<button id="stop" onclick="stopRecording()">stop</button>
 	<button id="play" onclick="play()">play</button>
-	<button id="playStop" onclick="stopPlay()">pause</button>
+	<button id="playStop" onclick="stopPlay()">pause</button> -->
 
 
 	<span id="flashcontent">
@@ -32,6 +36,62 @@
 	<div><button class="show_settings" onclick="microphonePermission()">Microphone permission</button></div>
 
 	<script>
+		$.fn.renderRecorder = function(_opt) {
+			var $this = $(this);
+
+			// flash环境检测方法
+			function __flashChecker() {
+				var hasFlash = 0; //是否安装了flash
+				var flashVersion = 0; //flash版本
+				if (document.all) {
+					var swf = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+					if (swf) {
+						hasFlash = 1;
+						VSwf = swf.GetVariable("$version");
+						flashVersion = parseInt(VSwf.split(" ")[1].split(",")[0]);
+					}
+				} else {
+					if (navigator.plugins && navigator.plugins.length > 0) {
+						var swf = navigator.plugins["Shockwave Flash"];
+						if (swf) {
+							hasFlash = 1;
+							var words = swf.description.split(" ");
+							for (var i = 0; i < words.length; ++i) {
+								if (isNaN(parseInt(words[i]))) continue;
+								flashVersion = parseInt(words[i]);
+							}
+						}
+					}
+				}
+				return {hasFlash: hasFlash, version: flashVersion};
+			}
+
+			var flashAvalible = !!(__flashChecker().hasFlash);
+			var html5Avalible = !!(Audio);
+			var mode = undefined;
+
+			if (html5Avalible) {
+				mode = 'html5';
+			} else if (flashAvalible) {
+				mode = 'flash';
+			} else {
+				if (console) {
+					console.error('[ERROR] 当前浏览器两种录音插件均不支持，请详细检查');
+				} else {
+					alert('[ERROR] 当前浏览器两种录音插件均不支持，请详细检查');
+				}
+				return;
+			}
+
+			switch(mode) {
+				case 'html5':
+					$this.render
+					break;
+				case 'flash':
+					break;
+			}
+		}
+
 
 		function initializeRecording() {
 			// Embedding flash object
