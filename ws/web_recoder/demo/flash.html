@@ -18,21 +18,25 @@
 	<hr>
 
 	<input id="recordswf" type="hidden" data-url="vendor/FlashWavRecord/recorder.swf">
-	<audio></audio>
+
 	<button id="start" onclick="startRecording()">start</button>
 	<button id="stop" onclick="stopRecording()">stop</button>
 	<button id="play" onclick="play()">play</button>
 	<button id="playStop" onclick="stopPlay()">pause</button>
 
-	<script>
-		var recorder;
 
-		var audio = document.querySelector('audio');
+	<span id="flashcontent">
+		<p>Your browser must have JavaScript enabled and the Adobe Flash Player installed.</p>
+	</span>
+
+	<div><button class="show_settings" onclick="microphonePermission()">Microphone permission</button></div>
+
+	<script>
 
 		function initializeRecording() {
 			// Embedding flash object
-			var appWidth = 400;
-			var appHeight = 300;
+			var appWidth = 1;
+			var appHeight = 1;
 			var flashvars = {
 				'upload_image': '/static/toefl/img/upload.png'
 			};
@@ -42,6 +46,7 @@
 				'name': "recorderApp"
 			};
 			swfobject.embedSWF($('#recordswf').data('url'),"flashcontent", appWidth,appHeight, "11.0.0", "",flashvars, params, attributes);
+
 			var $flashApp = $("#recorderApp");
 			var levelStop = 0;
 		   // Handling FWR events
@@ -129,9 +134,31 @@
 						break;
 				}
 			};
+
+			function recorderEl() {
+				return $('#recorderApp');
+			}
+
+			window.microphonePermission = function () {
+				recorderEl().addClass("floating");
+				FWRecorder.showPermissionWindow({permanent: true});
+			};
+
+			window.configureMicrophone = function () {
+				if (!FWRecorder.isReady) {
+					return;
+				}
+				FWRecorder.configure($('#rate').val(), $('#gain').val(), $('#silenceLevel').val(), $('#silenceTimeout').val());
+				FWRecorder.setUseEchoSuppression($('#useEchoSuppression').is(":checked"));
+				FWRecorder.setLoopBack($('#loopBack').is(":checked"));
+			};
+
+			// microphonePermission();
+
 		}
 
 		function startRecording() {
+			console.log('isConnected=', FWRecorder.isConnected);
 			FWRecorder.record('audio',"audio.wav");
 			/*if (FWRecorder.isConnected) {*/
 				// FWRecorder.record('audio', 'audio.wav');
@@ -150,7 +177,7 @@
 			FWRecorder.pausePlayBack('audio');
 		}
 
-		$(document).ready(function() {
+		$(function() {
 			initializeRecording();
 		});
 	</script>
