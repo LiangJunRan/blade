@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style>
+		input {
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			-o-appearance: none;
+			appearance: none;
+			border: none;
+			width: calc(100% - 0px);
+		}
+		.underline .showValue {
+			border-bottom: solid 1px black;
+			display: inline-block;
+			padding: 0 5px;
+			min-width: 20px;
+		}
+		/* .underline {
+			border: solid 0px #000;
+			border-bottom: solid 1px #000;
+			display: inline-block;
+			width: initial!important;
+		} */
+	</style>
+
+	<script src="../_commons/jquery/jquery.min.js"></script>
+</head>
+<body>
+	<div style="width: 300px;">
+		<p>The weight is <span class="underline"><input type="text" name="t1" style="display: none;"><span class="showValue">&nbsp;&nbsp;&nbsp;&nbsp;</span></span> kg</p>
+	</div>
+
+	<div class="underline" contenteditable="true" style='width:300px'>
+		这是一段可编辑的<span class="showValue"></span>段落。请试着编辑该文
+	</div>
+
+	<script>
+		$('.underline').on('keydown', function() {
+			console.log('keydown...', event);
+		});
+	</script>
+</body>
+</html>

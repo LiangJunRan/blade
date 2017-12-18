@@ -1,0 +1,41 @@
+body,div,span,img,a,h1,h2,h3,h4,h5,h6,p,ul,li,ol,dl,dd,dt{ margin:0; padding:0;}
+ul,ol{ list-style:none;}
+img{ display:block; /* img标签默认就是特殊的文字  */}
+body{ font-size:16px; font-family:"微软雅黑"; color:#333; background:#f8f8f8;/* 继承给子孙一些文字样式 如果子孙不想要  自己复写即可 */ }
+a {text-decoration:none;}
+.center{ margin: 0 auto; width: 1200px;}
+p{ text-indent: 2em; line-height: 2em;}
+.cur {position:fixed;left: 0;top: 0;}
+/* 解决清除浮动问题的代码 */
+.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
+.clearfix{*+height:1%;}
+/* 开始 */
+/* banner start */
+.banner {width: 100%; height: 300px; background:  url(../img/banner.png) no-repeat center center;}
+/* banner end */
+/* nav start */
+.nav{ width: 100%; height: 50px; background: #290855;margin: 4px 0 0 0; z-index: 999}.nav .center{ width: 1200px; margin: 0 auto;}
+.nav a{  display:block;width: 130px;height: 50px;line-height:50px;color: #fff;float: left;font-size: 18px; text-align: center;}
+.nav a:hover{ background: #fff; color: #290855; }
+/* nav end */
+
+/* p start */
+.more{ width: 100%;}
+.more .center{ width: 1200px;background:#fff;padding: 30px 0;}
+.more .center img{ margin: 0 auto 25px;}
+.more .center p{ width: 1000px; margin: 0 auto 20px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
