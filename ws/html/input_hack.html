@@ -5,6 +5,11 @@
 	<title>Document</title>
 
 	<style>
+		p {
+		    -webkit-margin-before: 0em;
+		    -webkit-margin-after: 0em;
+		}
+
 		input {
 			-webkit-appearance: none;
 			-moz-appearance: none;
@@ -15,32 +20,70 @@
 		}
 		.underline .showValue {
 			border-bottom: solid 1px black;
-			display: inline-block;
-			padding: 0 5px;
+			padding: 0 10px;
 			min-width: 20px;
 		}
-		/* .underline {
-			border: solid 0px #000;
-			border-bottom: solid 1px #000;
-			display: inline-block;
-			width: initial!important;
-		} */
+		 .underline {
+			
+		} 
 	</style>
 
 	<script src="../_commons/jquery/jquery.min.js"></script>
 </head>
 <body>
-	<div style="width: 300px;">
-		<p>The weight is <span class="underline"><input type="text" name="t1" style="display: none;"><span class="showValue">&nbsp;&nbsp;&nbsp;&nbsp;</span></span> kg</p>
-	</div>
-
-	<div class="underline" contenteditable="true" style='width:300px'>
-		这是一段可编辑的<span class="showValue"></span>段落。请试着编辑该文
-	</div>
+	<h1>TODO: 加校验，加酷炫的特效~~</h1>
+	<form>
+		<table>
+			<tr>
+				<td>
+					<p style="width: 300px; display: inline-block; border-right: solid 1px #000; word-break: break-all; word-wrap: break-word;">
+						The weight is 
+							<span class="underline">
+								<span class="showValue" contenteditable="true"></span>
+								<input type="hidden" name="weight">
+							</span>
+						kg, the name of the item is
+							<span class="underline">
+								<span class="showValue" contenteditable="true"></span>
+								<input type="hidden" name="name">
+							</span>
+						. 
+					</p>
+				</td>
+				<td>
+					<- 限制宽度300px
+				</td>
+			</tr>
+		</table>
+		<!-- <div style="display: table;">
+			<div style="display: table-row-group;">
+				<div style="display: table-row;">
+					<div style="display: table-cell;">
+						<p style="width: 300px; display: inline-block; border-right: solid 1px #000;">
+							The weight is 
+								<span class="underline">
+									<span class="showValue" contenteditable="true" maxlength="10"></span>
+									<input type="hidden" name="weight">
+								</span>
+							kg, the name of the item is
+								<span class="underline">
+									<span class="showValue" contenteditable="true" maxlength="10"></span>
+									<input type="hidden" name="name">
+								</span>
+							. 
+						</p>
+					</div>
+					<div style="display: table-cell;">
+						<- 限制宽度300px
+					</div>
+				</div>
+			</div>
+		</div> -->
+	</form>
 
 	<script>
-		$('.underline').on('keydown', function() {
-			console.log('keydown...', event);
+		$('.showValue').on('input', function(event) {
+			console.log('input... value->', $(event.target).html());
 		});
 	</script>
 </body>
