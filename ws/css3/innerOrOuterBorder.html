@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style>
+		div {
+			background-color: #aaa;
+			margin-bottom: 10px;
+			height: 30px;
+			width: 200px;
+			line-height: 30px;
+			text-align: center;
+		}
+		.outerBorder {
+			/*background-color: #0f0;*/
+			border-right: solid 20px #000;
+			box-sizing: content-box;
+		}
+		.innerBorder {
+			/*background-color: #f00;*/
+			border-right: solid 20px #000;
+			box-sizing: border-box;
+		}
+	</style>
+</head>
+<body>
+		<div class="outerBorder">
+			外边框
+		</div>
+		<div>
+			对比项，宽度100px
+		</div>
+		<div class="innerBorder">
+			内边框
+		</div>
+</body>
+</html>

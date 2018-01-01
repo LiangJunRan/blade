@@ -69,6 +69,7 @@
 					if(typeof(callback) != "undefined"){
 						if (script.readyState) {
 							script.onreadystatechange = function () {
+								console.log('script STATE:', script.readyState);
 								if (script.readyState == "loaded" || script.readyState == "complete") {
 									script.onreadystatechange = null;
 									callback();
@@ -76,6 +77,7 @@
 							};
 						} else {
 							script.onload = function () {
+								console.log('script STATE:', script.readyState);
 								callback();
 							};
 						}
@@ -89,6 +91,7 @@
 					if(typeof(callback) != "undefined"){
 						if (domNode.readyState) {
 							domNode.onreadystatechange = function () {
+								console.log('domNode STATE:', domNode.readyState);
 								if (domNode.readyState == "loaded" || domNode.readyState == "complete") {
 									domNode.onreadystatechange = null;
 									callback();
@@ -96,6 +99,7 @@
 							};
 						} else {
 							domNode.onload = function () {
+								console.log('domNode STATE:', domNode.readyState);
 								callback();
 							};
 						}
@@ -156,6 +160,33 @@
 		// }
 
 		loadResourceList(resList/*, beforeSL, afterSL*/);
+
+
+		function __loadResource(url)
+
+
+		function __callback() {
+
+		}
+
+		function __getNextUrl(resList) {
+			var url = resList.splice(0, 1).pop();
+			return url;
+		}
+
+
+		function __scriptLoad(url) {
+			var script = document.createElement("script");
+			script.type = "text/javascript";
+			script.onload = function () {
+				__callback();
+			};
+			script.src = url;
+			document.body.appendChild(script);
+		}
+
+
+
 
 	</script>
 </body>

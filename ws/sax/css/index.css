@@ -1,0 +1,75 @@
+body,div,span,img,a,h1,h2,h3,h4,h5,h6,p,ul,li,ol,dl,dd,dt{ margin:0; padding:0;}
+ul,ol{ list-style:none;}
+img{ display:block; /* img标签默认就是特殊的文字  */}
+body{ font-size:16px; font-family:"微软雅黑"; color:#333; /* 继承给子孙一些文字样式 如果子孙不想要  自己复写即可 */ }
+a {text-decoration:none;}
+.center{ margin: 0 auto; width: 1200px;}
+p{ text-indent: 2em; line-height: 32px;}
+.cur {position:fixed;left: 0;top: 0;}
+/* 解决清除浮动问题的代码 */
+.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
+.clearfix{*+height:1%;}
+/* 开始 */
+/* banner start */
+.banner {width: 100%; height: 300px; background:  url(../img/banner.png) no-repeat center center;}
+/* banner end */
+/* nav start */
+.nav{ width: 100%; height: 50px; background: #290855;margin: 4px 0 0 0; z-index: 999}.nav .center{ width: 1200px; margin: 0 auto;}
+.nav a{  display:block;width: 130px;height: 50px;line-height:50px;color: #fff;float: left;font-size: 18px; text-align: center;}
+.nav a:hover{ background: #fff; color: #290855; }
+/* nav start */
+/* jieshao start */
+.jieshao { width: 100%; height: 308px; background: #fff; margin: 20px 0 0 0;}
+.jieshao .center {height: 308px; }
+.jieshao .left{ width: 308px; height: 308px;}
+.jieshao .right{ width: 842px; height: 268px;letter-spacing:1px; padding: 40px 0 0 50px;}
+.jieshao .right p { line-height: 32px; padding: 0 0 20px 0;}
+.jieshao .left,.jieshao .right{ float: left;}
+/* jieshao end */
+/* reason start */
+.reason{ width: 100%; height: 220px; background: #f8f8f8; padding-top: 60px;}
+.reason .center{height: 220px; position: relative;}
+.reason img{ margin: 0 auto 25px;}
+.reason a{ position: absolute; right: 0; bottom: 70px; font-weight: bold; }
+/* reason end */
+/* pinpai start */
+.pinpai{ width: 100%; height: 220px; background: #FFFFFF;padding-top: 60px;}
+.pinpai img{ margin: 0 auto 25px ;}
+.pinpai .tu{ margin: 25px 0 0 0;}
+/* reason end */
+/* pro start */
+.pro{ width: 100%; height: 310px; background: #f8f8f8;padding-top: 60px;}
+.pro .title { margin: 0 auto 25px;}
+.pro ul{ width: 1200px; margin: 0 auto;}
+.pro ul li{width: 25%; float: left; text-align: center;}
+.pro ul li p{text-indent:0;}
+.pro ul li img{ margin: auto;}
+/* pro end */
+/* family start */
+.family{ width: 100%; height:440px;background: #fff; padding-top:60px ;}
+.family img{ margin: 0 auto;}
+.family .title{margin-bottom:25px;}
+/* family end */
+
+.business{ width: 100%; height: 420px; background: #f8f8f8;padding-top: 60px;}
+.business .title { margin: 0 auto 25px;}
+.business ul{ width: 1200px; margin: 0 auto;}
+.business ul li{width: 20%; float: left; text-align: center;}.pro ul li p{text-indent:0;}
+.business ul li img{ margin: auto;}
+
+
+.vmc-centered img { transition: all 0.1s ease; }
+.vmc-centered .vmc_active img { transform: scale(1); }
+
+
+
+
+
+
+
+
+
+
+
+
+

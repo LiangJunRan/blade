@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<script type="text/javascript" src="js/lib/jquery-1.12.3.min.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+		<script type="application/javascript">
+			$(function(){
+				$(window).scroll(function(){
+					var gundong = $(window).scrollTop();
+					var jvli = $('.bottom').offset().top-50;
+					if(gundong >= jvli){
+						$('.nav').addClass('cur')
+					}else{
+						$('.nav').removeClass('cur')
+					}
+				});
+				
+			});
+		</script>
+	</head>
+	<body>
+		 <!-- banner start -->
+    	<div class="banner top">    		
+    	</div>
+    	 <!-- banner end -->
+    	<!-- nav start -->
+    	<div class="nav">
+    		<div class="center">
+    			<a href="index.html">首页</a>
+    			<a href="index.html">介绍</a>
+    			<a href="#reason">制造原因</a>
+    			<a href="#pinpai">知名品牌</a>
+    			<a href="#family">萨克斯家族</a>
+    			<a href="#pro">产品图片</a>	
+    		</div>
+    	</div>
+    	<!-- nav end -->
+    	<!-- jieshao start -->
+    	<div class="jieshao bottom">
+    		<div class="center">
+    			<div class="left">
+    				<img src="img/pic_1.png" alt="" />
+    			</div>
+		    	<div class="right">
+		    		<p>萨克斯是以发明者的名字命名的木管乐器，音色介于木管乐器和铜管乐器之间。生活在十九世纪的阿道夫•萨克斯（1814－1894）是比利时著名的乐器生产者和发明家。</p>
+		    		<img src="img/pic_2.png" alt="" />
+	    		</div>
+    		</div>    		
+    	</div>
+    	<!-- jieshao end -->
+    	<!-- reason start -->
+    	<div class="reason" id="reason">
+    		<div class="center">
+    			<img src="img/title_1.png" alt="" />
+    			<p>萨克斯是由比利时人阿道夫•萨克斯（Antoine-Joseph Sax,1814-1894）于1840年发明的。阿道夫是一位锐意的乐器制造者，擅长黑管和长笛演奏。他最初的设想是为管弦乐队设计一种低音乐器，比奥菲克莱德号（Ophicleide）吹奏灵活并能适应室外演出。他将低音单簧管的吹嘴和奥菲克莱德号的管身结合在一起并加以改进，以自己名字命名了这种新型乐器。</p>
+    			<a href="more.html">更多>></a>
+    		</div>
+    		
+    	</div>
+    	<!-- reason end -->
+    	
+    	<!-- pinpai start -->
+    	<div class=" pinpai" id="pinpai">
+    		<div class="center">
+    			<img src="img/title_2.png" alt="" />
+    			<p>每一种产品都有知名的品牌，萨克斯也不例外。经过多年的发展，萨克斯界已经出现了以下几大品牌：每一种产品都有知名的品牌，萨克斯也不例外。经过多年的发展，萨克斯界已经出现了以下几大品牌：</p>
+    			<img class="tu" src="img/pinpai.png" alt="" />    			
+    		</div>
+    	</div>
+    	<!-- pinpai end -->
+    	<!-- product start -->    
+    	<div class="pro" id="pro">
+    		<a href="list.html">
+                <img class="title" src="img/title_3.png" alt="" />
+            </a>
+    		<ul class="clearfix">
+    			<li>
+    				<img src="img/pro_1.png" alt="" />
+    				<p>802上低音萨克斯</p>
+    			</li>    			
+    			<li>
+    				<img src="img/pro_2.png" alt="" />
+    				<p>803上低音萨克斯</p>
+    			</li>    			
+    			<li>
+    				<img src="img/pro_3.png" alt="" />
+    				<p>高音802</p>
+    			</li>    			
+    			<li>
+    				<img src="img/pro_4.png" alt="" />
+    				<p>803上低音萨克斯</p>
+    			</li>    			
+    		</ul>
+    	</div>
+    		
+    	<!-- product end -->
+    	<!-- family start -->
+    	<div class="family" id="family">
+            <img class="title" src="img/title_4.png" alt="" />
+    		<img  src="img/jiazu.png" alt="" />
+    	</div>
+    	<!-- family end -->
+    	<!-- business start -->    
+    	<div class="business">
+    		<img class="title" src="img/title_5.png" alt="" />
+    		<ul class="clearfix">
+    			<li>
+    				<img src="img/chanpin_1.png" alt="" />    				
+    			</li>    			
+    			<li>
+    				<img src="img/chanpin_2.png" alt="" />    				
+    			</li>    			
+    			<li>
+    				<img src="img/chanpin_3.png" alt="" />    				
+    			</li>    			
+    			<li>
+    				<img src="img/chanpin_4.png" alt="" />    				
+    			</li>    			
+    		</ul>
+    	</div>
+    	<!-- business end -->
+    	
+	</body>
+</html>

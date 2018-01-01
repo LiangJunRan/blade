@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Demo of html5 recorder</title>
+	<script src="vendor/jquery/jquery.min.js"></script>
+
+
+	<link rel="stylesheet" href="../../_commons/bootstrap/css/bootstrap.min.css">
+
+	<link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+
+	<script src="vendor/HZRecorder/HZRecorder.js"></script>
+	<script src="assets/js/HZRecorder_render.js"></script>
+
+	<style>
+		.play-part .btn, .record-part .btn {
+			margin-left: 8px;
+		}
+		.fb-audio {
+			vertical-align: middle;
+			height: 34px;
+			border: solid 1px #ccc;
+		}
+
+		/* 录音闪烁动画 */
+		.record-btn .active {
+			animation: recording 1.5s infinite;
+		}
+		@keyframes recording {
+			0% {
+				color: #333;
+			}
+			50% {
+				color: #f00;
+			}
+			100% {
+				color: #333;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="col-sm-12">
+		
+		<label class="form-control-static">使用播放器类型: HTML5</label>
+
+		<hr>
+
+		<input type="recorder" name="rec1">
+
+		<hr>
+
+		<input type="recorder" name="rec2">
+
+		<hr>
+	</div>
+
+	<script>
+		$('input[type=recorder]').renderRecorder();
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Demo of html5 recorder with Qiniu Storage using plugins</title>
+	<script src="vendor/jquery/jquery.min.js"></script>
+
+	<script src="vendor/HZRecorder/HZRecorder.js"></script>
+	<script src="assets/js/qiniuCustomized.js"></script>
+</head>
+<body>
+	<label>使用播放器类型</label>
+	<select name="playerType">
+		<option value="html5">html5</option>
+		<option value="flash" disabled>flash</option>
+	</select>
+
+	<hr>
+
+	<audio></audio>
+	<button id="start" onclick="startRecording()">start</button>
+	<button id="stop" onclick="stopRecording()">stop</button>
+	<button id="play" onclick="play()">play</button>
+	<button id="playStop" onclick="stopPlay()">pause</button>
+	&nbsp;
+	<button id="uploadAudio" onclick="uploadAudio()">upload</button>
+	<div id="progress"></div>
+
+	<script>
+		var $progress = $('#progress');
+		var recorder;
+
+		var audio = document.querySelector('audio');
+
+		function initializeRecording() {
+			// 初始化时获取录音权限
+			HZRecorder.get();
+		}
+
+		function startRecording() {
+			HZRecorder.get(function (rec) {
+				recorder = rec;
+				recorder.start();
+			});
+		}
+
+		function stopRecording() {
+			recorder.stop();
+			recorder.play(audio);
+
+			console.log('当前录音值为:', recorder.getBlob());
+		}
+
+		function play() {
+			audio.play();
+		}
+
+		function stopPlay() {
+			audio.pause();
+		}
+
+		function uploadAudio() {
+			var opt = {
+				data: {
+					file: recorder.getBlob(),
+					key: 'testUploadAudio.wav'
+				},
+				success: function(res) {
+					console.log('success');
+				},
+				error: function(res) {
+					console.log('error');
+				}
+			};
+
+			qiniu_upload(opt);
+		}
+
+		$(document).ready(function() {
+			initializeRecording();
+		});
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style>
+		p {
+		    -webkit-margin-before: 0em;
+		    -webkit-margin-after: 0em;
+		}
+
+		input {
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			-o-appearance: none;
+			appearance: none;
+			border: none;
+			width: calc(100% - 0px);
+		}
+		.underline .showValue {
+			border-bottom: solid 1px black;
+			padding: 0 10px;
+			min-width: 20px;
+		}
+		 .underline {
+			
+		} 
+	</style>
+
+	<script src="../_commons/jquery/jquery.min.js"></script>
+</head>
+<body>
+	<h1>TODO: 加校验，加酷炫的特效~~</h1>
+	<form>
+		<table>
+			<tr>
+				<td>
+					<p style="width: 300px; display: inline-block; border-right: solid 1px #000; word-break: break-all; word-wrap: break-word;">
+						The weight is 
+							<span class="underline">
+								<span class="showValue" contenteditable="true"></span>
+								<input type="hidden" name="weight">
+							</span>
+						kg, the name of the item is
+							<span class="underline">
+								<span class="showValue" contenteditable="true"></span>
+								<input type="hidden" name="name">
+							</span>
+						. 
+					</p>
+				</td>
+				<td>
+					<- 限制宽度300px
+				</td>
+			</tr>
+		</table>
+		<!-- <div style="display: table;">
+			<div style="display: table-row-group;">
+				<div style="display: table-row;">
+					<div style="display: table-cell;">
+						<p style="width: 300px; display: inline-block; border-right: solid 1px #000;">
+							The weight is 
+								<span class="underline">
+									<span class="showValue" contenteditable="true" maxlength="10"></span>
+									<input type="hidden" name="weight">
+								</span>
+							kg, the name of the item is
+								<span class="underline">
+									<span class="showValue" contenteditable="true" maxlength="10"></span>
+									<input type="hidden" name="name">
+								</span>
+							. 
+						</p>
+					</div>
+					<div style="display: table-cell;">
+						<- 限制宽度300px
+					</div>
+				</div>
+			</div>
+		</div> -->
+	</form>
+
+	<script>
+		$('.showValue').on('input', function(event) {
+			console.log('input... value->', $(event.target).html());
+		});
+	</script>
+</body>
+</html>

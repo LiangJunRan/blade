@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Demo of html5 recorder with Qiniu Storage</title>
+	<script src="vendor/jquery/jquery.min.js"></script>
+
+	<script src="vendor/HZRecorder/HZRecorder.js"></script>
+</head>
+<body>
+	<label>使用播放器类型</label>
+	<select name="playerType">
+		<option value="html5">html5</option>
+		<option value="flash" disabled>flash</option>
+	</select>
+
+	<hr>
+
+	<audio></audio>
+	<button id="start" onclick="startRecording()">start</button>
+	<button id="stop" onclick="stopRecording()">stop</button>
+	<button id="play" onclick="play()">play</button>
+	<button id="playStop" onclick="stopPlay()">pause</button>
+	&nbsp;
+	<button id="uploadAudio" onclick="uploadAudio()">upload</button>
+	<div id="progress"></div>
+
+	<script>
+		var $progress = $('#progress');
+		var recorder;
+
+		var audio = document.querySelector('audio');
+
+		function initializeRecording() {
+			// 初始化时获取录音权限
+			HZRecorder.get();
+		}
+
+		function startRecording() {
+			HZRecorder.get(function (rec) {
+				recorder = rec;
+				recorder.start();
+			});
+		}
+
+		function stopRecording() {
+			recorder.stop();
+			recorder.play(audio);
+
+			console.log('当前录音值为:', recorder.getBlob());
+		}
+
+		function play() {
+			audio.play();
+		}
+
+		function stopPlay() {
+			audio.pause();
+		}
+
+		function uploadAudio() {
+			var file = recorder.getBlob();
+
+			var formData = new FormData();
+			formData.append('file', file);
+			formData.append('token', 'YpOBLwOzxNPBDAAD9cJaND2xh3TkgtTilQERWHSByAQ_:9CNVM9IegER_FjIbGKw3qcjTvIQ=:eyJzY29wZSI6ImJwbXRlc3QiLCJkZWFkbGluZSI6MTU0OTIxNTMxNX0=');
+			formData.append('key', 'testUploadAudio.wav');
+
+			$.ajax({
+				url: 'http://up-z1.qiniu.com',
+				method: 'POST',
+				data: formData,
+				processData: false,
+				contentType: false,
+				xhr: function(){
+					myXhr = $.ajaxSettings.xhr();	 
+					if(myXhr.upload){
+						myXhr.upload.addEventListener('progress',function(e) {
+							// console.log(e);
+							if (e.lengthComputable) {
+								var percent = e.loaded/e.total*100;
+								$progress.html('上传：' + e.loaded + "/" + e.total+" bytes. " + percent.toFixed(2) + "%");
+							}
+						}, false);
+					}
+					return myXhr;
+				},
+				success: function(res) {
+					console.log('SUCCESS', res);
+				},
+				error: function(res) {
+					console.log('ERROR', res);
+				}
+			});
+		}
+
+		$(document).ready(function() {
+			initializeRecording();
+		});
+	</script>
+
+</body>
+</html>
