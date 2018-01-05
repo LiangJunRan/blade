@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>测试一些关于require和封装的想法</title>
+	<script src="require.js"></script>
+	<script src="require_conf.js"></script>
+</head>
+<body>
+	<script>
+		require(['bootstrap', 'test'], function(undefined, t) {
+			console.log(t.isbusy());
+
+			t.ready(function(){
+				console.log('test ready callback');
+			});
+		});
+	</script>
+</body>
+</html>

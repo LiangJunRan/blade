@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		div {
+			border: solid 1px #aaa;
+		}
+		.left {
+			width: 50px;
+			height: 200px;
+			float: left;
+		}
+		.right {
+			height: 200px;
+			/*width: 100%;*/
+			flex-grow: 1;
+		}
+	</style>
+</head>
+<body style="display: flex; flex-direction: row;">
+	<div class="left"></div>
+	<div class="right"></div>
+</body>
+</html>

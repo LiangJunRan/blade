@@ -21,7 +21,7 @@
 		<div class="uploaded-result"></div>
 
 	
-	<script>
+	<!-- <script>
 		// 简单测试
 	
 		var $key = $('#key');	// file name		eg: the file is image.jpg,but $key='a.jpg', you will upload the file named 'a.jpg'
@@ -79,10 +79,14 @@
 		}
 	
 		$('#submitBtn').on('click', simpleUpload);
-	</script>
+	</script> -->
 	
 
-	<!-- <script>
+	<script>
+		var $selectedFile = $('.selected-file');
+		var $progress = $(".progress");
+		var $uploadedResult = $('.uploaded-result');
+
 		var uploader = Qiniu.uploader({
 			// runtimes: 'html5,flash,html4',	//上传模式,依次退化
 			browse_button: 'pickfiles',			//上传选择的点选按钮，**必需**
@@ -132,9 +136,17 @@
 					//  }
 					// 参考http://developer.qiniu.com/docs/v6/api/overview/up/response/simple-response.html
 	
-					// var domain = up.getOption('domain');
-					// var res = parseJSON(info.response);
-					// var sourceLink = domain + res.key; 获取上传成功后的文件的Url
+					var domain = up.getOption('domain');
+					var res = $.parseJSON(info.response);
+					var sourceLink = domain + res.key;		// 获取上传成功后的文件的Url
+
+					var str = '<span>已上传：' + res.key + '</span>';
+					if (res.key && res.key.match(/\.(jpg|jpeg|png|gif)$/)) {
+						str += '<img src="' + sourceLink + '"/>';
+					}
+					$uploadedResult.html(str);
+
+
 				},
 				'Error': function(up, err, errTip) {
 					//上传出错时,处理相关的事情
@@ -153,8 +165,10 @@
 					// 若想在前端对每个文件的key进行个性化处理，可以配置该函数
 					// 该配置必须要在 unique_names: false , save_key: false 时才生效
 					console.log('Key');
-	
-					var key = "";
+					var key = $('#key').val() + '_' + (new Date()).valueOf();
+					if (file.name.match(/\.(jpg|jpeg|png|gif)/)) {
+						key += file.name.match(/\.(jpg|jpeg|png|gif)/)[0];
+					}
 					// do something with key here
 					return key
 				}
@@ -163,17 +177,7 @@
 		$('#submitBtn').on('click', function() {
 			uploader.start();
 		});
-	</script> -->
+	</script>
 
-
-	<!-- <script>
-		// 尝试封装
-		var audioOpt = {
-			mode: "fileExist",
-			files: [],
-			 
-		}
-	
-	</script> -->
 </body>
 </html>
