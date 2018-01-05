@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<input type="file" id="f">
+	<script>
+		var file;
+
+		var fs = document.getElementById('f');
+		fs.onchange = function() {
+			if (fs.files[0]) {
+				f = fs.files[0];
+			}
+		}
+	</script>
+</body>
+</html>
