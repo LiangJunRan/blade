@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>七牛云单文件上传</title>
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/qiniu/plupload.full.min.js"></script>
+	<script src="vendor/qiniu/qiniu.min.js"></script>
+</head>
+<body>
+	<form id="testform" method="post" enctype="multipart/form-data">
+		<!-- <input type="text" name="token" value="YpOBLwOzxNPBDAAD9cJaND2xh3TkgtTilQERWHSByAQ_:9CNVM9IegER_FjIbGKw3qcjTvIQ=:eyJzY29wZSI6ImJwbXRlc3QiLCJkZWFkbGluZSI6MTU0OTIxNTMxNX0=">
+		<input type="text" name="key" id="key" value="testSimpleFileName">
+		<input type="file" name="file" id="pickfiles">
+		<button type="button" id="submitBtn">submit</button> -->
+		<button id="a">a</button>
+		<hr>
+		<button id="b">b</button>
+	</form>
+
+	<!-- upload info -->
+		<div class="selected-file"></div>
+		<div class="progress"></div>
+		<div class="uploaded-result"></div>
+
+	
+	<!-- <script>
+		// 简单测试
+	
+		var $key = $('#key');	// file name		eg: the file is image.jpg,but $key='a.jpg', you will upload the file named 'a.jpg'
+		var $pickfiles = $('#pickfiles');	// the file you selected
+	
+		// upload info
+		var $selectedFile = $('.selected-file');
+		var $progress = $(".progress");
+		var $uploadedResult = $('.uploaded-result');
+	
+		var domain = "http://olt0d7mfp.bkt.clouddn.com/";
+	
+		var postData = {
+	
+		}
+	
+		var simpleUpload = function() {
+			var ramdomName = $key.val() + '_' + Math.random().toString(36).substr(2) + $pickfiles.val().match(/\.?[^.\/]+$/);
+			$key.val(ramdomName);
+	
+			var f = new FormData(document.getElementById("testform"));
+			$.ajax({
+				url: 'http://up-z1.qiniu.com',	// Different bucket zone has different upload url, you can get right url by the browser error massage when uploading a file with wrong upload url.
+				type: 'POST',
+				data: f,
+				processData: false,
+				contentType: false,
+				xhr: function(){
+					myXhr = $.ajaxSettings.xhr();	 
+					if(myXhr.upload){
+						myXhr.upload.addEventListener('progress',function(e) {
+							// console.log(e);
+							if (e.lengthComputable) {
+								var percent = e.loaded/e.total*100;
+								$progress.html('上传：' + e.loaded + "/" + e.total+" bytes. " + percent.toFixed(2) + "%");
+							}
+						}, false);
+					}
+					return myXhr;
+				},
+				success: function(res) {
+					console.log("成功：" + JSON.stringify(res));
+					var str = '<span>已上传：' + res.key + '</span>';
+					if (res.key && res.key.match(/\.(jpg|jpeg|png|gif)$/)) {
+						str += '<img src="' + domain + res.key + '"/>';
+					}
+					$uploadedResult.html(str);
+				},
+				error: function(res) {	
+					console.log("失败:" +	JSON.stringify(res));
+					$uploadedResult.html('上传失败：' + res.responseText);
+				}
+			});
+			return false;
+		}
+	
+		$('#submitBtn').on('click', simpleUpload);
+	</script> -->
+	
+
+	<script>
+		var $selectedFile = $('.selected-file');
+		var $progress = $(".progress");
+		// var $uploadedResult = $('.uploaded-result');
+
+		/*var uploader = Qiniu.uploader({
+			browse_button: 'pickfiles',			//上传选择的点选按钮，**必需**
+			uptoken : 'YpOBLwOzxNPBDAAD9cJaND2xh3TkgtTilQERWHSByAQ_:9CNVM9IegER_FjIbGKw3qcjTvIQ=:eyJzY29wZSI6ImJwbXRlc3QiLCJkZWFkbGluZSI6MTU0OTIxNTMxNX0=',			//若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
+			
+			domain: 'http://olt0d7mfp.bkt.clouddn.com/',   //bucket 域名，下载资源时用到，**必需**
+			get_new_uptoken: false,				//设置上传文件的时候是否每次都重新获取新的token
+			
+			max_file_size: '100mb',				//最大文件体积限制
+			
+			max_retries: 3,						//上传失败最大重试次数
+			
+			chunk_size: '4mb',					//分块上传时，每片的体积
+			// auto_start: false,					//选择文件后自动上传，若关闭需要自己绑定事件触发上传
+			init: {
+				'FilesAdded': function(up, files) {
+					plupload.each(files, function(file) {
+						// 文件添加进队列后,处理相关的事情
+						console.log('FilesAdded');
+					});
+				},
+				'BeforeUpload': function(up, file) {
+					// 每个文件上传前,处理相关的事情
+					console.log('BeforeUpload');
+				},
+				'UploadProgress': function(up, file) {
+					// 每个文件上传时,处理相关的事情
+					console.log('UploadProgress');
+					// 禁用browser按钮
+					uploader.disableBrowse(true);
+				},
+				'FileUploaded': function(up, file, info) {
+					console.log('FileUploaded');
+	
+					var domain = up.getOption('domain');
+					var res = $.parseJSON(info.response);
+					var sourceLink = domain + res.key;		// 获取上传成功后的文件的Url
+
+					var str = '<span>已上传：' + res.key + '</span>';
+					if (res.key && res.key.match(/\.(jpg|jpeg|png|gif)$/)) {
+						str += '<img src="' + sourceLink + '"/>';
+					}
+					$uploadedResult.html(str);
+
+
+				},
+				'Error': function(up, err, errTip) {
+					//上传出错时,处理相关的事情
+					console.log('Error');
+					// 激活browser按钮
+					uploader.disableBrowse(false);
+					
+				},
+				'UploadComplete': function() {
+					//队列文件处理完毕后,处理相关的事情
+					console.log('UploadComplete');
+					// 激活browser按钮
+					uploader.disableBrowse(false);
+				},
+				'Key': function(up, file) {
+					// 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+					// 该配置必须要在 unique_names: false , save_key: false 时才生效
+					console.log('Key');
+					var key = $('#key').val() + '_' + (new Date()).valueOf();
+					if (file.name.match(/\.(jpg|jpeg|png|gif)/)) {
+						key += file.name.match(/\.(jpg|jpeg|png|gif)/)[0];
+					}
+					// do something with key here
+					return key
+				}
+			}
+		});*/
+
+		var arr = ['a', 'b'];
+
+		$.each(arr, function(idx) {
+			var id = arr[idx];
+
+			(function(id) {
+				
+				var uploader = Qiniu.uploader({
+					browse_button: id,			//上传选择的点选按钮，**必需**
+					uptoken : 'pBwzxNPBDAAD9cJaND2xh3TkgtTilQERWHSByAQ_:9CNVM9IegER_FjIbGKw3qcjTvIQ=:eyJzY29wZSI6ImJwbXRlc3QiLCJkZWFkbGluZSI6MTU0OTIxNTMxNX0=',			//若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
+					
+					domain: 'http://olt0d7mfp.bkt.clouddn.com/',   //bucket 域名，下载资源时用到，**必需**
+					get_new_uptoken: false,				//设置上传文件的时候是否每次都重新获取新的token
+					
+					max_file_size: '100mb',				//最大文件体积限制
+					
+					max_retries: 3,						//上传失败最大重试次数
+					
+					chunk_size: '4mb',					//分块上传时，每片的体积
+					auto_start: true,					//选择文件后自动上传，若关闭需要自己绑定事件触发上传
+					init: {
+						'FilesAdded': function(up, files) {
+							plupload.each(files, function(file) {
+								// 文件添加进队列后,处理相关的事情
+								console.log('FilesAdded');
+							});
+						},
+						'BeforeUpload': function(up, file) {
+							// 每个文件上传前,处理相关的事情
+							console.log('BeforeUpload');
+						},
+						'UploadProgress': function(up, file) {
+							// 每个文件上传时,处理相关的事情
+							console.log('UploadProgress');
+							// 禁用browser按钮
+							uploader.disableBrowse(true);
+						},
+						'FileUploaded': function(up, file, info) {
+							console.log('FileUploaded');
+			
+							var domain = up.getOption('domain');
+							var res = $.parseJSON(info.response);
+							var sourceLink = domain + res.key;		// 获取上传成功后的文件的Url
+
+							var str = '<span>已上传：' + res.key + '</span>';
+							if (res.key && res.key.match(/\.(jpg|jpeg|png|gif)$/)) {
+								str += '<img src="' + sourceLink + '"/>';
+							}
+
+							$('#' + id).after('<div class="class_' + id + '"></div>');
+							var $uploadedResult = $('#' + id).next();
+							$uploadedResult.html(str);
+
+
+						},
+						'Error': function(up, err, errTip) {
+							//上传出错时,处理相关的事情
+							console.log('Error');
+							// 激活browser按钮
+							uploader.disableBrowse(false);
+							
+						},
+						'UploadComplete': function() {
+							//队列文件处理完毕后,处理相关的事情
+							console.log('UploadComplete');
+							// 激活browser按钮
+							uploader.disableBrowse(false);
+						},
+						'Key': function(up, file) {
+							// 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+							// 该配置必须要在 unique_names: false , save_key: false 时才生效
+							console.log('Key');
+							var key = /*$('#key').val() */'test_' + id + '_' + (new Date()).valueOf();
+							if (file.name.match(/\.(jpg|jpeg|png|gif)/)) {
+								key += file.name.match(/\.(jpg|jpeg|png|gif)/)[0];
+							}
+							// do something with key here
+							return key
+						}
+					}
+				});
+			})(id);
+
+		});
+
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>七牛云单文件上传</title>
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/qiniu/plupload.full.min.js"></script>
+	<script src="vendor/qiniu/qiniu.min.js"></script>
+</head>
+<body>
+	<form id="testform1" method="post" enctype="multipart/form-data">
+		<input type="text" name="token" value="pBwzxNPBDAAD9cJaND2xh3TkgtTilQERWHSByAQ_:9CNVM9IegER_FjIbGKw3qcjTvIQ=:eyJzY29wZSI6ImJwbXRlc3QiLCJkZWFkbGluZSI6MTU0OTIxNTMxNX0=">
+		<input type="text" name="key" id="key1" value="testSimpleFileName1">
+		<input type="file" name="file" id="pickfiles1">
+		<button type="button" id="submitBtn1">submit</button>
+		<div class="selected-file"></div>
+		<div class="progress"></div>
+		<div class="uploaded-result1"></div>
+	</form>
+
+	<form id="testform2" method="post" enctype="multipart/form-data">
+		<input type="text" name="token" value="pBwzxNPBDAAD9cJaND2xh3TkgtTilQERWHSByAQ_:9CNVM9IegER_FjIbGKw3qcjTvIQ=:eyJzY29wZSI6ImJwbXRlc3QiLCJkZWFkbGluZSI6MTU0OTIxNTMxNX0=">
+		<input type="text" name="key" id="key2" value="testSimpleFileName2">
+		<input type="file" name="file" id="pickfiles2">
+		<button type="button" id="submitBtn2">submit</button>
+		<div class="selected-file"></div>
+		<div class="progress"></div>
+		<div class="uploaded-result2"></div>
+	</form>
+
+	<!-- upload info -->
+
+	
+	<script>
+		// 简单测试
+	
+	// file name		eg: the file is image.jpg,but $key='a.jpg', you will upload the file named 'a.jpg'
+	
+		// upload info
+		var $selectedFile = $('.selected-file');
+		var $progress = $(".progress");
+	
+		var domain = "http://olt0d7mfp.bkt.clouddn.com/";
+	
+		var postData = {
+	
+		}
+	
+		var simpleUpload = function() {
+			var $key = $('#key1');
+			var $pickfiles = $('#pickfiles1');	// the file you selected
+			var $uploadedResult = $('.uploaded-result1');
+			
+
+			var ramdomName = $key.val() + '_' + Math.random().toString(36).substr(2) + $pickfiles.val().match(/\.?[^.\/]+$/);
+			$key.val(ramdomName);
+	
+			var f = new FormData(document.getElementById("testform1"));
+			$.ajax({
+				url: 'http://up-z1.qiniu.com',	// Different bucket zone has different upload url, you can get right url by the browser error massage when uploading a file with wrong upload url.
+				type: 'POST',
+				data: f,
+				processData: false,
+				contentType: false,
+				xhr: function(){
+					myXhr = $.ajaxSettings.xhr();	 
+					if(myXhr.upload){
+						myXhr.upload.addEventListener('progress',function(e) {
+							// console.log(e);
+							if (e.lengthComputable) {
+								var percent = e.loaded/e.total*100;
+								$progress.html('上传：' + e.loaded + "/" + e.total+" bytes. " + percent.toFixed(2) + "%");
+							}
+						}, false);
+					}
+					return myXhr;
+				},
+				success: function(res) {
+					console.log("成功：" + JSON.stringify(res));
+					var str = '<span>已上传：' + res.key + '</span>';
+					if (res.key && res.key.match(/\.(jpg|jpeg|png|gif)$/)) {
+						str += '<img src="' + domain + res.key + '"/>';
+					}
+					$uploadedResult.html(str);
+				},
+				error: function(res) {	
+					console.log("失败:" +	JSON.stringify(res));
+					$uploadedResult.html('上传失败：' + res.responseText);
+				}
+			});
+			return false;
+		}
+
+		var simpleUpload2 = function() {
+			var $key = $('#key2');
+			var $pickfiles = $('#pickfiles2');	// the file you selected
+			var $uploadedResult = $('.uploaded-result2');
+
+
+			var ramdomName = $key.val() + '_' + Math.random().toString(36).substr(2) + $pickfiles.val().match(/\.?[^.\/]+$/);
+			$key.val(ramdomName);
+	
+			var f = new FormData(document.getElementById("testform2"));
+			$.ajax({
+				url: 'http://up-z1.qiniu.com',	// Different bucket zone has different upload url, you can get right url by the browser error massage when uploading a file with wrong upload url.
+				type: 'POST',
+				data: f,
+				processData: false,
+				contentType: false,
+				xhr: function(){
+					myXhr = $.ajaxSettings.xhr();	 
+					if(myXhr.upload){
+						myXhr.upload.addEventListener('progress',function(e) {
+							// console.log(e);
+							if (e.lengthComputable) {
+								var percent = e.loaded/e.total*100;
+								$progress.html('上传：' + e.loaded + "/" + e.total+" bytes. " + percent.toFixed(2) + "%");
+							}
+						}, false);
+					}
+					return myXhr;
+				},
+				success: function(res) {
+					console.log("成功：" + JSON.stringify(res));
+					var str = '<span>已上传：' + res.key + '</span>';
+					if (res.key && res.key.match(/\.(jpg|jpeg|png|gif)$/)) {
+						str += '<img src="' + domain + res.key + '"/>';
+					}
+					$uploadedResult.html(str);
+				},
+				error: function(res) {	
+					console.log("失败:" +	JSON.stringify(res));
+					$uploadedResult.html('上传失败：' + res.responseText);
+				}
+			});
+			return false;
+		}
+	
+		$('#submitBtn1').on('click', simpleUpload);
+		$('#submitBtn2').on('click', simpleUpload2);
+	</script>
+	
+
+</body>
+</html>
