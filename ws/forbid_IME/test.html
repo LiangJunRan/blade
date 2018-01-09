@@ -31,8 +31,10 @@
 				$this.on('input', function(event) {
 					// console.log('event >>>', event);
 					// console.log('event.originalEvent.inputType >>>', event.originalEvent.inputType);
-					if (event.originalEvent.inputType == "insertCompositionText") {
-						
+
+
+					// if (event.originalEvent.inputType == "insertCompositionText") {
+						// 低版本浏览器没有InputEvent属性，不加判断，强制进行以下操作
 						$p = $('<input type="password" />');
 						$this.after($p);
 
@@ -44,7 +46,7 @@
 						});
 
 						$p.focus();
-					}
+					// }
 				});
 			};
 
