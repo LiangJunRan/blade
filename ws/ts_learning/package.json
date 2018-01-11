@@ -1,0 +1,18 @@
+{
+  "name": "ts_learning",
+  "version": "1.0.0",
+  "description": "",
+  "main": "hello.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jquery": "^2.2.2",
+    "typescript": "^2.6.2"
+  },
+  "dependencies": {
+    "@types/angular": "^1.6.40"
+  }
+}
