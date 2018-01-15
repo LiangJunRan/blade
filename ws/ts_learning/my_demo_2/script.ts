@@ -1,3 +1,7 @@
+import { LoadingIndicatorBarDirective } from "./loading-indicator-bar";
+
+angular.module("mySuperAwesomeApp").directive("loadingIndicatorBar", LoadingIndicatorBarDirective.Factory());
+
 interface IHero {
   id: number;
   name: string;

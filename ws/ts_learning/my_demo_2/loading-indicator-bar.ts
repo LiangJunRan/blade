@@ -37,5 +37,16 @@ export class LoadingIndicatorBarDirective implements ng.IDirective {
 }
 
 export class LoadingIndicatorBarController {
-	
+	public static $inject: string[] = ["$timeout"];
+
+	private $element: ng.IAugmentedJQuery;
+	private $loading: ng.IAugmentedJQuery;
+
+	constructor (
+		private $timeout: ng.ITimeoutService
+	) {}
+
+	public init($element: ng.IAugmentedJQuery): ILoadingIndicatorController {
+
+	}
 }
