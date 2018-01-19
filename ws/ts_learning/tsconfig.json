@@ -4,6 +4,6 @@
     	// "target": "es6",
         "sourceMap": true
     },
-    "files": ["hello.ts"],
+    "files": ["hello.ts", "test.ts"],
     "types": ["jquery"]
 }

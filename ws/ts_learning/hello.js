@@ -93,6 +93,18 @@ console.log("getLength: " + getLength(123));
 // 报error TS2304: Cannot find name 'Iterable'.错误，修改tsconfig中的编译选项
 //		target: es6 亲测好用
 // var $node = $('<div></div>');
+// target: es6 是编译成什么规范的代码，有区别，举个例子
+/*
+    let str = `a: ${a}
+    b: ${b};`
+
+    在不配置编译成es6的时候，编译生成的代码如下:
+    var str = "a: " + a + "\nb: " + b + ";";
+
+    在配置成es6语法时，生成代码如下：
+    let str = `a: ${a}
+    b: ${b};`
+*/
 var tta = 1;
 var ttb = 'test';
 console.log("tta: " + tta + ", ttb: " + ttb);
