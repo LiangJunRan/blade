@@ -23,7 +23,7 @@
         </div>
         <div class="content-writing-text">
             <div class="text-container Scroll-one" id="aaa" style="position: relative; height: 400px;">
-                <textarea id="textArea" class="writeText" name="content" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" style=" width: calc(100% - 6px); position: relative; display: block; resize: none; overflow: hidden;">pspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspspsaaaaaa</textarea>
+                <textarea id="textArea" class="writeText" name="content" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" style=" width: calc(100% - 6px); position: relative; display: block; resize: none; overflow: hidden;">pspsp</textarea>
             </div>
         </div>
 	</div>
@@ -86,7 +86,7 @@
 
 			$('#textArea').on('input', function() {
 				// 每次输入，将textarea内容高度取到后减去两个padding一个border的宽度，设为自己的高度，实现内容自动扩充textarea高度
-				$(this).css('height', this.scrollHeight - document.defaultView.getComputedStyle(this, null)['padding-top'].toNumber() - document.defaultView.getComputedStyle(this, null)['padding-bottom'].toNumber() - document.defaultView.getComputedStyle(this, null)['border-bottom-width'].toNumber());
+				$(this).css('height', this.scrollHeight - document.defaultView.getComputedStyle(this, null)['padding-top'].toNumber() - document.defaultView.getComputedStyle(this, null)['padding-bottom'].toNumber()/* - document.defaultView.getComputedStyle(this, null)['border-bottom-width'].toNumber()*/);
 				// 更新滚动条滑块儿高度
 				ps.update();
 
@@ -101,10 +101,12 @@
 						$('.fuckIME').remove();
 						var curPos = getCursortPosition($this[0]);
 						var originVal = $this.val();
-						// TODO: 有问题
-						$this.val($this.val().replace(/\b[\ ]{2,}/g, ' '));
+						$this.val($this.val().replace(/\b  +/g, ' '));
+						console.log('"' + $this.val() + '"');
+						console.log('"' + originVal + '"');
+						console.log($this.val() != originVal);
 						if ($this.val() != originVal){
-							setCaretPosition($this[0], curPos - 2);
+							setCaretPosition($this[0], curPos - 1);
 						}
 					});
 				});
