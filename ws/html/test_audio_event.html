@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../_commons/jquery/jquery.min.js"></script>
+</head>
+<body>
+	<audio src="files/chromeCanPlay.wav" id="a1" controls></audio>
+	<audio controls>
+		<source src="files/chromeCanPlay.wav">
+		您的浏览器不支持 audio 元素。
+	</audio>
+
+	<script>
+		$('audio').on('ended', function(event) {
+			console.log('>>>', $(event.target).attr('id'));
+		})
+	</script>
+</body>
+</html>
