@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>测试mCustomScrollBar</title>
+
+	<link rel="stylesheet" href="node_modules/perfect-scrollbar/css/perfect-scrollbar.css">
+
+	<script src="../_commons/jquery/jquery.min.js"></script>
+	<script src="node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
+
+	<style>
+		.textarea-content {
+			background-color: #ffd;
+		}
+	</style>
+
+</head>
+<body>
+	<div id="textArea" class="textarea-container" style="height: 100%; width: 50%; position: absolute; padding: 0; margin: 0; right: 0; top: 0px; background-color: #afa;">
+		<p class="textarea-content" style="margin: 0; min-height: 400px;" contenteditable="true"></p>
+	</div>
+
+	<script>
+		/*String.prototype.toNumber = function() {
+			var str = this.valueOf();
+			return parseInt(str.match(/\d/g));
+		}
+
+		// 获取光标位置
+		function getCursortPosition (textDom) {
+		    var cursorPos = 0;
+		    if (document.selection) {
+		        // IE Support
+		        textDom.focus ();
+		        var selectRange = document.selection.createRange();
+		        selectRange.moveStart ('character', -textDom.value.length);
+		        cursorPos = selectRange.text.length;
+		    } else if (textDom.selectionStart || textDom.selectionStart == '0') {
+		        // Firefox support
+		        cursorPos = textDom.selectionStart;
+		    } else if (window.getSelection) {
+		    	var range = window.getSelection();
+		    	console.log('range>>>', range);
+		    }
+		    return cursorPos;
+		}
+
+		// 设置光标位置
+		function setCaretPosition(textDom, pos){
+		    if(textDom.setSelectionRange) {
+		        // IE Support
+		        textDom.focus();
+		        textDom.setSelectionRange(pos, pos);
+		    }else if (textDom.createTextRange) {
+		        // Firefox support
+		        var range = textDom.createTextRange();
+		        range.collapse(true);
+		        range.moveEnd('character', pos);
+		        range.moveStart('character', pos);
+		        range.select();
+		    }
+		}*/
+
+		$(document).ready(function(){
+			/*
+				FromURL: https://www.cnblogs.com/screw/p/5266572.html
+				Perfect ScrollBar使用要求：
+
+				• 必须有一个内容元素
+				• 容器必须拥有一个'position'的CSS样式定义
+				• 滚动条的position必须是'absolute'
+				• scrollbar-x必须拥有一个bottom的样式定义，scrollbar-必须有一个'right'的样式定义
+			*/
+
+			window.ps = new PerfectScrollbar('#textArea', {
+				wheelSpeed: 1,
+				wheelPropagation: true,
+				minScrollbarLength: 20,
+				suppressScrollX: true
+			});
+
+			$('#textArea .textarea-content').on('input', function() {
+				// 每次输入，将textarea内容高度取到后减去两个padding一个border的宽度，设为自己的高度，实现内容自动扩充textarea高度
+				/*var old_height = $(this).height();
+				$(this).css('height', this.scrollHeight - document.defaultView.getComputedStyle(this, null)['padding-top'].toNumber() - document.defaultView.getComputedStyle(this, null)['padding-bottom'].toNumber());
+				console.log(old_height + ' -> ' + $(this).height());*/
+
+				// 更新滚动条滑块儿高度
+				ps.update();
+
+				// 禁用输入法
+				var $this = $(this);
+				$p = $('<input type="password" class="fuckIME" />');
+				$('body').append($p);
+
+				$p.on('focus', function(event) {
+					requestAnimationFrame(function() {
+						$this.focus();
+						$('.fuckIME').remove();
+						var curPos = getCursortPosition($this[0]);
+						console.log('curPos1:', curPos);
+						var originVal = $this.val();
+						$this.val($this.val().replace(/\b  +/g, ' '));
+						console.log('"' + $this.val() + '"');
+						console.log('"' + originVal + '"');
+						console.log($this.val() != originVal);
+						if ($this.val() != originVal){
+							setCaretPosition($this[0], curPos - 1);
+						}
+						console.log('curPos2:', curPos);
+					});
+				});
+
+				$p.focus();
+			});
+	    });
+	</script>
+</body>
+</html>
