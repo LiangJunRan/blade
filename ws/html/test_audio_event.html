@@ -3,19 +3,74 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-	<script src="../_commons/jquery/jquery.min.js"></script>
+	<script src="assets/jquery.min.js"></script>
 </head>
 <body>
-	<audio src="files/chromeCanPlay.wav" id="a1" controls></audio>
-	<audio controls>
-		<source src="files/chromeCanPlay.wav">
+	<h3>test event: ended</h3>
+	<audio src="files/Speaking_Q2_Heading.mp3" id="a1" controls></audio>
+	<audio id="a2" controls>
+		<source src="files/Speaking_Q2_Heading.mp3">
 		您的浏览器不支持 audio 元素。
 	</audio>
+	<hr>
+
+
+	<h3>test event: loadeddata</h3>
+
+
+	<label style="width: 80px; display: inline-block;" for="">none:</label>
+	<audio src="files/LRMonoPhase4.wav" preload="none" id="a3" controls>您的浏览器不支持 audio 元素。</audio><br>
+
+	<label style="width: 80px; display: inline-block;" for="">auto:</label>
+	<audio src="files/LRMonoPhase4.wav" preload="auto" id="a4" controls>您的浏览器不支持 audio 元素。</audio><br>
+
+	<label style="width: 80px; display: inline-block;" for="">metadata:</label>
+	<audio src="files/LRMonoPhase4.wav" preload="metadata" id="a5" controls>您的浏览器不支持 audio 元素。</audio><br>
+
+	<label style="width: 80px; display: inline-block;" for="">load:</label>
+	<audio src="files/LRMonoPhase4.wav" preload="load" id="a6" controls>您的浏览器不支持 audio 元素。</audio><br>
+
+
+	<hr>
+
+
 
 	<script>
-		$('audio').on('ended', function(event) {
-			console.log('>>>', $(event.target).attr('id'));
+		/*$('audio').on('ended', function(event) {
+			console.log('ended>>>', $(event.target).attr('id'));
+		});
+
+		$('audio').on('loadeddata', function(event) {
+			var a = event.target;
+			console.log('loadeddata>>>', $(event.target).attr('id'));
+			console.log('    readyState', a.readyState);
+			console.log('    networkState', a.networkState);
+			console.log('    buffered.length', a.buffered.length);
+			console.log('    buffered end(a.buffered.length-1)', a.buffered.end(a.buffered.length-1));
+		});*/
+
+		$('audio').on('statechange', function(event) {
+			console.log('statechange', event.target.id);
 		})
+		$('audio').on('complete', function(event) {
+			console.log('complete', event.target.id);
+		})
+		$('audio').on('ended', function(event) {
+			console.log('ended', event.target.id);
+		})
+		$('audio').on('message', function(event) {
+			console.log('message', event.target.id);
+		})
+		$('audio').on('loaded', function(event) {
+			console.log('loaded', event.target.id);
+		})
+		$('audio').on('audioprocess', function(event) {
+			console.log('audioprocess', event.target.id);
+		})
+		$('audio').on('nodecreate', function(event) {
+			console.log('nodecreate', event.target.id);
+		})
+
 	</script>
 </body>
 </html>
