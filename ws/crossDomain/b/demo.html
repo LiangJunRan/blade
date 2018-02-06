@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="http://192.168.10.123:9293/_commons/jquery/jquery.min.js"></script>
+	<script src="http://192.168.10.123:9991/get.js"></script>
+</head>
+<body>
+	<script>
+		$.ajax({
+			url: 'http://192.168.10.123:9991/data.json',
+			type: 'GET',
+			dataType: 'jsonp',
+			xhrFields: {
+				withCredentials: true
+			},
+			jsonpCallback: 'cb',
+			success: function(data) {
+				console.log(data);
+			}
+		});
+	</script>
+</body>
+</html>

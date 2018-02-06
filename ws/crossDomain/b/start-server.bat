@@ -1,0 +1,1 @@
+http-server -p 9992 -o

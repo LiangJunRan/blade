@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	
+	<script src="../_commons/jquery/jquery.min.js"></script>
+
+	<style>
+		textarea {
+			margin: 0;
+			padding: 0;
+			/*background-color: rgba(0, 0, 0, 0.05);*/
+			/*border: none;*/
+		}
+
+		textarea {
+			width: 100%;
+		}
+
+		/* 鼠标事件穿透 */
+		#mouseMark, #mouseMark * {
+			pointer-events: none;
+		}
+
+		#mouseMark {
+			background-color: rgba(255, 0, 0, 0.3);
+			position: absolute;
+			width: 50px;
+			height: 50px;
+			border-radius: 25px;
+			animation: mouseMark 1s infinite;
+			transition-duration: 0.05s;
+			overflow: hidden;
+		}
+
+		#mouseMark .left {
+			display: inline-block;
+			width: 20px;
+			height: 50px;
+			transition-duration: 0.3s;
+		}
+		#mouseMark .middle {
+			display: inline-block;
+			width: 8px;
+			height: 50px;
+			margin-left: 1px;
+			margin-right: 1px;
+			/*border-left: solid 1px #000;
+			border-right: solid 1px #000;*/
+		}
+		#mouseMark .right {
+			display: inline-block;
+			width: 20px;
+			height: 50px;
+		}
+		#mouseMark .left.active,
+		#mouseMark .middle.active,
+		#mouseMark .right.active {
+			background-color: rgba(0, 255, 0, 0.5);
+		}
+
+		@keyframes mouseMark {
+			0% {
+				background-color: rgba(255, 0, 0, 0.05);
+			}
+			50% {
+				background-color: rgba(255, 0, 0, 0.1);
+			}
+			100% {
+				background-color: rgba(255, 0, 0, 0.05);
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div>
+		<textarea name="a" cols="30" rows="10"></textarea>
+		<textarea name="b" cols="30" rows="10"></textarea>
+		<textarea name="c" cols="30" rows="10"></textarea>
+	</div>
+
+	<div style="width: calc(100% - 16px); position: absolute; bottom: 0px;">
+		<button onclick="playback_all();">playback keyboard events</button>
+		<button onclick="reset();">reset</button>
+		<hr>
+		<textarea name="record" id="record" readonly cols="30" rows="10"></textarea>
+	</div>
+
+	<script>
+		var baseTimeStamp = (new Date).valueOf();
+
+		function getTimeStamp() {
+			return (new Date).valueOf() - baseTimeStamp;
+		}
+
+
+		// KEY EVENT -----------------------------------------------------------
+
+
+		var keyEventList = [];
+		document.onkeydown = function(e) {
+			var keyNum = window.event ? e.keyCode : e.which; //获取被按下的键值
+			var data = {key: keyNum, timestamp: getTimeStamp()};
+			keyEventList.push(data);
+			console.log('keydown ->', data.key, data.timestamp);
+		}
+		var nodePB = document.querySelector('#record');
+		function playback_keyEvents() {
+			console.log('playback_keyEvents');
+			for (var i = 0; i < keyEventList.length; i++) {
+				console.log('set');
+				(function(data) {
+					setTimeout(function() {
+						nodePB.value += '<' + data.key + '> ';
+					}, data.timestamp);
+				})(keyEventList[i]);
+			}
+		}
+
+		function reset() {
+			keyEventList = [];
+			baseTimeStamp = (new Date).valueOf();
+			nodePB.value = "";
+		}
+
+
+
+		// MOUSE EVENT ----------------------------------------------------------------
+
+
+
+		var mouseEventList = [];
+		var e1, e2;
+
+		function mouseEventBind() {
+			document.onmousemove = function(e) {
+				var actionData = {action: 'repaintMouse', data: {x: e.pageX, y: e.pageY}, timestamp: getTimeStamp()};
+				mouseReaction(actionData);
+				mouseEventList.push(actionData);
+			}
+
+			document.onmousedown = function(e) {
+				e1 = e;
+
+				var actionData = {action: 'mouseKeyDown', data: {which: e.which}, timestamp: getTimeStamp()};
+				mouseReaction(actionData);
+				mouseEventList.push(actionData);
+			}
+
+			document.onmouseup = function(e) {
+				e2 = e;
+
+				var actionData = {action: 'mouseKeyUp', data: {which: e.which}, timestamp: getTimeStamp()};
+				mouseReaction(actionData);
+				mouseEventList.push(actionData);
+
+				console.log(e1, e2);
+			}
+		}
+		mouseEventBind();
+
+		function mouseEventUnbind() {
+			document.onmousemove = undefined;
+			document.onmousedown = undefined;
+			document.onmouseup = undefined;
+		}
+
+		var whichSelectorMap = {
+			1: '#mouseMark .left',
+			2: '#mouseMark .middle',
+			3: '#mouseMark .right'
+		}
+		function mouseReaction(actionData) {
+			switch (actionData.action) {
+				case 'repaintMouse':
+					(function(data) {
+						var $mouseMark;
+						if ($('#mouseMark').length == 0) {
+							$mouseMark = $(
+								'<div id="mouseMark">' +
+									'<div class="left"></div>' +
+									'<div class="middle"></div>' +
+									'<div class="right"></div>' +
+								'</div>'
+							);
+							$('body').append($mouseMark);
+						} else {
+							var $mouseMark = $('#mouseMark');
+						}
+
+						$mouseMark.css({left: data.x - 25, top: data.y - 25});
+					})(actionData.data);
+					break;
+
+				case 'mouseKeyDown':
+					(function(data) {
+						$(whichSelectorMap[data.which]).addClass('active');
+					})(actionData.data);
+					break;
+
+				case 'mouseKeyUp':
+					(function(data) {
+						$(whichSelectorMap[data.which]).removeClass('active');
+					})(actionData.data);
+					break;
+
+				default: 
+					console.log('[ERROR]', actionData);
+			}
+		}
+
+		function playback_mouseEvents() {
+			console.log('playback_mouseEvents');
+			mouseEventUnbind();
+
+			for (var i = 0; i < mouseEventList.length; i++) {
+				console.log('set');
+				(function(actionData, i) {
+					setTimeout(function() {
+						mouseReaction(actionData);
+						if (i == mouseEventList.length - 1) {
+							mouseEventBind();
+						}
+					}, actionData.timestamp);
+				})(mouseEventList[i], i);
+			}
+		}
+
+		function playback_all() {
+			playback_keyEvents();
+			playback_mouseEvents();
+		}
+
+	</script>
+</body>
+
+</html>
