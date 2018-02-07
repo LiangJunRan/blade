@@ -1,0 +1,157 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* body {
+    font: 71%/1.5 Verdana, Sans-Serif;
+    background: #eee;
+} */
+
+.keyboard-container {
+    margin: 100px auto;
+    width: 688px;
+}
+
+
+/*Download by http://www.codefans.net*/
+
+#write {
+    margin: 0 0 5px;
+    padding: 5px;
+    width: 671px;
+    height: 200px;
+    font: 1em/1.5 Verdana, Sans-Serif;
+    background: #fff;
+    border: 1px solid #f9f9f9;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+#keyboard {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#keyboard li {
+    float: left;
+    margin: 0 5px 5px 0;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #999;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.capslock,
+.tab,
+.left-shift {
+    clear: left;
+}
+
+#keyboard .tab,
+#keyboard .delete {
+    width: 70px;
+}
+
+#keyboard .capslock {
+    width: 80px;
+}
+
+#keyboard .return {
+    width: 77px;
+}
+
+#keyboard .left-shift {
+    width: 95px;
+}
+
+#keyboard .right-shift {
+    width: 109px;
+}
+
+.lastitem {
+    margin-right: 0;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+#keyboard .space {
+    clear: left;
+    width: 681px;
+}
+
+.on {
+    display: none;
+}
+
+#keyboard li:hover,
+#keyboard li.active {
+    position: relative;
+    /*top: 1px;
+    left: 1px;*/
+    border-color: #0f9;
+    box-shadow: 0 0 5px 2px #0f9;
+    cursor: pointer;
+    transition-duration: 0.2s;
+}
+
+/* 鼠标事件穿透 */
+#mouseMark, #mouseMark * {
+	pointer-events: none;
+}
+
+#mouseMark {
+	background-color: rgba(255, 0, 0, 0.3);
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	border-radius: 25px;
+	animation: mouseMark 1s infinite;
+	transition-duration: 0.05s;
+	overflow: hidden;
+}
+
+#mouseMark .left {
+	display: inline-block;
+	width: 20px;
+	height: 50px;
+	transition-duration: 0.3s;
+}
+#mouseMark .middle {
+	display: inline-block;
+	width: 8px;
+	height: 50px;
+	margin-left: 1px;
+	margin-right: 1px;
+	/*border-left: solid 1px #000;
+	border-right: solid 1px #000;*/
+}
+#mouseMark .right {
+	display: inline-block;
+	width: 20px;
+	height: 50px;
+}
+#mouseMark .left.active,
+#mouseMark .middle.active,
+#mouseMark .right.active {
+	background-color: rgba(0, 255, 0, 0.5);
+}
+
+@keyframes mouseMark {
+	0% {
+		background-color: rgba(255, 0, 0, 0.05);
+	}
+	50% {
+		background-color: rgba(255, 0, 0, 0.1);
+	}
+	100% {
+		background-color: rgba(255, 0, 0, 0.05);
+	}
+}

@@ -5,73 +5,33 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	
+	<link rel="stylesheet" href="styles.css">
+
 	<script src="../_commons/jquery/jquery.min.js"></script>
 
 	<style>
 		textarea {
 			margin: 0;
 			padding: 0;
-			/*background-color: rgba(0, 0, 0, 0.05);*/
-			/*border: none;*/
 		}
 
 		textarea {
 			width: 100%;
 		}
 
-		/* 鼠标事件穿透 */
-		#mouseMark, #mouseMark * {
-			pointer-events: none;
+		.key {
+			float: left;
+			margin: 0 5px 5px 0;
+			width: 40px;
+			height: 40px;
+			line-height: 40px;
+			text-align: center;
+			background: #fff;
+			border: 1px solid #999;
+			-moz-border-radius: 5px;
+			-webkit-border-radius: 5px;
 		}
 
-		#mouseMark {
-			background-color: rgba(255, 0, 0, 0.3);
-			position: absolute;
-			width: 50px;
-			height: 50px;
-			border-radius: 25px;
-			animation: mouseMark 1s infinite;
-			transition-duration: 0.05s;
-			overflow: hidden;
-		}
-
-		#mouseMark .left {
-			display: inline-block;
-			width: 20px;
-			height: 50px;
-			transition-duration: 0.3s;
-		}
-		#mouseMark .middle {
-			display: inline-block;
-			width: 8px;
-			height: 50px;
-			margin-left: 1px;
-			margin-right: 1px;
-			/*border-left: solid 1px #000;
-			border-right: solid 1px #000;*/
-		}
-		#mouseMark .right {
-			display: inline-block;
-			width: 20px;
-			height: 50px;
-		}
-		#mouseMark .left.active,
-		#mouseMark .middle.active,
-		#mouseMark .right.active {
-			background-color: rgba(0, 255, 0, 0.5);
-		}
-
-		@keyframes mouseMark {
-			0% {
-				background-color: rgba(255, 0, 0, 0.05);
-			}
-			50% {
-				background-color: rgba(255, 0, 0, 0.1);
-			}
-			100% {
-				background-color: rgba(255, 0, 0, 0.05);
-			}
-		}
 	</style>
 </head>
 
@@ -83,11 +43,143 @@
 	</div>
 
 	<div style="width: calc(100% - 16px); position: absolute; bottom: 0px;">
-		<button onclick="playback_all();">playback keyboard events</button>
-		<button onclick="reset();">reset</button>
+		
 		<hr>
 		<textarea name="record" id="record" readonly cols="30" rows="10"></textarea>
 	</div>
+
+	<button onclick="playback_all();">playback keyboard events</button>
+	<button onclick="reset();">reset</button>
+
+	<div class="keyboard-pad">
+		<div class="main-zone">
+			<div class="func-block"></div>
+			<div class="main-block"></div>
+		</div>
+		<div class="ex-zone">
+			<div class="top-block"></div>
+			<div class="middle-block"></div>
+			<div class="bottom-block"></div>
+		</div>
+		<div class="number-zone">
+			<div class="top-block"></div>
+			<div class="calc-block"></div>
+		</div>
+	</div>
+
+	<!-- <div class="keyboard-container">
+		<ul id="keyboard">
+	
+			<li class="symbol"><span class="off">`</span><span class="on">~</span></li>
+	
+			<li class="symbol"><span class="off">1</span><span class="on">!</span></li>
+	
+			<li class="symbol"><span class="off">2</span><span class="on">@</span></li>
+	
+			<li class="symbol"><span class="off">3</span><span class="on">#</span></li>
+	
+			<li class="symbol"><span class="off">4</span><span class="on">$</span></li>
+	
+			<li class="symbol"><span class="off">5</span><span class="on">%</span></li>
+	
+			<li class="symbol"><span class="off">6</span><span class="on">^</span></li>
+	
+			<li class="symbol"><span class="off">7</span><span class="on">&amp;</span></li>
+	
+			<li class="symbol"><span class="off">8</span><span class="on">*</span></li>
+	
+			<li class="symbol"><span class="off">9</span><span class="on">(</span></li>
+	
+			<li class="symbol"><span class="off">0</span><span class="on">)</span></li>
+	
+			<li class="symbol"><span class="off">-</span><span class="on">_</span></li>
+	
+			<li class="symbol"><span class="off">=</span><span class="on">+</span></li>
+	
+			<li class="delete lastitem">delete</li>
+	
+			<li class="tab">tab</li>
+	
+			<li class="letter">q</li>
+	
+			<li class="letter">w</li>
+	
+			<li class="letter">e</li>
+	
+			<li class="letter">r</li>
+	
+			<li class="letter">t</li>
+	
+			<li class="letter">y</li>
+	
+			<li class="letter">u</li>
+	
+			<li class="letter">i</li>
+	
+			<li class="letter">o</li>
+	
+			<li class="letter">p</li>
+	
+			<li class="symbol"><span class="off">[</span><span class="on">{</span></li>
+	
+			<li class="symbol"><span class="off">]</span><span class="on">}</span></li>
+	
+			<li class="symbol lastitem"><span class="off">\</span><span class="on">|</span></li>
+	
+			<li class="capslock">caps lock</li>
+	
+			<li class="letter">a</li>
+	
+			<li class="letter">s</li>
+	
+			<li class="letter">d</li>
+	
+			<li class="letter">f</li>
+	
+			<li class="letter">g</li>
+	
+			<li class="letter">h</li>
+	
+			<li class="letter">j</li>
+	
+			<li class="letter">k</li>
+	
+			<li class="letter">l</li>
+	
+			<li class="symbol"><span class="off">;</span><span class="on">:</span></li>
+	
+			<li class="symbol"><span class="off">'</span><span class="on">&quot;</span></li>
+	
+			<li class="return lastitem">return</li>
+	
+			<li class="left-shift">shift</li>
+	
+			<li class="letter">z</li>
+	
+			<li class="letter">x</li>
+	
+			<li class="letter">c</li>
+	
+			<li class="letter">v</li>
+	
+			<li class="letter">b</li>
+	
+			<li class="letter">n</li>
+	
+			<li class="letter">m</li>
+	
+			<li class="symbol"><span class="off">,</span><span class="on">&lt;</span></li>
+	
+			<li class="symbol"><span class="off">.</span><span class="on">&gt;</span></li>
+	
+			<li class="symbol"><span class="off">/</span><span class="on">?</span></li>
+	
+			<li class="right-shift lastitem">shift</li>
+	
+			<li class="space lastitem">&nbsp;</li>
+	
+		</ul>
+	</div> -->
 
 	<script>
 		var baseTimeStamp = (new Date).valueOf();
@@ -233,6 +325,7 @@
 			playback_keyEvents();
 			playback_mouseEvents();
 		}
+
 
 	</script>
 </body>
