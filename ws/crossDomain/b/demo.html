@@ -8,7 +8,7 @@
 </head>
 <body>
 	<script>
-		$.ajax({
+		/*$.ajax({
 			url: 'http://192.168.10.123:9991/data.json',
 			type: 'GET',
 			dataType: 'jsonp',
@@ -19,6 +19,23 @@
 			success: function(data) {
 				console.log(data);
 			}
+		});*/
+		$.ajax({
+		    url: "http://toefl.kaolawu.com/exercise/record/listening/1?submitStatus=0",
+		    type: 'GET',
+		    dataType: "jsonp",  //指定服务器返回的数据类型
+		    jsonpCallback: "showData",  //指定回调函数名称(正式为了避免冲突，使用文本开头+时间戳或随机数，然后使用jsonp作为key，后台用key值取值，作为返回值前的关键字)
+		    xhrFields: {
+		        withCredentials: true  
+		    }/*,
+		    success: function(data) {
+		        console.log('success',data);
+		    },
+			error: function(r){
+				console.log('err', r);
+			}*/
+		}).done(function(a) {
+		    console.log('success', a);
 		});
 	</script>
 </body>

@@ -7,28 +7,40 @@
 </head>
 <body>
 	<h3>test event: ended</h3>
-	<audio src="files/Speaking_Q2_Heading.mp3" id="a1" controls></audio>
+	<!-- <audio src="files/Speaking_Q2_Heading.mp3" id="a1" controls></audio>
 	<audio id="a2" controls>
 		<source src="files/Speaking_Q2_Heading.mp3">
 		您的浏览器不支持 audio 元素。
-	</audio>
+	</audio> -->
 	<hr>
 
 
 	<h3>test event: loadeddata</h3>
 
 
+	<!-- <label style="width: 80px; display: inline-block;" for="">none:</label>
+	<audio src="http://192.168.10.123:9293/audio_file.mp3?1" preload="none" id="a3" controls>您的浏览器不支持 audio 元素。</audio><br>
+	
+	<label style="width: 80px; display: inline-block;" for="">auto:</label>
+	<audio src="http://192.168.10.123:9293/audio_file.mp3?2" preload="auto" id="a4" controls>您的浏览器不支持 audio 元素。</audio><br>
+	
+	<label style="width: 80px; display: inline-block;" for="">metadata:</label>
+	<audio src="http://192.168.10.123:9293/audio_file.mp3?3" preload="metadata" id="a5" controls>您的浏览器不支持 audio 元素。</audio><br>
+	
+	<label style="width: 80px; display: inline-block;" for="">load:</label>
+	<audio src="http://192.168.10.123:9293/audio_file.mp3?4" preload="load" id="a6" controls>您的浏览器不支持 audio 元素。</audio><br> -->
+
 	<label style="width: 80px; display: inline-block;" for="">none:</label>
-	<audio src="files/LRMonoPhase4.wav" preload="none" id="a3" controls>您的浏览器不支持 audio 元素。</audio><br>
+	<audio src="files/chromeCanNOTPlay_2666.wav?1" preload="none" id="a3" controls>您的浏览器不支持 audio 元素。</audio><br>
 
 	<label style="width: 80px; display: inline-block;" for="">auto:</label>
-	<audio src="files/LRMonoPhase4.wav" preload="auto" id="a4" controls>您的浏览器不支持 audio 元素。</audio><br>
+	<audio src="files/chromeCanNOTPlay_2666.wav?2" preload="auto" id="a4" controls>您的浏览器不支持 audio 元素。</audio><br>
 
 	<label style="width: 80px; display: inline-block;" for="">metadata:</label>
-	<audio src="files/LRMonoPhase4.wav" preload="metadata" id="a5" controls>您的浏览器不支持 audio 元素。</audio><br>
+	<audio src="files/chromeCanNOTPlay_2666.wav?3" preload="metadata" id="a5" controls>您的浏览器不支持 audio 元素。</audio><br>
 
 	<label style="width: 80px; display: inline-block;" for="">load:</label>
-	<audio src="files/LRMonoPhase4.wav" preload="load" id="a6" controls>您的浏览器不支持 audio 元素。</audio><br>
+	<audio src="files/chromeCanNOTPlay_2666.wav?4" preload="load" id="a6" controls>您的浏览器不支持 audio 元素。</audio><br>
 
 
 	<hr>
@@ -49,27 +61,58 @@
 			console.log('    buffered end(a.buffered.length-1)', a.buffered.end(a.buffered.length-1));
 		});*/
 
-		$('audio').on('statechange', function(event) {
-			console.log('statechange', event.target.id);
-		})
-		$('audio').on('complete', function(event) {
-			console.log('complete', event.target.id);
-		})
-		$('audio').on('ended', function(event) {
-			console.log('ended', event.target.id);
-		})
-		$('audio').on('message', function(event) {
-			console.log('message', event.target.id);
-		})
-		$('audio').on('loaded', function(event) {
-			console.log('loaded', event.target.id);
-		})
-		$('audio').on('audioprocess', function(event) {
-			console.log('audioprocess', event.target.id);
-		})
-		$('audio').on('nodecreate', function(event) {
-			console.log('nodecreate', event.target.id);
-		})
+		/*$('audio').on('abort', function(event) {console.log('abort', event.target.id);});
+
+		$('audio').on('canplay', function(event) {console.log('canplay', event.target.id);});
+
+		$('audio').on('canplaythrough', function(event) {console.log('canplaythrough', event.target.id);});
+
+		$('audio').on('durationchange', function(event) {console.log('durationchange', event.target.id);});
+
+		$('audio').on('emptied', function(event) {console.log('emptied', event.target.id);});*/
+
+		$('audio').on('ended', function(event) {console.log('ended', event.target.id);});
+
+		$('audio').on('error', function(event) {
+			console.log('error', event.target.id, event.target.error);
+			console.log('     ', event.target.error.message);
+			if (event.target.error.message.match(/PIPELINE_ERROR_DECODE/) !== null) {
+				console.error('音频解码失败！[MSG] PIPELINE_ERROR_DECODE', event.target.src);
+			}
+		});
+
+		/*$('audio').on('loadeddata', function(event) {console.log('loadeddata', event.target.id);});
+
+		$('audio').on('loadedmetadata', function(event) {console.log('loadedmetadata', event.target.id);});
+
+		$('audio').on('loadstart', function(event) {console.log('loadstart', event.target.id);});
+
+		$('audio').on('pause', function(event) {console.log('pause', event.target.id);});
+
+		$('audio').on('play', function(event) {console.log('play', event.target.id);});
+
+		$('audio').on('playing', function(event) {console.log('playing', event.target.id);});
+
+		$('audio').on('progress', function(event) {console.log('progress', event.target.id);});
+
+		$('audio').on('ratechange', function(event) {console.log('ratechange', event.target.id);});
+
+		$('audio').on('readystatechange', function(event) {console.log('ready', event.target.id);});
+
+		$('audio').on('seeked', function(event) {console.log('seeked', event.target.id);});
+
+		$('audio').on('seeking', function(event) {console.log('seeking', event.target.id);});
+
+		$('audio').on('stalled', function(event) {console.log('stalled', event.target.id);});
+
+		$('audio').on('suspend', function(event) {console.log('suspend', event.target.id);});
+
+		$('audio').on('timeupdate', function(event) {console.log('timeupdate', event.target.id);});
+
+		$('audio').on('volumechange', function(event) {console.log('volumechange', event.target.id);});
+
+		$('audio').on('waiting', function(event) {console.log('waiting', event.target.id);});*/
+
 
 	</script>
 </body>

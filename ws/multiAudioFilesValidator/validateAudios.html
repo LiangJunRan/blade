@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="assets/localStorageExtend.js"></script>
+	<style>
+		textarea {
+			width: 100%;
+			height: 600px;
+			resize: none;
+		}
+	</style>
+</head>
+<body>
+	<textarea id="report"></textarea>
+	<button onclick="go();">GO</button>
+	<script>
+		function go() {
+			var lst = $('#report').val().split('\n');
+			console.log('Count', lst.length);
+
+			var urlOnly = new RegExp(/^http.*\.(mp3|wav)$/);
+			for (var i = 0; i < lst.length; i++) {
+				var item = lst[i];
+
+				if (urlOnly.test(item)) {
+					
+				}
+			}
+		}
+	</script>
+</body>
+</html>

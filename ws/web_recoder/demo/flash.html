@@ -12,21 +12,21 @@
 </head>
 <body>
 	<label>使用播放器类型</label>
-	<select name="playerType">
+	<!-- <select name="playerType">
 		<option value="html5">html5</option>
 		<option value="flash">flash</option>
-	</select>
+	</select> -->
 
 	<hr>
 
 	<input type="hidden" name="freestyle" >
 
-	<!-- <input id="recordswf" type="hidden" data-url="vendor/FlashWavRecord/recorder.swf">
+	<input id="recordswf" type="hidden" data-url="vendor/FlashWavRecord/recorder.swf">
 	
 	<button id="start" onclick="startRecording()">start</button>
 	<button id="stop" onclick="stopRecording()">stop</button>
 	<button id="play" onclick="play()">play</button>
-	<button id="playStop" onclick="stopPlay()">pause</button> -->
+	<button id="playStop" onclick="stopPlay()">pause</button>
 
 
 	<span id="flashcontent">
@@ -36,7 +36,33 @@
 	<div><button class="show_settings" onclick="microphonePermission()">Microphone permission</button></div>
 
 	<script>
-		$.fn.renderRecorder = function(_opt) {
+		function __flashChecker() {
+			var hasFlash = 0; //是否安装了flash
+			var flashVersion = 0; //flash版本
+			if (document.all) {
+				var swf = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+				if (swf) {
+					hasFlash = 1;
+					VSwf = swf.GetVariable("$version");
+					flashVersion = parseInt(VSwf.split(" ")[1].split(",")[0]);
+				}
+			} else {
+				if (navigator.plugins && navigator.plugins.length > 0) {
+					var swf = navigator.plugins["Shockwave Flash"];
+					if (swf) {
+						hasFlash = 1;
+						var words = swf.description.split(" ");
+						for (var i = 0; i < words.length; ++i) {
+							if (isNaN(parseInt(words[i]))) continue;
+							flashVersion = parseInt(words[i]);
+						}
+					}
+				}
+			}
+			return {hasFlash: hasFlash, version: flashVersion};
+		}
+	
+		/*$.fn.renderRecorder = function(_opt) {
 			var $this = $(this);
 
 			// flash环境检测方法
@@ -90,7 +116,7 @@
 				case 'flash':
 					break;
 			}
-		}
+		}*/
 
 
 		function initializeRecording() {
