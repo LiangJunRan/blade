@@ -40,7 +40,7 @@
 <body>
 	<!-- 正常方式实现 start -->
 	<h1>提交form的方式</h1>
-	<form id="f" action="testUrl" enctype="multipart/form-data" method="post">
+	<form id="f" action="http://192.168.10.123:9991" enctype="multipart/form-data" method="post">
 		<input type="file" name="files" multiple="true" accept="image/x-png, image/gif, image/jpeg, image/bmp">
 		<button type="button" onclick="formSubmit();">多文件上传</button>
 	</form>
@@ -72,7 +72,7 @@
 			
 			$.ajax({
 				type: 'POST',
-				url: "test",
+				url: "http://192.168.10.123:9991",
 				timeout: 30 * 1000,
 				data: formData,
 				processData: false,
