@@ -6,30 +6,85 @@
 	<script src="vendor/jquery/jquery.min.js"></script>
 	<script src="assets/localStorageExtend.js"></script>
 	<style>
+		body {
+			margin: 10px 10px;
+		}
 		textarea {
-			width: 100%;
-			height: 600px;
+			width: calc(100% - 7px);
+			height: 300px;
 			resize: none;
 		}
 	</style>
 </head>
 <body>
-	<textarea id="report"></textarea>
-	<button onclick="go();">GO</button>
+	<!-- 控制台部分 -->
+	<div>
+		<textarea id="urlList" localStorage="validateAudios@1"></textarea>
+		<button onclick="go();">GO</button>
+	</div>
+
 	<script>
 		function go() {
-			var lst = $('#report').val().split('\n');
+			let lst = $('#urlList').val().split('\n');
 			console.log('Count', lst.length);
 
-			var urlOnly = new RegExp(/^http.*\.(mp3|wav)$/);
-			for (var i = 0; i < lst.length; i++) {
-				var item = lst[i];
-
-				if (urlOnly.test(item)) {
-					
+			const urlTester = new RegExp(/^http.*\.(mp3|wav)$/);
+			for (let i = 0; i < lst.length; i++) {
+				let item = lst[i];
+				if (urlTester.test(item)) {
+					singleValidate(item);
+				} else {
+					console.log('PASS: ' + item);
 				}
 			}
 		}
+
+		function singleValidate(url) {
+			setTimeout(function() {
+				var $audio = $('<audio src="' + url + '" autoplay controls></audio>');
+
+				$audio.on('ended', function() {
+					console.log('音频检测通过！', event.target.src);
+					var okCode = 'OK';
+
+					// 记录正常
+					var urlStr = url.replace(/\./g, '\\.').replace(/\//g, '\\/');
+					eval('$("#urlList").val($("#urlList").val().replace(/' + urlStr + '/g, "' + urlStr + '\\t' + okCode + '"));$("#urlList").trigger("input")');
+
+					$audio.remove();
+				})
+
+				$audio.on('error', function(event) {
+					// console.log('err', event.target.error.message);
+
+					var errCode = event.target.error.message;
+
+					// 播放过程中，解码失败
+					if (event.target.error.message.match(/PIPELINE_ERROR_DECODE/) !== null) {
+						errCode = 'PIPELINE_ERROR_DECODE';
+					}
+					// 初始化失败，无法开始播放
+					else if (event.target.error.message.match(/PIPELINE_ERROR_INITIALIZATION_FAILED/) !== null) {
+						errCode = 'PIPELINE_ERROR_INITIALIZATION_FAILED';
+					}
+					// 未知错误，记录报错信息全部
+					else {
+						// do nothing
+					}
+
+					// 记录错误
+					var urlStr = url.replace(/\./g, '\\.').replace(/\//g, '\\/');
+					eval('$("#urlList").val($("#urlList").val().replace(/' + urlStr + '/g, "' + urlStr + '\\t' + errCode + '"));$("#urlList").trigger("input")');
+
+					$audio.remove();
+				});
+
+			}, 0);
+		}
+
+		
 	</script>
+
+	
 </body>
 </html>

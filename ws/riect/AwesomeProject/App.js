@@ -57,7 +57,7 @@ export default class LotsOfGreetings extends React.Component {
         <Text>测试应用不需要使用XCode，输出才需要</Text>
         <Text>测试应用使用测试机（安卓或苹果都行）</Text>
         <Text>安装Expo应用，局域网内扫描二维码即可测试</Text>
-        <Image source={pic} style={{width: 193, height: 110}}/>
+        <Image source={pic} style={{ width: 193, height: 110 }}/>
       
         <Greeting name="Rexxar" ></Greeting>
         <Greeting name="Jaina" />
