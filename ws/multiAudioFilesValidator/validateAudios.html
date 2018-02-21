@@ -2,41 +2,150 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
+	<title>Chrome音频批量检测</title>
 	<script src="vendor/jquery/jquery.min.js"></script>
 	<script src="assets/localStorageExtend.js"></script>
 	<style>
 		body {
 			margin: 10px 10px;
 		}
+		label, span {
+			font-size: 14px;
+		}
 		textarea {
 			width: calc(100% - 7px);
 			height: 300px;
 			resize: none;
 		}
+		input {
+			width: 3em;
+			border: 1px solid #000;
+			text-align: right;
+		}
+		.dashboard input {
+			background: #eee;
+			border: 1px solid #aaa;
+			color: #555;
+		}
 	</style>
 </head>
 <body>
-	<!-- 控制台部分 -->
-	<div>
-		<textarea id="urlList" localStorage="validateAudios@1"></textarea>
-		<button onclick="go();">GO</button>
+	<h1>Chrome音频批量检测</h1>
+
+	<!-- 数据部分 -->
+	<div class="data-part">
+		<label for="urlList">放入去重url:</label>
+		<textarea id="urlList" localStorage="validateAudios@10"></textarea>
+
+		<label for="multiRunLimit">并发检测数量设置:</label>
+		<input type="text" id="multiRunLimit" value="10" localStorage="validateAudios_multiRunLimit@10">
+
+		<span>&nbsp;-&gt;&nbsp;</span>
+
+		<button id="actBtn" onclick="go();">GO!</button>
+		<span id="info"></span>
+	</div>
+
+	<hr>
+
+	<!-- 仪表盘部分 -->
+	<div class="dashboard">
+		<label for="running">检测中:</label>
+		<input type="text" id="running" value="0" readonly>
+
+		<label for="waiting">排队中:</label>
+		<input type="text" id="waiting" value="0" readonly>
+
+		<label for="done">已完成:</label>
+		<input type="text" id="done" value="0" readonly>
+
+		<label for="error">错误数:</label>
+		<input type="text" id="error" value="0" readonly>
 	</div>
 
 	<script>
+		var multiRunLimit = 20;
+		var runningList = [];
+		var waitingList = [];
+		var passedList = [];
+		var doneCount = 0;
+		var errorCount = 0;
+
 		function go() {
+			let failed = false;
+			if ($('#multiRunLimit').val()) {
+				multiRunLimit = $('#multiRunLimit').val();
+			} else {
+				$('#multiRunLimit').val(multiRunLimit);
+				$('#multiRunLimit').trigger('input');
+			}
+
+			$('#actBtn').html('RUNNING...');
+			$('#actBtn').prop('disabled', true);
 			let lst = $('#urlList').val().split('\n');
-			console.log('Count', lst.length);
+			let passCount = 0;
+
+			$('#info').html('正在计算数量...');
 
 			const urlTester = new RegExp(/^http.*\.(mp3|wav)$/);
 			for (let i = 0; i < lst.length; i++) {
 				let item = lst[i];
 				if (urlTester.test(item)) {
-					singleValidate(item);
+					if (waitingList.indexOf(item) != -1) {
+						console.error('发现雷同项:', item);
+						failed = true;
+						$('#actBtn').html('FAILED');
+						$('#info').html('请去除雷同项后重新输入数据！！');
+					} else {
+						waitingList.push(item);
+					}
 				} else {
-					console.log('PASS: ' + item);
+					passedList.push(item);
 				}
 			}
+
+			if (failed) {
+				return;
+			}
+
+			console.log('Count:', lst.length);
+			console.log('Passed:', passedList.length);
+
+			$('#info').html('总计: ' + lst.length + '  跳过: ' + passedList.length);
+
+			runAllInLimit();
+		}
+
+		function runAllInLimit() {
+			// 未到达界限，取出一个运行
+			if (runningList.length < multiRunLimit && waitingList.length != 0) {
+				var url = waitingList.pop();
+				// 加入正在运行列表
+				runningList.push(url);
+				// 启动一个异步任务
+				singleValidate(url);
+
+			}
+			if (waitingList.length == 0 && runningList.length == 0) {
+				$('#actBtn').html('ALL-DONE');
+			} else {
+				// 更新状态
+				$('#running').val(runningList.length);
+				$('#waiting').val(waitingList.length);
+				$('#done').val(doneCount);
+				$('#error').val(errorCount);
+
+				requestAnimationFrame(runAllInLimit);
+			}
+		}
+
+		// 校验完毕后运行
+		function finalStep($audio) {
+			doneCount++;
+			let url = $audio.attr('src');
+			let idx = runningList.indexOf(url);
+			runningList.splice(idx, 1);		// 从正在运行的列表中去掉指定url
+			$audio.remove();
 		}
 
 		function singleValidate(url) {
@@ -44,19 +153,16 @@
 				var $audio = $('<audio src="' + url + '" autoplay controls></audio>');
 
 				$audio.on('ended', function() {
-					console.log('音频检测通过！', event.target.src);
 					var okCode = 'OK';
 
 					// 记录正常
 					var urlStr = url.replace(/\./g, '\\.').replace(/\//g, '\\/');
 					eval('$("#urlList").val($("#urlList").val().replace(/' + urlStr + '/g, "' + urlStr + '\\t' + okCode + '"));$("#urlList").trigger("input")');
 
-					$audio.remove();
+					finalStep($audio);
 				})
 
 				$audio.on('error', function(event) {
-					// console.log('err', event.target.error.message);
-
 					var errCode = event.target.error.message;
 
 					// 播放过程中，解码失败
@@ -76,7 +182,9 @@
 					var urlStr = url.replace(/\./g, '\\.').replace(/\//g, '\\/');
 					eval('$("#urlList").val($("#urlList").val().replace(/' + urlStr + '/g, "' + urlStr + '\\t' + errCode + '"));$("#urlList").trigger("input")');
 
-					$audio.remove();
+					errorCount++;
+
+					finalStep($audio);
 				});
 
 			}, 0);
