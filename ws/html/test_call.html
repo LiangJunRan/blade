@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="http://192.168.10.123:9293/_commons/jquery/jquery.min.js"></script>
+</head>
+<body>
+	<h1><a href="tel:010-82611818">010-82611818</a></h1>
+</body>
+</html>
+<script>
+var width=$(window).width();
+	$(window).resize(function(){
+		 width=$(window).width();
+		console.log(width)
+	})
+  if(width>768){
+
+  	$('h1 a').attr('href','#');
+  
+  }
+</script>

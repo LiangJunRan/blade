@@ -128,15 +128,18 @@
 				singleValidate(url);
 
 			}
+
+			// 更新状态
+			$('#running').val(runningList.length);
+			$('#waiting').val(waitingList.length);
+			$('#done').val(doneCount);
+			$('#error').val(errorCount);
+
 			if (waitingList.length == 0 && runningList.length == 0) {
+				// 结束运行
 				$('#actBtn').html('ALL-DONE');
 			} else {
-				// 更新状态
-				$('#running').val(runningList.length);
-				$('#waiting').val(waitingList.length);
-				$('#done').val(doneCount);
-				$('#error').val(errorCount);
-
+				// 继续运行
 				requestAnimationFrame(runAllInLimit);
 			}
 		}
