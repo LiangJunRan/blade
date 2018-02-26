@@ -4,24 +4,60 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<style>
+		.done {
+			text-decoration: line-through;
+		}
+		.hide {
+			display: none;
+		}
+	</style>
 </head>
 <body>
-	<div class="todo-list">
-		<div id="app">
-			<ol>
-				<li v-for="todo in todos">
-					{{ todo.text }}
-				</li>
-			</ol>
-			<input type="text" v-bind:value="message">
-			<hr>
-			{{ message }}
-			<button v-on:click="add">Add</button>
-		</div>
+	<div id="todoList">
+		<h4>Todo-List:</h4>
+		<ol>
+			<li v-for="todo in todos">
+				<input type="checkbox" v-model="todo.done">
+				<span v-bind:class="{ done: todo.done, hide: todo.hidden }">{{ todo.text }}</span>
+			</li>
+		</ol>
+		<ul>
+			<li v-if="todos.length == 0">
+				-- nothing --
+			</li>
+		</ul>
+		<button v-on:click="add">Add</button>
+		<input type="text" v-model="message">
+		to the Todo-list
+		<br>
+		<button v-on:click="del">Delete done-item{{ selectCount > 1 ? "s" : "" }}, count: {{ selectCount }}</button>
+	</div>
+
+	<hr>
+
+	<div id="demo">
+		<h4>Demo:</h4>
+		<h5>输入项绑定(双向)</h5>
+		<label for="">姓</label>
+		<input type="text" v-model="firstName">
+
+		<label for="">名</label>
+		<input type="text" v-model="lastName">
+
+		<label for="">姓氏</label>
+		<input type="text" v-model="firstName">
+		<br>
+		<h5>输出项绑定(单向)</h5>
+		<input type="text" v-bind:value="firstName">
+		<span>+</span>
+		<input type="text" v-bind:value="lastName">
+		<span>=</span>
+		{{ fullName }}
 	</div>
 	<script>
 		var app = new Vue({
-			el: '#app',
+			el: '#todoList',
 			data: {
 				message: 'hello vue',
 				todos: [
@@ -33,12 +69,33 @@
 			},
 			methods: {
 				add: function() {
-					console.log('add');
 					this.todos.push({ text: this.message });
 					this.message = "";
+				},
+				del: function() {
+					this.todos = this.todos.filter((todo) => { return !todo.done; });
+				}
+			},
+			computed: {
+				// 注意：computed中出现的变量不要在data里声明
+				selectCount: function() {
+					return this.todos.filter((val) => { return val.done == true; }).length;
 				}
 			}
-		})
+		});
+		
+		var vm = new Vue({
+			el: '#demo',
+			data: {
+				firstName: 'Foo',
+				lastName: 'Bar'
+			},
+			computed: {
+				fullName: function () {
+					return this.firstName + ' ' + this.lastName
+				}
+			}
+		});
 	</script>
 </body>
 </html>

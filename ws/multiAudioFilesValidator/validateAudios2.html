@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Chrome音频批量检测</title>
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="assets/localStorageExtend.js"></script>
+	<style>
+		body {
+			margin: 10px 10px;
+		}
+		label, span, input {
+			font-size: 9px;
+		}
+		textarea {
+			width: calc(100% - 7px);
+			height: 200px;
+			font-size: 9px;
+			resize: none;
+		}
+		input {
+			width: 3em;
+			border: 1px solid #000;
+			text-align: right;
+			margin-right: 10px;
+		}
+		.dashboard input {
+			background: #eee;
+			border: 1px solid #aaa;
+			color: #555;
+		}
+
+		.items {
+			max-height: 200px;
+			overflow-y: auto;
+		}
+	</style>
+</head>
+<body>
+	<h1>音频批量检测</h1>
+
+	<!-- <label>正在播放的音频对象:</label> -->
+	<div class="items">
+	</div>
+
+	<!-- 数据部分 -->
+	<div class="data-part">
+		<label for="urlList">放入去重url:</label>
+		<textarea id="urlList" localStorage="validateAudios@10"></textarea>
+
+		<label for="multiRunLimit">并发检测数量设置:</label>
+		<input type="text" id="multiRunLimit" value="10" localStorage="validateAudios_multiRunLimit@10">
+
+		<span>&nbsp;-&gt;&nbsp;</span>
+
+		<button id="actBtn" onclick="go();">GO!</button>
+		<span id="info"></span>
+	</div>
+
+	<hr>
+
+	<!-- 仪表盘部分 -->
+	<div class="dashboard">
+		<label for="currentTimeLen">监视对象数量(防止僵死):</label>
+		<input type="text" id="currentTimeLen" value="0" readonly>
+
+		<label for="relifeCount">解决僵死次数(ended=true):</label>
+		<input type="text" id="relifeCount" value="0" readonly>
+
+		<label for="replayCount">重新播放次数(ended=false):</label>
+		<input type="text" id="replayCount" value="0" readonly>
+
+		<br>
+
+		<label for="running">检测中:</label>
+		<input type="text" id="running" value="0" readonly>
+
+		<label for="waiting">排队中:</label>
+		<input type="text" id="waiting" value="0" readonly>
+
+		<label for="done">已完成:</label>
+		<input type="text" id="done" value="0" readonly>
+
+		<label for="error">错误数:</label>
+		<input type="text" id="error" value="0" readonly>
+	</div>
+
+	<script>
+		var multiRunLimit = 20;
+		var runningList = [];
+		var waitingList = [];
+		var passedList = [];
+		var doneCount = 0;
+		var errorCount = 0;
+
+		var startTimeStamp;
+		var lastStartTime;
+		var checkSleep = 10 * 1000;
+
+		var currentTimeMap = {};
+		var relifeCount = 0;
+		var replayCount = 0;
+
+		function go() {
+			let failed = false;
+			if ($('#multiRunLimit').val()) {
+				multiRunLimit = $('#multiRunLimit').val();
+			} else {
+				$('#multiRunLimit').val(multiRunLimit);
+				$('#multiRunLimit').trigger('input');
+			}
+
+			$('#actBtn').html('RUNNING...');
+			$('#actBtn').prop('disabled', true);
+			let lst = $('#urlList').val().split('\n');
+			let passCount = 0;
+
+			$('#info').html('正在计算数量...');
+
+			const urlTester = new RegExp(/^http.*\.(mp3|wav)$/);
+			for (let i = 0; i < lst.length; i++) {
+				let item = lst[i];
+				if (urlTester.test(item)) {
+					if (waitingList.indexOf(item) != -1) {
+						console.error('发现雷同项:', item);
+						failed = true;
+						$('#actBtn').html('FAILED');
+						$('#info').html('请去除雷同项后重新输入数据！！');
+					} else {
+						waitingList.push(item);
+					}
+				} else {
+					passedList.push(item);
+				}
+			}
+
+			if (failed) {
+				return;
+			}
+
+			console.log('Count:', lst.length);
+			console.log('Passed:', passedList.length);
+
+			$('#info').html('总计: ' + lst.length + '  跳过: ' + passedList.length);
+			startTimeStamp = (new Date()).valueOf();
+			lastStartTime = startTimeStamp;
+
+			runAllInLimit();
+		}
+
+		function checkZombieTask() {
+			var $audios = $('.items').find('audio');
+			$.each($audios, function(idx) {
+				var ado = $audios[idx];
+				if (ado.ended) {
+					$(ado).trigger('ended');
+					relifeCount++;
+				} else {
+					if (currentTimeMap[ado.src]) {
+						// 判断是否和上次记录的当前播放事件吻合
+						if (currentTimeMap[ado.src] === ado.currentTime) {
+							// 判断为莫名停滞，重新播放
+							ado.play();
+							replayCount++;
+						}
+					}
+					// 更新currentTimeMap
+					currentTimeMap[ado.src] = ado.currentTime;
+				}
+			});
+		}
+
+		function runAllInLimit() {
+			// 未到达界限，取出一个运行
+			if (runningList.length < multiRunLimit && waitingList.length != 0) {
+				var url = waitingList.pop();
+				// 加入正在运行列表
+				runningList.push(url);
+				// 启动一个异步任务
+				singleValidate(url);
+
+			}
+
+			// 更新状态
+			$('#currentTimeLen').val(countProperties(currentTimeMap));
+			$('#relifeCount').val(relifeCount);
+			$('#replayCount').val(replayCount);
+
+			$('#running').val(runningList.length);
+			$('#waiting').val(waitingList.length);
+			$('#done').val(doneCount);
+			$('#error').val(errorCount);
+
+			// 每过一个周期的时间，执行一次检查僵死
+			var nowTimeStamp = (new Date()).valueOf();
+			if ((nowTimeStamp - lastStartTime) >= checkSleep) {
+				lastStartTime = nowTimeStamp;
+
+				checkZombieTask();
+			}
+
+			if (waitingList.length == 0 && runningList.length == 0) {
+				// 结束运行
+				$('#actBtn').html('ALL-DONE');
+			} else {
+				// 继续运行
+				requestAnimationFrame(runAllInLimit);
+			}
+		}
+
+		// 校验完毕后运行
+		function finalStep($audio) {
+			doneCount++;
+			let url = $audio.attr('src');
+			let idx = runningList.indexOf(url);
+			runningList.splice(idx, 1);		// 从正在运行的列表中去掉指定url
+			delete currentTimeMap[url];		// 从当前播放时间对照表中删除指定项
+			$audio.remove();
+		}
+
+		function countProperties (obj) {
+			var count = 0;
+			for (var property in obj) {
+				if (Object.prototype.hasOwnProperty.call(obj, property)) {
+					count++;
+				}
+			}
+			return count;
+		}
+
+		var idx = 0;
+
+		function singleValidate(url) {
+			setTimeout(function() {
+				var $audio = $('<audio src="' + url + '" id="ado_' + idx + '" preload="none"></audio>');
+				idx++;
+
+				$audio.on('ended', function() {
+					var okCode = 'OK';
+
+					// 记录正常
+					var urlStr = url.replace(/\./g, '\\.').replace(/\//g, '\\/');
+					eval('$("#urlList").val($("#urlList").val().replace(/' + urlStr + '/g, "' + urlStr + '\\t' + okCode + '"));$("#urlList").trigger("input")');
+
+					finalStep($audio);
+				});
+
+				$audio.on('error', function(event) {
+					var errCode = event.target.error.message;
+
+					// 播放过程中，解码失败
+					if (event.target.error.message.match(/PIPELINE_ERROR_DECODE/) !== null) {
+						errCode = 'PIPELINE_ERROR_DECODE';
+					}
+					// 初始化失败，无法开始播放
+					else if (event.target.error.message.match(/PIPELINE_ERROR_INITIALIZATION_FAILED/) !== null) {
+						errCode = 'PIPELINE_ERROR_INITIALIZATION_FAILED';
+					}
+					// 未知错误，记录报错信息全部
+					else {
+						// do nothing
+					}
+
+					// 记录错误
+					var urlStr = url.replace(/\./g, '\\.').replace(/\//g, '\\/');
+					eval('$("#urlList").val($("#urlList").val().replace(/' + urlStr + '/g, "' + urlStr + '\\t' + errCode + '"));$("#urlList").trigger("input")');
+
+					errorCount++;
+
+					finalStep($audio);
+				});
+
+				$('.items').append($audio);
+
+				$audio[0].play();
+
+			}, 0);
+		}
+
+		
+	</script>
+
+	
+</body>
+</html>
