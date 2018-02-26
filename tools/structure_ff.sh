@@ -1,9 +1,14 @@
 #! /bin/bash
 
 # 批量下载，转换，结构化输出文件
-urlList="./urlList.txt"
-pathIn="./pathIn"
-pathOut="./pathOut"
+urlList="urlList.txt"
+pathIn="pathIn"
+pathOut="pathOut"
+
+sudo rm -rf $pathIn
+sudo rm -rf $pathOut
+mkdir $pathIn
+mkdir $pathOut
 
 # 从list文件中逐行取出url，循环直到结束
 for url in `cat $urlList`
