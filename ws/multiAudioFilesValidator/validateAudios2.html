@@ -55,6 +55,8 @@
 
 		<button id="actBtn" onclick="go();">GO!</button>
 		<span id="info"></span>
+
+		<input type="hidden" id="startAuto" value="0" localStorage="validateAudios_multiRunLimit@10">
 	</div>
 
 	<hr>
@@ -102,6 +104,7 @@
 		var replayCount = 0;
 
 		function go() {
+			$('#startAuto').val('1').trigger('input');
 			let failed = false;
 			if ($('#multiRunLimit').val()) {
 				multiRunLimit = $('#multiRunLimit').val();
@@ -201,6 +204,7 @@
 
 			if (waitingList.length == 0 && runningList.length == 0) {
 				// 结束运行
+				$('#startAuto').val('0').trigger('input');
 				$('#actBtn').html('ALL-DONE');
 			} else {
 				// 继续运行
@@ -277,7 +281,15 @@
 			}, 0);
 		}
 
-		
+		setTimeout(function() {
+			if ($('#startAuto').val() != '0') {
+				go();
+
+				setTimeout(function() {
+					location.reload();
+				}, 600 * 1000);
+			}
+		}, 5 * 1000);
 	</script>
 
 	
