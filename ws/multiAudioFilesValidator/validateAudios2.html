@@ -9,7 +9,7 @@
 		body {
 			margin: 10px 10px;
 		}
-		label, span, input {
+		label, span, input, .total {
 			font-size: 9px;
 		}
 		textarea {
@@ -24,6 +24,15 @@
 			text-align: right;
 			margin-right: 10px;
 		}
+		audio {
+			width: 150px;
+			border: 1px solid #000;
+		}
+		audio:after {
+			content: "";
+			width: 20px;
+			background-color: #0f0;
+		}
 		.dashboard input {
 			background: #eee;
 			border: 1px solid #aaa;
@@ -33,6 +42,30 @@
 		.items {
 			max-height: 200px;
 			overflow-y: auto;
+		}
+
+		.process, .process label {
+			/*line-height: 20px;*/
+		}
+
+		.process .autoRefresh {
+			display: inline-block;
+			width: 200px;
+			padding-left: 2px;
+			padding-right: 2px;
+			/*border: 1px solid #999;*/
+			background-color: #eee;
+			height: 7px;
+			border-radius: 5px;
+		}
+		.process .autoRefresh .bar {
+			width: 0;
+			top: 2px;
+			height: 3px;
+			border-radius: 5px;
+			position: relative;
+			background-color: #fff;
+			box-shadow: 0 0 5px 1px #0f0;
 		}
 	</style>
 </head>
@@ -48,15 +81,23 @@
 		<label for="urlList">放入去重url:</label>
 		<textarea id="urlList" localStorage="validateAudios@10"></textarea>
 
+		<label for="startAuto">自动启动:</label>
+		<input type="text" id="startAuto" value="0" localStorage="validateAudios_multiRunLimit@10">
+
 		<label for="multiRunLimit">并发检测数量设置:</label>
-		<input type="text" id="multiRunLimit" value="10" localStorage="validateAudios_multiRunLimit@10">
+		<input type="text" id="multiRunLimit" value="100" localStorage="validateAudios_multiRunLimit@10">
 
 		<span>&nbsp;-&gt;&nbsp;</span>
 
 		<button id="actBtn" onclick="go();">GO!</button>
 		<span id="info"></span>
 
-		<input type="hidden" id="startAuto" value="0" localStorage="validateAudios_multiRunLimit@10">
+		<span class="process">
+			<label for="">刷新</label>
+			<div class="autoRefresh">
+				<div class="bar"></div>
+			</div>
+		</span>
 	</div>
 
 	<hr>
@@ -87,8 +128,14 @@
 		<input type="text" id="error" value="0" readonly>
 	</div>
 
+	<hr>
+
+	<div class="total">
+		
+	</div>
+
 	<script>
-		var multiRunLimit = 20;
+		var multiRunLimit = 100;
 		var runningList = [];
 		var waitingList = [];
 		var passedList = [];
@@ -104,6 +151,10 @@
 		var replayCount = 0;
 
 		function go() {
+			const endWithEnter = new RegExp(/\n$/);
+			if (!endWithEnter.test($('#urlList').val())) {
+				$('#urlList').val($('#urlList').val() + '\n').trigger('input');
+			}
 			$('#startAuto').val('1').trigger('input');
 			let failed = false;
 			if ($('#multiRunLimit').val()) {
@@ -116,6 +167,7 @@
 			$('#actBtn').html('RUNNING...');
 			$('#actBtn').prop('disabled', true);
 			let lst = $('#urlList').val().split('\n');
+			lst.splice(lst.length - 1, 1);
 			let passCount = 0;
 
 			$('#info').html('正在计算数量...');
@@ -194,6 +246,32 @@
 			$('#done').val(doneCount);
 			$('#error').val(errorCount);
 
+			// 更新总计
+			let lst = $('#urlList').val().split('\n');
+			lst.splice(lst.length - 1, 1);
+			const urlWithResultTester = new RegExp(/^http.*\.(mp3|wav)\t.*$/);
+			let stateCountMap = {};
+			for (let i = 0; i < lst.length; i++) {
+				let item = lst[i];
+				if (urlWithResultTester.test(item)) {
+					let r = item.match(/^http.*\t(.*)$/);
+					if (r && r !== null && r[1]) {
+						stateMsg = r[1];
+						if (stateCountMap[stateMsg]) {
+							stateCountMap[stateMsg] ++;
+						} else {
+							stateCountMap[stateMsg] = 1;
+						}
+					}
+				}
+			}
+			let states = [];
+			$.each(stateCountMap, function(k) {
+				states.push(k + ': ' + stateCountMap[k]);
+			});
+			$('.total').html('累计详情&gt;&gt;&gt;<br>' + states.join('<br>'));
+
+
 			// 每过一个周期的时间，执行一次检查僵死
 			var nowTimeStamp = (new Date()).valueOf();
 			if ((nowTimeStamp - lastStartTime) >= checkSleep) {
@@ -236,7 +314,7 @@
 
 		function singleValidate(url) {
 			setTimeout(function() {
-				var $audio = $('<audio src="' + url + '" id="ado_' + idx + '" preload="none"></audio>');
+				var $audio = $('<audio src="' + url + '" id="ado_' + idx + '" preload="metadata" playbackRate="10" controls controlsList="nodownload"></audio>');
 				idx++;
 
 				$audio.on('ended', function() {
@@ -244,7 +322,7 @@
 
 					// 记录正常
 					var urlStr = url.replace(/\./g, '\\.').replace(/\//g, '\\/');
-					eval('$("#urlList").val($("#urlList").val().replace(/' + urlStr + '/g, "' + urlStr + '\\t' + okCode + '"));$("#urlList").trigger("input")');
+					eval('$("#urlList").val($("#urlList").val().replace(/' + urlStr + '\\n/g, "' + urlStr + '\\t' + okCode + '\\n"));$("#urlList").trigger("input")');
 
 					finalStep($audio);
 				});
@@ -267,7 +345,7 @@
 
 					// 记录错误
 					var urlStr = url.replace(/\./g, '\\.').replace(/\//g, '\\/');
-					eval('$("#urlList").val($("#urlList").val().replace(/' + urlStr + '/g, "' + urlStr + '\\t' + errCode + '"));$("#urlList").trigger("input")');
+					eval('$("#urlList").val($("#urlList").val().replace(/' + urlStr + '\\n/g, "' + urlStr + '\\t' + errCode + '\\n"));$("#urlList").trigger("input")');
 
 					errorCount++;
 
@@ -282,13 +360,35 @@
 		}
 
 		setTimeout(function() {
-			if ($('#startAuto').val() != '0') {
-				go();
+			var autoFreshTime = 600 * 1000;
 
-				setTimeout(function() {
-					location.reload();
-				}, 600 * 1000);
+			if ($('#startAuto').val() != '0' && !$('#actBtn').is(':disabled')) {
+				go();
 			}
+
+			setTimeout(function() {
+
+				// 定时刷新
+				setTimeout(function() {
+					if ($('#startAuto').val() != '0') {
+						location.reload();
+					}
+				}, autoFreshTime);
+
+				// 更新刷新进度条
+				(function(autoFreshTime) {
+					var st = (new Date()).valueOf();
+					function update_autoRefresh() {
+						var passTime = (new Date()).valueOf() - st;
+						var per = (passTime / autoFreshTime * 100).toFixed(2) + '%';
+						$('.process .autoRefresh .bar').css('width', per);
+						if ($('#actBtn').html() != 'ALL-DONE') {
+							requestAnimationFrame(update_autoRefresh);
+						}
+					}
+					update_autoRefresh();
+				})(autoFreshTime);
+			})
 		}, 5 * 1000);
 	</script>
 
