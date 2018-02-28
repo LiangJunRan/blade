@@ -84,6 +84,9 @@
 		<label for="startAuto">自动启动:</label>
 		<input type="text" id="startAuto" value="0" localStorage="validateAudios_multiRunLimit@10">
 
+		<label for="playbackRate">播放速率:</label>
+		<input type="text" id="playbackRate" value="1" localStorage="validateAudios_multiRunLimit@10">
+
 		<label for="multiRunLimit">并发检测数量设置:</label>
 		<input type="text" id="multiRunLimit" value="100" localStorage="validateAudios_multiRunLimit@10">
 
@@ -135,6 +138,10 @@
 	</div>
 
 	<script>
+		/*window.requestAnimationFrame = function(callback) {
+			window.setTimeout(callback, 1000);
+		}*/
+
 		var multiRunLimit = 100;
 		var runningList = [];
 		var waitingList = [];
@@ -150,12 +157,16 @@
 		var relifeCount = 0;
 		var replayCount = 0;
 
+		var playbackRate = 1;
+
 		function go() {
 			const endWithEnter = new RegExp(/\n$/);
 			if (!endWithEnter.test($('#urlList').val())) {
 				$('#urlList').val($('#urlList').val() + '\n').trigger('input');
 			}
 			$('#startAuto').val('1').trigger('input');
+			$('#playbackRate').val($('#playbackRate').val() || playbackRate);
+			playbackRate = parseFloat($('#playbackRate').val());
 			let failed = false;
 			if ($('#multiRunLimit').val()) {
 				multiRunLimit = $('#multiRunLimit').val();
@@ -199,6 +210,8 @@
 			$('#info').html('总计: ' + lst.length + '  跳过: ' + passedList.length);
 			startTimeStamp = (new Date()).valueOf();
 			lastStartTime = startTimeStamp;
+
+			startRefreshCount();
 
 			runAllInLimit();
 		}
@@ -314,7 +327,8 @@
 
 		function singleValidate(url) {
 			setTimeout(function() {
-				var $audio = $('<audio src="' + url + '" id="ado_' + idx + '" preload="metadata" playbackRate="10" controls controlsList="nodownload"></audio>');
+				var $audio = $('<audio src="' + url + '" id="ado_' + idx + '" preload="metadata" controls controlsList="nodownload"></audio>');
+				$audio[0].playbackRate = playbackRate;
 				idx++;
 
 				$audio.on('ended', function() {
@@ -359,15 +373,9 @@
 			}, 0);
 		}
 
-		setTimeout(function() {
+		function startRefreshCount() {
 			var autoFreshTime = 600 * 1000;
-
-			if ($('#startAuto').val() != '0' && !$('#actBtn').is(':disabled')) {
-				go();
-			}
-
 			setTimeout(function() {
-
 				// 定时刷新
 				setTimeout(function() {
 					if ($('#startAuto').val() != '0') {
@@ -388,7 +396,13 @@
 					}
 					update_autoRefresh();
 				})(autoFreshTime);
-			})
+			}, 0);
+		}
+
+		setTimeout(function() {
+			if ($('#startAuto').val() != '0' && !$('#actBtn').is(':disabled')) {
+				go();
+			}
 		}, 5 * 1000);
 	</script>
 
