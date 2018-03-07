@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		// 扩展String类型的原生方法，提供类似java或python的format方法
+		String.prototype.format = function(args) {
+			var result = this;
+			if (arguments.length > 0) {	
+				if (arguments.length == 1 && typeof (args) == "object") {
+					for (var key in args) {
+						if(args[key]!=undefined){
+							var reg = new RegExp("({" + key + "})", "g");
+							result = result.replace(reg, args[key]);
+						}
+					}
+				}
+				else {
+					for (var i = 0; i < arguments.length; i++) {
+						if (arguments[i] != undefined) {
+							var reg = new RegExp("({[" + i + "]})", "g");
+							result = result.replace(reg, arguments[i]);
+						}
+					}
+				}
+			}
+			return result;
+		}
+
+		var str = '【P1】普吉特海湾的两种鹿：<span contenteditable="true" spellcheck="false" class="writebox box-sm"></span>和<span contenteditable="true" spellcheck="false" class="writebox box-sm"></span>。##现在<span contenteditable="true" spellcheck="false" class="writebox box-sm"></span>很常见，而<span contenteditable="true" spellcheck="false" class="writebox box-sm"></span>从前在<span contenteditable="true" spellcheck="false" class="writebox box-sm"></span>很常见，现在局限于沼泽岛屿地带和哥伦比亚河下游的<span contenteditable="true" spellcheck="false" class="writebox box-sm"></span>。';
+		console.log(str);
+
+		function transSpan(str) {
+			var spMark = '*&%#@#%&';
+			var qTemp = '<span class="question-inline">{question}</span>';
+
+			var regExp = new RegExp('^([^<span]+)|([^<\/span>]+)$', 'g');
+			var outerNodes = str.match(regExp);
+			str = str.replace(regExp, spMark);
+			for (var i = 0; i < outerNodes.length; i++) {
+				console.log('outerNodes['+i+']=', outerNodes[i]);
+
+				str = str.replace(spMark, qTemp.format({'question': outerNodes[i]}));
+			}
+
+			console.log('1>', str);
+
+			var regExp2 = new RegExp('\/span>([^<>]+)?<', 'g');
+			var innerNodes = str.match(regExp2);
+			str = str.replace(regExp2, spMark);
+			for (var i = 0; i < innerNodes.length; i++) {
+				var sub = innerNodes[i];
+				sub = sub.replace('/span>', '');
+				sub = sub.substr(0, sub.length - 1);
+				str = str.replace(spMark, '/span>' + qTemp.format({'question': sub}) + '<');
+			}
+
+			console.log('2>', str);
+			return str;
+		}
+
+		console.log(transSpan(str));
+		
+	</script>
+</body>
+</html>

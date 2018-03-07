@@ -160,14 +160,14 @@
 		var playbackRate = 1;
 
 		function go() {
-			const endWithEnter = new RegExp(/\n$/);
+			var endWithEnter = new RegExp(/\n$/);
 			if (!endWithEnter.test($('#urlList').val())) {
 				$('#urlList').val($('#urlList').val() + '\n').trigger('input');
 			}
 			$('#startAuto').val('1').trigger('input');
 			$('#playbackRate').val($('#playbackRate').val() || playbackRate);
 			playbackRate = parseFloat($('#playbackRate').val());
-			let failed = false;
+			var failed = false;
 			if ($('#multiRunLimit').val()) {
 				multiRunLimit = $('#multiRunLimit').val();
 			} else {
@@ -177,15 +177,15 @@
 
 			$('#actBtn').html('RUNNING...');
 			$('#actBtn').prop('disabled', true);
-			let lst = $('#urlList').val().split('\n');
+			var lst = $('#urlList').val().split('\n');
 			lst.splice(lst.length - 1, 1);
-			let passCount = 0;
+			var passCount = 0;
 
 			$('#info').html('正在计算数量...');
 
-			const urlTester = new RegExp(/^http.*\.(mp3|wav)$/);
-			for (let i = 0; i < lst.length; i++) {
-				let item = lst[i];
+			var urlTester = new RegExp(/^http.*\.(mp3|wav)$/);
+			for (var i = 0; i < lst.length; i++) {
+				var item = lst[i];
 				if (urlTester.test(item)) {
 					if (waitingList.indexOf(item) != -1) {
 						console.error('发现雷同项:', item);
@@ -260,14 +260,14 @@
 			$('#error').val(errorCount);
 
 			// 更新总计
-			let lst = $('#urlList').val().split('\n');
+			var lst = $('#urlList').val().split('\n');
 			lst.splice(lst.length - 1, 1);
-			const urlWithResultTester = new RegExp(/^http.*\.(mp3|wav)\t.*$/);
-			let stateCountMap = {};
-			for (let i = 0; i < lst.length; i++) {
-				let item = lst[i];
+			var urlWithResultTester = new RegExp(/^http.*\.(mp3|wav)\t.*$/);
+			var stateCountMap = {};
+			for (var i = 0; i < lst.length; i++) {
+				var item = lst[i];
 				if (urlWithResultTester.test(item)) {
-					let r = item.match(/^http.*\t(.*)$/);
+					var r = item.match(/^http.*\t(.*)$/);
 					if (r && r !== null && r[1]) {
 						stateMsg = r[1];
 						if (stateCountMap[stateMsg]) {
@@ -278,7 +278,7 @@
 					}
 				}
 			}
-			let states = [];
+			var states = [];
 			$.each(stateCountMap, function(k) {
 				states.push(k + ': ' + stateCountMap[k]);
 			});
@@ -306,8 +306,8 @@
 		// 校验完毕后运行
 		function finalStep($audio) {
 			doneCount++;
-			let url = $audio.attr('src');
-			let idx = runningList.indexOf(url);
+			var url = $audio.attr('src');
+			var idx = runningList.indexOf(url);
 			runningList.splice(idx, 1);		// 从正在运行的列表中去掉指定url
 			delete currentTimeMap[url];		// 从当前播放时间对照表中删除指定项
 			$audio.remove();
@@ -342,24 +342,37 @@
 				});
 
 				$audio.on('error', function(event) {
-					var errCode = event.target.error.message;
+					console.log(event);
+					console.log(event.target.error);
+					var errCode = event.target.error.message || event.target.error.code;
 
-					// 播放过程中，解码失败
-					if (event.target.error.message.match(/PIPELINE_ERROR_DECODE/) !== null) {
-						errCode = 'PIPELINE_ERROR_DECODE';
-					}
-					// 初始化失败，无法开始播放
-					else if (event.target.error.message.match(/PIPELINE_ERROR_INITIALIZATION_FAILED/) !== null) {
-						errCode = 'PIPELINE_ERROR_INITIALIZATION_FAILED';
-					}
-					// 未知错误，记录报错信息全部
-					else {
-						// do nothing
+					if (event.target.error.message) {
+						// 播放过程中，解码失败
+						if (event.target.error.message.match(/PIPELINE_ERROR_DECODE/) !== null) {
+							errCode = 'PIPELINE_ERROR_DECODE';
+						}
+						// 初始化失败，无法开始播放
+						else if (event.target.error.message.match(/PIPELINE_ERROR_INITIALIZATION_FAILED/) !== null) {
+							errCode = 'PIPELINE_ERROR_INITIALIZATION_FAILED';
+						}
+						// 未知错误，记录报错信息全部
+						else {
+							// do nothing
+						}
+					} else {
+						// TODO /////////////////////////////////////////////////////////
+						var mediaError = event.target.error.__proto__;
+						errCode = 'ErrorCode: ' + errCode + ', MediaError: ' + JSON.stringify(mediaError);
+						errCode.replace(/\"/g, '\\"').replace(/\:/g, '\\:');
+						console.log('errCode:', errCode);
 					}
 
 					// 记录错误
-					var urlStr = url.replace(/\./g, '\\.').replace(/\//g, '\\/');
-					eval('$("#urlList").val($("#urlList").val().replace(/' + urlStr + '\\n/g, "' + urlStr + '\\t' + errCode + '\\n"));$("#urlList").trigger("input")');
+					// var urlStr = url.replace(/\./g, '\\.').replace(/\//g, '\\/');
+					// eval('$("#urlList").val($("#urlList").val().replace(/' + urlStr + '\\n/g, "' + urlStr + '\\t' + errCode + '\\n"));$("#urlList").trigger("input")');
+					var regExp = new RegExp(url + '\n','g');
+					var modifiedValue = $("#urlList").val().replace(regExp, url + '\t' + errCode + '\n');
+					$("#urlList").val(modifiedValue).trigger("input");
 
 					errorCount++;
 
