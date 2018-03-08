@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Multi file upload</title>
+	<script src="http://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+	<style>
+		.container {
+			height: 50px;
+			line-height: 50px;
+			vertical-align: bottom;
+		}
+		.fake-file-btn {
+			position: relative;
+			display: inline-block;
+			background: #D0EEFF;
+			border: 1px solid #99D3F5;
+			border-radius: 4px;
+			padding: 4px 12px;
+			overflow: hidden;
+			color: #1E88C7;
+			text-decoration: none;
+			text-indent: 0;
+			line-height: 20px;
+		}
+		.fake-file-btn:active {
+			box-shadow: 0 1px 5px 1px rgba(0, 255, 255, 0.3) inset;
+		}
+		.fake-file-btn input[type=file] {
+			position: absolute;
+			font-size: 100px;
+			right: 0;
+			top: 0;
+			opacity: 0;
+			filter: alpha(opacity=0);
+			cursor: pointer
+		}
+	</style>
+</head>
+<body>
+	<button id="go" onclick="go();">go</button>
+	<script>
+		function go() {
+			var blob = '';
+
+			var formDt = new FormData();
+			//追加文件数据
+			formDt.append('u', '666d06ab544e4bf5bfb2fe27364ecca2');
+			formDt.append('key', 'c03f33dd-809b-41ee-aac6-4384e0c204ac');
+			formDt.append('timuId', 543);
+			formDt.append('userId', 2);
+			formDt.append('audio1.mp3', blob, 'audio1.mp3');
+
+			$.ajax({
+				type: "POST",
+				url: "http://upload.kaolawu.com/exam/saveVoiceFile/",
+				async: false,
+				xhrFields: {
+					withCredentials: true
+				},
+				processData: false,
+				contentType: false,
+				data: formDt,
+				dataType : 'text',
+				success: function (data) {
+					console.log('SUCCESS', data);
+				},
+				error: function (data) {
+					console.log('ERROR', data);
+				}
+			});
+
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+# Netscape HTTP Cookie File
+# http://curl.haxx.se/rfc/cookie_spec.html
+# This is a generated file!  Do not edit.
+
+.kaolawu.com	TRUE	/	FALSE		SSOID	56c780c02eed423cbef7349d10a6c81c
