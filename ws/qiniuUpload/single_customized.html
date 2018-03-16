@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>七牛云单文件上传</title>
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<!-- <script src="vendor/qiniu/plupload.full.min.js"></script>
+	<script src="vendor/qiniu/qiniu.js" type="text/babel"></script> -->
+	<script src="assets/qiniuCustomized.js"></script>
+
+	<style>
+		.fake-btn {
+			position: relative;
+		    display: inline-block;
+		    background: #D0EEFF;
+		    border: 1px solid #99D3F5;
+		    border-radius: 4px;
+		    padding: 4px 12px;
+		    overflow: hidden;
+		    color: #1E88C7;
+		    text-decoration: none;
+		    text-indent: 0;
+		    line-height: 20px;
+		}
+		.fake-btn input[type=file] {
+			position: absolute;
+		    font-size: 100px;
+		    right: 0;
+		    top: 0;
+		    opacity: 0;
+		    filter: alpha(opacity=0);
+		    cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<form id="testform" method="post" enctype="multipart/form-data">
+		<input type="text" name="token" value="YpOBLwOzxNPBDAAD9cJaND2xh3TkgtTilQERWHSByAQ_:9CNVM9IegER_FjIbGKw3qcjTvIQ=:eyJzY29wZSI6ImJwbXRlc3QiLCJkZWFkbGluZSI6MTU0OTIxNTMxNX0=">
+		<input type="text" name="key" id="key" value="testSimpleFileName">
+		<span class="fake-btn" id="fake-btn">
+			伪装上传按钮
+			<input type="file" name="file" id="pickfiles">
+		</span>
+		<button type="button" id="submitBtn">submit</button>
+	</form>
+
+	<!-- upload info -->
+		<div class="selected-file"></div>
+		<div class="progress"></div>
+		<div class="uploaded-result"></div>
+
+	
+	<!-- <script>
+		// 简单测试
+	
+		var $key = $('#key');	// file name		eg: the file is image.jpg,but $key='a.jpg', you will upload the file named 'a.jpg'
+		var $pickfiles = $('#pickfiles');	// the file you selected
+	
+		// upload info
+		var $selectedFile = $('.selected-file');
+		var $progress = $(".progress");
+		var $uploadedResult = $('.uploaded-result');
+	
+		var domain = "http://olt0d7mfp.bkt.clouddn.com/";
+	
+		var postData = {
+	
+		}
+	
+		var simpleUpload = function() {
+			var ramdomName = $key.val() + '_' + Math.random().toString(36).substr(2) + $pickfiles.val().match(/\.?[^.\/]+$/);
+			$key.val(ramdomName);
+	
+			var f = new FormData(document.getElementById("testform"));
+			$.ajax({
+				url: 'http://up-z1.qiniu.com',	// Different bucket zone has different upload url, you can get right url by the browser error massage when uploading a file with wrong upload url.
+				type: 'POST',
+				data: f,
+				processData: false,
+				contentType: false,
+				xhr: function(){
+					myXhr = $.ajaxSettings.xhr();	 
+					if(myXhr.upload){
+						myXhr.upload.addEventListener('progress',function(e) {
+							// console.log(e);
+							if (e.lengthComputable) {
+								var percent = e.loaded/e.total*100;
+								$progress.html('上传：' + e.loaded + "/" + e.total+" bytes. " + percent.toFixed(2) + "%");
+							}
+						}, false);
+					}
+					return myXhr;
+				},
+				success: function(res) {
+					console.log("成功：" + JSON.stringify(res));
+					var str = '<span>已上传：' + res.key + '</span>';
+					if (res.key && res.key.match(/\.(jpg|jpeg|png|gif)$/)) {
+						str += '<img src="' + domain + res.key + '"/>';
+					}
+					$uploadedResult.html(str);
+				},
+				error: function(res) {	
+					console.log("失败:" +	JSON.stringify(res));
+					$uploadedResult.html('上传失败：' + res.responseText);
+				}
+			});
+			return false;
+		}
+	
+		$('#submitBtn').on('click', simpleUpload);
+	</script> -->
+	
+
+	<script>
+		var opt;
+		$('#pickfiles').on('change', function() {
+			opt = {
+				token_url: '',
+				data: {
+					file: this.files[0],
+					key: 'test_' + (new Date).valueOf() + '.jpg',
+					token: 'YpOBLwOzxNPBDAAD9cJaND2xh3TkgtTilQERWHSByAQ_:9CNVM9IegER_FjIbGKw3qcjTvIQ=:eyJzY29wZSI6ImJwbXRlc3QiLCJkZWFkbGluZSI6MTU0OTIxNTMxNX0='
+				},
+				beforeSend: function(xhr) {
+					console.log(xhr);
+					/*function(up, file) {
+						// 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+						// 该配置必须要在 unique_names: false , save_key: false 时才生效
+						console.log('Key');
+						var key = $('#key').val() + '_' + (new Date()).valueOf();
+						if (file.name.match(/\.(jpg|jpeg|png|gif)/)) {
+							key += file.name.match(/\.(jpg|jpeg|png|gif)/)[0];
+						}
+						// do something with key here
+						return key
+					}*/
+				},
+				success: function(res) {
+					console.log('upload success');
+					// var domain = $('#qiniuDomain').val();
+					console.log('res', res);
+					
+				},
+				error: function(res) {
+					console.log('upload error.', res);
+					
+				}
+			};
+		});
+
+
+
+		$('#submitBtn').on('click', function() {
+			console.log('opt', opt);
+			qiniu_upload(opt);
+
+			// uploader.start();
+		});
+
+		$('#pickfiles').on('select', function() {
+			console.log('select');
+		});
+	</script>
+
+</body>
+</html>

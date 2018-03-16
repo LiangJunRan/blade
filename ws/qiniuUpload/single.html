@@ -5,13 +5,40 @@
 	<title>七牛云单文件上传</title>
 	<script src="vendor/jquery/jquery.min.js"></script>
 	<script src="vendor/qiniu/plupload.full.min.js"></script>
-	<script src="vendor/qiniu/qiniu.min.js"></script>
+	<script src="vendor/qiniu/qiniu.js" type="text/babel"></script>
+	<style>
+		.fake-btn {
+			position: relative;
+		    display: inline-block;
+		    background: #D0EEFF;
+		    border: 1px solid #99D3F5;
+		    border-radius: 4px;
+		    padding: 4px 12px;
+		    overflow: hidden;
+		    color: #1E88C7;
+		    text-decoration: none;
+		    text-indent: 0;
+		    line-height: 20px;
+		}
+		.fake-btn input[type=file] {
+			position: absolute;
+		    font-size: 100px;
+		    right: 0;
+		    top: 0;
+		    opacity: 0;
+		    filter: alpha(opacity=0);
+		    cursor: pointer;
+		}
+	</style>
 </head>
 <body>
 	<form id="testform" method="post" enctype="multipart/form-data">
 		<input type="text" name="token" value="YpOBLwOzxNPBDAAD9cJaND2xh3TkgtTilQERWHSByAQ_:9CNVM9IegER_FjIbGKw3qcjTvIQ=:eyJzY29wZSI6ImJwbXRlc3QiLCJkZWFkbGluZSI6MTU0OTIxNTMxNX0=">
 		<input type="text" name="key" id="key" value="testSimpleFileName">
-		<input type="file" name="file" id="pickfiles">
+		<span class="fake-btn" id="fake-btn">
+			伪装上传按钮
+			<input type="file" name="file" id="pickfiles">
+		</span>
 		<button type="button" id="submitBtn">submit</button>
 	</form>
 
@@ -83,6 +110,15 @@
 	
 
 	<script>
+		$('.fake-btn').on('click', function(event) {
+			console.log('fake btn clicked');
+			event.stopPropagation();
+		});
+		$('#pickfiles').on('click', function(event) {
+			console.log('file clicked');
+			// event.stopPropagation();
+		})
+
 		var $selectedFile = $('.selected-file');
 		var $progress = $(".progress");
 		var $uploadedResult = $('.uploaded-result');

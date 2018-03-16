@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>拖拽demo</title>
+	<script src="assets/jquery.min.js"></script>
+	<style>
+		.next-shining {
+			height: calc(100%);
+			animation: next-shining_border 1s infinite ease-in-out;
+			animation-fill-mode: both;
+		}
+		@keyframes next-shining_border{
+			50% {
+				background: rgba(255, 255, 0, 0.5);
+			}
+		}
+		.active-shining {
+			height: calc(100%);
+			animation: active-shining_border 0.7s infinite ease-in-out;
+			animation-fill-mode: both;
+		}
+		@keyframes active-shining_border{
+			50% {
+				background: rgba(0, 255, 0, 0.5);
+			}
+		}
+		.ng-shining {
+			height: calc(100%);
+			animation: ng-shining_border 1.7s infinite ease-in-out;
+			animation-fill-mode: both;
+		}
+		@keyframes ng-shining_border{
+			10% {
+				background: rgba(255, 0, 0, 0.2);
+			}
+			50% {
+				background: rgba(255, 0, 0, 0.2);
+			}
+		}
+	</style>
+	<style>
+		.drop-container {
+			/*background-color: lightgray;*/
+			height: 200px;	
+		}
+
+		.draggable {
+			width: 100px;
+			height: 100px;
+			background-color: #90f;
+			line-height: 100px;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div class="drop-container" data-drop-type="item"></div>
+	<hr>
+	<div class="items">
+		<div class="item draggable" data-drag-type="item">
+			DRAG ME
+		</div>
+	</div>
+	<script>
+		// 初始化拖拽
+		function drag_init() {
+			var dragItemMoveWithMouse = true;
+
+			// 可拖拽项目
+			var $drag_items = $('[data-drag-type]');
+			$.each($drag_items, function(idx){
+				$(this).attr('id', 'drag-item-' + idx);
+				$(this).attr('draggable', 'true');
+				$(this).on('dragstart', dragStart);
+				$(this).on('dragend', dragEnd);
+			});
+
+			// 放弃drop的绑定
+			if ($('.drag-abort').length == 0) {
+				$('body').addClass('drag-abort');
+			}
+			$('.drag-abort').on('dragover', dragOver).on('drop', drop);
+		}
+
+		// 拖拽开始
+		function dragStart() {
+			console.log('dragStart');
+			var ev = event;
+
+			// 随拖拽准备的数据
+			var type = $(ev.target).attr('data-drag-type');
+			ev.dataTransfer.setData("id", ev.target.id);
+			ev.dataTransfer.setData("value", ev.target.getAttribute('data-value'));
+			ev.dataTransfer.setData("type", type);
+			ev.dataTransfer.setData("$node", $(ev.target));
+
+			// 可放置项目
+			var $containers = $('[data-drop-type=' + type + ']');
+			console.log("$('[data-drop-type='" + type + "']')", $containers.length);
+			$.each($containers, function(){
+				$(this).on('dragover', dragOver);
+				$(this).on('drop', drop);
+			});
+
+			// 允许放置的容器开始闪烁
+			$('[data-drop-type=' + type + ']').addClass('next-shining');
+		}
+
+		// 扔下
+		function drop(evnet) {
+			console.log('drop');
+			var ev = event;
+			ev.preventDefault();
+			ev.stopPropagation();	// 取消事件冒泡，嵌套元素之间事件监听不会互相影响
+			var origin_id = ev.dataTransfer.getData("id");
+			var value = ev.dataTransfer.getData('value');
+			var type = ev.dataTransfer.getData('type');
+
+			if ($(this).hasClass('active-shining')) {
+				$(this).find('.drop-content').append($('<div><i class="fa fa-circle"></i>[' + type + ']->' + value + 'TODO: 转换成可读信息</div>'));
+				$('[data-drag-type=' + type + '] [data-value=' + value + ']').hide();
+			}
+		}
+
+		// 拖拽结束
+		function dragEnd() {
+			console.log('dragEnd');
+			var ev = event;
+
+			$('.next-shining').removeClass('next-shining');
+			$('.active-shining').removeClass('active-shining');
+			$('.ng-shining').removeClass('ng-shining');
+			$('[data-drop-type]').off('dragover').off('drop');
+		}
+
+		// 拖拽经过
+		function dragOver(event) {
+			var ev = event;
+			ev.preventDefault();
+			ev.stopPropagation();	// 取消事件冒泡，嵌套元素之间事件监听不会互相影响
+			var $this = $(this);	// 一定要用this，否则event中会有一大串对象，根本不是想要的那个对象
+			console.log('dragover');
+			if ($this.hasClass('drag-abort')) {
+				$('.active-shining').removeClass('active-shining');
+				$this.addClass('ng-shining');
+			} else {
+				$this.addClass('active-shining');
+				$('.ng-shining').removeClass('ng-shining');
+			}
+		}
+
+		drag_init();
+	</script>
+</body>
+</html>
