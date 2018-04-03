@@ -1,0 +1,16 @@
+{
+  "name": "sw",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sw.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server -p 9292 -a localhost -o",
+    "starts": "http-server --ssl --cert credentials/214074192520998.pem --key credentials/214074192520998.key -a www.kaolawu.com -o"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^4.2.0"
+  }
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Service Worker</title>
+	<script src="script/main.js"></script>
+	<link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+	<h1>This is a sw test</h1>
+	<h2>sw后台监视: <span>chrome://inspect/#service-workers</span></h2>
+	<a href="demo.html">demo page</a>
+
+	<script type="text/javascript">
+		if ('serviceWorker' in navigator && localStorage.getItem('sw') === null) {
+			localStorage.setItem('sw', true);
+			window.addEventListener('load', function() {
+				console.log('-> 开始加载，尝试注册sw');
+				navigator.serviceWorker.register('sw.js').then(function(registration) {
+					// Registration was successful
+					console.log('-> 尝试注册sw【成功】，作用域:', registration.scope);
+					var msgNode = document.createElement('h1');
+					msgNode.innerHTML = '当前监听作用域：<span style="color: red;">' + registration.scope + '</span></h1>';
+					document.body.appendChild(msgNode);
+				}).catch(function(err) {
+					// registration failed :(
+					console.log('-> 尝试注册sw【失败】，详细信息:', err.message);
+					document.body.appendChild('<h2>' + err.message + '</h2>');
+					
+					console.log(err.message, err.message.indexOf("The URL protocol of the current origin ('null') is not supported.") != -1);
+					if (err.message.indexOf("The URL protocol of the current origin ('null') is not supported.") != -1 ) {
+						document.body.appendChild('<h1 style="color: red;">Are you online ?</h1>');
+						console.log('-> 提示: 未发现域名，请使用server环境，localhost域名或者https域名');
+					}
+				});
+			});
+		}
+	</script>
+</body>
+</html>
