@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>demo</title>
+	<!-- 基础依赖 -->
+	<link rel="stylesheet" href="node_modules/bootstrap3/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="node_modules/bootstrap3/dist/css/bootstrap-theme.min.css">
+	<script src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script src="node_modules/bootstrap3/dist/js/bootstrap.min.js"></script>
+
+	<!-- 分页 -->
+	<link rel="stylesheet" href="vendor/bs_pagination/jquery.bs_pagination.min.css">
+	<script src="vendor/bs_pagination/jquery.bs_pagination.min.js"></script>
+	<script src="vendor/bs_pagination/localization/en.min.js"></script>
+</head>
+<body>
+	<h1>https://www.cnblogs.com/wuhuacong/p/7284420.html</h1>
+	<hr>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">表格&分页</h3>
+					</div>
+					<div class="panel-body">
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">表格&分页</h3>
+					</div>
+					<div class="panel-body">
+						<table class="table table-hover" id="dt">
+							<caption>悬停表格布局</caption>
+							<thead>
+								<tr>
+									<th>名称</th>
+									<th>城市</th>
+									<th>邮编</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Tanmay</td>
+									<td>Bangalore</td>
+									<td>560001</td>
+								</tr>
+								<tr>
+									<td>Sachin</td>
+									<td>Mumbai</td>
+									<td>400003</td>
+								</tr>
+								<tr>
+									<td>Uma</td>
+									<td>Pune</td>
+									<td>411027</td>
+								</tr>
+							</tbody>
+						</table>
+						<div id="dtp"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$(document).ready(function() {
+			$("#dtp").bs_pagination({
+				currentPage: 1,
+				rowsPerPage: 10,
+				maxRowsPerPage: 100,
+				totalPages: 100,
+				totalRows: 0,
+
+				visiblePageLinks: 5,
+
+				showGoToPage: true,
+				showRowsPerPage: true,
+				showRowsInfo: true,
+				showRowsDefaultInfo: true,
+
+				directURL: false, // or a function with current page as argument
+				disableTextSelectionInNavPane: true, // disable text selection and double click
+
+				bootstrap_version: "3",
+
+				// bootstrap 3
+				containerClass: "",
+				/*containerClass: "well",
+
+				mainWrapperClass: "row",
+
+				navListContainerClass: "col-xs-12 col-sm-12 col-md-6",
+				navListWrapperClass: "",
+				navListClass: "pagination pagination_custom",
+				navListActiveItemClass: "active",
+
+				navGoToPageContainerClass: "col-xs-6 col-sm-4 col-md-2 row-space",
+				navGoToPageIconClass: "glyphicon glyphicon-arrow-right",
+				navGoToPageClass: "form-control small-input",
+
+				navRowsPerPageContainerClass: "col-xs-6 col-sm-4 col-md-2 row-space",
+				navRowsPerPageIconClass: "glyphicon glyphicon-th-list",
+				navRowsPerPageClass: "form-control small-input",
+
+				navInfoContainerClass: "col-xs-12 col-sm-4 col-md-2 row-space",
+				navInfoClass: "",*/
+
+				// element IDs
+				nav_list_id_prefix: "nav_list_",
+				nav_top_id_prefix: "top_",
+				nav_prev_id_prefix: "prev_",
+				nav_item_id_prefix: "nav_item_",
+				nav_next_id_prefix: "next_",
+				nav_last_id_prefix: "last_",
+
+				nav_goto_page_id_prefix: "goto_page_",
+				nav_rows_per_page_id_prefix: "rows_per_page_",
+				nav_rows_info_id_prefix: "rows_info_",
+
+				onChangePage: function(event, data) {
+					// your code here e.g.
+					console.log('[CHANGE] Current page is: ' + data.currentPage + '. ' + data.rowsPerPage + ' are displayed per page.');
+				},
+				onLoad: function(event, data) {
+				    // your code here e.g.
+					console.log('[LOAD] Current page is: ' + data.currentPage + '. ' + data.rowsPerPage + ' are displayed per page.');
+				}
+			});
+		});
+	</script>
+</body>
+</html>
