@@ -1,0 +1,113 @@
+{
+	"page": 1,
+	"rows": [{
+		"dept": {
+			"deptDesc": "",
+			"deptno": 10,
+			"dname": "销售部"
+		},
+		"loginName": "dingyi",
+		"loginPwd": "456",
+		"realName": "丁一",
+		"userId": 1,
+		"userStatus": "0"
+	}, {
+		"dept": {
+			"deptDesc": "",
+			"deptno": 10,
+			"dname": "销售部"
+		},
+		"loginName": "qianer",
+		"loginPwd": "456",
+		"realName": "钱二",
+		"userId": 2,
+		"userStatus": "0"
+	}, {
+		"dept": {
+			"deptDesc": "",
+			"deptno": 10,
+			"dname": "销售部"
+		},
+		"loginName": "zhangsan",
+		"loginPwd": "456",
+		"realName": "张三",
+		"userId": 3,
+		"userStatus": "0"
+	}, {
+		"dept": {
+			"deptDesc": "",
+			"deptno": 10,
+			"dname": "销售部"
+		},
+		"loginName": "lisi",
+		"loginPwd": "456",
+		"realName": "李四",
+		"userId": 4,
+		"userStatus": "0"
+	}, {
+		"dept": {
+			"$ref": "$.rows[0].dept"
+		},
+		"loginName": "wangwu",
+		"loginPwd": "789",
+		"realName": "王五",
+		"userId": 5,
+		"userStatus": "0"
+	}, {
+		"dept": {
+			"$ref": "$.rows[0].dept"
+		},
+		"loginName": "zhaoliu",
+		"loginPwd": "111",
+		"realName": "赵六",
+		"userId": 6,
+		"userStatus": "0"
+	}, {
+		"dept": {
+			"deptno": 20,
+			"dname": "华南区域"
+		},
+		"loginName": "fanqi",
+		"loginPwd": "222",
+		"realName": "范七",
+		"userId": 7,
+		"userStatus": "0"
+	}, {
+		"dept": {
+			"$ref": "$.rows[3].dept"
+		},
+		"loginName": "maoba",
+		"loginPwd": "333",
+		"realName": "毛八",
+		"userId": 8,
+		"userStatus": "0"
+	}, {
+		"dept": {
+			"$ref": "$.rows[3].dept"
+		},
+		"loginName": "sujiu",
+		"loginPwd": "333",
+		"realName": "苏九",
+		"userId": 9,
+		"userStatus": "0"
+	}, {
+		"dept": {
+			"$ref": "$.rows[3].dept"
+		},
+		"loginName": "liushi",
+		"loginPwd": "333",
+		"realName": "刘十",
+		"userId": 10,
+		"userStatus": "0"
+	}, {
+		"dept": {
+			"$ref": "$.rows[3].dept"
+		},
+		"loginName": "shiyi",
+		"loginPwd": "333",
+		"realName": "石一",
+		"userId": 11,
+		"userStatus": "0"
+	}],
+	"total": 11
+}

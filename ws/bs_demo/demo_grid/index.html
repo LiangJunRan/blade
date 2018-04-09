@@ -9,59 +9,48 @@
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="node_modules/bootstrap3/dist/js/bootstrap.min.js"></script>
 
-	<!-- 分页 -->
-	<link rel="stylesheet" href="vendor/bs_pagination/jquery.bs_pagination.min.css">
-	<script src="vendor/bs_pagination/jquery.bs_pagination.min.js"></script>
-	<script src="vendor/bs_pagination/localization/en.min.js"></script>
+	<!-- bootstrap-table -->
+	<link rel="stylesheet" href="node_modules/bootstrap-table/dist/bootstrap-table.min.css">
+	<script src="node_modules/bootstrap-table/dist/bootstrap-table.min.js"></script>
+	<script src="node_modules/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js"></script>
 </head>
 <body>
-	<h1>https://www.cnblogs.com/wuhuacong/p/7284420.html</h1>
+	<h1>http://bootstrap-table.wenzhixin.net.cn/zh-cn/getting-started/</h1>
+	<h1>http://bootstrap-table.wenzhixin.net.cn/zh-cn/documentation/</h1>
+	<h1>https://github.com/wenzhixin/bootstrap-table</h1>
+	<h1>https://blog.csdn.net/l_chiwin/article/details/77142297</h1>
 	<hr>
-	<div class="container">
+	<div style="padding: 20px;">
 		<div class="row">
-			<div class="col-sm-3">
+			<div class="col-sm-6">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title">表格&分页</h3>
+						<h3 class="panel-title">表格&分页 pageSize=20, pageNumber=1</h3>
 					</div>
 					<div class="panel-body">
+						<table id="table_11"></table>
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-9">
+
+			<div class="col-sm-6">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title">表格&分页</h3>
+						<h3 class="panel-title">表格&分页 pageSize=5, pageNumber=1</h3>
 					</div>
 					<div class="panel-body">
-						<table class="table table-hover" id="dt">
-							<caption>悬停表格布局</caption>
-							<thead>
-								<tr>
-									<th>名称</th>
-									<th>城市</th>
-									<th>邮编</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Tanmay</td>
-									<td>Bangalore</td>
-									<td>560001</td>
-								</tr>
-								<tr>
-									<td>Sachin</td>
-									<td>Mumbai</td>
-									<td>400003</td>
-								</tr>
-								<tr>
-									<td>Uma</td>
-									<td>Pune</td>
-									<td>411027</td>
-								</tr>
-							</tbody>
-						</table>
-						<div id="dtp"></div>
+						<table id="table_5_p1"></table>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">表格&分页 pageSize=5, pageNumber=2</h3>
+					</div>
+					<div class="panel-body">
+						<table id="table_5_p2"></table>
 					</div>
 				</div>
 			</div>
@@ -70,67 +59,266 @@
 
 	<script>
 		$(document).ready(function() {
-			$("#dtp").bs_pagination({
-				currentPage: 1,
-				rowsPerPage: 10,
-				maxRowsPerPage: 100,
-				totalPages: 100,
-				totalRows: 0,
-
-				visiblePageLinks: 5,
-
-				showGoToPage: true,
-				showRowsPerPage: true,
-				showRowsInfo: true,
-				showRowsDefaultInfo: true,
-
-				directURL: false, // or a function with current page as argument
-				disableTextSelectionInNavPane: true, // disable text selection and double click
-
-				bootstrap_version: "3",
-
-				// bootstrap 3
-				containerClass: "",
-				/*containerClass: "well",
-
-				mainWrapperClass: "row",
-
-				navListContainerClass: "col-xs-12 col-sm-12 col-md-6",
-				navListWrapperClass: "",
-				navListClass: "pagination pagination_custom",
-				navListActiveItemClass: "active",
-
-				navGoToPageContainerClass: "col-xs-6 col-sm-4 col-md-2 row-space",
-				navGoToPageIconClass: "glyphicon glyphicon-arrow-right",
-				navGoToPageClass: "form-control small-input",
-
-				navRowsPerPageContainerClass: "col-xs-6 col-sm-4 col-md-2 row-space",
-				navRowsPerPageIconClass: "glyphicon glyphicon-th-list",
-				navRowsPerPageClass: "form-control small-input",
-
-				navInfoContainerClass: "col-xs-12 col-sm-4 col-md-2 row-space",
-				navInfoClass: "",*/
-
-				// element IDs
-				nav_list_id_prefix: "nav_list_",
-				nav_top_id_prefix: "top_",
-				nav_prev_id_prefix: "prev_",
-				nav_item_id_prefix: "nav_item_",
-				nav_next_id_prefix: "next_",
-				nav_last_id_prefix: "last_",
-
-				nav_goto_page_id_prefix: "goto_page_",
-				nav_rows_per_page_id_prefix: "rows_per_page_",
-				nav_rows_info_id_prefix: "rows_info_",
-
-				onChangePage: function(event, data) {
-					// your code here e.g.
-					console.log('[CHANGE] Current page is: ' + data.currentPage + '. ' + data.rowsPerPage + ' are displayed per page.');
+			$('#table_11').bootstrapTable({
+				url: 'data_table_11.json',
+				method: 'get',
+				dataType: "json",
+				striped: true,				//设置为 true 会有隔行变色效果  
+				undefinedText: "空",		//当数据为 undefined 时显示的字符  
+				pagination: true,			//分页  
+				// paginationLoop:true,		//设置为 true 启用分页条无限循环的功能。
+				icons: {
+					paginationSwitchDown: 'glyphicon-collapse-down icon-chevron-down',
+					paginationSwitchUp: 'glyphicon-collapse-up icon-chevron-up',
+					refresh: 'glyphicon-refresh icon-refresh',
+					toggle: 'glyphicon-list-alt icon-list-alt',
+					columns: 'glyphicon-th icon-th',
+					detailOpen: 'glyphicon-plus icon-plus',
+					detailClose: 'glyphicon-minus icon-minus'
 				},
-				onLoad: function(event, data) {
-				    // your code here e.g.
-					console.log('[LOAD] Current page is: ' + data.currentPage + '. ' + data.rowsPerPage + ' are displayed per page.');
-				}
+				showToggle: "true",			//是否显示 切换试图（table/card）按钮
+				showColumns: "true",		//是否显示 内容列下拉框
+				pageNumber: 1,				//如果设置了分页，首页页码
+				// showPaginationSwitch:true,		//是否显示 数据条数选择框
+				pageSize: 20,				//如果设置了分页，页面数据条数
+				pageList: [3, 5, 10, 20, 50],	//如果设置了分页，设置可供选择的页面数据条数。设置为All 则显示所有记录。数据不够，不显示
+				paginationPreText: '‹',		//指定分页条中上一页按钮的图标或文字,这里是<
+				paginationNextText: '›',	//指定分页条中下一页按钮的图标或文字,这里是>
+				// singleSelect: false,		//设置True 将禁止多选
+				search: false,				//显示搜索框
+				data_local: "zh-US",		//表格汉化
+				sidePagination: "server",	//服务端处理分页
+				queryParams: function (params) {
+					//自定义参数，这里的参数是传给后台的，我这是是分页用的
+					return {
+						//这里的params是table提供的
+						offset: params.offset,		//从数据库第几条记录开始
+						limit: params.limit		//找多少条
+					};
+				},
+				idField: "userId",			//指定主键列
+				columns: [
+					{
+						title: '#',			//表的列名
+						field: 'userId',	//json数据中rows数组中的属性名
+						align: 'center'		//水平居中
+					},
+					{
+						title: '账号',
+						field: 'loginName',
+						align: 'center'
+					},
+					{
+						title: '真实姓名',
+						field: 'realName',
+						align: 'center'
+					},
+					{
+						//EMAIL
+						title: '邮箱',
+						field: 'email',
+						align: 'center'
+					},
+					{
+						//部门名字
+						title: '部门',
+						field: 'dept.dname',		//可以直接取到属性里面的属性，赞
+						align: 'center'
+					},
+					{
+						title: '状态',
+						field: 'userStatus',
+						align: 'center',
+						formatter: function (value, row, index) {//自定义显示，这三个参数分别是：value该行的属性，row该行记录，index该行下标
+							return row.userStatus == 0 ? "正常" : row.userStatus == 1 ? "请假" : "离职";
+						}
+
+					},
+					{
+						title: '操作',
+						field: 'userId',
+						align: 'center',
+						formatter: function (value, row, index) {//自定义显示可以写标签哦~
+							return '<a href="#" mce_href="#" onclick="edit(\'' + row.userId + '\')">操作</a> ';
+						}
+					}
+
+				]
+			});
+
+			$('#table_5_p1').bootstrapTable({
+				url: 'data_table_5_p1.json',
+				method: 'get',
+				dataType: "json",
+				striped: true,				//设置为 true 会有隔行变色效果  
+				undefinedText: "空",		//当数据为 undefined 时显示的字符  
+				pagination: true,			//分页  
+				// paginationLoop:true,		//设置为 true 启用分页条无限循环的功能。
+				icons: {
+					paginationSwitchDown: 'glyphicon-collapse-down icon-chevron-down',
+					paginationSwitchUp: 'glyphicon-collapse-up icon-chevron-up',
+					refresh: 'glyphicon-refresh icon-refresh',
+					toggle: 'glyphicon-list-alt icon-list-alt',
+					columns: 'glyphicon-th icon-th',
+					detailOpen: 'glyphicon-plus icon-plus',
+					detailClose: 'glyphicon-minus icon-minus'
+				},
+				showToggle: "true",			//是否显示 切换试图（table/card）按钮
+				showColumns: "true",		//是否显示 内容列下拉框
+				// pageNumber: 1,				//如果设置了分页，首页页码
+				// showPaginationSwitch:true,		//是否显示 数据条数选择框
+				pageSize: 5,				//如果设置了分页，页面数据条数
+				pageList: [3, 5, 10, 20, 50],	//如果设置了分页，设置可供选择的页面数据条数。设置为All 则显示所有记录。数据不够，不显示
+				paginationPreText: '‹',		//指定分页条中上一页按钮的图标或文字,这里是<
+				paginationNextText: '›',	//指定分页条中下一页按钮的图标或文字,这里是>
+				// singleSelect: false,		//设置True 将禁止多选
+				search: false,				//显示搜索框
+				data_local: "zh-US",		//表格汉化
+				sidePagination: "server",	//服务端处理分页
+				queryParams: function (params) {
+					//自定义参数，这里的参数是传给后台的，我这是是分页用的
+					return {
+						//这里的params是table提供的
+						offset: params.offset,		//从数据库第几条记录开始
+						limit: params.limit		//找多少条
+					};
+				},
+				idField: "userId",			//指定主键列
+				columns: [
+					{
+						title: '#',			//表的列名
+						field: 'userId',	//json数据中rows数组中的属性名
+						align: 'center'		//水平居中
+					},
+					{
+						title: '账号',
+						field: 'loginName',
+						align: 'center'
+					},
+					{
+						title: '真实姓名',
+						field: 'realName',
+						align: 'center'
+					},
+					{
+						//EMAIL
+						title: '邮箱',
+						field: 'email',
+						align: 'center'
+					},
+					{
+						//部门名字
+						title: '部门',
+						field: 'dept.dname',		//可以直接取到属性里面的属性，赞
+						align: 'center'
+					},
+					{
+						title: '状态',
+						field: 'userStatus',
+						align: 'center',
+						formatter: function (value, row, index) {//自定义显示，这三个参数分别是：value该行的属性，row该行记录，index该行下标
+							return row.userStatus == 0 ? "正常" : row.userStatus == 1 ? "请假" : "离职";
+						}
+
+					},
+					{
+						title: '操作',
+						field: 'userId',
+						align: 'center',
+						formatter: function (value, row, index) {//自定义显示可以写标签哦~
+							return '<a href="#" mce_href="#" onclick="edit(\'' + row.userId + '\')">操作</a> ';
+						}
+					}
+
+				]
+			});
+
+			$('#table_5_p2').bootstrapTable({
+				url: 'data_table_5_p2.json',
+				method: 'get',
+				dataType: "json",
+				striped: true,				//设置为 true 会有隔行变色效果  
+				undefinedText: "空",		//当数据为 undefined 时显示的字符  
+				pagination: true,			//分页  
+				// paginationLoop:true,		//设置为 true 启用分页条无限循环的功能。
+				icons: {
+					paginationSwitchDown: 'glyphicon-collapse-down icon-chevron-down',
+					paginationSwitchUp: 'glyphicon-collapse-up icon-chevron-up',
+					refresh: 'glyphicon-refresh icon-refresh',
+					toggle: 'glyphicon-list-alt icon-list-alt',
+					columns: 'glyphicon-th icon-th',
+					detailOpen: 'glyphicon-plus icon-plus',
+					detailClose: 'glyphicon-minus icon-minus'
+				},
+				showToggle: "true",			//是否显示 切换试图（table/card）按钮
+				showColumns: "true",		//是否显示 内容列下拉框
+				pageNumber: 2,				//如果设置了分页，首页页码
+				// showPaginationSwitch:true,		//是否显示 数据条数选择框
+				pageSize: 5,				//如果设置了分页，页面数据条数
+				pageList: [3, 5, 10, 20, 50],	//如果设置了分页，设置可供选择的页面数据条数。设置为All 则显示所有记录。数据不够，不显示
+				paginationPreText: '‹',		//指定分页条中上一页按钮的图标或文字,这里是<
+				paginationNextText: '›',	//指定分页条中下一页按钮的图标或文字,这里是>
+				// singleSelect: false,		//设置True 将禁止多选
+				search: false,				//显示搜索框
+				data_local: "zh-US",		//表格汉化
+				sidePagination: "server",	//服务端处理分页
+				queryParams: function (params) {
+					//自定义参数，这里的参数是传给后台的，我这是是分页用的
+					console.log(params);
+					return {
+						//这里的params是table提供的
+						offset: params.offset,		//从数据库第几条记录开始
+						limit: params.limit		//找多少条
+					};
+				},
+				idField: "userId",			//指定主键列
+				columns: [
+					{
+						title: '#',			//表的列名
+						field: 'userId',	//json数据中rows数组中的属性名
+						align: 'center'		//水平居中
+					},
+					{
+						title: '账号',
+						field: 'loginName',
+						align: 'center'
+					},
+					{
+						title: '真实姓名',
+						field: 'realName',
+						align: 'center'
+					},
+					{
+						//EMAIL
+						title: '邮箱',
+						field: 'email',
+						align: 'center'
+					},
+					{
+						//部门名字
+						title: '部门',
+						field: 'dept.dname',		//可以直接取到属性里面的属性，赞
+						align: 'center'
+					},
+					{
+						title: '状态',
+						field: 'userStatus',
+						align: 'center',
+						formatter: function (value, row, index) {//自定义显示，这三个参数分别是：value该行的属性，row该行记录，index该行下标
+							return row.userStatus == 0 ? "正常" : row.userStatus == 1 ? "请假" : "离职";
+						}
+
+					},
+					{
+						title: '操作',
+						field: 'userId',
+						align: 'center',
+						formatter: function (value, row, index) {//自定义显示可以写标签哦~
+							return '<a href="#" mce_href="#" onclick="edit(\'' + row.userId + '\')">操作</a> ';
+						}
+					}
+
+				]
 			});
 		});
 	</script>
