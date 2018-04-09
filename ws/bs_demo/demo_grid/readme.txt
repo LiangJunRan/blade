@@ -1,4 +1,6 @@
-# 下载依赖包：
+# 安装node.js
+
+# 下载依赖包(CMD中输入)：
 npm install
 
-# 然后查看index.html
+# 然后双击start.bat
