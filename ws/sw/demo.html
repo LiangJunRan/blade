@@ -17,7 +17,12 @@
 
 	<input type="text" id="info">
 
+	<textarea name="" id="list" cols="30" rows="10"></textarea>
+
 	<script type="text/javascript">
+		function clearAll() {
+
+		}
 
 		/*function clearAll() {
 			caches.keys()
@@ -56,7 +61,7 @@
 			console.log('>>> 当前页面受serviceworker控制:', !!navigator.serviceWorker.controller);
 			if (navigator.serviceWorker) {
 				console.log('-> 开始加载，尝试注册sw_demo');
-				navigator.serviceWorker.register('sw_demo.js').then(function(registration) {
+				navigator.serviceWorker.register('sw_demo.js?v=2'/* + Math.random()*/).then(function(registration) {
 					// Registration was successful
 					console.log('-> 尝试注册sw_demo【成功】，作用域:', registration.scope);
 					var msgNode = document.createElement('h1');
@@ -73,6 +78,10 @@
 						console.log('-> 提示: 未发现域名，请使用server环境，localhost域名或者https域名');
 					}
 				});
+
+				navigator.serviceWorker.ready(function(a, b, c) {
+					console.log('READY', a, b, c);
+				})
 			}
 
 			setInterval(function() {
@@ -82,6 +91,13 @@
 					});
 				}
 			}, 1000);
+
+			setInterval(function() {
+				caches.keys().then(function(nameList) {
+					var nameStr = nameList.join('\n');
+					document.querySelector('#list').value = nameStr;
+				});
+			}, 1200);
 		});
 			
 	</script>
