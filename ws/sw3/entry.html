@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>入口页</title>
+
+</head>
+<body>
+	chrome://inspect/#service-workers
+	<hr>
+	TODO: 手动清空etag历史记录
+	<hr>
+
+	<a href="controlled/page_1.html">测试页&gt;&gt;&gt;</a>
+
+	<script type="text/javascript">
+		
+		window.addEventListener('load', function() {
+			if (navigator.serviceWorker) {
+				navigator.serviceWorker.register('sw.js').then(function(registration) {
+					console.log('SW_INSTALL SUCCESS');
+				}).catch(function(err) {
+					console.log('SW_INSTALL FAILED');
+				});
+				navigator.serviceWorker.ready.then(function() {
+					console.log('SW_READY');
+				})
+			}
+
+			if ('serviceWorker' in navigator) {
+				navigator.serviceWorker.onmessage = function(evt) {
+					var msg = JSON.parse(evt.data);
+
+					switch (msg.type) {
+						// 版本校验
+						case 'versionCheck':
+							console.log('[MSG] versionCheck');
+							var lastETag = localStorage.currentETag;
+							break;
+						default:
+							console.log('[WARN] msg.type: "' + msg.type + '", nothing to match');
+							break;
+					}
+
+					var isRefresh = message.type === 'refresh';
+					var isMedia = message.url.includes('media');
+					var lastETag = localStorage.currentETag;
+					var isNew = lastETag !== message.currentETag;
+
+					if (isRefresh && isMedia && isNew) {
+
+						function countDown(cd) {
+							cd -= 1000;
+							if (cd <= 0) {
+								window.location.reload();
+							} else {
+								setTimeout(function(){
+									countDown(cd);
+								}, 1000);
+								console.log(parseInt(cd / 1000) + '...');
+							}
+						}
+						var cd = 6000;
+
+						console.log((parseInt(cd / 1000) - 1) + '秒后刷新');
+
+						countDown(cd);
+					}
+
+				}
+			}
+
+			/*setInterval(function() {
+				if ('storage' in navigator && 'estimate' in navigator.storage) {
+					navigator.storage.estimate().then(estimate => {
+						document.querySelector('#info').value = `${(estimate.usage / 1024 / 1024).toFixed(2)} Mb / ${(estimate.quota / 1024 / 1024 / 1024).toFixed(2)} Gb.`;
+					});
+				}
+			}, 1000);
+
+			setInterval(function() {
+				caches.keys().then(function(nameList) {
+					var nameStr = nameList.join('\n');
+					document.querySelector('#list').value = nameStr;
+				});
+			}, 1200);*/
+		});
+			
+	</script>
+</body>
+</html>
