@@ -28,6 +28,14 @@
 						<h3 class="panel-title">表格&分页 pageSize=20, pageNumber=1</h3>
 					</div>
 					<div class="panel-body">
+						<div id="table_11_toolbar">
+							<button id="table_11_add" class="btn btn-success">
+								<i class="glyphicon glyphicon-plus"></i> Add
+							</button>
+							<button id="table_11_delete" class="btn btn-danger" disabled>
+								<i class="glyphicon glyphicon-remove"></i> Delete
+							</button>
+						</div>
 						<table id="table_11"></table>
 					</div>
 				</div>
@@ -58,8 +66,19 @@
 	</div>
 
 	<script>
+
+			window.operateEvents = {
+		        'click .edit': function (e, value, row, index) {
+		            alert('Edit, row: ' + JSON.stringify(row));
+		        }
+		    };
 		$(document).ready(function() {
-			$('#table_11').bootstrapTable({
+			var $btn_add = $('#table_11_add');
+			var $btn_delete = $('#table_11_delete');
+			var $table = $('#table_11');
+			var selections = [];
+
+			$table.bootstrapTable({
 				url: 'data_table_11.json',
 				method: 'get',
 				dataType: "json",
@@ -76,8 +95,13 @@
 					detailOpen: 'glyphicon-plus icon-plus',
 					detailClose: 'glyphicon-minus icon-minus'
 				},
-				showToggle: "true",			//是否显示 切换试图（table/card）按钮
-				showColumns: "true",		//是否显示 内容列下拉框
+
+				// showToggle: true,			//是否显示 切换试图（table/card）按钮
+				showColumns: true,		//是否显示 内容列下拉框
+				showRefresh: true,
+				toolbar: '#table_11_toolbar',	// 指定了toolbar的选择器，会把toolbar加入到table的container里来
+				//buttonsToolbar				// 给toolbar外边再套一层，支持新建node
+
 				pageNumber: 1,				//如果设置了分页，首页页码
 				// showPaginationSwitch:true,		//是否显示 数据条数选择框
 				pageSize: 20,				//如果设置了分页，页面数据条数
@@ -85,19 +109,30 @@
 				paginationPreText: '‹',		//指定分页条中上一页按钮的图标或文字,这里是<
 				paginationNextText: '›',	//指定分页条中下一页按钮的图标或文字,这里是>
 				// singleSelect: false,		//设置True 将禁止多选
-				search: false,				//显示搜索框
+				search: true,				//显示搜索框
 				data_local: "zh-US",		//表格汉化
 				sidePagination: "server",	//服务端处理分页
 				queryParams: function (params) {
 					//自定义参数，这里的参数是传给后台的，我这是是分页用的
+					console.log('params:', params);
 					return {
 						//这里的params是table提供的
 						offset: params.offset,		//从数据库第几条记录开始
-						limit: params.limit		//找多少条
+						limit: params.limit,		//找多少条
+						search: params.search		//筛选
+						// order
+						// sort
 					};
 				},
 				idField: "userId",			//指定主键列
 				columns: [
+					{
+						field: 'state',
+						checkbox: true,
+						rowspan: 1,
+						align: 'center',
+						valign: 'middle'
+					},
 					{
 						title: '#',			//表的列名
 						field: 'userId',	//json数据中rows数组中的属性名
@@ -136,15 +171,62 @@
 					},
 					{
 						title: '操作',
-						field: 'userId',
+						field: 'operate',
 						align: 'center',
-						formatter: function (value, row, index) {//自定义显示可以写标签哦~
-							return '<a href="#" mce_href="#" onclick="edit(\'' + row.userId + '\')">操作</a> ';
+						events: {
+							// 改
+					        'click .edit': function (e, value, row, index) {
+					            alert('Edit, row: ' + JSON.stringify(row));
+	            				// TODO: 弹框、远程数据
+					        }
+					    },
+						formatter: function (value, row, index) {
+							return '<a class="edit" href="javascript:void(0);">编辑</a>';
 						}
 					}
 
 				]
 			});
+
+			// TODO: 封装？
+
+			// 获取选中的ids
+			function getIdSelections() {
+		        return $.map($table.bootstrapTable('getSelections'), function (row) {
+		            return row.userId
+		        });
+		    }
+
+			$table.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function () {
+            	$btn_delete.prop('disabled', !$table.bootstrapTable('getSelections').length);
+	            // save your data, here just save the current page
+	            selections = getIdSelections();
+	            console.log('selections:', selections);
+	            // push or splice the selections if you want to save all data selections
+	        });
+
+	        // 增
+			$btn_add.click(function () {
+	            $btn_add.prop('disabled', true);
+	            // TODO: 弹框、远程数据
+	            $btn_add.prop('disabled', false);
+	        });
+
+			// 删
+			$btn_delete.click(function () {
+	            var ids = getIdSelections();
+	            $table.bootstrapTable('remove', {
+	                field: 'userId',
+	                values: ids
+	            });
+	            // TODO: 弹框、远程数据
+	            $btn_delete.prop('disabled', true);
+	        });
+
+
+
+
+
 
 			$('#table_5_p1').bootstrapTable({
 				url: 'data_table_5_p1.json',
