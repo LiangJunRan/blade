@@ -263,8 +263,10 @@
 		                icon: 'glyphicon glyphicon-send',
                 		autospin: false,
 		                cssClass: "btn-primary",
-		                action: function(dialog) {
-		                	$(this).spin();
+		                action: function(dialog, evt) {
+		                	var $button = this;
+		                	$button.spin();
+		                	
 		                	var isValid = $('#dataForm').valid();
 		                	if (isValid) {
 			                	dialog.enableButtons(false);
@@ -273,6 +275,8 @@
 			                    setTimeout(function(){
 			                        dialog.close();
 			                    }, 3000);
+		                	} else {
+		                		$button.stopSpin();
 		                	}
 		                }
 		            }, {
