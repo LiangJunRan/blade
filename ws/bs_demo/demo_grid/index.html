@@ -13,6 +13,43 @@
 	<link rel="stylesheet" href="node_modules/bootstrap-table/dist/bootstrap-table.min.css">
 	<script src="node_modules/bootstrap-table/dist/bootstrap-table.min.js"></script>
 	<script src="node_modules/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+
+	<!-- bootstrap-dialog -->
+	<link rel="stylesheet" href="node_modules/bootstrap-dialog/dist/css/bootstrap-dialog.min.css">
+	<script src="node_modules/bootstrap-dialog/dist/js/bootstrap-dialog.min.js"></script>
+
+	<!-- jquery-validation -->
+	<script src="node_modules/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="node_modules/jquery-validation/dist/localization/messages_zh.js"></script>
+
+	<!-- fb 组件 -->
+	<script src="assets/form-builder-2/src/fb-bs/js/fb.baseContainer.js"></script>
+	<script src="assets/form-builder-2/src/fb-bs/js/containers/form.js"></script>
+	<script src="assets/form-builder-2/src/fb-bs/js/containers/form-group.js"></script>
+	<script src="assets/form-builder-2/src/fb-bs/js/containers/multimedia.js"></script>
+	<script src="assets/form-builder-2/src/fb-bs/js/containers/stream.js"></script>
+
+	<script src="assets/form-builder-2/src/fb-bs/js/fb.baseComponent.js"></script>
+	<script src="assets/form-builder-2/src/fb-bs/js/components/textarea.js"></script>
+	<script src="assets/form-builder-2/src/fb-bs/js/components/text.js"></script>
+	<script src="assets/form-builder-2/src/fb-bs/js/components/select.js"></script>
+	<script src="assets/form-builder-2/src/fb-bs/js/components/audio.js"></script>
+	<script src="assets/form-builder-2/src/fb-bs/js/components/radio.js"></script>
+	<script src="assets/form-builder-2/src/fb-bs/js/components/checkbox.js"></script>
+	<script src="assets/form-builder-2/src/fb-bs/js/components/datetimepicker.js"></script>
+	<script src="assets/form-builder-2/src/fb-bs/js/components/image.js"></script>
+	<script src="assets/form-builder-2/src/fb-bs/js/components/number.js"></script>
+	<script src="assets/form-builder-2/src/fb-bs/js/components/multiselect.js"></script>
+
+	<!-- fb 额外 -->
+	<script src="assets/form-builder-2/src/fb-bs/js/extra/qiniuCustomized.js"></script>
+	<link href="assets/form-builder-2/src/fb-bs/css/popup.css" rel="stylesheet" type="text/css"/>
+	<script src="assets/form-builder-2/src/fb-bs/js/extra/popup.js"></script>
+
+	<!-- fb 核心文件 -->
+	<link href="assets/form-builder-2/src/fb-bs/css/form-builder-2.css" rel="stylesheet" type="text/css"/>
+	<script src="assets/form-builder-2/src/fb-bs/js/fb.eventBinds.js"></script>
+	<script src="assets/form-builder-2/src/fb-bs/js/fb.core.js"></script>
 </head>
 <body>
 	<h1>http://bootstrap-table.wenzhixin.net.cn/zh-cn/getting-started/</h1>
@@ -66,12 +103,6 @@
 	</div>
 
 	<script>
-
-			window.operateEvents = {
-		        'click .edit': function (e, value, row, index) {
-		            alert('Edit, row: ' + JSON.stringify(row));
-		        }
-		    };
 		$(document).ready(function() {
 			var $btn_add = $('#table_11_add');
 			var $btn_delete = $('#table_11_delete');
@@ -175,11 +206,11 @@
 						align: 'center',
 						events: {
 							// 改
-					        'click .edit': function (e, value, row, index) {
-					            alert('Edit, row: ' + JSON.stringify(row));
-	            				// TODO: 弹框、远程数据
-					        }
-					    },
+							'click .edit': function (e, value, row, index) {
+								alert('Edit, row: ' + JSON.stringify(row));
+								// TODO: 弹框、远程数据
+							}
+						},
 						formatter: function (value, row, index) {
 							return '<a class="edit" href="javascript:void(0);">编辑</a>';
 						}
@@ -192,39 +223,79 @@
 
 			// 获取选中的ids
 			function getIdSelections() {
-		        return $.map($table.bootstrapTable('getSelections'), function (row) {
-		            return row.userId
-		        });
-		    }
+				return $.map($table.bootstrapTable('getSelections'), function (row) {
+					return row.userId
+				});
+			}
 
 			$table.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function () {
-            	$btn_delete.prop('disabled', !$table.bootstrapTable('getSelections').length);
-	            // save your data, here just save the current page
-	            selections = getIdSelections();
-	            console.log('selections:', selections);
-	            // push or splice the selections if you want to save all data selections
-	        });
+				$btn_delete.prop('disabled', !$table.bootstrapTable('getSelections').length);
+				// save your data, here just save the current page
+				selections = getIdSelections();
+				console.log('selections:', selections);
+				// push or splice the selections if you want to save all data selections
+			});
 
-	        // 增
+			// 异步加载数据
+			$.ajax({
+				url: 'fb_add.json',
+				success: function(d) {
+					window.jsonConf_add = d;
+				}
+			});
+
+			// 增
 			$btn_add.click(function () {
-	            $btn_add.prop('disabled', true);
-	            // TODO: 弹框、远程数据
-	            $btn_add.prop('disabled', false);
-	        });
+				$btn_add.prop('disabled', true);
+
+				BootstrapDialog.show({
+		            title: '新增',
+		            message: function() {
+		            	var $message = $(
+		            		'<form id="dataForm" style="display: inline-block;"></form>'
+		            	);
+
+		            	$message.renderForm(jsonConf_add);
+		            	return $message;
+		            },
+		            buttons: [{
+		                label: 'Submit',
+		                icon: 'glyphicon glyphicon-send',
+                		autospin: false,
+		                cssClass: "btn-primary",
+		                action: function(dialog) {
+		                	$(this).spin();
+		                	var isValid = $('#dataForm').valid();
+		                	if (isValid) {
+			                	dialog.enableButtons(false);
+			                    dialog.setClosable(false);
+			                    dialog.getModalBody().html('Dialog closes in 3 seconds.');
+			                    setTimeout(function(){
+			                        dialog.close();
+			                    }, 3000);
+		                	}
+		                }
+		            }, {
+		                label: 'Close',
+		                action: function(dialog) {
+		                    dialog.close();
+		                }
+		            }]
+		        });
+
+				$btn_add.prop('disabled', false);
+			});
 
 			// 删
 			$btn_delete.click(function () {
-	            var ids = getIdSelections();
-	            $table.bootstrapTable('remove', {
-	                field: 'userId',
-	                values: ids
-	            });
-	            // TODO: 弹框、远程数据
-	            $btn_delete.prop('disabled', true);
-	        });
-
-
-
+				var ids = getIdSelections();
+				$table.bootstrapTable('remove', {
+					field: 'userId',
+					values: ids
+				});
+				// TODO: 弹框、远程数据
+				$btn_delete.prop('disabled', true);
+			});
 
 
 

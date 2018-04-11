@@ -1,0 +1,121 @@
+{
+	"label": "测试表单",
+	"type": "form",
+	"items": [
+		{
+			"label": "账号",
+			"type": "form-group",
+			"groupId": "group0",
+
+			"outerWidth": "col-sm-12",
+			"labelWidth": "col-sm-3",
+			"contentWidth": "col-sm-9",
+
+			"items": [
+				{
+					"name": "loginName",
+					"type": "text",
+					"placeholder": "请输入账号"
+				}
+			]
+		},
+		{
+			"label": "真实姓名",
+			"type": "form-group",
+			"groupId": "group0",
+
+			"outerWidth": "col-sm-12",
+			"labelWidth": "col-sm-3",
+			"contentWidth": "col-sm-9",
+
+			"items": [
+				{
+					"name": "realName",
+					"type": "text",
+					"placeholder": "请输入姓名"
+				}
+			]
+		},
+		{
+			"label": "邮箱",
+			"type": "form-group",
+			"groupId": "group0",
+
+			"outerWidth": "col-sm-12",
+			"labelWidth": "col-sm-3",
+			"contentWidth": "col-sm-9",
+
+			"items": [
+				{
+					"name": "email",
+					"type": "text",
+					"placeholder": "请输入邮箱"
+				}
+			]
+		},
+		{
+			"label": "部门",
+			"type": "form-group",
+			"groupId": "group0",
+
+			"outerWidth": "col-sm-12",
+			"labelWidth": "col-sm-3",
+			"contentWidth": "col-sm-9",
+
+			"items": [
+				{
+					"name": "dept_dname",
+					"type": "text",
+					"placeholder": "请输入部门"
+				}
+			]
+		},
+		{
+			"label": "状态",
+			"type": "form-group",
+			"groupId": "group0",
+
+			"outerWidth": "col-sm-12",
+			"labelWidth": "col-sm-3",
+			"contentWidth": "col-sm-9",
+
+			"items": [
+				{
+					"name": "userStatus",
+					"type": "select",
+					"options": [{
+						"label": "正常",
+						"value": 0
+					}, {
+						"label": "请假",
+						"value": 1
+					}, {
+						"label": "离职",
+						"value": 2
+					}]
+				}
+			]
+		}
+	],
+	"rules": {
+		"loginName":{
+			"required": true
+		},
+		"realName":{
+			"required": true
+		},
+		"email":{
+			"required": true,
+			"email": true
+		},
+		"dept_dname": {
+			"required": true
+		}
+	},
+	"events": [
+	],
+	"values": {
+	},
+	"isRead": false,
+	"groupDefaultSplit": false
+}
