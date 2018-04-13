@@ -10,82 +10,262 @@
 	<hr>
 	TODO: 手动清空etag历史记录
 	<hr>
+	<span id="versionInfo"></span>
+	<hr>
 
 	<a href="controlled/page_1.html">测试页&gt;&gt;&gt;</a>
 
 	<script type="text/javascript">
+		// 定义关键字 TODO: 挪到参数js里
+		var keywords = {
+			currentVersionETag: 'currentVersionETag',
+			currentVersion: 'currentVersion'
+		};
+
+		var versionUrl = '/controlled/version.json';
+
+		var lastETag = localStorage[keywords.currentVersionETag];
+		var lastVersion = localStorage[keywords.currentVersion];
+
+		// 显示版本信息
+		function showVersionInfo() {
+			var strInfo = `当前版本号: ${lastVersion}, ETag: ${lastETag}`;
+			document.querySelector('#versionInfo').innerHTML = strInfo;
+		}
+		showVersionInfo();
+
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.onmessage = function(evt) {
+				console.log('MAIN_RECV-MSG>>>', evt.data);
+				var msg = JSON.parse(evt.data);
+
+				switch (msg.type) {
+					// 版本校验
+					case 'versionCheck':
+						console.log('[MSG] versionCheck');
+
+						// 发送回复
+						var message = {
+							type: 'stopSend_versionCheck',
+							data: {
+								'aaa': 'bbb'
+							}
+						};
+
+						navigator.serviceWorker.controller.postMessage(JSON.stringify(message));
+
+						// var toUpdate = (msg.data.etag !== lastETag); TODO>>>>>>>>>>>>>>>>>>>>>>>>>>
+						console.log('		ETAG:', lastETag, '<->', msg.data.etag, 'toUpdate:', (msg.data.etag !== lastETag));
+						console.log('		VERSION:', lastVersion, '<->', msg.data.content.version, 'toUpdate:', (msg.data.content.version !== lastVersion));
+						var etagIsSame = (msg.data.etag === lastETag);
+						var versionIsSame = (msg.data.content.version === lastVersion);
+
+						// version不一样
+						if (!versionIsSame) {
+							// 更新
+							console.log('>>> update');
+
+							// 更新现有的version信息
+							localStorage[keywords.currentVersionETag] = msg.data.etag;
+							localStorage[keywords.currentVersion] = msg.data.content.version;
+
+							// 按照设定规则，清空缓存
+							if (msg.data.content.killAll === true) {
+								console.log('		>>> killAll');
+								// localStorage.clear();
+								// caches.
+
+
+							} else if (msg.data.content.killList && msg.data.content.killList.length > 0) {
+								console.log('		>>> killList');
+
+							} else {
+								console.log('		>>> killName');
+
+							}
+
+							// 重新加载
+							// debugger;
+						}
+						// version一样 
+						else {
+							if (!etagIsSame) {
+								console.log('[WARN] versionCheck: No need to update, but etag is NOT same');
+							} else {
+								console.log('[INFO] versionCheck: No need to update');
+							}
+						}
+
+
+						break;
+					default:
+						console.log('[WARN] msg.type: "' + msg.type + '", nothing to match');
+						break;
+				}
+			}
+
+		} else {
+			console.error("[ERROR]'serviceWorker' in navigator ->", ('serviceWorker' in navigator));
+		}
 		
 		window.addEventListener('load', function() {
 			if (navigator.serviceWorker) {
 				navigator.serviceWorker.register('sw.js').then(function(registration) {
-					console.log('SW_INSTALL SUCCESS');
+					console.log('MAIN_INSTALL SUCCESS');
 				}).catch(function(err) {
-					console.log('SW_INSTALL FAILED');
+					console.log('MAIN_INSTALL FAILED');
 				});
 				navigator.serviceWorker.ready.then(function() {
-					console.log('SW_READY');
+					console.log('MAIN_READY');
 				})
 			}
 
 			if ('serviceWorker' in navigator) {
+				console.log('绑定message', navigator.serviceWorker);
 				navigator.serviceWorker.onmessage = function(evt) {
+					console.log('MAIN_RECV-MSG>>>', evt.data);
 					var msg = JSON.parse(evt.data);
 
 					switch (msg.type) {
 						// 版本校验
 						case 'versionCheck':
 							console.log('[MSG] versionCheck');
-							var lastETag = localStorage.currentETag;
+
+							// 发送回复
+							var message = {
+								type: 'stopSend_versionCheck',
+								data: {
+									'aaa': 'bbb'
+								}
+							};
+
+							navigator.serviceWorker.controller.postMessage(JSON.stringify(message));
+
+							// var toUpdate = (msg.data.etag !== lastETag); TODO>>>>>>>>>>>>>>>>>>>>>>>>>>
+							console.log('		ETAG:', lastETag, '<->', msg.data.etag, 'toUpdate:', (msg.data.etag !== lastETag));
+							console.log('		VERSION:', lastVersion, '<->', msg.data.content.version, 'toUpdate:', (msg.data.content.version !== lastVersion));
+							var etagIsSame = (msg.data.etag === lastETag);
+							var versionIsSame = (msg.data.content.version === lastVersion);
+
+							// version不一样
+							if (!versionIsSame) {
+								// 更新
+								console.log('>>> update');
+
+								// 更新现有的version信息
+								localStorage[keywords.currentVersionETag] = msg.data.etag;
+								localStorage[keywords.currentVersion] = msg.data.content.version;
+
+								// 按照设定规则，清空缓存
+								if (msg.data.content.killAll === true) {
+									console.log('		>>> killAll');
+									// localStorage.clear();
+									// caches.
+
+
+								} else if (msg.data.content.killList && msg.data.content.killList.length > 0) {
+									console.log('		>>> killList');
+
+								} else {
+									console.log('		>>> killName');
+
+								}
+
+								// 重新加载
+								// debugger;
+							}
+							// version一样 
+							else {
+								if (!etagIsSame) {
+									console.log('[WARN] versionCheck: No need to update, but etag is NOT same');
+								} else {
+									console.log('[INFO] versionCheck: No need to update');
+								}
+							}
+
+
 							break;
 						default:
 							console.log('[WARN] msg.type: "' + msg.type + '", nothing to match');
 							break;
 					}
-
-					var isRefresh = message.type === 'refresh';
-					var isMedia = message.url.includes('media');
-					var lastETag = localStorage.currentETag;
-					var isNew = lastETag !== message.currentETag;
-
-					if (isRefresh && isMedia && isNew) {
-
-						function countDown(cd) {
-							cd -= 1000;
-							if (cd <= 0) {
-								window.location.reload();
-							} else {
-								setTimeout(function(){
-									countDown(cd);
-								}, 1000);
-								console.log(parseInt(cd / 1000) + '...');
-							}
-						}
-						var cd = 6000;
-
-						console.log((parseInt(cd / 1000) - 1) + '秒后刷新');
-
-						countDown(cd);
-					}
-
 				}
+
+			} else {
+				console.error("[ERROR]'serviceWorker' in navigator ->", ('serviceWorker' in navigator));
 			}
 
-			/*setInterval(function() {
-				if ('storage' in navigator && 'estimate' in navigator.storage) {
-					navigator.storage.estimate().then(estimate => {
-						document.querySelector('#info').value = `${(estimate.usage / 1024 / 1024).toFixed(2)} Mb / ${(estimate.quota / 1024 / 1024 / 1024).toFixed(2)} Gb.`;
-					});
-				}
-			}, 1000);
-
-			setInterval(function() {
-				caches.keys().then(function(nameList) {
-					var nameStr = nameList.join('\n');
-					document.querySelector('#list').value = nameStr;
-				});
-			}, 1200);*/
+			checkVersion();
 		});
-			
+
+		// 检查版本
+		function checkVersion() {
+			/* 
+				先取到json，然后利用#A.return进入#C
+				顺序是:
+				...
+				-> fetch
+					-> fetch完毕
+				-> #A
+					-> r.json
+						-> r.json完毕
+					-> #B
+						-> #B完毕
+					-> #A完毕
+				-> #C
+					-> ...
+				...
+			*/
+			fetch(versionUrl, {cache: 'no-cache'})
+				.then(r => {												// #A
+					// 检查ETag
+					console.log('headers:', r.headers);
+					let etag = r.headers.get('ETag');
+					console.log('etag:', etag);
+					return (new Promise((resolve, reject) => {
+						r.json()
+							.then(dt => {									// #B
+								resolve([dt, etag]);
+							})
+					}));
+				})
+				.then((data) => {											// #C
+					console.log('data:', data);
+					console.log(' |-- jsonData:', data[0]);
+					console.log(' |-- etag:', data[1]);
+
+					// 将数据发送给client
+					return self.clients.matchAll().then(function(clients) {
+						clients.forEach(function(client) {
+							var message = {
+								type: 'versionCheck',
+								url: path,
+								data: {
+									content: data[0],
+									etag: data[1]
+								}
+							};
+							console.log('before msg, clients.length =', clients.length);
+
+							var timesLimit = 5;
+							var nowTime = 0;
+							loopTask = setInterval(function() {
+								client.postMessage(JSON.stringify(message));
+								console.log('msg...', client, nowTime + '/' + timesLimit);
+								if (nowTime > timesLimit) {
+									clearInterval(loopTask);
+									loopTask = undefined;
+									console.log('msg -> FAILED!!!');
+								} else {
+									nowTime += 1;
+								}
+							}, 1000);
+							console.log('SW_SEND-MSG>>>', JSON.stringify(message));
+						})// END of forEach
+					});// END of return
+				})// END of fetch
+		}// END of checkVersion
+
 	</script>
 </body>
 </html>
