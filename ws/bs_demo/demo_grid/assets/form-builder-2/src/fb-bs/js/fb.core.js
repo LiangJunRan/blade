@@ -35,6 +35,10 @@
 
 	}
 
+    $.fn.setFormValue = function(values) {
+        setFormValue($(this), values);
+    }
+
 
     // 初始化form校验器
     function initValidator($form) {

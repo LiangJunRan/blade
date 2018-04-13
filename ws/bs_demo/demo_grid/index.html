@@ -69,6 +69,9 @@
 							<button id="table_11_add" class="btn btn-success">
 								<i class="glyphicon glyphicon-plus"></i> Add
 							</button>
+							<button id="table_11_edit" class="btn btn-warning" disabled>
+								<i class="glyphicon glyphicon-edit"></i> Edit
+							</button>
 							<button id="table_11_delete" class="btn btn-danger" disabled>
 								<i class="glyphicon glyphicon-remove"></i> Delete
 							</button>
@@ -105,6 +108,7 @@
 	<script>
 		$(document).ready(function() {
 			var $btn_add = $('#table_11_add');
+			var $btn_edit = $('#table_11_edit');
 			var $btn_delete = $('#table_11_delete');
 			var $table = $('#table_11');
 			var selections = [];
@@ -199,7 +203,7 @@
 							return row.userStatus == 0 ? "正常" : row.userStatus == 1 ? "请假" : "离职";
 						}
 
-					},
+					}/*,
 					{
 						title: '操作',
 						field: 'operate',
@@ -208,13 +212,15 @@
 							// 改
 							'click .edit': function (e, value, row, index) {
 								alert('Edit, row: ' + JSON.stringify(row));
-								// TODO: 弹框、远程数据
+								
+
+
 							}
 						},
 						formatter: function (value, row, index) {
 							return '<a class="edit" href="javascript:void(0);">编辑</a>';
 						}
-					}
+					}*/
 
 				]
 			});
@@ -228,12 +234,20 @@
 				});
 			}
 
+			function getIdSelectionsRows() {
+				return $.map($table.bootstrapTable('getSelections'), function (row) {
+					return row
+				});
+			}
+
 			$table.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function () {
-				$btn_delete.prop('disabled', !$table.bootstrapTable('getSelections').length);
 				// save your data, here just save the current page
 				selections = getIdSelections();
 				console.log('selections:', selections);
 				// push or splice the selections if you want to save all data selections
+
+				$btn_delete.prop('disabled', !selections.length);
+				$btn_edit.prop('disabled', selections.length !== 1);
 			});
 
 			// 异步加载数据
@@ -297,10 +311,55 @@
 					field: 'userId',
 					values: ids
 				});
-				// TODO: 弹框、远程数据
+				// TODO: 弹框确认、远程数据
 				$btn_delete.prop('disabled', true);
 			});
 
+
+			$btn_edit.click(function(evt) {
+				BootstrapDialog.show({
+		            title: '编辑',
+		            message: function() {
+		            	var $message = $(
+		            		'<form id="dataForm" style="display: inline-block;"></form>'
+		            	);
+
+		            	$message.renderForm(jsonConf_add);
+						console.log('>>>', getIdSelectionsRows()[0]);
+						var formData = getIdSelectionsRows()[0];
+						formData = $.extend({}, formData, {'dept_dname': formData.dept.dname});
+		            	$message.setFormValue(formData);
+		            	return $message;
+		            },
+		            buttons: [{
+		                label: 'Submit',
+		                icon: 'glyphicon glyphicon-send',
+                		autospin: false,
+		                cssClass: "btn-primary",
+		                action: function(dialog, evt) {
+		                	var $button = this;
+		                	$button.spin();
+		                	
+		                	var isValid = $('#dataForm').valid();
+		                	if (isValid) {
+			                	dialog.enableButtons(false);
+			                    dialog.setClosable(false);
+			                    dialog.getModalBody().html('Dialog closes in 3 seconds.');
+			                    setTimeout(function(){
+			                        dialog.close();
+			                    }, 3000);
+		                	} else {
+		                		$button.stopSpin();
+		                	}
+		                }
+		            }, {
+		                label: 'Close',
+		                action: function(dialog) {
+		                    dialog.close();
+		                }
+		            }]
+		        });
+			});
 
 
 			$('#table_5_p1').bootstrapTable({

@@ -148,8 +148,10 @@
             if (!$container.hasClass('stream')) {
                 var label = $container.find('.labelClass').find('.formLabel');
                 if (required) {
+                    console.log('AAAAAAAAA, add');
                     label.addClass('symbol required')
                 } else {
+                    console.log('AAAAAAAAA, rme');
                     label.removeClass('symbol required');
                 }
             } else { //stream
