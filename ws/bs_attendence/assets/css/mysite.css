@@ -22,6 +22,23 @@ body, button, input, select, textarea, h1, h2, h3, h4, h5, h6
     border-bottom: none;
     background: #03a9f4;
 }
+.sidebar-tabs .tab-btns {
+    display: inline-block;
+    margin-left: 15px;
+}
+.tab-btns .tab-close-btn {
+    color: #b00;
+}
+.tab-btns .tab-close-btn:hover {
+    color: #f00;
+}
+.tab-btns .tab-refresh-btn {
+    color: #0b0;
+}
+.tab-btns .tab-refresh-btn:hover {
+    color: #0f0;
+}
+
 
 .title-block {
     padding: 0;
@@ -184,6 +201,10 @@ a.title-block:active {
     .navbar-header {
         width: 230px;
         border-right: solid 1px #ddd;
+    }
+    .navbar-body {
+        width: calc(100% - 230px);
+        float: left;
     }
 }
 

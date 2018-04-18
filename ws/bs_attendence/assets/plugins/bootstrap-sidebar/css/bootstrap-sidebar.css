@@ -36,3 +36,14 @@
 	background-color: #0099FF;
 	color: #fff;
 }
+
+.sidebar-tabs {
+	margin-top: 9px;
+	margin-left: 10px;
+}
+.nav-tabs {
+    border-bottom: 0px solid #ddd;
+}
+.nav-tabs>li>a {
+	border-radius: 0;
+}

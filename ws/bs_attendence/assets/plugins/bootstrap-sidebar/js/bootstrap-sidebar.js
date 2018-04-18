@@ -37,6 +37,7 @@
 	$.fn.sidebar = function(_opt) {
 		$baseNode = $(this);
 		var default_opt = {
+			"tabsId": "",
 			"iframeId": "",
 			"data": [
 				{
