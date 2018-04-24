@@ -40,21 +40,21 @@
 	            </a>
 	        </div>
 
-	        <div class="navbar-body">
-	        	<ul id="myTab" class="nav nav-tabs sidebar-tabs">
-					<li class="active">
-						<a href="#home" data-toggle="tab">
-							<!-- <span class="tab-icon"><i class="fa fa-leaf"></i></span> -->
-							<span class="tab-title">菜鸟教程</span>
-							<span class="tab-btns">
-								<span class="tab-refresh-btn"><i class="fa fa-refresh"></i></span>
-								<span class="tab-close-btn"><i class="fa fa-close"></i></span>
-							</span>
-						</a>
-					</li>
-					<li><a href="#ios" data-toggle="tab">iOS</a></li>
-					<li><a href="#ios" data-toggle="tab">iOS</a></li>
-				</ul>
+	        <div class="navbar-body" id="myTab">
+	        	<!-- <ul class="nav nav-tabs sidebar-tabs">
+	        						<li class="active">
+	        							<a href="#home" data-toggle="tab">
+	        								<span class="tab-icon"><i class="fa fa-leaf"></i></span>
+	        								<span class="tab-title">菜鸟教程</span>
+	        								<span class="tab-btns">
+	        									<span class="tab-refresh-btn"><i class="fa fa-refresh"></i></span>
+	        									<span class="tab-close-btn"><i class="fa fa-close"></i></span>
+	        								</span>
+	        							</a>
+	        						</li>
+	        						<li><a href="#ios" data-toggle="tab">iOS</a></li>
+	        						<li><a href="#ios" data-toggle="tab">iOS</a></li>
+	        					</ul> -->
 	        </div>
 	    </nav>
 		
@@ -67,8 +67,13 @@
 		</div>
 
 		<!-- 右侧内容区域 -->
-		<div class="frame-container">
-			<iframe src="" frameborder="0" id="mainFrame"></iframe>
+		<div class="frame-container" id="myTabContent">
+			<!-- <div id="myTabContent" class="tab-content">
+				<iframe src="" frameborder="0" class="tab-pane fade in active" id="home"></iframe>
+				<iframe src="" frameborder="0" class="tab-pane fade" id="ios"></iframe>
+				<iframe src="" frameborder="0" class="tab-pane fade" id="jmeter"></iframe>
+				<iframe src="" frameborder="0" class="tab-pane fade" id="ejb"></iframe>
+			</div> -->
 		</div>
 	</div>
 
@@ -82,7 +87,10 @@
 	<!-- 渲染菜单方法 -->
 	<script>
 		$('.side-menu').sidebar({
-			"iframeId": "mainFrame",
+			"tabsId": "myTab",		// 放置标签的容器id
+			"tabsContentId": "myTabContent",	// 放置标签页内容的容器id
+
+			/*"iframeId": "mainFrame",*/
 			"data": [
 				{
 					"text": "着陆页",

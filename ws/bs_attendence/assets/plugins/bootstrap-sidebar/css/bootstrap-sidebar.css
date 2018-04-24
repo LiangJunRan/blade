@@ -44,6 +44,9 @@
 .nav-tabs {
     border-bottom: 0px solid #ddd;
 }
+/*.nav-tabs>li {
+}*/
 .nav-tabs>li>a {
 	border-radius: 0;
+	background-color: rgba(255, 255, 255, 0.8);
 }
