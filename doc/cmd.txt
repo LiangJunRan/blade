@@ -20,3 +20,9 @@ taskkill /f /t /im nginx.exe
 
 
 
+# 查看当前服务运行状态（WindowsUpdate的服务名称为wuauserv）
+sc query "wuauserv"
+
+
+
+
