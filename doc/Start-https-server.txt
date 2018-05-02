@@ -1,0 +1,27 @@
+# 参照url
+# https://blog.csdn.net/gengxiaoming7/article/details/78505107
+# https://blog.csdn.net/wzj0808/article/details/53138438
+
+# 生成证书
+# 下载openssl：https://www.openssl.org/source/
+# 进入${安装路径}/bin路径
+# 打开gitbash运行openssl命令
+
+#!/bin/bash
+
+# windows请使用gitbash运行
+
+# 生成输出路径
+rm -rf './out'
+outputPath='./out'
+mkdir ${outputPath}
+
+# 1. 生成私钥
+openssl genrsa -out ${outputPath}/privatekey.pem 1024
+
+# 2 通过私钥生成CSR证书签名，GitBash tested
+openssl req -new -key ${outputPath}/privatekey.pem -days 3650 -out ${outputPath}/certrequest.csr -subj "//A=A/C=CN/ST=BJ/L=BJ/O=blade/OU=blade.com/CN=yolo/emailAddress=kuroikenshi@sina.com"
+
+# 3. 通过私钥和证书签名生成证书文件
+openssl x509 -req -in ${outputPath}/certrequest.csr -signkey ${outputPath}/privatekey.pem -out ${outputPath}/certificate.pem
+

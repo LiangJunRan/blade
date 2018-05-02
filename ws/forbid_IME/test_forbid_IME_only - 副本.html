@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		label {
+    		vertical-align: top;
+		}
+		.forbidIME {
+			-webkit-ime-mode: disabled;
+			-ms-ime-mode: disabled;
+			ime-mode: disabled;
+		}
+	</style>
+</head>
+<body>
+	<br>
+	<div>
+		<label>textarea</label>
+		<textarea class="forbidIME" id="t" rows="5" style="width: 300px;"></textarea>
+	</div>
+	<script src="jquery.min.js"></script>
+	<script>
+		$(function() {
+			// 禁用IME
+			$.fn.fuckIME = function() {
+				var $this = $(this);
+				var $p = undefined;
+
+				$this.on('input', function(event) {
+					// console.log('event >>>', event);
+
+					$p = $('<input type="password" class="fuckIME" autocomplete="off" style="position: absolute; left: 0px; top: 0px; opacity: 0;" />');
+					$('body').append($p);
+
+					$p.on('focus', function(event) {
+						requestAnimationFrame(function() {
+							$this.focus();
+							$('.fuckIME').remove();
+						});
+					});
+
+					$p.focus();
+				});
+			};
+
+			$('#t').fuckIME();	
+		});
+		
+	</script>
+</body>
+</html>
