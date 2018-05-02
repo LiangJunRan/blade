@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>demo</title>
+
+</head>
+<body>
+	chrome://inspect/#service-workers
+	<hr>
+	<img src="media/icon1.png" alt="" style="width: 200px;">
+	<audio src="media/rainymood.m4a" preload="metadata" controls></audio>
+	<video src="media/docker.mp4" preload="metadata" style="width: 340px; height: 200px; padding: 10px; background-color: black;" controls></video>
+	<button id="enableSW" onclick="enableSW();">激活SW</button>
+	<button id="storeMedia" onclick="storeMedia();">缓存视频</button>
+
+	<button id="clearAll" onclick="clearAll();">清除所有</button>
+
+	<input type="text" id="info">
+
+	<textarea name="" id="list" cols="30" rows="10"></textarea>
+
+	<script type="text/javascript">
+		function reload() {
+			window.location.reload();
+		}
+
+		// function enableSW () {
+		window.addEventListener('load', function() {
+			console.log('当前页面受serviceworker控制:', !!navigator.serviceWorker.controller);
+			if (navigator.serviceWorker) {
+				console.log('开始加载，尝试注册sw_demo_update');
+				navigator.serviceWorker.register('sw_demo_update.js', {scope: '/'}).then(function(registration) {
+					console.log(' -->尝试注册sw_demo_update【成功】，作用域:', registration.scope);
+				}).catch(function(err) {
+					console.log(' -->尝试注册sw_demo_update【失败】，详细信息:', err.message);
+				});
+
+				navigator.serviceWorker.ready.then(function() {
+					console.log('READY');
+				})
+
+				// navigator.serviceWorker.ready.then(function() {
+				// 	console.log('sw准备就绪，刷新以启用');
+				// 	function countDown(cd) {
+				// 		cd -= 1000;
+				// 		if (cd <= 0) {
+				// 			window.location.reload();
+				// 		} else {
+				// 			setTimeout(function(){
+				// 				countDown(cd);
+				// 			}, 1000);
+				// 			console.log(parseInt(cd / 1000) + '...');
+				// 		}
+				// 	}
+				// 	var cd = 6000;
+				// 	countDown(cd);
+				// });
+			}
+
+			if ('serviceWorker' in navigator) {
+				navigator.serviceWorker.onmessage = function(evt) {
+					var message = JSON.parse(evt.data);
+
+					var isRefresh = message.type === 'refresh';
+					var isMedia = message.url.includes('media');
+					var lastETag = localStorage.currentETag;
+					var isNew = lastETag !== message.currentETag;
+
+					// console.log('lastETag:', lastETag);
+					// console.log('message:', message);
+					console.log('[req]:', message.url);
+					console.log('   |-- isRefresh:', isRefresh);
+					console.log('   |-- isMedia:', isMedia);
+					console.log('   |-- isNew:', isNew);
+
+					if (isRefresh && isMedia && isNew) {
+
+						function countDown(cd) {
+							cd -= 1000;
+							if (cd <= 0) {
+								window.location.reload();
+							} else {
+								setTimeout(function(){
+									countDown(cd);
+								}, 1000);
+								console.log(parseInt(cd / 1000) + '...');
+							}
+						}
+						var cd = 6000;
+
+						console.log((parseInt(cd / 1000) - 1) + '秒后刷新');
+
+						countDown(cd);
+					}
+
+				}
+			}
+
+			setInterval(function() {
+				if ('storage' in navigator && 'estimate' in navigator.storage) {
+					navigator.storage.estimate().then(estimate => {
+						document.querySelector('#info').value = `${(estimate.usage / 1024 / 1024).toFixed(2)} Mb / ${(estimate.quota / 1024 / 1024 / 1024).toFixed(2)} Gb.`;
+					});
+				}
+			}, 1000);
+
+			setInterval(function() {
+				caches.keys().then(function(nameList) {
+					var nameStr = nameList.join('\n');
+					document.querySelector('#list').value = nameStr;
+
+					/*// 1st step: find last-version
+					var lastVerNum = 0;
+					for (var i = 0; i < nameList.length; i ++) {
+						var versionName = nameList[i];
+						if (versionName.indexOf("demo-cache-v") == 0) {
+							var verNum = parseInt(versionName.replace("demo-cache-v", ''));
+							if (verNum > lastVerNum) {
+								lastVerNum = verNum;
+							}
+						}
+					}
+					var lastVersionName = (lastVerNum != 0) ? ("demo-cache-v" + lastVerNum) : undefined;
+					console.log('检查1> 最后版本:', lastVersionName);
+
+					// 2nd step: kill versions except last-version
+					var refresh = false;
+					if (lastVersionName) {
+						for (var i = 0; i < nameList.length; i ++) {
+							var versionName = nameList[i];
+							if (versionName != lastVersionName) {
+								caches.delete(versionName);
+								console.log('    检查2> 干掉:', versionName);
+								refresh = true;
+							}
+						}
+					}
+
+					// 3rd step: refresh
+					if (refresh) {
+						window.location.reload();
+					}*/
+				});
+			}, 1200);
+		});
+			
+	</script>
+</body>
+</html>

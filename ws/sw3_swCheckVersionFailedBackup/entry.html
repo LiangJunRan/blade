@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>入口页</title>
+
+</head>
+<body>
+	chrome://inspect/#service-workers
+	<hr>
+	TODO: 手动清空etag历史记录
+	<hr>
+	<span id="versionInfo"></span>
+	<hr>
+
+	<a href="controlled/page_1.html">测试页&gt;&gt;&gt;</a>
+
+	<script type="text/javascript">
+		// 定义关键字 TODO: 挪到参数js里
+		var keywords = {
+			currentVersionETag: 'currentVersionETag',
+			currentVersion: 'currentVersion'
+		};
+
+		var lastETag = localStorage[keywords.currentVersionETag];
+		var lastVersion = localStorage[keywords.currentVersion];
+
+		// 显示版本信息
+		function showVersionInfo() {
+			var strInfo = `当前版本号: ${lastVersion}, ETag: ${lastETag}`;
+			document.querySelector('#versionInfo').innerHTML = strInfo;
+		}
+		showVersionInfo();
+
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.onmessage = function(evt) {
+				console.log('MAIN_RECV-MSG>>>', evt.data);
+				var msg = JSON.parse(evt.data);
+
+				switch (msg.type) {
+					// 版本校验
+					case 'versionCheck':
+						console.log('[MSG] versionCheck');
+
+						// 发送回复
+						var message = {
+							type: 'stopSend_versionCheck',
+							data: {
+								'aaa': 'bbb'
+							}
+						};
+
+						navigator.serviceWorker.controller.postMessage(JSON.stringify(message));
+
+						// var toUpdate = (msg.data.etag !== lastETag); TODO>>>>>>>>>>>>>>>>>>>>>>>>>>
+						console.log('    ETAG:', lastETag, '<->', msg.data.etag, 'toUpdate:', (msg.data.etag !== lastETag));
+						console.log('    VERSION:', lastVersion, '<->', msg.data.content.version, 'toUpdate:', (msg.data.content.version !== lastVersion));
+						var etagIsSame = (msg.data.etag === lastETag);
+						var versionIsSame = (msg.data.content.version === lastVersion);
+
+						// version不一样
+						if (!versionIsSame) {
+							// 更新
+							console.log('>>> update');
+
+							// 更新现有的version信息
+							localStorage[keywords.currentVersionETag] = msg.data.etag;
+							localStorage[keywords.currentVersion] = msg.data.content.version;
+
+							// 按照设定规则，清空缓存
+							if (msg.data.content.killAll === true) {
+								console.log('    >>> killAll');
+								// localStorage.clear();
+								// caches.
+
+
+							} else if (msg.data.content.killList && msg.data.content.killList.length > 0) {
+								console.log('    >>> killList');
+
+							} else {
+								console.log('    >>> killName');
+
+							}
+
+							// 重新加载
+							// debugger;
+						}
+						// version一样 
+						else {
+							if (!etagIsSame) {
+								console.log('[WARN] versionCheck: No need to update, but etag is NOT same');
+							} else {
+								console.log('[INFO] versionCheck: No need to update');
+							}
+						}
+
+
+						break;
+					default:
+						console.log('[WARN] msg.type: "' + msg.type + '", nothing to match');
+						break;
+				}
+			}
+
+		} else {
+			console.error("[ERROR]'serviceWorker' in navigator ->", ('serviceWorker' in navigator));
+		}
+		
+		window.addEventListener('load', function() {
+			if (navigator.serviceWorker) {
+				navigator.serviceWorker.register('sw.js').then(function(registration) {
+					console.log('MAIN_INSTALL SUCCESS');
+				}).catch(function(err) {
+					console.log('MAIN_INSTALL FAILED');
+				});
+				navigator.serviceWorker.ready.then(function() {
+					console.log('MAIN_READY');
+				})
+			}
+
+			if ('serviceWorker' in navigator) {
+				console.log('绑定message', navigator.serviceWorker);
+				navigator.serviceWorker.onmessage = function(evt) {
+					console.log('MAIN_RECV-MSG>>>', evt.data);
+					var msg = JSON.parse(evt.data);
+
+					switch (msg.type) {
+						// 版本校验
+						case 'versionCheck':
+							console.log('[MSG] versionCheck');
+
+							// 发送回复
+							var message = {
+								type: 'stopSend_versionCheck',
+								data: {
+									'aaa': 'bbb'
+								}
+							};
+
+							navigator.serviceWorker.controller.postMessage(JSON.stringify(message));
+
+							// var toUpdate = (msg.data.etag !== lastETag); TODO>>>>>>>>>>>>>>>>>>>>>>>>>>
+							console.log('    ETAG:', lastETag, '<->', msg.data.etag, 'toUpdate:', (msg.data.etag !== lastETag));
+							console.log('    VERSION:', lastVersion, '<->', msg.data.content.version, 'toUpdate:', (msg.data.content.version !== lastVersion));
+							var etagIsSame = (msg.data.etag === lastETag);
+							var versionIsSame = (msg.data.content.version === lastVersion);
+
+							// version不一样
+							if (!versionIsSame) {
+								// 更新
+								console.log('>>> update');
+
+								// 更新现有的version信息
+								localStorage[keywords.currentVersionETag] = msg.data.etag;
+								localStorage[keywords.currentVersion] = msg.data.content.version;
+
+								// 按照设定规则，清空缓存
+								if (msg.data.content.killAll === true) {
+									console.log('    >>> killAll');
+									// localStorage.clear();
+									// caches.
+
+
+								} else if (msg.data.content.killList && msg.data.content.killList.length > 0) {
+									console.log('    >>> killList');
+
+								} else {
+									console.log('    >>> killName');
+
+								}
+
+								// 重新加载
+								// debugger;
+							}
+							// version一样 
+							else {
+								if (!etagIsSame) {
+									console.log('[WARN] versionCheck: No need to update, but etag is NOT same');
+								} else {
+									console.log('[INFO] versionCheck: No need to update');
+								}
+							}
+
+
+							break;
+						default:
+							console.log('[WARN] msg.type: "' + msg.type + '", nothing to match');
+							break;
+					}
+				}
+
+			} else {
+				console.error("[ERROR]'serviceWorker' in navigator ->", ('serviceWorker' in navigator));
+			}
+
+		});
+
+	</script>
+</body>
+</html>
