@@ -15,14 +15,35 @@
 </head>
 <body>
 	<div id="example">
-		<my-component></my-component>
+		<!-- <my-component></my-component> -->
+		<container></container>
 	</div>
 
 	<script>
+		var data = {
+			"label": "测试表单",
+			"type": "form",
+			"items": [{
+				"label": "测试",
+				"type": "form-group",
+				"items": [
+					{
+						"name": "rec1111",
+						"type": "audio",
+						"maxNumber": 1,
+						"minNumber": 1
+					}
+				]
+			}]
+		};
+
+
 		Vue.component('my-component', {
 			template: '<div>A custom component !<span>{{msg}}</span></div>',
 			props: ['msg']
 		});
+
+
 
 		new Vue({
 			el: '#example'
