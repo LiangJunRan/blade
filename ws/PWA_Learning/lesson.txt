@@ -1,0 +1,23 @@
+https://codelabs.developers.google.com/codelabs/your-first-pwapp/#1
+
+
+1、简介
+略，有功夫翻译
+
+
+2、准备
+
+下载源码：
+https://github.com/googlecodelabs/your-first-pwapp/archive/master.zip
+
+下载并测试web server：
+https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb?hl=cn
+
+choose folder选择工作路径
+
+启动step-02项目，
+
+
+学习计划暂停
+重心放在sw的使用
+

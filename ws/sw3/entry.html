@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -13,6 +13,8 @@
 	<span id="versionInfo"></span>
 	<hr>
 
+	<button onclick="localStorage.clear();">手动清空localCache</button>
+
 	<a href="controlled/page_1.html">测试页&gt;&gt;&gt;</a>
 
 	<script type="text/javascript">
@@ -25,7 +27,80 @@
 		var versionUrl = '/controlled/version.json';
 
 		var lastETag = localStorage[keywords.currentVersionETag];
-		var lastVersion = localStorage[keywords.currentVersion];
+		var lastVersion = undefined;
+		console.log('>>>', parseInt(localStorage[keywords.currentVersion]), typeof(parseInt(localStorage[keywords.currentVersion])), isNaN(parseInt(localStorage[keywords.currentVersion])));
+		if (isNaN(parseInt(localStorage[keywords.currentVersion]))) {
+			lastVersion = -1;
+		} else {
+			lastVersion = parseInt(localStorage[keywords.currentVersion]);
+		}
+
+		// 检查版本
+		function checkVersion() {
+			fetch(versionUrl, {cache: 'no-cache'})
+				.then(r => {							// #A
+					// 检查ETag
+					console.log('headers:', r.headers);
+					let etag = r.headers.get('ETag');
+					console.log('etag:', etag);
+					return (new Promise((resolve, reject) => {
+						r.json().then(dt => {					 	// #B
+							resolve([dt, etag]);
+						})
+					}));
+				})
+				.then((data) => {						 	// #C
+					console.log('data:', data,'\n |-- jsonData:', data[0], '\n |-- etag:', data[1]);
+					// 校验并处理
+					let jsonData = data[0];
+					let etag = data[1];
+					console.log('		ETAG:', lastETag, '<->', etag, 'toUpdate:', (etag !== lastETag));
+					console.log('		VERSION: (' + typeof(lastVersion) + ')', lastVersion, '<-> (' + typeof(jsonData.version) + ')', jsonData.version, 'toUpdate:', (jsonData.version !== lastVersion));
+
+					var etagIsSame = (etag === lastETag);
+					var versionIsSame = (jsonData.version === lastVersion);
+
+					console.log('最后记录版本号:', lastVersion, typeof(lastVersion));
+					console.log('当前获得版本号:', jsonData.version, typeof(jsonData.version));
+
+					var toUpdate = (parseInt(jsonData.version) > parseInt(lastVersion));
+
+					console.log('是否更新>>>', toUpdate);
+					if (toUpdate) {
+						// 更新
+						console.log('>>> update');
+
+						// 按照设定规则，清空缓存
+						if (jsonData.killAll === true) {
+							console.log('    >>> killAll');
+							localStorage.clear();
+							caches.clear();
+
+
+						} else if (jsonData.killList && jsonData.killList.length > 0) {
+							console.log('    >>> killList');
+
+						} else {
+							console.log('    >>> killName');
+							caches.delete('cache_demo')
+								.then(() => {
+									console.log('Delete is DONE');
+
+									document.location.reload();
+								});
+						}
+
+
+						// 更新现有的version信息
+						console.log('更新现有version记录');
+						localStorage[keywords.currentVersionETag] = etag;
+						localStorage[keywords.currentVersion] = jsonData.version;
+					}
+				});
+
+			// var toUpdate = (msg.data.etag !== lastETag); TODO>>>>>>>>>>
+		}
+		checkVersion();
 
 		// 显示版本信息
 		function showVersionInfo() {
@@ -34,238 +109,23 @@
 		}
 		showVersionInfo();
 
-		if ('serviceWorker' in navigator) {
-			navigator.serviceWorker.onmessage = function(evt) {
-				console.log('MAIN_RECV-MSG>>>', evt.data);
-				var msg = JSON.parse(evt.data);
-
-				switch (msg.type) {
-					// 版本校验
-					case 'versionCheck':
-						console.log('[MSG] versionCheck');
-
-						// 发送回复
-						var message = {
-							type: 'stopSend_versionCheck',
-							data: {
-								'aaa': 'bbb'
-							}
-						};
-
-						navigator.serviceWorker.controller.postMessage(JSON.stringify(message));
-
-						// var toUpdate = (msg.data.etag !== lastETag); TODO>>>>>>>>>>>>>>>>>>>>>>>>>>
-						console.log('		ETAG:', lastETag, '<->', msg.data.etag, 'toUpdate:', (msg.data.etag !== lastETag));
-						console.log('		VERSION:', lastVersion, '<->', msg.data.content.version, 'toUpdate:', (msg.data.content.version !== lastVersion));
-						var etagIsSame = (msg.data.etag === lastETag);
-						var versionIsSame = (msg.data.content.version === lastVersion);
-
-						// version不一样
-						if (!versionIsSame) {
-							// 更新
-							console.log('>>> update');
-
-							// 更新现有的version信息
-							localStorage[keywords.currentVersionETag] = msg.data.etag;
-							localStorage[keywords.currentVersion] = msg.data.content.version;
-
-							// 按照设定规则，清空缓存
-							if (msg.data.content.killAll === true) {
-								console.log('		>>> killAll');
-								// localStorage.clear();
-								// caches.
-
-
-							} else if (msg.data.content.killList && msg.data.content.killList.length > 0) {
-								console.log('		>>> killList');
-
-							} else {
-								console.log('		>>> killName');
-
-							}
-
-							// 重新加载
-							// debugger;
-						}
-						// version一样 
-						else {
-							if (!etagIsSame) {
-								console.log('[WARN] versionCheck: No need to update, but etag is NOT same');
-							} else {
-								console.log('[INFO] versionCheck: No need to update');
-							}
-						}
-
-
-						break;
-					default:
-						console.log('[WARN] msg.type: "' + msg.type + '", nothing to match');
-						break;
-				}
-			}
-
-		} else {
-			console.error("[ERROR]'serviceWorker' in navigator ->", ('serviceWorker' in navigator));
-		}
-		
 		window.addEventListener('load', function() {
 			if (navigator.serviceWorker) {
 				navigator.serviceWorker.register('sw.js').then(function(registration) {
 					console.log('MAIN_INSTALL SUCCESS');
+					// document.location.reload();
 				}).catch(function(err) {
 					console.log('MAIN_INSTALL FAILED');
 				});
 				navigator.serviceWorker.ready.then(function() {
 					console.log('MAIN_READY');
 				})
-			}
-
-			if ('serviceWorker' in navigator) {
-				console.log('绑定message', navigator.serviceWorker);
-				navigator.serviceWorker.onmessage = function(evt) {
-					console.log('MAIN_RECV-MSG>>>', evt.data);
-					var msg = JSON.parse(evt.data);
-
-					switch (msg.type) {
-						// 版本校验
-						case 'versionCheck':
-							console.log('[MSG] versionCheck');
-
-							// 发送回复
-							var message = {
-								type: 'stopSend_versionCheck',
-								data: {
-									'aaa': 'bbb'
-								}
-							};
-
-							navigator.serviceWorker.controller.postMessage(JSON.stringify(message));
-
-							// var toUpdate = (msg.data.etag !== lastETag); TODO>>>>>>>>>>>>>>>>>>>>>>>>>>
-							console.log('		ETAG:', lastETag, '<->', msg.data.etag, 'toUpdate:', (msg.data.etag !== lastETag));
-							console.log('		VERSION:', lastVersion, '<->', msg.data.content.version, 'toUpdate:', (msg.data.content.version !== lastVersion));
-							var etagIsSame = (msg.data.etag === lastETag);
-							var versionIsSame = (msg.data.content.version === lastVersion);
-
-							// version不一样
-							if (!versionIsSame) {
-								// 更新
-								console.log('>>> update');
-
-								// 更新现有的version信息
-								localStorage[keywords.currentVersionETag] = msg.data.etag;
-								localStorage[keywords.currentVersion] = msg.data.content.version;
-
-								// 按照设定规则，清空缓存
-								if (msg.data.content.killAll === true) {
-									console.log('		>>> killAll');
-									// localStorage.clear();
-									// caches.
-
-
-								} else if (msg.data.content.killList && msg.data.content.killList.length > 0) {
-									console.log('		>>> killList');
-
-								} else {
-									console.log('		>>> killName');
-
-								}
-
-								// 重新加载
-								// debugger;
-							}
-							// version一样 
-							else {
-								if (!etagIsSame) {
-									console.log('[WARN] versionCheck: No need to update, but etag is NOT same');
-								} else {
-									console.log('[INFO] versionCheck: No need to update');
-								}
-							}
-
-
-							break;
-						default:
-							console.log('[WARN] msg.type: "' + msg.type + '", nothing to match');
-							break;
-					}
-				}
-
 			} else {
-				console.error("[ERROR]'serviceWorker' in navigator ->", ('serviceWorker' in navigator));
+				console.warn('[WARN] 不支持serviceWorker');
 			}
-
-			checkVersion();
 		});
 
-		// 检查版本
-		function checkVersion() {
-			/* 
-				先取到json，然后利用#A.return进入#C
-				顺序是:
-				...
-				-> fetch
-					-> fetch完毕
-				-> #A
-					-> r.json
-						-> r.json完毕
-					-> #B
-						-> #B完毕
-					-> #A完毕
-				-> #C
-					-> ...
-				...
-			*/
-			fetch(versionUrl, {cache: 'no-cache'})
-				.then(r => {												// #A
-					// 检查ETag
-					console.log('headers:', r.headers);
-					let etag = r.headers.get('ETag');
-					console.log('etag:', etag);
-					return (new Promise((resolve, reject) => {
-						r.json()
-							.then(dt => {									// #B
-								resolve([dt, etag]);
-							})
-					}));
-				})
-				.then((data) => {											// #C
-					console.log('data:', data);
-					console.log(' |-- jsonData:', data[0]);
-					console.log(' |-- etag:', data[1]);
-
-					// 将数据发送给client
-					return self.clients.matchAll().then(function(clients) {
-						clients.forEach(function(client) {
-							var message = {
-								type: 'versionCheck',
-								url: path,
-								data: {
-									content: data[0],
-									etag: data[1]
-								}
-							};
-							console.log('before msg, clients.length =', clients.length);
-
-							var timesLimit = 5;
-							var nowTime = 0;
-							loopTask = setInterval(function() {
-								client.postMessage(JSON.stringify(message));
-								console.log('msg...', client, nowTime + '/' + timesLimit);
-								if (nowTime > timesLimit) {
-									clearInterval(loopTask);
-									loopTask = undefined;
-									console.log('msg -> FAILED!!!');
-								} else {
-									nowTime += 1;
-								}
-							}, 1000);
-							console.log('SW_SEND-MSG>>>', JSON.stringify(message));
-						})// END of forEach
-					});// END of return
-				})// END of fetch
-		}// END of checkVersion
-
+		
 	</script>
 </body>
 </html>
