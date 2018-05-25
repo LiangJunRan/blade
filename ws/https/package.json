@@ -1,0 +1,19 @@
+{
+  "name": "https",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "https": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "http-server -a hostname.com -o",
+    "starts-old": "http-server --ssl --cert credentials/214074192520998.pem --key credentials/214074192520998.key -a hostname.com -o -p 443",
+    "starts": "http-server --ssl --cert credentials/hostname.com.pem --key credentials/hostname.com.key -a hostname.com -o -p 443"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
