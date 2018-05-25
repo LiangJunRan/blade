@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Demo of html5 recorder</title>
+	<script src="vendor/jquery/jquery.min.js"></script>
+
+	<script src="vendor/HZRecorder/HZRecorder.js"></script>
+</head>
+<body>
+	<!-- <label>使用播放器类型</label>
+	<select name="playerType">
+		<option value="html5">html5</option>
+		<option value="flash" disabled>flash</option>
+	</select> -->
+
+	<hr>
+
+	</div>
+	<label>音量: </label>
+	<div class="mirophoneChTips" style="display: inline-block; border: 1px solid black; vertical-align: middle; width: 100px; height: 20px;">
+		<div class="record-volume-bar-max" style="width: 100px; height: 20px; background-color: rgba(255, 0, 0, 1); position: relative; top: 0px;"></div>
+		<div class="record-volume-bar" style="width: 100px; height: 20px; background-color: rgba(0, 255, 255, 1); position: relative; top: -20px;"></div>
+	</div>
+	<!-- <div class="speakVolume" style="width: 100px; height: 20px; background-color: blue;"></div> -->
+
+	<hr>
+
+	<audio></audio>
+	<button id="start" onclick="startRecording()">start</button>
+	<button id="stop" onclick="stopRecording()">stop</button>
+	<button id="play" onclick="play()">play</button>
+	<button id="playStop" onclick="stopPlay()">pause</button>
+
+	<script>
+		var recorder;
+		window.max = 0;
+
+		var audio = document.querySelector('audio');
+
+		function initializeRecording() {
+			// 初始化时获取录音权限
+			HZRecorder.get();
+		}
+
+		function startRecording() {
+			HZRecorder.get(function (rec) {
+				recorder = rec;
+				recorder.start();
+			});
+		}
+
+		function stopRecording() {
+			recorder.stop();
+			recorder.play(audio);
+
+			console.log('当前录音值为:', recorder.getBlob());
+		}
+
+		function play() {
+			audio.play();
+		}
+
+		function stopPlay() {
+			audio.pause();
+		}
+
+		$(document).ready(function() {
+			initializeRecording();
+			startRecording();
+		});
+	</script>
+
+</body>
+</html>
