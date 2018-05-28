@@ -26,6 +26,7 @@
   border-radius: 99px;
   bottom: 2px;
   transition: all 0.3s cubic-bezier(0.455, 0.03, 0.215, 1.33) 0s;
+  top: 1px;
 }
 .clip-radio label:after {
   border: 1px solid #c8c7cc;
@@ -39,6 +40,7 @@
   border-radius: 99px;
   bottom: 2px;
   transition: all 0.3s cubic-bezier(0.455, 0.03, 0.215, 1.33) 0s;
+  top: 1px;
 }
 .clip-radio input[type="radio"] {
   display: none;
@@ -137,11 +139,12 @@ input[type="radio"], input[type="checkbox"] {
   display: inline-block;
   font-size: 13px;
   margin-right: 15px;
+  margin-bottom: 6px;
   padding-left: 25px/* 30px */ !important;
   position: relative;
   line-height: 23px;
   transition: border 0.2s linear 0s, color 0.2s linear 0s;
-  white-space: nowrap;
+  /*white-space: nowrap;*/
 }
 .clip-check label:before {
   background-color: #ffffff;
