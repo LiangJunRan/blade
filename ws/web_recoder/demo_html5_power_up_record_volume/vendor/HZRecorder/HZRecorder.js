@@ -10,6 +10,19 @@
         config.sampleBits = config.sampleBits || 8;      //采样数位 8, 16
         config.sampleRate = config.sampleRate || (context.sampleRate/6);   //在chrome和火狐浏览器下值不是44100,所以不能用44100/6  
         var audioInput = context.createMediaStreamSource(stream);
+
+        // 测试修改 --START----------------------
+        console.log('context>>>>', context);
+
+        var gainNode = context.createGain();
+        audioInput.connect(gainNode);
+        gainNode.connect(context.destination);
+
+        gainNode.gain.setValueAtTime(0, context.currentTime);
+
+        console.log('gainNode>>>', gainNode);
+        // 测试修改 --END------------------------
+
         var createScript = context.createScriptProcessor || context.createJavaScriptNode;
         var recorder = createScript.apply(context, [4096, 1, 1]);
 
@@ -179,9 +192,9 @@
 	            var input = e.inputBuffer.getChannelData(0);
                 var changeWidth=width/2*Math.max.apply(null,input);
 
-                console.log(window.max);
+                // console.log(window.max);
                 window.max = (window.max < changeWidth) ? changeWidth : window.max;
-                console.log(window.max);
+                // console.log(window.max);
 
                 $bar.width(changeWidth*1.3);
                 $barMax.width(window.max*1.3);
