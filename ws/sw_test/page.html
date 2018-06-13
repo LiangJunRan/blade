@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+
+	<style>
+		iframe {
+			height: 400px;
+			width: 600px;
+		}
+	</style>
+</head>
+<body>
+	<h1>容器页 <sub>chrome://inspect/#service-workers</sub></h1>
+	
+	<div style="display: flex;">
+		<iframe id="iframe1" src="http://localhost:9495/sub-1.html"></iframe>
+		<iframe id="iframe2" src="http://localhost:9495/sub-2.html"></iframe>	
+	</div>
+	<button onclick="reload();">RELOAD</button>
+	<button onclick="reloadSW();">Reload SW</button>
+
+	<h3>todo:</h3>
+	<ul>
+		<li>将缓存资源按照路径区分</li>
+		<li>在sw中似乎只按照请求url来确认是否使用缓存文件，需要确认这点</li>
+	</ul>
+
+	<script>
+		var ifr1 = document.getElementById('iframe1');
+		var ifr2 = document.getElementById('iframe2');
+
+		function reload() {
+			ifr1.contentWindow.location.reload();
+			ifr2.contentWindow.location.reload();
+		}
+
+		function reloadSW() {
+			/*window.frames[0].*/
+			navigator.serviceWorker.ready.then(function(registration) {
+				registration.update().then(function() {
+					console.log('Checked for update');
+				}).catch(function(error) {
+					console.error('Update failed', error);
+				});
+			});
+
+		}
+	</script>
+</body>
+</html>
