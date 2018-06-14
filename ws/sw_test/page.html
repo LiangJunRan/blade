@@ -15,8 +15,8 @@
 	<h1>容器页 <sub>chrome://inspect/#service-workers</sub></h1>
 	
 	<div style="display: flex;">
-		<iframe id="iframe1" src="http://localhost:9495/sub-1.html"></iframe>
-		<iframe id="iframe2" src="http://localhost:9495/sub-2.html"></iframe>	
+		<iframe id="iframe1" src="/uncontrolled/sub-1.html"></iframe>
+		<iframe id="iframe2" src="/controlled/sub-2.html"></iframe>	
 	</div>
 	<button onclick="reload();">RELOAD</button>
 	<button onclick="reloadSW();">Reload SW</button>
@@ -32,21 +32,40 @@
 		var ifr2 = document.getElementById('iframe2');
 
 		function reload() {
-			ifr1.contentWindow.location.reload();
-			ifr2.contentWindow.location.reload();
+			setTimeout(function() {
+				ifr1.contentWindow.location.reload();
+			}, 0);
+			setTimeout(function() {
+				ifr2.contentWindow.location.reload();
+			}, 0);
 		}
 
 		function reloadSW() {
-			/*window.frames[0].*/
+			window.frames[1].
 			navigator.serviceWorker.ready.then(function(registration) {
+				console.log('found sw');
 				registration.update().then(function() {
 					console.log('Checked for update');
 				}).catch(function(error) {
 					console.error('Update failed', error);
 				});
 			});
-
 		}
+
+		window.addEventListener('load', function() {
+			var msgNode = document.createElement('p');
+			
+			navigator.serviceWorker.register('sw.js', {
+				scope: './controlled'
+			}).then(function(registration) {
+				msgNode.innerHTML = "sw注册【成功】";
+				document.body.appendChild(msgNode);
+			}).catch(function(err) {
+				msgNode.innerHTML = "sw注册【失败】";
+				console.error(err);
+				document.body.appendChild(msgNode);
+			})
+		});
 	</script>
 </body>
 </html>
