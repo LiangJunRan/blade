@@ -20,6 +20,7 @@
 	</div>
 	<button onclick="reload();">RELOAD</button>
 	<button onclick="reloadSW();">Reload SW</button>
+	<button onclick="updateCache();">Update cache</button>
 
 	<h3>todo:</h3>
 	<ul>
@@ -28,6 +29,11 @@
 	</ul>
 
 	<script>
+		// 临时解决cmd命令后遗症造成sw无法注册报错问题
+		if (location.href.match('controlled/cmd_update_cache') !== null) {
+			location.href = '/page.html';
+		}
+
 		var ifr1 = document.getElementById('iframe1');
 		var ifr2 = document.getElementById('iframe2');
 
@@ -50,6 +56,41 @@
 					console.error('Update failed', error);
 				});
 			});
+		}
+
+		// function httpGet(uri, callback) {  
+		// 	// if (typeof callback != 'function') {  
+		// 	// 	callback = function(uri) {  
+		// 	// 		console.log(uri);  
+		// 	// 	}  
+		// 	// }  
+		// 	// var xhr = new XMLHttpRequest();  
+		// 	// xhr.responseType = 'blob';  
+		// 	// xhr.onload = function() {  
+		// 	// 	callback(window.URL.createObjectURL(xhr.response));  
+		// 	// }  
+		// 	// xhr.open('GET', uri, true);  
+		// 	// xhr.send();
+
+		// 	fetch(uri)
+		// 		.then(d => {
+		// 			if (typeof callback != 'function') {  
+		// 				callback = function(uri) {
+		// 					console.log(uri);
+		// 				}
+		// 			}
+		// 			callback(d);
+		// 		})
+		// 		.catch(err => {
+		// 			console.error(err);
+		// 		})
+		// }
+
+		function updateCache() {
+			// httpGet('cmd_update_cache', function(resp) {
+			// 	console.log('send complete, resp:', resp);
+			// });
+			window.location.href = "controlled/cmd_update_cache";
 		}
 
 		window.addEventListener('load', function() {

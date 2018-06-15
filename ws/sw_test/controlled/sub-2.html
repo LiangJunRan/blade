@@ -10,6 +10,41 @@
 	<img src="/controlled/icon1.png" alt="">
 	<script>
 		document.getElementById('rdm').innerHTML = Math.random();
+
+		function httpGet(uri, callback) {  
+			// if (typeof callback != 'function') {  
+			// 	callback = function(uri) {  
+			// 		console.log(uri);  
+			// 	}  
+			// }  
+			// var xhr = new XMLHttpRequest();  
+			// xhr.responseType = 'blob';  
+			// xhr.onload = function() {  
+			// 	callback(window.URL.createObjectURL(xhr.response));  
+			// }  
+			// xhr.open('GET', uri, true);  
+			// xhr.send();
+
+			fetch(uri)
+				.then(d => {
+					if (typeof callback != 'function') {  
+						callback = function(uri) {
+							console.log(uri);
+						}
+					}
+					callback(d);
+				})
+				.catch(err => {
+					console.error(err);
+				})
+		}
+
+		window.updateCache = function () {
+			httpGet('/controlled/cmd_update_cache', function(resp) {
+				console.log('send complete, resp:', resp);
+			});
+			// window.location.href = "controlled/cmd_update_cache";
+		}
 	</script>
 </body>
 </html>
