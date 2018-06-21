@@ -13,10 +13,12 @@ var urlsToCache = [
 self.addEventListener('install', function(event) {
 	console.log('The service worker is being installed.');
 
-	event.waitUntil(preCache().then(function() {
+	/*event.waitUntil(preCache().then(function() {
 		console.log('[ServiceWorker] Skip waiting on install');
-   		return self.skipWaiting();
-	}));
+		return self.skipWaiting();
+	}));*/
+
+	event.waitUntil(preCache());
 });
 
 function preCache() {

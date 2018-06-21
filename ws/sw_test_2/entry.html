@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>入口</title>
+</head>
+<body>
+	<h1>入口页 <sub>chrome://inspect/#service-workers</sub></h1>
+	<ul>
+		<li>启用sw</li>
+		<li>检测更新</li>
+		<li>有更新：kill掉原始sw，使用skipWaiting，试一下</li>
+		<li>更新方式：[{url: xxx, ver: 1}, {url: xxx, ver: 1}, {url: xxx, ver: 2}]，更新所有ver: 1 -> 2 </li>
+	</ul>
+	<button onclick="sendVer();">发送初始版本</button>
+	<button onclick="sendUpVer();">发送升级版本</button>
+
+	<script>
+		// 启用sw
+		window.addEventListener('load', function() {
+			var msgNode = document.createElement('p');
+			
+			navigator.serviceWorker.register('sw.js')
+				.then(function(registration) {
+					msgNode.innerHTML = "sw注册【成功】";
+					document.body.appendChild(msgNode);
+
+					// setTimeout(function() {
+					// 	// 注册成功后自动发送当前缓存版本
+					// 	sendVer();
+					// }, 3000);
+				}).catch(function(err) {
+					msgNode.innerHTML = "sw注册【失败】";
+					console.error(err);
+					document.body.appendChild(msgNode);
+				});
+		});
+
+
+
+		// 检测是否能使用共通数据 -> 不能
+		/*localStorage.setItem('aaa', '111');
+
+		function add() {
+			var scriptNode = document.createElement('script');
+			scriptNode.src = '404.js';
+			document.body.appendChild(scriptNode);
+		}*/
+
+		function sendVer() {
+			var vt = "[NOW_VERSION]" + getVersion();
+			sendMsg(vt);
+		}
+
+		function sendUpVer() {
+			var vt = "[UPDATE_VERSION]" + getLastVersion();
+			sendMsg(vt);
+		}
+
+		// 发送消息到sw
+		function sendMsg(msg) {
+			navigator.serviceWorker.controller && navigator.serviceWorker.controller.postMessage(msg);
+		}
+
+
+
+
+
+		// 检查更新
+
+
+
+
+		localStorage.setItem('test_version', 0);
+		// 获取当前版本
+		function getVersion() {
+			return localStorage.getItem('test_version') || -1;
+		}
+
+		// 获取最新版本
+		function getLastVersion() {
+			return 1;
+		}
+
+
+
+
+
+		// 有更新kill上一个sw，如何检测？
+		// 不kill的话，sw可否访问一个全局变量？在当前页更新全局变量即可
+
+
+
+
+
+		// 更新去sw中做
+	</script>
+</body>
+</html>
