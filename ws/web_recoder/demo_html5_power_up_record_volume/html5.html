@@ -46,6 +46,16 @@
 		function startRecording() {
 			HZRecorder.get(function (rec) {
 				recorder = rec;
+
+				// 尝试修改 --START--
+				/*debugger;
+				var gainNode = recorder.context.createGain();
+		        audioInput.connect(gainNode);
+		        gainNode.connect(recorder.context.destination);
+
+		        gainNode.gain.setValueAtTime(0, recorder.context.currentTime);*/
+				// 尝试修改 --END--
+
 				recorder.start();
 			});
 		}

@@ -13,18 +13,41 @@
 
         // 测试修改 --START----------------------
         console.log('context>>>>', context);
+        // var audioCtx = context;
 
-        var gainNode = context.createGain();
-        audioInput.connect(gainNode);
-        gainNode.connect(context.destination);
+        // TODO: 调查一下作用
+        // var analyser = audioCtx.createAnalyser();
+        // analyser.minDecibels = -90;
+        // analyser.maxDecibels = -10;
+        // analyser.smoothingTimeConstant = 0.85;
 
-        gainNode.gain.setValueAtTime(0, context.currentTime);
+        // var distortion = audioCtx.createWaveShaper();
+        // var gainNode = audioCtx.createGain();
+        // var biquadFilter = audioCtx.createBiquadFilter();
+        // var convolver = audioCtx.createConvolver();
+
+        // var source = audioInput;
+        // source.connect(analyser);
+        // analyser.connect(distortion);
+        // distortion.connect(biquadFilter);
+        // biquadFilter.connect(convolver);
+        // convolver.connect(gainNode);
+        // gainNode.connect(audioCtx.destination);
+
+        // gainNode.gain.setValueAtTime(2, context.currentTime);
+        // gainNode.gain.setTargetAtTime(0.001, audioCtx.currentTime, 0);
 
         console.log('gainNode>>>', gainNode);
         // 测试修改 --END------------------------
 
         var createScript = context.createScriptProcessor || context.createJavaScriptNode;
         var recorder = createScript.apply(context, [4096, 1, 1]);
+
+        // 测试修改 --START----------------------
+        var gainNode = context.createGain();
+        gainNode.connect(createScript);
+        gainNode.gain.setValueAtTime(0.01, context.currentTime);
+        // 测试修改 --END------------------------
 
         var audioData = {
             size: 0          //录音文件长度
