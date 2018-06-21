@@ -10,11 +10,16 @@
 	overflow-y: hidden;
 }
 .sidebar ul.nav li{
-	animation: up-down 0.3s;
+	/*animation: up-down 0.3s;*/
+	transition-duration: height 1s;
 }
 @keyframes up-down {
 	0% {
-		margin-top: -100%;
+		/*margin-top: -100%;*/
+		height: 0;
+	}
+	100% {
+		height: initial;
 	}
 }
 .sidebar ul.nav:first-child {
