@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div>使用SW的组 - <span id="rdm"></span></div>
+	<img src="assets/icon1.png" alt="" style="width: 150px;">
+
+	<hr>
+
+	<button onclick="sendVer();">发送初始版本</button>
+	<button onclick="sendUpVer();">发送升级版本</button>
+
+	<script>
+		function sendVer() {
+			var vt = "[NOW_VERSION]" + getVersion();
+			sendMsg(vt);
+		}
+
+		function sendUpVer() {
+			var vt = "[UPDATE_VERSION]" + getLastVersion();
+			sendMsg(vt);
+		}
+
+		// 发送消息到sw
+		function sendMsg(msg) {
+			navigator.serviceWorker.controller && navigator.serviceWorker.controller.postMessage(msg);
+		}
+
+
+
+
+
+		// 检查更新
+
+
+
+
+		localStorage.setItem('test_version', 0);
+		// 获取当前版本
+		function getVersion() {
+			return localStorage.getItem('test_version') || -1;
+		}
+
+		// 获取最新版本
+		function getLastVersion() {
+			return 1;
+		}
+
+
+
+
+
+		// 有更新kill上一个sw，如何检测？
+		// 不kill的话，sw可否访问一个全局变量？在当前页更新全局变量即可
+
+
+
+
+
+		// 更新去sw中做
+	</script>
+</body>
+</html>
