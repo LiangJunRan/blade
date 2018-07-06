@@ -8,13 +8,28 @@ var CACHE_NAME = 'test';
 
 
 
-// 预缓存地址
+// 预缓存地址v2
+/*var halfUrlsToPreCache = [
+	// "/controlled/sub-2.html",
+	"/controlled/assets/icon1.png"
+];
+var origin = self.location.origin;
+var urlsToPreCache = [];
+halfUrlsToPreCache.map(function(halfUrl) {
+	urlsToPreCache.push(origin + halfUrl);
+});*/
+
+// 预缓存地址v1
 var urlsToPreCache = [
 	// "/controlled/sub-2.html",
 	"/controlled/assets/icon1.png"
 ];
-
-
+var origin = self.location.origin;
+/*var urlsToPreCache = [];
+halfUrlsToPreCache.map(function(halfUrl) {
+	urlsToPreCache.push(origin + halfUrl);
+});*/
+console.log('urlsToPreCache>>>', urlsToPreCache);
 
 
 // 用来记录已经缓存的url和对应版本
@@ -32,9 +47,13 @@ function saveCache(url, version) {
 	// if (cachedUrls[url] !== undefined) {
 		
 	// }
+	// 打开缓存
 	return caches.open(CACHE_NAME).then(function (cache) {
+		// 加载url资源（检查这里是否有缓存？？）
 		return fetch(url).then(function(response) {
+			// 按照url为关键字，将资源放入缓存中
 			return cache.put(url, response.clone()).then(function() {
+				// 更新已存url的对应版本
 				cachedUrls[url] = version;
 				return Promise.resolve();
 			})
@@ -43,8 +62,9 @@ function saveCache(url, version) {
 }
 
 function preCacheAll() {
+	console.log('预缓存所有资源', urlsToPreCache);
 	urlsToPreCache.map(function(url) {
-		console.log('    >>>', url);
+		console.log('    REQ', url);
 		saveCache(url, nowVersion).then(function() {
 			console.log('    SVD', url);
 			showCachedVersion()
@@ -94,13 +114,14 @@ self.addEventListener('message', function(evt) {
 			case "UPDATE_VERSION":
 				lastVersion = parseInt(result[2]);
 				console.log('已处理信息 升级版本:', lastVersion);
+				preCacheAll();
 				break;
 			default:
 				console.log('未处理信息！', result[1], result[2]);
 				break;
 		}
 	} else {
-		console.log('[MSG] SAID:', evt.data);
+		console.log('[UN-FMT-MSG] SAID:', evt.data);
 	}
 });
 
@@ -109,7 +130,7 @@ self.addEventListener('message', function(evt) {
 
 // FETCH
 self.addEventListener('fetch', function(evt) {
-	console.log('SW:fetch');
+	console.log('SW:fetch', evt.request.url);
 
 	evt.respondWith(fromCacheFirst_CompareVersion(evt.request));
 });
@@ -138,21 +159,42 @@ self.addEventListener('fetch', function(evt) {
 function fromCacheFirst_CompareVersion(request) {
 	return caches.open(CACHE_NAME).then(function (cache) {
 		return cache.match(request).then(function (matchedResponse) {
-			console.log('request.url>>>', request.url);
-			console.log('no-host-path>>', getHalfAbsolutePath(request.url));
-			var haPath = getHalfAbsolutePath(request.url);
-			// 有缓存且为最新
-			if (matchedResponse && cachedUrls[haPath] === lastVersion) {
-				console.log('  -> from cache', request.url);
-				return matchedResponse;		// 从cache中取出
-			}
-			// 有缓存，但是版本过期（请求最新的替换缓存）
-			else if (matchedResponse && cachedUrls[haPath] !== lastVersion) {
+			var url = request.url;
+			console.log('url         >>>', url, '\nmatch       >>>', matchedResponse !== undefined, '\nlastVersion >>>', lastVersion);
+			if (matchedResponse === undefined) {
 
 			}
+			// 有缓存且为最新
+			if (matchedResponse && cachedUrls[url] === lastVersion) {
+				console.log('  -> from cache', url);
+				return matchedResponse;		// 从cache中取出
+			}
+
+			// 有缓存，但是版本过期（请求最新的替换缓存）
+			else if (matchedResponse && cachedUrls[url] !== lastVersion) {
+				console.log('  -> fetch & update', url);
+				// TODO: 更新缓存资源
+				return saveCache(url, lastVersion).then(function() {
+					return caches.open(CACHE_NAME).then(function (cache) {
+						return cache.match(request).then(function (matchedResponse) {
+							var url = request.url;
+
+							if (matchedResponse && cachedUrls[url] === lastVersion) {
+								console.log('  -> Lv2 from cache', url);
+								return matchedResponse;		// 从cache中取出
+							}
+							else {
+								return Promise.reject(new Error("更新缓存后，还是不能找到即match又最新的资源"));
+							}
+						})
+					})
+				})
+				
+			}
+
 			// 没缓存，直接获取
 			else {
-				// console.log('  -> from fetch', getNoTempURL(request.url));
+				console.log('  -> fetch only', url);
 				// 不加no-cache会load from memory cache
 				// 加了no-cache会报错：Uncaught (in promise) TypeError: Failed to execute 'fetch' on 'ServiceWorkerGlobalScope': Cannot construct a Request with a Request whose mode is 'navigate' and a non-empty RequestInit.
 				return fetch(request);		// 从fetch中取出（TODO: 新资源？是否会被浏览器缓存？NO-CACHE？）

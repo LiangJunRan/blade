@@ -17,6 +17,8 @@
 
 	<iframe id="iframe1" src="controlled/page1.html" style="height: 250px;"></iframe>
 
+	<button id="reload">reload</button>
+
 	<script>
 		// 启用sw
 		window.addEventListener('load', function() {
@@ -37,6 +39,13 @@
 					document.body.appendChild(msgNode);
 				});
 		});
+
+		// Reload both iframes on demand.
+		var iframe1 = document.querySelector('#iframe1');
+		var reloadButton = document.querySelector('#reload');
+		reloadButton.onclick = function() {
+		  	iframe1.contentWindow.location.reload();
+		}
 
 
 
