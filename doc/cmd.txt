@@ -25,4 +25,15 @@ sc query "wuauserv"
 
 
 
+# 递归删除指定路径下的所有匹配文件
+# 参照：https://blog.csdn.net/qq_29647709/article/details/81474552
+# 注意，for不可针对隐藏路径和隐藏文件
+# %i表示for的eachItem，也就是每个路径，所以匹配文件要*文件名.类型，这样do后边才会输出文件的绝对路径
+# 打印目标文件
+for /r .\ %i in (*dwsync.xml) do @echo %i
+# 绝对路径
+for /r "E:\ws\xdf_site\xdf_event_checkin_page" %i in (*dwsync.xml) do @del %i
+# 当前路径
+for /r .\ %i in (*dwsync.xml) do @del %i
+
 
