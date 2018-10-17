@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas learning</title>
+</head>
+<body style="height: 100%; margin: 0px;">
+	<canvas id="c" width="800" height="600" style="border: 1px solid black;"></canvas>
+	<div id="color" style="position: fixed; top: 20px; right: 10px; width: 200px; height: 30px; line-height: 30px; text-align: right; margin: 0px; padding: 0px;">
+		<button style="margin: 0px; height: 30px; line-height: 30px; vertical-align: center;" onclick="mosaicRect()">mosaicRect</button>
+	</div>
+	<script>
+		var c, ctx, cw, ch;
+		c = document.getElementById('c');
+		ctx = c.getContext('2d');
+		cw = c.width;
+		ch = c.height;
+
+		/*
+		// 铺满的画布，待优化
+		cw = c.width = document.body.clientWidth;
+		ch = c.height = document.body.clientHeight - 4;
+
+		window.onresize = function() {
+			cw = c.width = document.body.clientWidth;
+			ch = c.height = document.body.clientHeight - 4;
+
+			reDraw();
+		};
+		*/
+
+		var img = new Image();
+		img.onload = function() {
+			clear();
+			reDraw();
+		}
+		img.src = 'test.jpg';
+
+		var ix = 20;
+		var iy = 20;
+
+
+		function reDraw() {
+	        ctx.drawImage(img, ix, iy);
+		}
+
+		function clear() {
+			ctx.clearRect(0, 0, cw, ch);
+		}
+
+
+		var color = document.getElementById('color');
+		function pick(event) {
+			var x = event.layerX;
+			var y = event.layerY;
+			var pixel = ctx.getImageData(x, y, 1, 1);
+			var data = pixel.data;
+			var rgba = 'rgba(' + data[0] + ',' + data[1] +
+			         ',' + data[2] + ',' + (data[3] / 255) + ')';
+			color.style.background =  rgba;
+			// color.textContent = rgba;
+		}
+		c.addEventListener('mousemove', pick);
+
+		function getZoom(event) {
+			var x = event.layerX;
+			var y = event.layerY;
+			
+			ctx.drawImage(c, Math.abs(x - 5), Math.abs(y - 5), 10, 10, cw - 100, 0, 100, 100);
+		}
+		c.addEventListener('mousemove', getZoom);
+
+		reDraw();
+
+		function mosaicRect() {
+			var opt = {
+				left: ix,	// 左
+				top: iy,	// 上
+				width: 400,	// 宽
+				height: 400,	// 高
+				mosaicSize: 10
+			}
+			// clear();
+			// reDraw();
+
+			for (var _x = 0; _x < opt.width; _x += opt.mosaicSize) {
+				for (var _y = 0; _y < opt.height; _y += opt.mosaicSize) {
+					var x = _x + opt.left;
+					var y = _y + opt.top;
+					var w = opt.mosaicSize;
+					var h = opt.mosaicSize;
+
+					var itemImageData = ctx.getImageData(x, y, w, h);
+					var blockData = itemImageData.data;
+
+					var blockCenterData = [blockData[200], blockData[201], blockData[202], blockData[203]];
+					for (var i = 0; i < blockData.length / 4; i++) {
+						blockData[i * 4 + 0] = blockCenterData[0];
+						blockData[i * 4 + 1] = blockCenterData[1];
+						blockData[i * 4 + 2] = blockCenterData[2];
+						blockData[i * 4 + 3] = blockCenterData[3];
+					}
+
+					ctx.putImageData(itemImageData, x, y);
+				}
+			}
+
+
+			// var imageData = ctx.getImageData(0, 0, c.width, c.height);
+
+			// ctx.drawImage(
+			// 	// 源
+			// 	c, 
+			// 	// 源的输入位置及范围
+			// 	opt.left, opt.top, opt.width, opt.height,
+			// 	// 输出的位置急范围
+			// 	opt.left + 2, opt.top, opt.width, opt.height
+			// );
+
+		}
+
+
+		var mosaicCache = {};
+		function getMosaicCache(col, row) {
+			if (mosaicCache[row] !== undefined && mosaicCache[row][col] !== undefined) {
+				return mosaicCache[row][col];
+			} else {
+				return undefined;
+			}
+		}
+		function setMosaicCache(col, row, value) {
+			if (mosaicCache[row] === undefined) {
+				mosaicCache[row] = {};
+			}
+			mosaicCache[row][col] = value;
+		}
+
+		function drawMosaic(event) {
+			// console.log('drawing...', event.layerX, event.layerY);
+			var mouseX = event.layerX;
+			var mouseY = event.layerY;
+
+			var radius = 25;
+			var mosaicSize = 5;
+
+			// 以_开头的x和y都是相对指针位置的偏移量
+			for (var _x = -radius; _x < radius; _x += 1) {
+				for (var _y = -radius; _y < radius; _y += 1) {
+					// 在圆形内
+					if (Math.sqrt(Math.pow(_x, 2) + Math.pow(_y, 2)) <= radius) {
+						var x = _x + mouseX;
+						var y = _y + mouseY;
+					}
+
+					// 判断在以mosaicSize为单位的的第几个格子内（考虑缓存机制，可以提前缓存）
+					var col = Math.ceil(x / mosaicSize);
+					var row = Math.ceil(y / mosaicSize);
+
+					var pixelData = getMosaicCache(col, row);
+					if (pixelData === undefined) {
+						var blockImg = ctx.getImageData(x, y, mosaicSize, mosaicSize);
+						var blockData = blockImg.data;
+						// var centerIndex = blockData.length / 2; // mosaicSize为单数的时候有bug
+						var centerIndex = Math.floor(blockData.length / 4 / 2) * 4;	// 解决mosaicSize为单数的bug
+						var blockCenterData = blockData.slice(centerIndex, centerIndex + 4);
+
+						setMosaicCache(col, row, blockCenterData);
+						pixelData = blockCenterData;
+					}
+
+					var targetPixelImage = ctx.getImageData(x, y, 1, 1);
+					var targetPixelImageData = targetPixelImage.data;
+
+					targetPixelImageData[0] = pixelData[0];
+					targetPixelImageData[1] = pixelData[1];
+					targetPixelImageData[2] = pixelData[2];
+					targetPixelImageData[3] = pixelData[3];
+
+					// 绘制
+					ctx.putImageData(targetPixelImage, x, y);
+				}
+			}
+
+		}
+		c.addEventListener('mousedown', function() {
+			console.log('bind');
+			c.addEventListener('mousemove', drawMosaic);
+		});
+		c.addEventListener('mouseup', function() {
+			console.log('release');
+			c.removeEventListener('mousemove', drawMosaic);
+		});
+
+	</script>
+</body>
+</html>

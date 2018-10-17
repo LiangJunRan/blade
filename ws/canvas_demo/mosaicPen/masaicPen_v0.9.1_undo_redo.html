@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas learning</title>
+</head>
+<body style="height: 100%; margin: 0px;">
+	<canvas id="c" width="800" height="600" style="border: 1px solid black;"></canvas>
+
+	<script>
+		var c, ctx, cw, ch;
+		c = document.getElementById('c');
+		ctx = c.getContext('2d');
+		cw = c.width;
+		ch = c.height;
+
+		// 图片加载
+		var img = new Image();
+		// 图片偏移量
+		var ix = 20;
+		var iy = 20;
+		// 图片加载完后显示在画布中
+		img.onload = function() {
+			ctx.drawImage(img, ix, iy);
+		}
+		img.src = 'test.jpg';
+
+		// 马赛克缓存
+		var mosaicCache = {};
+		function getMosaicCache(col, row) {
+			if (mosaicCache[row] !== undefined && mosaicCache[row][col] !== undefined) {
+				return mosaicCache[row][col];
+			} else {
+				return undefined;
+			}
+		}
+		function setMosaicCache(col, row, value) {
+			if (mosaicCache[row] === undefined) {
+				mosaicCache[row] = {};
+			}
+			mosaicCache[row][col] = value;
+		}
+
+		// 马赛克笔的实现
+		function drawMosaic(event) {
+			// console.log('drawing...', event.layerX, event.layerY);
+			var mouseX = event.layerX;
+			var mouseY = event.layerY;
+
+			var radius = 25;
+			var mosaicSize = 5;
+
+			// 以_开头的x和y都是相对指针位置的偏移量
+			for (var _x = -radius; _x < radius; _x += 1) {
+				for (var _y = -radius; _y < radius; _y += 1) {
+					// 在圆形内的像素点进行处理
+					if (Math.sqrt(Math.pow(_x, 2) + Math.pow(_y, 2)) <= radius) {
+						// 获取像素点实际位置(= 相对指针位置 + 指针位置)
+						var x = _x + mouseX;
+						var y = _y + mouseY;
+					
+						// 判断在以mosaicSize为单位的的第几个格子内（TODO: 提前缓存）
+						var col = Math.ceil(x / mosaicSize);
+						var row = Math.ceil(y / mosaicSize);
+
+						// 获取马赛克像素信息，如果没有，生成马赛克像素信息（TODO: 前置到缓存里）
+						var pixelData = getMosaicCache(col, row);
+						if (pixelData === undefined) {
+							var blockImg = ctx.getImageData(x, y, mosaicSize, mosaicSize);
+							var blockData = blockImg.data;
+							// var centerIndex = blockData.length / 2; // mosaicSize为单数的时候有bug
+							var centerIndex = Math.floor(blockData.length / 4 / 2) * 4;	// 解决mosaicSize为单数的bug
+							var blockCenterData = blockData.slice(centerIndex, centerIndex + 4);
+
+							// 加入缓存
+							setMosaicCache(col, row, blockCenterData);
+							pixelData = blockCenterData;
+						}
+
+						var targetPixelImage = ctx.getImageData(x, y, 1, 1);
+						var targetPixelImageData = targetPixelImage.data;
+
+						targetPixelImageData[0] = pixelData[0];
+						targetPixelImageData[1] = pixelData[1];
+						targetPixelImageData[2] = pixelData[2];
+						targetPixelImageData[3] = pixelData[3];
+
+						// 替换像素点
+						ctx.putImageData(targetPixelImage, x, y);
+					}
+				}
+			}
+
+		}
+		c.addEventListener('mousedown', function() {
+			console.log('bind');
+			c.addEventListener('mousemove', drawMosaic);
+		});
+		c.addEventListener('mouseup', function() {
+			console.log('release');
+			c.removeEventListener('mousemove', drawMosaic);
+		});
+
+	</script>
+</body>
+</html>
