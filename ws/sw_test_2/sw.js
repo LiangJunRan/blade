@@ -22,6 +22,7 @@ halfUrlsToPreCache.map(function(halfUrl) {
 // 预缓存地址v1
 var urlsToPreCache = [
 	// "/controlled/sub-2.html",
+	"/controlled/page1.html",
 	"/controlled/assets/icon1.png"
 ];
 var origin = self.location.origin;
@@ -64,10 +65,10 @@ function saveCache(url, version) {
 function preCacheAll() {
 	console.log('预缓存所有资源', urlsToPreCache);
 	urlsToPreCache.map(function(url) {
-		console.log('    REQ', url);
-		saveCache(url, nowVersion).then(function() {
-			console.log('    SVD', url);
-			showCachedVersion()
+		console.log('    REQ', origin + url);
+		saveCache(origin + url, nowVersion).then(function() {
+			console.log('    SVD', origin + url);
+			showCachedVersion();
 		});
 	});
 	// showCachedVersion();
@@ -114,7 +115,21 @@ self.addEventListener('message', function(evt) {
 			case "UPDATE_VERSION":
 				lastVersion = parseInt(result[2]);
 				console.log('已处理信息 升级版本:', lastVersion);
-				preCacheAll();
+				// preCacheAll();
+
+				var url = origin + '/controlled/assets/icon1.png';
+				evt.waitUntil(
+					caches.open(CACHE_NAME).then(function (cache) {
+						return fetch(url).then(function (response) {
+							return cache.put(url, response).then(function () {
+								console.log('升级版本', lastVersion, url);
+								// 更新已存url的对应版本
+								cachedUrls[url] = lastVersion;
+								return Promise.resolve();
+							});
+						});
+					})
+				);
 				break;
 			default:
 				console.log('未处理信息！', result[1], result[2]);
@@ -126,6 +141,26 @@ self.addEventListener('message', function(evt) {
 });
 
 
+
+
+// FETCH 对比组
+/*
+self.addEventListener('fetch', function(evt) {
+  console.log('The service worker is serving the asset.');
+
+  evt.respondWith(fromCache(evt.request));
+
+  evt.waitUntil(
+    update(evt.request)
+    .then(refresh)
+  );
+});
+function fromCache(request) {
+  return caches.open(CACHE).then(function (cache) {
+    return cache.match(request);
+  });
+}
+*/
 
 
 // FETCH

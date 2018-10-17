@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style>
+		.content {
+		  overflow: hidden;   
+		  overflow-x: auto;
+		  width: 600px;
+		  height: 200px;
+		  background: pink;
+		  font-size: 18px;
+
+		}
+		.box{
+			width:720px;
+			padding:20px;
+		}
+		/*内层轨道，滚动条中间部分（除去）*/
+		.content::-webkit-scrollbar-track-piece {
+		  background-color: rgba(0, 0, 0, 0);
+		  border-left: 1px solid rgba(0, 0, 0, 0);
+		}
+		/*滚动条整体部分*/
+		.content::-webkit-scrollbar {
+		  width: 6px;
+		  height: 10px;
+		  -webkit-border-radius: 5px;
+		  -moz-border-radius: 5px;
+		  border-radius: 5px;
+		}
+		/*滚动条里面可以拖动的那个东西*/
+		.content::-webkit-scrollbar-thumb {
+		  background-color: rgba(0, 0, 0, 0.5);
+		  background-clip: padding-box;
+		  -webkit-border-radius: 5px;
+		  -moz-border-radius: 5px;	
+		  border-radius: 5px;
+		  min-height: 28px;
+		  background-color: #333;
+		}
+
+
+	</style>
+</head>
+<body>
+	<div class="content">
+		<div class="box">
+		武汉国光劳保用品厂是一家生产和加工劳保产品性质的劳动密集型企业，位于素有“劳保用品之乡”之称的武汉市蔡甸区。企业始创
+于2001年，直至今日，已经有十多年的发展历史了。企业成立初期，主要以生产和加工劳保用帆布手套为主，在生产经营过程中，取得了良好的经济效益，并积累了十分丰富的劳保行业经验。随着数年的发展，企业的生产规模与投资方向都不断的扩展，目前，已成为一家兼
+并积累了十分丰富的劳保行业经验。随着数年的发展，企业的生产规模与投资方向都不断的扩展，目前，已成为一家兼有帆
+		</div>
+	</div>
+</body>
+</html>

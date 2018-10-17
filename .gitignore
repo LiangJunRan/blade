@@ -1,3 +1,5 @@
 *.idea*
 *gitign_*
 *node_modules*
+*.key
+*.pem
